@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <title>Mapa Universidad Nacional de Colombia - Sede Amazonia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <style>
+      :root {
+        --azul-institucional: #003366;
+        --azul-hover: #002244;
+        --gris-oscuro: #202124;
+        --gris-medio: #5f6368;
+        --gris-claro: #f1f3f4;
+        --blanco: #ffffff;
+        --rojo-notif: #e53935;
+        --sombra-moderna: 0 4px 16px rgba(0, 0, 0, 0.12);
+        --sombra-suave: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        color: var(--gris-oscuro);
+        background-color: var(--gris-claro);
+        overflow: hidden;
+      }
+
+      #map {
+        width: 100vw;
+        height: 100vh;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        z-index: 1;
+      }
+
+      /* Contenedor de Búsqueda Flotante y Botón de Campana */
+      .search-container {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1100;
+        width: 420px;
+        max-width: calc(100% - 40px);
+      }
+
+      .search-bar-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
+      }
+
+      .search-bar {
+        display: flex;
+        align-items: center;
+        background: var(--blanco);
+        padding: 4px 12px;
+        border-radius: 24px;
+        box-shadow: var(--sombra-moderna);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: box-shadow 0.2s ease;
+        flex: 1;
+      }
+
+      .search-bar:focus-within {
+        box-shadow: 0 4px 20px rgba(0, 51, 102, 0.2);
+        border-color: var(--azul-institucional);
+      }
+
+      .search-icon {
+        color: var(--gris-medio);
+        font-size: 16px;
+        margin-right: 8px;
+        user-select: none;
+      }
+
+      .search-box {
+        width: 100%;
+        border: none;
+        padding: 10px 4px;
+        font-size: 15px;
+        color: var(--gris-oscuro);
+        outline: none;
+        background: transparent;
+      }
+
+      /* Botón de Campana de Notificaciones */
+      .notification-btn {
+        background: var(--blanco);
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        box-shadow: var(--sombra-moderna);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        position: relative;
+        transition: transform 0.2s ease, background-color 0.2s ease;
+        flex-shrink: 0;
+      }
+
+      .notification-btn:hover {
+        background-color: #f8f9fa;
+        transform: scale(1.05);
+      }
+
+      .notification-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* Punto indicador rojo de nueva notificación */
+      .notification-badge {
+        position: absolute;
+        top: 12px;
+        right: 13px;
+        width: 8px;
+        height: 8px;
+        background-color: var(--rojo-notif);
+        border-radius: 50%;
+        border: 1.5px solid var(--blanco);
+      }
+
+      /* Dropdown de Resultados de Búsqueda */
+      .search-results-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: calc(100% - 58px); /* Alineado con el ancho de la barra de búsqueda solamente */
+        background: var(--blanco);
+        border-radius: 16px;
+        box-shadow: var(--sombra-moderna);
+        margin-top: 8px;
+        max-height: 300px;
+        overflow-y: auto;
+        display: none;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+
+      .search-results-dropdown.active {
+        display: block;
+      }
+
+      .search-result-item {
+        padding: 14px 18px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 14px;
+        border-bottom: 1px solid var(--gris-claro);
+        transition: background-color 0.2s ease;
+      }
+
+      .search-result-item:last-child {
+        border-bottom: none;
+      }
+
+      .search-result-item:hover {
+        background-color: #f8f9fa;
+      }
+
+      .search-result-item .item-icon {
+        color: var(--azul-institucional);
+        font-size: 16px;
+      }
+
+      .search-no-results {
+        padding: 16px;
+        text-align: center;
+        color: var(--gris-medio);
+        font-size: 14px;
+      }
+
+      /* Tarjeta Flotante de Detalle (Modal Card) */
+      .detail-card {
+        position: fixed;
+        background: var(--blanco);
+        z-index: 1100;
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--sombra-moderna);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .detail-card.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .sheet-handle {
+        display: none;
+        width: 36px;
+        height: 4px;
+        background-color: #ccc;
+        border-radius: 2px;
+        margin: 8px auto;
+      }
+
+      .close-card-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(255, 255, 255, 0.9);
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        box-shadow: var(--sombra-suave);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        color: var(--gris-oscuro);
+        z-index: 10;
+        transition: background-color 0.2s;
+      }
+
+      .close-card-btn:hover {
+        background-color: var(--gris-claro);
+      }
+
+      .detail-card-body {
+        overflow-y: auto;
+        flex: 1;
+      }
+
+      .detail-photo {
+        width: 100%;
+        height: 180px;
+        background-color: #eaeaea;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gris-medio);
+        font-size: 24px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .detail-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .detail-main-info {
+        padding: 20px;
+        border-bottom: 1px solid var(--gris-claro);
+      }
+
+      .detail-main-info h2 {
+        margin: 0 0 8px 0;
+        font-size: 20px;
+        color: var(--azul-institucional);
+        font-weight: 600;
+      }
+
+      .detail-desc {
+        margin: 0;
+        font-size: 14px;
+        color: var(--gris-medio);
+        line-height: 1.5;
+      }
+
+      .detail-sections {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .info-section {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+      }
+
+      .info-section-icon {
+        font-size: 18px;
+        margin-top: 2px;
+        width: 20px;
+        text-align: center;
+      }
+
+      .info-section-text strong {
+        display: block;
+        font-size: 14px;
+        color: var(--gris-oscuro);
+        margin-bottom: 2px;
+      }
+
+      .info-section-text p {
+        margin: 0;
+        font-size: 13.5px;
+        color: var(--gris-medio);
+        line-height: 1.4;
+      }
+
+      /* SIDEBAR DE NOTIFICACIONES (Lateral Deslizable) */
+      .notification-sidebar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 350px;
+        height: 100vh;
+        background: var(--blanco);
+        z-index: 1200; /* Por encima de todo para lectura enfocada */
+        box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .notification-sidebar.active {
+        transform: translateX(0);
+      }
+
+      .sidebar-header {
+        padding: 20px;
+        background: var(--azul-institucional);
+        color: var(--blanco);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .sidebar-header h3 {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .close-sidebar-btn {
+        background: transparent;
+        border: none;
+        color: var(--blanco);
+        font-size: 28px;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0 4px;
+        transition: opacity 0.2s;
+      }
+
+      .close-sidebar-btn:hover {
+        opacity: 0.8;
+      }
+
+      .sidebar-content {
+        padding: 20px;
+        overflow-y: auto;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      /* Estilo de las Notificaciones Individuales */
+      .notif-item {
+        padding: 14px;
+        background: #f8f9fa;
+        border-left: 4px solid var(--azul-institucional);
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .notif-item.important {
+        border-left-color: var(--rojo-notif);
+        background: #fff8f8;
+      }
+
+      .notif-text {
+        margin: 0;
+        font-size: 13.5px;
+        color: var(--gris-oscuro);
+        line-height: 1.4;
+      }
+
+      .notif-time {
+        display: block;
+        font-size: 11px;
+        color: var(--gris-medio);
+        margin-top: 6px;
+        text-align: right;
+      }
+
+      /* ---- MEDIA QUERIES (Responsivo) ---- */
+
+      /* Diseño de Escritorio */
+      @media (min-width: 768px) {
+        .detail-card {
+          top: 90px;
+          left: 20px;
+          width: 360px;
+          max-height: calc(100vh - 120px);
+          border-radius: 16px;
+          transform: translateX(-30px);
+        }
+
+        .detail-card.active {
+          transform: translateX(0);
+        }
+      }
+
+      /* Diseño de Dispositivos Móviles */
+      @media (max-width: 767px) {
+        .search-container {
+          top: 12px;
+          left: 12px;
+          max-width: calc(100% - 24px);
+        }
+
+        .search-results-dropdown {
+          width: calc(100% - 54px);
+        }
+
+        .detail-card {
+          bottom: 0;
+          left: 0;
+          right: 0;
+          width: 100%;
+          max-height: 50vh;
+          border-radius: 20px 20px 0 0;
+          transform: translateY(100%);
+        }
+
+        .detail-card.active {
+          transform: translateY(0);
+        }
+
+        .sheet-handle {
+          display: block;
+        }
+
+        .close-card-btn {
+          top: 16px;
+          right: 16px;
+        }
+
+        .notification-sidebar {
+          width: 100%; /* Ocupa pantalla completa en móvil para mejor legibilidad */
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Mapa Principal -->
+    <div id="map"></div>
+
+    <!-- Buscador Flotante y Botón de Notificaciones -->
+    <div class="search-container">
+      <div class="search-bar-wrapper">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            class="search-box"
+            id="searchBox"
+            placeholder="Buscar un lugar en el campus..."
+            autocomplete="off"
+          />
+        </div>
+        <!-- Botón tipo campana solicitado -->
+        <button class="notification-btn" id="notificationBtn" aria-label="Ver novedades y mensajes">
+          🔔
+          <span class="notification-badge" id="notificationBadge"></span>
+        </button>
+      </div>
+      <div class="search-results-dropdown" id="searchResults"></div>
+    </div>
+
+    <!-- Tarjeta Flotante / Bottom Sheet de Detalle de Lugares -->
+    <div class="detail-card" id="detailCard">
+      <div class="sheet-handle"></div>
+      <button class="close-card-btn" id="closeCardBtn" aria-label="Cerrar detalles">×</button>
+      
+      <div class="detail-card-body">
+        <div id="detailPhoto" class="detail-photo"></div>
+        
+        <div class="detail-main-info">
+          <h2 id="detailTitle">Cargando...</h2>
+          <p id="detailDescription" class="detail-desc"></p>
+        </div>
+
+        <div class="detail-sections">
+          <div class="info-section">
+            <div class="info-section-icon">⏰</div>
+            <div class="info-section-text">
+              <strong>Horario</strong>
+              <p id="detailSchedule"></p>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <div class="info-section-icon">📋</div>
+            <div class="info-section-text">
+              <strong>Reglas</strong>
+              <p id="detailRules"></p>
+            </div>
+          </div>
+
+          <div class="info-section">
+            <div class="info-section-icon">📢</div>
+            <div class="info-section-text">
+              <strong>Novedades</strong>
+              <p id="detailNews"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar de Novedades y Mensajes Simples (Panel Lateral Derecho) -->
+    <div class="notification-sidebar" id="notificationSidebar">
+      <div class="sidebar-header">
+        <h3><span>🔔</span> Novedades del Campus</h3>
+        <button class="close-sidebar-btn" id="closeSidebarBtn" aria-label="Cerrar panel">&times;</button>
+      </div>
+      <div class="sidebar-content">
+        <!-- Mensajes simples y novedades estáticas de ejemplo -->
+        <div class="notif-item important">
+          <p class="notif-text"><strong>🚧 Aviso Vial:</strong> Trabajos de mantenimiento en el sendero peatonal junto al río Amazonas. Transite con precaución.</p>
+          <span class="notif-time">Hace 10 min</span>
+        </div>
+        <div class="notif-item">
+          <p class="notif-text"><strong>📢 Conferencia:</strong> Este viernes se llevará a cabo el simposio sobre Biodiversidad Amazónica en el auditorio principal.</p>
+          <span class="notif-time">Hoy, 8:30 AM</span>
+        </div>
+        <div class="notif-item">
+          <p class="notif-text"><strong>📚 Biblioteca:</strong> Recuerda que los horarios de atención se extendieron hasta las 8:00 PM durante semanas de exámenes.</p>
+          <span class="notif-time">Ayer</span>
+        </div>
+        <div class="notif-item">
+          <p class="notif-text"><strong>🌿 Mensaje Sede:</strong> Bienvenidos a todos los estudiantes de intercambio al ecosistema de la Sede Amazonia.</p>
+          <span class="notif-time">12 Jun 2026</span>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <script>
+      
+      // Inicialización del mapa de Leaflet
+      const map = L.map("map", {
+        crs: L.CRS.Simple,
+        zoomControl: false
+      });
+
+     map.on('click', function(e) {
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+    console.log(`coordenada: [x: ${lat}, y:${lng}]`)
+     })
+
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+      const bounds = [
+        [0, 0],
+        [1000, 1000],
+      ];
+
+      const image = L.imageOverlay("/static/campus.png", bounds).addTo(map);
+      map.fitBounds(bounds);
+
+      // Elementos del DOM
+      const searchBox = document.getElementById("searchBox");
+      const searchResults = document.getElementById("searchResults");
+      const detailCard = document.getElementById("detailCard");
+      const closeCardBtn = document.getElementById("closeCardBtn");
+      
+      // Nuevos elementos para Notificaciones
+      const notificationBtn = document.getElementById("notificationBtn");
+      const notificationSidebar = document.getElementById("notificationSidebar");
+      const closeSidebarBtn = document.getElementById("closeSidebarBtn");
+      const notificationBadge = document.getElementById("notificationBadge");
+
+      // Campos internos de la tarjeta de detalle
+      const detailPhoto = document.getElementById("detailPhoto");
+      const detailTitle = document.getElementById("detailTitle");
+      const detailDescription = document.getElementById("detailDescription");
+      const detailSchedule = document.getElementById("detailSchedule");
+      const detailRules = document.getElementById("detailRules");
+      const detailNews = document.getElementById("detailNews");
+
+      let lugares = [];
+
+      // Función para mostrar detalles del lugar seleccionado
+      function mostrarDetalle(lugar) {
+        const fotoUrl = lugar.foto ? `/static/fotos/${lugar.foto}` : null;
+
+        if (fotoUrl) {
+          detailPhoto.innerHTML = `<img src="${fotoUrl}" alt="${lugar.nombre}">`;
+        } else {
+          detailPhoto.innerHTML = "📷";
+        }
+
+        detailTitle.textContent = lugar.nombre;
+        detailDescription.textContent = lugar.descripcion || "Sin descripción disponible.";
+        detailSchedule.textContent = lugar.horario || "No especificado";
+        detailRules.textContent = lugar.reglas || "Sin reglas específicas.";
+        detailNews.textContent = lugar.novedades || "Sin novedades recientes.";
+
+        // Aseguramos cerrar la barra de notificaciones si se abre un detalle para limpiar la pantalla
+        notificationSidebar.classList.remove("active");
+
+        detailCard.classList.add("active");
+        map.panTo([lugar.x, lugar.y], { animate: true, duration: 0.5 });
+      }
+
+      // Eventos de apertura y cierre para las notificaciones
+      notificationBtn.addEventListener("click", () => {
+        notificationSidebar.classList.add("active");
+        // Ocultamos el puntito rojo una vez que el usuario abre las notificaciones
+        if (notificationBadge) {
+          notificationBadge.style.display = "none";
+        }
+        // Opcional: cerrar tarjeta de detalles si estuviera abierta
+        detailCard.classList.remove("active");
+      });
+
+      closeSidebarBtn.addEventListener("click", () => {
+        notificationSidebar.classList.remove("active");
+      });
+
+      // Evento para cerrar la tarjeta de detalles
+      closeCardBtn.addEventListener("click", () => {
+        detailCard.classList.remove("active");
+      });
+
+      // Lógica de búsqueda predictiva
+      function filtrarLugares() {
+        const term = searchBox.value.toLowerCase().trim();
+        
+        if (term === "") {
+          searchResults.classList.remove("active");
+          searchResults.innerHTML = "";
+          return;
+        }
+
+        const filtrados = lugares.filter((lugar) =>
+          lugar.nombre.toLowerCase().includes(term)
+        );
+
+        searchResults.innerHTML = "";
+
+        if (filtrados.length === 0) {
+          searchResults.innerHTML = '<div class="search-no-results">No se encontraron ubicaciones</div>';
+        } else {
+          filtrados.forEach((lugar) => {
+            const item = document.createElement("div");
+            item.className = "search-result-item";
+            item.innerHTML = `<span class="item-icon">📍</span> <span>${lugar.nombre}</span>`;
+            
+            item.addEventListener("click", () => {
+              searchBox.value = lugar.nombre;
+              searchResults.classList.remove("active");
+              mostrarDetalle(lugar);
+            });
+            
+            searchResults.appendChild(item);
+          });
+        }
+        
+        searchResults.classList.add("active");
+      }
+
+      searchBox.addEventListener("input", filtrarLugares);
+
+      // Cerrar elementos al hacer clic fuera
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search-container")) {
+          searchResults.classList.remove("active");
+        }
+        // Cerrar sidebar si se hace clic en el mapa vacío fuera del panel
+        if (!e.target.closest("#notificationSidebar") && !e.target.closest("#notificationBtn") && !e.target.closest(".leaflet-container") === false) {
+           // Opcional: puedes habilitar cierre por clic externo en mapa descomentando la línea de abajo
+           // notificationSidebar.classList.remove("active");
+        }
+      });
+
+      // Consumo del API original de lugares
+      fetch("/lugares")
+        .then((res) => res.json())
+        .then((data) => {
+          lugares = data;
+
+          data.forEach((lugar) => {
+            const marker = L.marker([lugar.x, lugar.y]).addTo(map);
+            marker.on("click", function () {
+              mostrarDetalle(lugar);
+            });
+          });
+        })
+        .catch((err) => {
+          console.error("Error al cargar ubicaciones de la Universidad:", err);
+        });
+    </script>
+  </body>
+</html>
