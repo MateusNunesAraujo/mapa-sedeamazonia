@@ -1,0 +1,31 @@
+# Dependencias
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build
+dist/
+build/
+*.apk
+*.ipa
+www/
+
+# Environment
+.env
+.env.local
+
+# Capacitor
+android/
+ios/

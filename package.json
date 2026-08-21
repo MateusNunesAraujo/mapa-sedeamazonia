@@ -1,0 +1,30 @@
+{
+  "name": "mapa-sedeamazonia",
+  "version": "1.0.0",
+  "description": "Mapa interactivo de la Sede Amazonia - Universidad Nacional de Colombia",
+  "main": "main.py",
+  "scripts": {
+    "dev": "uvicorn main:app --reload --host 0.0.0.0 --port 8000",
+    "start": "uvicorn main:app --host 0.0.0.0 --port 8000",
+    "init-capacitor": "npx cap init",
+    "add-android": "npx cap add android",
+    "sync-app": "node build.js sync-app",
+    "sync": "npx cap sync",
+    "build": "npx cap build android",
+    "update": "npx cap update"
+  },
+  "dependencies": {
+    "@geoman-io/leaflet-geoman-free": "^2.15.0",
+    "@google/model-viewer": "^4.3.1",
+    "leaflet": "^1.9.4",
+    "localforage": "^1.10.0",
+    "qr-scanner": "^1.4.2"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^5.0.0",
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/ios": "^5.0.0"
+  }
+}

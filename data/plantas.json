@@ -1,0 +1,150 @@
+[
+    {
+        "nombre": "Victoria amazónica",
+        "nombre_cientifico": "Victoria amazonica",
+        "punto": [
+            412,
+            543.5
+        ],
+        "descripcion": "El nenúfar más grande del mundo, originario de las aguas poco profundas del río Amazonas.",
+        "usos_tradicionales": "Sus semillas son comestibles y a menudo se usan como alimento tras ser tostadas.",
+        "codigoQR": "PLANTA_001_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Cacao silvestre",
+        "nombre_cientifico": "Theobroma cacao",
+        "punto": [
+            214,
+            668
+        ],
+        "descripcion": "Árbol de sotobosque originario de la cuenca amazónica, cuyos granos se utilizan para hacer chocolate.",
+        "usos_tradicionales": "Uso ancestral en bebidas rituales y medicinales, y su manteca para la piel.",
+        "foto": "cacao.jpg",
+        "codigoQR": "PLANTA_002_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Palma de Moriche",
+        "nombre_cientifico": "Mauritia flexuosa",
+        "punto": [
+            270.5,
+            724
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Sus frutos son ricos en vitamina A, y sus hojas se usan para tejer hamacas y techos.",
+        "foto": "R.jpg",
+        "codigoQR": "PLANTA_003_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Caucho",
+        "nombre_cientifico": "Hevea brasiliensis",
+        "punto": [
+            349.5,
+            591
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Sus frutos son ricos en vitamina A, y sus hojas se usan para tejer hamacas y techos.",
+        "foto": "caucho.webp",
+        "codigoQR": "PLANTA_004_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Balsa",
+        "nombre_cientifico": "Ochroma pyramidale",
+        "punto": [
+            290.5,
+            571
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
+        "codigoQR": "PLANTA_005_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Balsa 2",
+        "nombre_cientifico": "Ochroma pyramidale",
+        "punto": [
+            430.75,
+            771.5
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
+        "codigoQR": "PLANTA_006_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Balsa 3",
+        "nombre_cientifico": "Ochroma pyramidale",
+        "punto": [
+            230.25,
+            728.25
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
+        "codigoQR": "PLANTA_007_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Balsa 4",
+        "nombre_cientifico": "Ochroma pyramidale",
+        "punto": [
+            195.625,
+            727.0625
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
+        "codigoQR": "PLANTA_008_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Balsa 5",
+        "nombre_cientifico": "Ochroma pyramidale",
+        "punto": [
+            162.5,
+            727.7138047045362
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
+        "codigoQR": "PLANTA_009_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Balsa 6",
+        "nombre_cientifico": "Ochroma pyramidale",
+        "punto": [
+            61.25,
+            724.9505851858894
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
+        "codigoQR": "PLANTA_010_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Balsa 7",
+        "nombre_cientifico": "Ochroma pyramidale",
+        "punto": [
+            96.25,
+            757.75
+        ],
+        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
+        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
+        "codigoQR": "PLANTA_011_AMAZONIA",
+        "bloqueado": true
+    },
+    {
+        "nombre": "Mango",
+        "nombre_cientifico": "Mangifera indica",
+        "punto": [
+            266.625,
+            621.5027241500087
+        ],
+        "descripcion": "Árbol frutal originario de la India, conocido por sus dulces y jugosos frutos.",
+        "usos_tradicionales": "Se consume su fruto, los frutos se consumen en fresco, como materia prima para jugos, helados, mermeladas y dulces.",
+        "codigoQR": "PLANTA_012_AMAZONIA",
+        "bloqueado": true,
+        "3d": "arbol_mango.glb"
+    }
+]

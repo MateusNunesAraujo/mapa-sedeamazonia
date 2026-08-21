@@ -1,0 +1,586 @@
+[
+    {
+        "nombre": "Cancha",
+        "puntos": [
+            [95.5, 831],
+            [94.25, 910],
+            [65, 909],
+            [65, 831],
+            [95.5, 831]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Parqueadero",
+        "puntos": [
+            [96.625, 820.75],
+            [97.75, 820.5],
+            [65.5, 820.625],
+            [65.75, 744.75],
+            [89.125, 744.5],
+            [89.875, 706.625],
+            [98.75, 706.75],
+            [97.75, 772.125]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Arawana",
+        "puntos": [
+            [259.0625, 593.625],
+            [235.8125, 593.75],
+            [235.875, 624.6875],
+            [258.9375, 624.5]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado",
+        "foto": "arawana.png"
+    },
+    {
+        "nombre": "Biblioteca",
+        "puntos": [
+            [159.0625, 623.875],
+            [159, 593.625],
+            [105, 593.5],
+            [104.75, 644.875],
+            [127.125, 644.875],
+            [127.125, 624],
+            [133.9375, 624]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado",
+        "foto": "biblioteca.png"
+    },
+    {
+        "nombre": "Profesores",
+        "puntos": [
+            [225.5, 593.25],
+            [196.875, 593.375],
+            [167.5, 593.375],
+            [167.5, 611],
+            [167.75, 624.625],
+            [195.625, 624.5],
+            [224.75, 624.25],
+            [225.125, 608.875]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado",
+        "foto": "profesores.png"
+    },
+    {
+        "nombre": "Sala de sistemas 2",
+        "puntos": [
+            [133.9375, 624],
+            [133.8125, 644.6875],
+            [161.75, 644.375],
+            [161.75, 644.375],
+            [161.75, 623.75],
+            [159.0625, 623.875]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Oficina 1",
+        "puntos": [
+            [127.125, 644.875],
+            [126.75, 687.25],
+            [104.5, 687.5],
+            [104.75, 644.875]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Auditorio",
+        "puntos": [
+            [161.75, 644.375],
+            [161.5, 691.6875],
+            [133.6875, 692.125],
+            [133.8125, 644.6875]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado",
+        "foto": "auditorio.png"
+    },
+    {
+        "nombre": "Recepción",
+        "puntos": [
+            [159.5, 743.25],
+            [136.5, 743.625],
+            [136.25, 820.125],
+            [159.125, 820.125]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado",
+        "foto": "sarita.png"
+    },
+    {
+        "nombre": "Oficina 2",
+        "puntos": [
+            [104.625, 716],
+            [104.375, 760.625],
+            [127, 760.5],
+            [126.875, 716.125]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado",
+        "foto": "oficinas.png"
+    },
+    {
+        "nombre": "Oficina 3",
+        "puntos": [
+            [127, 764.75],
+            [104.35, 765],
+            [104.75, 811.375],
+            [126.875, 811.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Oficina 4",
+        "puntos": [
+            [126.875, 811.25],
+            [126.6875, 834.5],
+            [104.4375, 834.8125],
+            [104.75, 811.375]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Oficina 5",
+        "puntos": [
+            [126.6875, 834.5],
+            [126.75, 866.125],
+            [104.25, 866.5],
+            [104.4375, 834.8125]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado",
+        "foto": "laboratorio.png"
+    },
+    {
+        "nombre": "Oficina 6",
+        "puntos": [
+            [126.75, 866.125],
+            [126.5, 887.25],
+            [104.25, 887.625],
+            [104.25, 866.5]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Baños 2",
+        "puntos": [
+            [126.5, 887.25],
+            [126.625, 904.12],
+            [104, 904],
+            [104.25, 887.625]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio en contrucción",
+        "puntos": [
+            [191.625, 556.37],
+            [191.875, 585.625],
+            [155.25, 585.875],
+            [154.875, 556.5]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Edificio en contrucción 2",
+        "puntos": [
+            [236.75, 556.125],
+            [201.5, 556.5],
+            [201.375, 585.5],
+            [237, 585.125]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Edificio en contrucción 3",
+        "puntos": [
+            [269.25, 522.5],
+            [232.75, 522.25],
+            [232.5, 551.25],
+            [269.75, 551]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Arquitectura",
+        "puntos": [
+            [230.75, 646.75],
+            [265, 646.25],
+            [264.5, 694],
+            [230.25, 694.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado",
+        "foto": "arquitectura.png"
+    },
+    {
+        "nombre": "Edificio 1",
+        "puntos": [
+            [159.75, 857.25],
+            [136.25, 857],
+            [136.5, 908.25],
+            [143.75, 908.25],
+            [143.75, 900],
+            [158.75, 899.5]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 1",
+        "puntos": [
+            [191, 711.875],
+            [168, 712],
+            [167.875, 743.25],
+            [190.875, 743.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 2",
+        "puntos": [
+            [198.875, 757.125],
+            [175.625, 757.125],
+            [175.75, 789.375],
+            [199, 789.375]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 3",
+        "puntos": [
+            [224.75, 711.5],
+            [202, 711.625],
+            [201.875, 743.5],
+            [224.75, 742.75]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 4",
+        "puntos": [
+            [218.90177852348992, 742.9417449664429],
+            [218.875, 774.25],
+            [242.25, 774.5],
+            [242.25, 743]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 5",
+        "puntos": [
+            [259.25, 711.25],
+            [235, 711.25],
+            [235.4931806693238, 742.9831413824285],
+            [259.25, 742.5]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 6",
+        "puntos": [
+            [276.5, 742],
+            [252.97209105789665, 742.6276735560779],
+            [253, 775],
+            [277, 774.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 7",
+        "puntos": [
+            [269.25, 600.75],
+            [269.5, 622.25],
+            [284.75, 621.75],
+            [284.75, 600]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 8",
+        "puntos": [
+            [269.5, 641.75],
+            [269.5, 655.625],
+            [285, 655.5],
+            [284.875, 641.625]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 9",
+        "puntos": [
+            [329.25, 586.5],
+            [288.25, 586.25],
+            [288.1875, 622.125],
+            [329.375, 622.375]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 10",
+        "puntos": [
+            [322.5, 642],
+            [292.75, 642.5],
+            [292.75, 687.25],
+            [322.25, 687.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 11",
+        "puntos": [
+            [284.5, 711.75],
+            [311.75, 711],
+            [312, 759.75],
+            [284.5, 759.75]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 12",
+        "puntos": [
+            [346, 715],
+            [323.25, 715.25],
+            [323, 748],
+            [346.75, 747.5]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 13",
+        "puntos": [
+            [373.75, 641.75],
+            [373.75, 691.5],
+            [337.5, 691.75],
+            [337.5058387452518, 641.570573459135]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 14",
+        "puntos": [
+            [374.5, 601.25],
+            [336, 601.25],
+            [335.75, 618.5],
+            [374, 618.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 14",
+        "puntos": [
+            [408, 621.25],
+            [391, 621],
+            [391.5, 722.25],
+            [408.25, 721.5]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 15",
+        "puntos": [
+            [370.25, 714.375],
+            [370.5, 747.75],
+            [355.5, 747.75],
+            [355.625, 714.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 16",
+        "puntos": [
+            [523, 617.5],
+            [458.5, 617.75],
+            [458.25, 647.25],
+            [522.75, 647.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 17",
+        "puntos": [
+            [372, 556.75],
+            [323.25, 556.75],
+            [323, 583.875],
+            [372.25, 584]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Edificio NUEVO 18",
+        "puntos": [
+            [295.75, 555.75],
+            [295.7375264899431, 586.295655649329],
+            [260, 586.25],
+            [260.75, 556.25]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Edificio NUEVO 19",
+        "puntos": [
+            [324, 522.5],
+            [286.5, 523.25],
+            [286.75, 550.5],
+            [324, 550.75]
+        ],
+        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
+        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
+        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
+        "novedades": "Nueva sección de libros digitales disponible.",
+        "estado": "planeado"
+    }
+]
