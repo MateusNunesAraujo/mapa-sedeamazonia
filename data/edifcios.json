@@ -1,586 +1,1634 @@
 [
     {
+        "nombre": "Casa hija",
+        "puntos": [
+            [
+                831.75,
+                651.5
+            ],
+            [
+                813,
+                676
+            ],
+            [
+                831.75,
+                701.25
+            ],
+            [
+                850.25,
+                676.25
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado"
+    },
+    {
         "nombre": "Cancha",
         "puntos": [
-            [95.5, 831],
-            [94.25, 910],
-            [65, 909],
-            [65, 831],
-            [95.5, 831]
+            [
+                95.5,
+                831
+            ],
+            [
+                94.25,
+                910
+            ],
+            [
+                65,
+                909
+            ],
+            [
+                65,
+                831
+            ],
+            [
+                95.5,
+                831
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
+        "descripcion": "Espacio para realizar actividades deportivas y recreativas.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "cancha.png"
     },
     {
         "nombre": "Parqueadero",
         "puntos": [
-            [96.625, 820.75],
-            [97.75, 820.5],
-            [65.5, 820.625],
-            [65.75, 744.75],
-            [89.125, 744.5],
-            [89.875, 706.625],
-            [98.75, 706.75],
-            [97.75, 772.125]
+            [
+                96.625,
+                820.75
+            ],
+            [
+                97.75,
+                820.5
+            ],
+            [
+                65.5,
+                820.625
+            ],
+            [
+                65.75,
+                744.75
+            ],
+            [
+                89.125,
+                744.5
+            ],
+            [
+                89.875,
+                706.625
+            ],
+            [
+                98.75,
+                706.75
+            ],
+            [
+                97.75,
+                772.125
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
+        "descripcion": "Espacio para parqeuo de vehículos.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "parqueadero.png"
     },
     {
         "nombre": "Arawana",
         "puntos": [
-            [259.0625, 593.625],
-            [235.8125, 593.75],
-            [235.875, 624.6875],
-            [258.9375, 624.5]
+            [
+                259.0625,
+                593.625
+            ],
+            [
+                235.8125,
+                593.75
+            ],
+            [
+                235.875,
+                624.6875
+            ],
+            [
+                258.9375,
+                624.5
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Espacio para la investigación, formación y extensión universitaria.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado",
         "foto": "arawana.png"
     },
     {
         "nombre": "Biblioteca",
         "puntos": [
-            [159.0625, 623.875],
-            [159, 593.625],
-            [105, 593.5],
-            [104.75, 644.875],
-            [127.125, 644.875],
-            [127.125, 624],
-            [133.9375, 624]
+            [
+                159.0625,
+                623.875
+            ],
+            [
+                159,
+                593.625
+            ],
+            [
+                105,
+                593.5
+            ],
+            [
+                104.75,
+                644.875
+            ],
+            [
+                127.125,
+                644.875
+            ],
+            [
+                127.125,
+                624
+            ],
+            [
+                133.9375,
+                624
+            ]
         ],
         "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
         "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "novedades": "",
         "estado": "terminado",
         "foto": "biblioteca.png"
     },
     {
-        "nombre": "Profesores",
+        "nombre": "Sala de profesores",
         "puntos": [
-            [225.5, 593.25],
-            [196.875, 593.375],
-            [167.5, 593.375],
-            [167.5, 611],
-            [167.75, 624.625],
-            [195.625, 624.5],
-            [224.75, 624.25],
-            [225.125, 608.875]
+            [
+                225.5,
+                593.25
+            ],
+            [
+                196.875,
+                593.375
+            ],
+            [
+                167.5,
+                593.375
+            ],
+            [
+                167.5,
+                611
+            ],
+            [
+                167.75,
+                624.625
+            ],
+            [
+                195.625,
+                624.5
+            ],
+            [
+                224.75,
+                624.25
+            ],
+            [
+                225.125,
+                608.875
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Espacio destinado al trabajo, preparación y encuentro de los docentes, proporcionando un ambiente adecuado para sus actividades académicas y profesionales.",
+        "horario": "Lunes a viernes: 7:00 AM - 8:00 PM",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado",
         "foto": "profesores.png"
     },
     {
         "nombre": "Sala de sistemas 2",
         "puntos": [
-            [133.9375, 624],
-            [133.8125, 644.6875],
-            [161.75, 644.375],
-            [161.75, 644.375],
-            [161.75, 623.75],
-            [159.0625, 623.875]
+            [
+                133.9375,
+                624
+            ],
+            [
+                133.8125,
+                644.6875
+            ],
+            [
+                161.75,
+                644.375
+            ],
+            [
+                161.75,
+                644.375
+            ],
+            [
+                161.75,
+                623.75
+            ],
+            [
+                159.0625,
+                623.875
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
+        "descripcion": "Espacio equipado con computadores y recursos tecnológicos para apoyar las actividades académicas, de investigación y aprendizaje de la comunidad universitaria.",
+        "horario": "Lunes a viernes: 7:00 AM - 7:00 PM",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "sistemas2.png"
     },
     {
-        "nombre": "Oficina 1",
+        "nombre": "Dirección",
         "puntos": [
-            [127.125, 644.875],
-            [126.75, 687.25],
-            [104.5, 687.5],
-            [104.75, 644.875]
+            [
+                127.125,
+                644.875
+            ],
+            [
+                126.75,
+                687.25
+            ],
+            [
+                104.5,
+                687.5
+            ],
+            [
+                104.75,
+                644.875
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Núcleo administrativo central de la sede encargado de la gestión institucional y la atención académica.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado"
     },
     {
         "nombre": "Auditorio",
         "puntos": [
-            [161.75, 644.375],
-            [161.5, 691.6875],
-            [133.6875, 692.125],
-            [133.8125, 644.6875]
+            [
+                161.75,
+                644.375
+            ],
+            [
+                161.5,
+                691.6875
+            ],
+            [
+                133.6875,
+                692.125
+            ],
+            [
+                133.8125,
+                644.6875
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Escenario principal para eventos académicos, asambleas y actividades culturales de la comunidad universitaria y de la región amazónica.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado",
         "foto": "auditorio.png"
     },
     {
-        "nombre": "Recepción",
+        "nombre": "Admisión y Matrícula",
         "puntos": [
-            [159.5, 743.25],
-            [136.5, 743.625],
-            [136.25, 820.125],
-            [159.125, 820.125]
+            [
+                159.375,
+                743.125
+            ],
+            [
+                136.125,
+                743.125
+            ],
+            [
+                135.875,
+                775.375
+            ],
+            [
+                159.5,
+                775
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Tu punto de partida en la sede. Diseñado para brindar acompañamiento directo en procesos de registro, radicación de solicitudes y orientación general para la comunidad universitaria y visitantes.",
+        "horario": "Lunes a viernes: 7:00 AM - 6:00 PM",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado",
         "foto": "sarita.png"
     },
     {
-        "nombre": "Oficina 2",
+        "nombre": "Secretaría de Sede",
         "puntos": [
-            [104.625, 716],
-            [104.375, 760.625],
-            [127, 760.5],
-            [126.875, 716.125]
+            [
+                159.5,
+                775
+            ],
+            [
+                159.625,
+                820.375
+            ],
+            [
+                135.75,
+                820.375
+            ],
+            [
+                135.875,
+                775.375
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "UGÍ - Unidad de Gestión e Integral",
+        "puntos": [
+            [
+                104.625,
+                716
+            ],
+            [
+                104.375,
+                760.625
+            ],
+            [
+                127,
+                760.5
+            ],
+            [
+                126.875,
+                716.125
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado",
         "foto": "oficinas.png"
     },
     {
         "nombre": "Oficina 3",
         "puntos": [
-            [127, 764.75],
-            [104.35, 765],
-            [104.75, 811.375],
-            [126.875, 811.25]
+            [
+                127,
+                764.75
+            ],
+            [
+                104.35,
+                765
+            ],
+            [
+                104.75,
+                811.375
+            ],
+            [
+                126.875,
+                811.25
+            ]
         ],
         "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
         "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "novedades": "",
         "estado": "terminado"
     },
     {
-        "nombre": "Oficina 4",
+        "nombre": "Sala 2 Videoconferencia",
         "puntos": [
-            [126.875, 811.25],
-            [126.6875, 834.5],
-            [104.4375, 834.8125],
-            [104.75, 811.375]
+            [
+                126.875,
+                811.25
+            ],
+            [
+                126.6875,
+                834.5
+            ],
+            [
+                104.4375,
+                834.8125
+            ],
+            [
+                104.75,
+                811.375
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
+        "descripcion": "Espacio dotado de tecnología audiovisual y sistemas de comunicación para la realización de eventos remotos, clases virtuales y reuniones institucionales.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "sala2_videoconferencia.jpeg"
     },
     {
-        "nombre": "Oficina 5",
+        "nombre": "Laboratorio - Innovación y Sostenibilidad",
         "puntos": [
-            [126.6875, 834.5],
-            [126.75, 866.125],
-            [104.25, 866.5],
-            [104.4375, 834.8125]
+            [
+                126.6875,
+                834.5
+            ],
+            [
+                126.75,
+                866.125
+            ],
+            [
+                104.25,
+                866.5
+            ],
+            [
+                104.4375,
+                834.8125
+            ]
         ],
         "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
         "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "novedades": "",
         "estado": "terminado",
         "foto": "laboratorio.png"
     },
     {
-        "nombre": "Oficina 6",
+        "nombre": "Adquisición de Bienes y Servicios",
         "puntos": [
-            [126.75, 866.125],
-            [126.5, 887.25],
-            [104.25, 887.625],
-            [104.25, 866.5]
+            [
+                126.75,
+                866.125
+            ],
+            [
+                126.5,
+                887.25
+            ],
+            [
+                104.25,
+                887.625
+            ],
+            [
+                104.25,
+                866.5
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Unidad administrativa encargada de gestionar la compra de suministros, equipos y la contratación de servicios necesarios para el funcionamiento del campus. Tramita los procesos precontractuales y contractuales con proveedores, garantizando la cobertura de necesidades operativas de los proyectos académicos y administrativas de la sede.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado"
     },
     {
         "nombre": "Baños 2",
         "puntos": [
-            [126.5, 887.25],
-            [126.625, 904.12],
-            [104, 904],
-            [104.25, 887.625]
+            [
+                126.5,
+                887.25
+            ],
+            [
+                126.625,
+                904.12
+            ],
+            [
+                104,
+                904
+            ],
+            [
+                104.25,
+                887.625
+            ]
         ],
         "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
         "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "novedades": ".",
         "estado": "terminado"
     },
     {
-        "nombre": "Edificio en contrucción",
+        "nombre": "Sala de docentes",
         "puntos": [
-            [191.625, 556.37],
-            [191.875, 585.625],
-            [155.25, 585.875],
-            [154.875, 556.5]
+            [
+                191.625,
+                556.37
+            ],
+            [
+                191.875,
+                585.625
+            ],
+            [
+                155.25,
+                585.875
+            ],
+            [
+                154.875,
+                556.5
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "planeado"
     },
     {
-        "nombre": "Edificio en contrucción 2",
+        "nombre": "Sala de proyectos",
         "puntos": [
-            [236.75, 556.125],
-            [201.5, 556.5],
-            [201.375, 585.5],
-            [237, 585.125]
+            [
+                236.75,
+                556.125
+            ],
+            [
+                201.5,
+                556.5
+            ],
+            [
+                201.375,
+                585.5
+            ],
+            [
+                237,
+                585.125
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "planeado"
     },
     {
-        "nombre": "Edificio en contrucción 3",
+        "nombre": "Laboratorio de biologia",
         "puntos": [
-            [269.25, 522.5],
-            [232.75, 522.25],
-            [232.5, 551.25],
-            [269.75, 551]
+            [
+                269.25,
+                522.5
+            ],
+            [
+                232.75,
+                522.25
+            ],
+            [
+                232.5,
+                551.25
+            ],
+            [
+                269.75,
+                551
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "planeado"
     },
     {
-        "nombre": "Arquitectura",
+        "nombre": "Maloca",
         "puntos": [
-            [230.75, 646.75],
-            [265, 646.25],
-            [264.5, 694],
-            [230.25, 694.25]
+            [
+                230.75,
+                646.75
+            ],
+            [
+                265,
+                646.25
+            ],
+            [
+                264.5,
+                694
+            ],
+            [
+                230.25,
+                694.25
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Salón exclusivamente para el pregrado de arquitectura, en este espacio se realizan clases, actividades y eventos relacionados con el pregrado de arquitectura.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado",
         "foto": "arquitectura.png"
     },
     {
-        "nombre": "Edificio 1",
+        "nombre": "Gestión de Bienes",
         "puntos": [
-            [159.75, 857.25],
-            [136.25, 857],
-            [136.5, 908.25],
-            [143.75, 908.25],
-            [143.75, 900],
-            [158.75, 899.5]
+            [
+                159.75,
+                857.25
+            ],
+            [
+                136.25,
+                857
+            ],
+            [
+                136.5,
+                908.25
+            ],
+            [
+                143.75,
+                908.25
+            ],
+            [
+                143.75,
+                900
+            ],
+            [
+                158.75,
+                899.5
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Área encargada de la administración, inventario y custodia de los activos fijos, equipos e insumos de la sede. Coordina la recepción, registro y distribución de materiales y suministros, garantizando el control del patrimonio institucional y el soporte logístico para las diferentes dependencias del campus.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "bloque_7.png"
+    },
+    {
+        "nombre": "Oficina de Asesoría y Orientación Tecnológica",
+        "puntos": [
+            [
+                191,
+                711.875
+            ],
+            [
+                168,
+                712
+            ],
+            [
+                167.875,
+                743.25
+            ],
+            [
+                190.875,
+                743.25
+            ]
+        ],
+        "descripcion": "Espacio de apoyo para estudiantes, docentes y personal universitario, orientado a resolver dudas y brindar asesoría en el uso de herramientas y tecnologías.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "oficina_asesoria_y_orientacion_tecnologica.png"
+    },
+    {
+        "nombre": "Bloque 13",
+        "puntos": [
+            [
+                198.875,
+                757.125
+            ],
+            [
+                175.625,
+                757.125
+            ],
+            [
+                175.75,
+                789.375
+            ],
+            [
+                199,
+                789.375
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "bloque_13.png"
+    },
+    {
+        "nombre": "Sala de sistemas 1",
+        "puntos": [
+            [
+                224.75,
+                711.5
+            ],
+            [
+                202,
+                711.625
+            ],
+            [
+                201.875,
+                743.5
+            ],
+            [
+                224.75,
+                742.75
+            ]
+        ],
+        "descripcion": "Espacio equipado con computadores y recursos tecnológicos para apoyar las actividades académicas, de investigación y aprendizaje de la comunidad universitaria.",
+        "horario": "Lunes a viernes: 7:00 AM - 6:00 PM",
+        "reglas": "No entrar con bebidas ni comidas y dejar los bolsos en la parte trasera de la sala.",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "sala_sistemas_1.png"
+    },
+    {
+        "nombre": "IMANI",
+        "puntos": [
+            [
+                259.25,
+                711.25
+            ],
+            [
+                235,
+                711.25
+            ],
+            [
+                235.4931806693238,
+                742.9831413824285
+            ],
+            [
+                259.25,
+                742.5
+            ]
+        ],
+        "descripcion": "Instituto dedicado a la investigación y generación de conocimiento sobre la Amazonia, sus problemáticas socioambientales y sus comunidades, promoviendo proyectos científicos y su articulación con la región.",
+        "horario": "Lunes a viernes: 7:00 AM - 5:00 PM",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "IMANI.png"
+    },
+    {
+        "nombre": "Sala de posgrado",
+        "puntos": [
+            [
+                218.90177852348992,
+                742.9417449664429
+            ],
+            [
+                218.875,
+                774.25
+            ],
+            [
+                242.25,
+                774.5
+            ],
+            [
+                242.25,
+                743
+            ]
+        ],
+        "descripcion": "Espacio dedicado solamente a estuidiantes de posgrados.",
+        "horario": "Lunes a viernes: 7:00 AM - 6:00 PM",
+        "reglas": "No entrar con bebidas ni comidas y dejar los bolsos en la parte trasera de la sala.",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "sala_sistemas_posgrado.png"
+    },
+    {
+        "nombre": "APAPORIS",
+        "puntos": [
+            [
+                276.5,
+                742
+            ],
+            [
+                252.97209105789665,
+                742.6276735560779
+            ],
+            [
+                253,
+                775
+            ],
+            [
+                277,
+                774.25
+            ]
+        ],
+        "descripcion": "Sala de reuniones y seminarios acondicionada con herramientas tecnológicas para videoconferencias, talleres de trabajo colaborativo, comités y sustentaciones académicas.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "apaporis.png"
+    },
+    {
+        "nombre": "Baños para hombres",
+        "puntos": [
+            [
+                269.25,
+                600.75
+            ],
+            [
+                269.5,
+                622.25
+            ],
+            [
+                284.75,
+                621.75
+            ],
+            [
+                284.75,
+                600
+            ]
+        ],
+        "descripcion": "Baños para hombres, de uso libre para estudiantes, docentes y visitantes en las áreas comunes del campus.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "banos_para_hombres.png"
+    },
+    {
+        "nombre": "Baño para mujeres",
+        "puntos": [
+            [
+                269.5,
+                641.75
+            ],
+            [
+                269.5,
+                655.625
+            ],
+            [
+                285,
+                655.5
+            ],
+            [
+                284.875,
+                641.625
+            ]
+        ],
+        "descripcion": "Baños para mujeres, de uso libre para estudiantes, docentes y visitantes en las áreas comunes del campus.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "banos_para_mujeres.png"
+    },
+    {
+        "nombre": "Salones 3A,B y C",
+        "puntos": [
+            [
+                329.25,
+                586.5
+            ],
+            [
+                288.25,
+                586.25
+            ],
+            [
+                288.1875,
+                622.125
+            ],
+            [
+                329.375,
+                622.375
+            ]
+        ],
+        "descripcion": "Conjuntos de salones para el desarrollo de clases.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "salones_3A_B_C.png"
+    },
+    {
+        "nombre": "Aula tic 2",
+        "puntos": [
+            [
+                322.5,
+                642
+            ],
+            [
+                292.75,
+                642.5
+            ],
+            [
+                292.75,
+                687.25
+            ],
+            [
+                322.25,
+                687.25
+            ]
+        ],
+        "descripcion": "Salón para el desarrollo de clases",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "aula_tic_2.png"
+    },
+    {
+        "nombre": "Laboratorio - Manejo y gestión de humedales",
+        "puntos": [
+            [
+                284.5,
+                711.75
+            ],
+            [
+                311.75,
+                711
+            ],
+            [
+                312,
+                759.75
+            ],
+            [
+                284.5,
+                759.75
+            ]
+        ],
+        "descripcion": "Centro de estudio especializado en biología amazónica. Cuenta con equipamiento para análisis microscópico y alberga colecciones de referencia biológica (ficoteca, xiloteca, etc.) utilizadas en proyectos de investigación y docencia de posgrado.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "laboratorio_investigacion_biologica.png"
+    },
+    {
+        "nombre": "Laboratorio - Ecología y Conservación de Flora y Fauna Silvestre",
+        "puntos": [
+            [
+                346,
+                715
+            ],
+            [
+                323.25,
+                715.25
+            ],
+            [
+                323,
+                748
+            ],
+            [
+                346.75,
+                747.5
+            ]
+        ],
+        "descripcion": "Espacio especializado en el estudio, monitoreo y conservación de la biodiversidad neotropical y amazónica. Cuenta con herramientas e insumos para el procesamiento de muestras de campo, análisis taxonómico de especies y evaluación de ecosistemas en proyectos de investigación y docencia.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "bloque_17.png"
+    },
+    {
+        "nombre": "Cocina",
+        "puntos": [
+            [
+                359.75,
+                674.5
+            ],
+            [
+                360,
+                684.375
+            ],
+            [
+                350.25,
+                684.5
+            ],
+            [
+                350.125,
+                674.25
+            ]
+        ],
+        "descripcion": "Espacio acondicionado para la preparación, conservación y manipulación de alimentos bajo estándares de higiene. Cuenta con equipamiento técnico para brindar soporte a la logística alimentaria del campus, eventos institucionales y actividades académicas o comunitarias.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "cocina.png"
+    },
+    {
+        "nombre": "Bloque para tienda",
+        "puntos": [
+            [
+                270.125,
+                660.375
+            ],
+            [
+                270,
+                678.875
+            ],
+            [
+                284.375,
+                678.5
+            ],
+            [
+                284.5,
+                660.25
+            ]
+        ],
+        "descripcion": "Espacio para ubicación de tienda en el campus universitario",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "bloque_tienda.png"
+    },
+    {
+        "nombre": "Salones 4A, B y C",
+        "puntos": [
+            [
+                374.5,
+                601.25
+            ],
+            [
+                336,
+                601.25
+            ],
+            [
+                335.75,
+                618.5
+            ],
+            [
+                374,
+                618.25
+            ]
+        ],
+        "descripcion": "Conjuntos de salones para el desarrollo de clases.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "salones_4A_B_C.png"
+    },
+    {
+        "nombre": "Cafetería",
+        "puntos": [
+            [
+                408,
+                621.25
+            ],
+            [
+                391,
+                621
+            ],
+            [
+                391.5,
+                722.25
+            ],
+            [
+                408.25,
+                721.5
+            ]
+        ],
+        "descripcion": "Espacio destinado a la prestación de servicios de alimentación, descanso e integración para la comunidad universitaria. Ofrece opciones de bebidas, refrigerios y menús diarios, funcionado como un área de esparcimiento e intercambio social durante las jornadas académicas.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado"
     },
     {
-        "nombre": "Edificio NUEVO 1",
+        "nombre": "MediaLab - Laboratorio de Medios Audiovisuales",
         "puntos": [
-            [191, 711.875],
-            [168, 712],
-            [167.875, 743.25],
-            [190.875, 743.25]
+            [
+                370.25,
+                714.375
+            ],
+            [
+                370.5,
+                747.75
+            ],
+            [
+                355.5,
+                747.75
+            ],
+            [
+                355.625,
+                714.25
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "Espacio especializado en la producción, edición y experimentación de contenidos sonoros y audiovisuales. Cuenta con equipamiento de grabación, salas de edición y recursos para producción digital, orientados al desarrollo de proyectos de divulgación científica, formación académica y comunicación institucional.  ",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "centro_soporte_y_recursos_tecnologicos.png"
+    },
+    {
+        "nombre": "Bienestar",
+        "puntos": [
+            [
+                523,
+                617.5
+            ],
+            [
+                458.5,
+                617.75
+            ],
+            [
+                458.25,
+                647.25
+            ],
+            [
+                522.75,
+                647.25
+            ]
+        ],
+        "descripcion": "Unidad encargada de promover el desarrollo integral de la comunidad universitaria mediante programas de salud, apoyo socioeconómico, arte y deporte. Ofrece orientación psicosocial y coordina actividades culturales y recreativas orientadas a mejorar la calidad de vida y la permanencia estudiantil en la sede.",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "terminado"
     },
     {
-        "nombre": "Edificio NUEVO 2",
+        "nombre": "Salones 5A, B y C",
         "puntos": [
-            [198.875, 757.125],
-            [175.625, 757.125],
-            [175.75, 789.375],
-            [199, 789.375]
+            [
+                372,
+                556.75
+            ],
+            [
+                323.25,
+                556.75
+            ],
+            [
+                323,
+                583.875
+            ],
+            [
+                372.25,
+                584
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
+        "descripcion": "Salones para el desarrollo de clases",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "salones_5A_B_C.png"
     },
     {
-        "nombre": "Edificio NUEVO 3",
+        "nombre": "Aula de fisica",
         "puntos": [
-            [224.75, 711.5],
-            [202, 711.625],
-            [201.875, 743.5],
-            [224.75, 742.75]
+            [
+                295.75,
+                555.75
+            ],
+            [
+                295.7375264899431,
+                586.295655649329
+            ],
+            [
+                260,
+                586.25
+            ],
+            [
+                260.75,
+                556.25
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 4",
-        "puntos": [
-            [218.90177852348992, 742.9417449664429],
-            [218.875, 774.25],
-            [242.25, 774.5],
-            [242.25, 743]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 5",
-        "puntos": [
-            [259.25, 711.25],
-            [235, 711.25],
-            [235.4931806693238, 742.9831413824285],
-            [259.25, 742.5]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 6",
-        "puntos": [
-            [276.5, 742],
-            [252.97209105789665, 742.6276735560779],
-            [253, 775],
-            [277, 774.25]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 7",
-        "puntos": [
-            [269.25, 600.75],
-            [269.5, 622.25],
-            [284.75, 621.75],
-            [284.75, 600]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 8",
-        "puntos": [
-            [269.5, 641.75],
-            [269.5, 655.625],
-            [285, 655.5],
-            [284.875, 641.625]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 9",
-        "puntos": [
-            [329.25, 586.5],
-            [288.25, 586.25],
-            [288.1875, 622.125],
-            [329.375, 622.375]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 10",
-        "puntos": [
-            [322.5, 642],
-            [292.75, 642.5],
-            [292.75, 687.25],
-            [322.25, 687.25]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 11",
-        "puntos": [
-            [284.5, 711.75],
-            [311.75, 711],
-            [312, 759.75],
-            [284.5, 759.75]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 12",
-        "puntos": [
-            [346, 715],
-            [323.25, 715.25],
-            [323, 748],
-            [346.75, 747.5]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 13",
-        "puntos": [
-            [373.75, 641.75],
-            [373.75, 691.5],
-            [337.5, 691.75],
-            [337.5058387452518, 641.570573459135]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 14",
-        "puntos": [
-            [374.5, 601.25],
-            [336, 601.25],
-            [335.75, 618.5],
-            [374, 618.25]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 14",
-        "puntos": [
-            [408, 621.25],
-            [391, 621],
-            [391.5, 722.25],
-            [408.25, 721.5]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 15",
-        "puntos": [
-            [370.25, 714.375],
-            [370.5, 747.75],
-            [355.5, 747.75],
-            [355.625, 714.25]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 16",
-        "puntos": [
-            [523, 617.5],
-            [458.5, 617.75],
-            [458.25, 647.25],
-            [522.75, 647.25]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 17",
-        "puntos": [
-            [372, 556.75],
-            [323.25, 556.75],
-            [323, 583.875],
-            [372.25, 584]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
-        "estado": "terminado"
-    },
-    {
-        "nombre": "Edificio NUEVO 18",
-        "puntos": [
-            [295.75, 555.75],
-            [295.7375264899431, 586.295655649329],
-            [260, 586.25],
-            [260.75, 556.25]
-        ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "planeado"
     },
     {
-        "nombre": "Edificio NUEVO 19",
+        "nombre": "Laboratorio de quimica",
         "puntos": [
-            [324, 522.5],
-            [286.5, 523.25],
-            [286.75, 550.5],
-            [324, 550.75]
+            [
+                324,
+                522.5
+            ],
+            [
+                286.5,
+                523.25
+            ],
+            [
+                286.75,
+                550.5
+            ],
+            [
+                324,
+                550.75
+            ]
         ],
-        "descripcion": "Espacio de estudio y consulta de recursos bibliográficos.",
-        "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
-        "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
-        "novedades": "Nueva sección de libros digitales disponible.",
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Edificio apartado 1",
+        "puntos": [
+            [
+                382.25,
+                194.25
+            ],
+            [
+                346.5,
+                193.5
+            ],
+            [
+                346,
+                243.25
+            ],
+            [
+                381.75,
+                243.25
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "image.png"
+    },
+    {
+        "nombre": "Piscina",
+        "puntos": [
+            [
+                404.5,
+                160.5
+            ],
+            [
+                377.5,
+                159.75
+            ],
+            [
+                377.25,
+                179.5
+            ],
+            [
+                404.75,
+                179.25
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado",
+        "foto": "piscina.png"
+    },
+    {
+        "nombre": "Alojamientos",
+        "puntos": [
+            [
+                372.5,
+                183.25
+            ],
+            [
+                355.5,
+                183.25
+            ],
+            [
+                355.5,
+                126.75
+            ],
+            [
+                428.25,
+                127.75
+            ],
+            [
+                427,
+                230.5
+            ],
+            [
+                390.25,
+                230.5
+            ],
+            [
+                390.25,
+                205.5
+            ],
+            [
+                415.5,
+                206.75
+            ],
+            [
+                411.25,
+                206.75
+            ],
+            [
+                412.25,
+                154
+            ],
+            [
+                373,
+                153.75
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "terminado"
+    },
+    {
+        "nombre": "Aulas 1",
+        "puntos": [
+            [
+                785.25,
+                695.5
+            ],
+            [
+                750,
+                695.25
+            ],
+            [
+                749.75,
+                834.25
+            ],
+            [
+                785.5,
+                833.75
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Estancias",
+        "puntos": [
+            [
+                735.25,
+                701.75
+            ],
+            [
+                707.375,
+                701.375
+            ],
+            [
+                706.75,
+                827.625
+            ],
+            [
+                735.125,
+                827.5
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Estancias 2",
+        "puntos": [
+            [
+                615,
+                701.25
+            ],
+            [
+                588.75,
+                701
+            ],
+            [
+                588.5,
+                828
+            ],
+            [
+                615.75,
+                828
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Auditorio Futuro",
+        "puntos": [
+            [
+                691.5,
+                687
+            ],
+            [
+                632.5,
+                686.5
+            ],
+            [
+                632.5,
+                847
+            ],
+            [
+                691,
+                845.5
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Aulas 2",
+        "puntos": [
+            [
+                537.5,
+                695.5
+            ],
+            [
+                537.25,
+                834.5
+            ],
+            [
+                573.25,
+                834
+            ],
+            [
+                573.5,
+                695.25
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Sala de estudio",
+        "puntos": [
+            [
+                522.5,
+                706
+            ],
+            [
+                458,
+                705.5
+            ],
+            [
+                458.5,
+                737.5
+            ],
+            [
+                522.5,
+                735
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Bloque prioritario",
+        "puntos": [
+            [
+                456,
+                742.625
+            ],
+            [
+                455.875,
+                786.875
+            ],
+            [
+                525.5,
+                786
+            ],
+            [
+                525.75,
+                741
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Tanque de agua",
+        "puntos": [
+            [
+                397.5,
+                568
+            ],
+            [
+                415.625,
+                567.75
+            ],
+            [
+                415.375,
+                592.5
+            ],
+            [
+                397.625,
+                592.625
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Parqueadero futuro",
+        "puntos": [
+            [
+                533.5,
+                848.5
+            ],
+            [
+                533.5,
+                883.5
+            ],
+            [
+                802.5,
+                882.625
+            ],
+            [
+                802.5,
+                850.375
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Coliseo",
+        "puntos": [
+            [
+                578,
+                122.5
+            ],
+            [
+                479.5,
+                122.5
+            ],
+            [
+                479.5,
+                253.5
+            ],
+            [
+                579.5,
+                254.5
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Parqueadero futuro 2",
+        "puntos": [
+            [
+                319,
+                196
+            ],
+            [
+                319.5,
+                226.5
+            ],
+            [
+                237.5,
+                227
+            ],
+            [
+                237,
+                196.5
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
+        "estado": "planeado"
+    },
+    {
+        "nombre": "Cnchas",
+        "puntos": [
+            [
+                329.875,
+                2.5
+            ],
+            [
+                461.125,
+                2.5
+            ],
+            [
+                461,
+                86.625
+            ],
+            [
+                329.125,
+                86.625
+            ]
+        ],
+        "descripcion": "",
+        "horario": "",
+        "reglas": "",
+        "novedades": "",
         "estado": "planeado"
     }
 ]

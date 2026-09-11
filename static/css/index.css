@@ -1021,6 +1021,228 @@
       margin: 0;
   }
 
+  /* ====================================================
+     CARTA DE PRESENTACIÓN BOTÁNICA DE LOS ÁRBOLES (Popup Leaflet)
+     ==================================================== */
+  .planta-leaflet-popup .leaflet-popup-content-wrapper {
+      border-radius: 14px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+      padding: 0;
+      overflow: hidden;
+  }
+
+  .planta-leaflet-popup .leaflet-popup-content {
+      margin: 0;
+      line-height: 1.4;
+      max-height: 480px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f8fafc;
+  }
+
+  .planta-leaflet-popup .leaflet-popup-close-button {
+      top: 8px;
+      right: 10px;
+      color: #ffffff;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+      z-index: 20;
+      font-size: 20px;
+      padding: 2px;
+  }
+
+  .planta-leaflet-popup .leaflet-popup-close-button:hover {
+      color: #e2e8f0;
+  }
+
+  .planta-card-popup {
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      width: 100%;
+  }
+
+  /* Espacio para la foto */
+  .planta-card-photo {
+      position: relative;
+      width: 100%;
+      height: 145px;
+      background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .planta-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+  }
+
+  .planta-card-img:hover {
+      transform: scale(1.03);
+  }
+
+  .planta-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      color: #2e7d32;
+      font-size: 12px;
+      font-weight: 600;
+  }
+
+  .planta-photo-placeholder.locked {
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+      color: #64748b;
+  }
+
+  .planta-photo-placeholder .placeholder-icon {
+      font-size: 32px;
+  }
+
+  /* Cuerpo de la carta */
+  .planta-card-body {
+      padding: 14px 16px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+  }
+
+  .planta-card-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+  }
+
+  .planta-badge-familia {
+      align-self: flex-start;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-bottom: 2px;
+  }
+
+  .planta-card-title {
+      margin: 0;
+      font-size: 16.5px;
+      font-weight: 700;
+      color: var(--azul-institucional);
+      line-height: 1.25;
+  }
+
+  .planta-card-especie {
+      margin: 1px 0 0 0;
+      font-size: 13px;
+      color: #475569;
+      font-style: italic;
+  }
+
+  .planta-card-alt-names {
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      color: #475569;
+      background: #f8fafc;
+      padding: 6px 9px;
+      border-radius: 6px;
+      border-left: 3px solid #94a3b8;
+      line-height: 1.35;
+  }
+
+  .planta-card-alt-names strong {
+      color: var(--gris-oscuro);
+  }
+
+  .planta-card-desc {
+      margin: 2px 0 0 0;
+      font-size: 12px;
+      color: #334155;
+      line-height: 1.5;
+      text-align: justify;
+  }
+
+  .planta-card-desc p {
+      margin: 0;
+  }
+
+  /* Sección adaptable de Usos */
+  .planta-usos-seccion {
+      margin-top: 3px;
+      padding-top: 8px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+  }
+
+  .planta-seccion-subtitulo {
+      font-size: 12.5px;
+      color: #1e293b;
+  }
+
+  .planta-usos-lista {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+  }
+
+  .planta-uso-item {
+      font-size: 11.8px;
+      color: #475569;
+      line-height: 1.45;
+      background: #f8fafc;
+      border-left: 3px solid #16a34a;
+      padding: 5px 8px;
+      border-radius: 0 6px 6px 0;
+  }
+
+  .planta-uso-titulo {
+      color: #166534;
+      font-weight: 700;
+      margin-right: 3px;
+  }
+
+  .planta-uso-texto {
+      color: #334155;
+  }
+
+  /* Botón desbloquear en popup */
+  .btn-desbloquear-popup {
+      margin-top: 8px;
+      background: var(--azul-institucional);
+      color: var(--blanco);
+      border: none;
+      padding: 9px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 12.5px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background-color 0.2s;
+  }
+
+  .btn-desbloquear-popup:hover {
+      background: var(--azul-hover);
+  }
+
   /* Splash Screen */
   #splash-screen {
       position: fixed;

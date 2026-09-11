@@ -39,7 +39,7 @@ pip install -r requirements.txt
 
 ## 💻 Flujo de Desarrollo (PC)
 
-La aplicación está diseñada para que el desarrollo se realice cómodamente desde el navegador de tu computadora.
+La aplicación está diseñada para que el desarrollo se realice cómodamente desde el navegador de tu computadora. Pero antes de correr el servidor activar el enotrno virtual .\.venv\Scripts\Activate.ps1
 
 ### 1. Iniciar el servidor local
 ```bash

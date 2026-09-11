@@ -1,150 +1,77 @@
 [
     {
-        "nombre": "Victoria amazónica",
-        "nombre_cientifico": "Victoria amazonica",
+        "nombre": "ANDIROBA",
+        "nombres_comunes": "cedro güino, tangare, cedro carmín",
+        "nombre_cientifico": "Carapa guianensis",
+        "especie": "Carapa guianensis",
+        "familia": "MELIACEAE",
         "punto": [
-            412,
-            543.5
+            210.75,
+            685.75
         ],
-        "descripcion": "El nenúfar más grande del mundo, originario de las aguas poco profundas del río Amazonas.",
-        "usos_tradicionales": "Sus semillas son comestibles y a menudo se usan como alimento tras ser tostadas.",
+        "descripcion": "Árbol hasta de 50 m de alto y corteza externa de marrón a gris. Hojas de 50-75cm de largo, divididas en hasta 20 foliolos de 14x40cm. Inflorescencia en forma de pirámide con flores de color blanco-amarillento. Fruto en cápsula semileñosa, marrón oscura, péndula, que se abre en 4 valvas. Florece de julio-octubre, y fructifica de enero-junio. Habita en bosques húmedos tropicales, en márgenes de pantanos, riberas de ríos y quebradas, desde las Indias Occidentales hasta Centro y Suramérica, desde el nivel del mar hasta los 1.400m de altitud.",
+        "usos": {
+            "Medicinal": "Corteza, hojas y semillas son usadas contra diarrea, reumatismo, malaria, fiebre, afecciones de piel y cicatrizante.",
+            "Aserrío": "Madera se usa en construcción, carpintería y ebanistería para elaborar muebles, pisos, embarcaciones e instrumentos.",
+            "Otros": "De las semillas se extrae aceite usado para iluminación doméstica y en la elaboración de jabón."
+        },
+        "codigoQR": "PLANTA_002_ANDIROBA",
+        "bloqueado": false
+    },
+    {
+        "nombre": "PALO DE ARCO",
+        "nombres_comunes": "ipe, guayacán, poui",
+        "nombre_cientifico": "Handroanthus impetiginosus",
+        "especie": "Handroanthus impetiginosus",
+        "familia": "BIGNONIACEAE",
+        "punto": [
+            219.75,
+            674.75
+        ],
+        "descripcion": "Árboles hasta de 30m de alto y 60cm de diámetro. Hojas divididas y opuestas, en 5-7 foliolos de 5-25x8-20cm. Inflorescencia en forma de pirámide de color amarillo. Fruto en cápsula cilíndrica 30-80x1.5-2.4cm con semillas aladas. Se encuentra en bosques húmedos o zonas estacionalmente secas, en tierra firme y valles de tierras bajas. Durante la floración, es fácilmente reconocible a larga distancia por el intenso color amarillo de sus flores. Se distribuye en el trópico americano desde México hasta Perú, entre los 100-1.500m de altitud.",
+        "usos": {
+            "Medicinal": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
+            "Aserrío": "Madera se usa en construcción, carpintería y ebanistería para elaborar muebles, pisos, embarcaciones e instrumentos.",
+            "Ornamental": "Se planta en separadores viales, parques y como cercas vivas por su llamativa floración amarilla."
+        },
         "codigoQR": "PLANTA_001_AMAZONIA",
         "bloqueado": true
     },
     {
-        "nombre": "Cacao silvestre",
-        "nombre_cientifico": "Theobroma cacao",
+        "nombre": "CAMPANILLO",
+        "nombres_comunes": "guacamayo blanco, domichineé, jero",
+        "nombre_cientifico": "Handroanthus impetiginosus",
+        "especie": "Abarema jupunba",
+        "familia": "FABACEAE",
         "punto": [
-            214,
-            668
+            330,
+            161.5
         ],
-        "descripcion": "Árbol de sotobosque originario de la cuenca amazónica, cuyos granos se utilizan para hacer chocolate.",
-        "usos_tradicionales": "Uso ancestral en bebidas rituales y medicinales, y su manteca para la piel.",
-        "foto": "cacao.jpg",
-        "codigoQR": "PLANTA_002_AMAZONIA",
-        "bloqueado": true
-    },
-    {
-        "nombre": "Palma de Moriche",
-        "nombre_cientifico": "Mauritia flexuosa",
-        "punto": [
-            270.5,
-            724
-        ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Sus frutos son ricos en vitamina A, y sus hojas se usan para tejer hamacas y techos.",
-        "foto": "R.jpg",
+        "descripcion": "Árbol hasta de 25m de alto. Hojas hasta de 18cm de largo, subdivididas en 3-12 pares de folíolos de 1.5-7x1.2-5cm. Inflorescencias blancas en forma de pompón. Frutos en legumbre aplanada, de 5.3-10x0.8-1.8cm, y de color verde y rojiza que se enrollan formando un círculo, con semillas morado-azules. Florece y fructifica a lo largo de todo el año. Habita bosques húmedos, muy húmedos y pluviales. Se distribuye desde las Antillas Menores hasta Perú, Bolivia y Brasil, desde el nivel del mar hasta los 2.084m de altitud.",
+        "usos": {
+            "Medicinal": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
+            "Artesanal": "Las semillas se utilizan en artesanías, destacándose en la creación de bisutería por su forma, textura decorativa y llamativo color."
+        },
         "codigoQR": "PLANTA_003_AMAZONIA",
         "bloqueado": true
     },
     {
-        "nombre": "Caucho",
-        "nombre_cientifico": "Hevea brasiliensis",
+        "nombre": "ALGODONCILLO",
+        "nombres_comunes": "reventillo, parta, cáscara de yuca",
+        "nombre_cientifico": "Handroanthus impetiginosus",
+        "especie": "Alchornea triplinervia",
+        "familia": "EUPHORBIACEAE",
         "punto": [
-            349.5,
-            591
+            370,
+            105.5
         ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Sus frutos son ricos en vitamina A, y sus hojas se usan para tejer hamacas y techos.",
-        "foto": "caucho.webp",
+        "descripcion": "Árbol hasta de 25m de alto con hojas de 6-10x3-5cm y borde aserrado. Inflorescencia en racimo, frutos con 2 lóbulos, de 0.3-0.4x0.5-0.65cm. Especie heliófita que florece y fructifica durante todo el año y presenta cambio de hojas entre julio-octubre. Habita bosques de tierra firme y secundarios, matorrales, sabanas, márgenes de ríos, zonas de restinga, caatinga, bordes de caminos y humedales. Se distribuye desde Trinidad y Tobago hasta Sudamérica Tropical, incluyendo Paraguay y Argentina, desde el nivel del mar hasta los 2.600m de altitud.",
+        "usos": {
+            "Aserrío": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
+            "Alimento animal": "Las semillas se utilizan en artesanías, destacándose en la creación de bisutería por su forma, textura decorativa y llamativo color.",
+            "Otros": "La madera se usa en la elaboración de objetos utilitarios como zuecos, muletas, fósforos y palillos."
+        },
         "codigoQR": "PLANTA_004_AMAZONIA",
         "bloqueado": true
-    },
-    {
-        "nombre": "Balsa",
-        "nombre_cientifico": "Ochroma pyramidale",
-        "punto": [
-            290.5,
-            571
-        ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
-        "codigoQR": "PLANTA_005_AMAZONIA",
-        "bloqueado": true
-    },
-    {
-        "nombre": "Balsa 2",
-        "nombre_cientifico": "Ochroma pyramidale",
-        "punto": [
-            430.75,
-            771.5
-        ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
-        "codigoQR": "PLANTA_006_AMAZONIA",
-        "bloqueado": true
-    },
-    {
-        "nombre": "Balsa 3",
-        "nombre_cientifico": "Ochroma pyramidale",
-        "punto": [
-            230.25,
-            728.25
-        ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
-        "codigoQR": "PLANTA_007_AMAZONIA",
-        "bloqueado": true
-    },
-    {
-        "nombre": "Balsa 4",
-        "nombre_cientifico": "Ochroma pyramidale",
-        "punto": [
-            195.625,
-            727.0625
-        ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
-        "codigoQR": "PLANTA_008_AMAZONIA",
-        "bloqueado": true
-    },
-    {
-        "nombre": "Balsa 5",
-        "nombre_cientifico": "Ochroma pyramidale",
-        "punto": [
-            162.5,
-            727.7138047045362
-        ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
-        "codigoQR": "PLANTA_009_AMAZONIA",
-        "bloqueado": true
-    },
-    {
-        "nombre": "Balsa 6",
-        "nombre_cientifico": "Ochroma pyramidale",
-        "punto": [
-            61.25,
-            724.9505851858894
-        ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
-        "codigoQR": "PLANTA_010_AMAZONIA",
-        "bloqueado": true
-    },
-    {
-        "nombre": "Balsa 7",
-        "nombre_cientifico": "Ochroma pyramidale",
-        "punto": [
-            96.25,
-            757.75
-        ],
-        "descripcion": "Palma que crece en pantanos y zonas inundables, clave para el ecosistema amazónico.",
-        "usos_tradicionales": "Su madera es muy ligera y se utiliza para hacer balsas, canoas y techos.",
-        "codigoQR": "PLANTA_011_AMAZONIA",
-        "bloqueado": true
-    },
-    {
-        "nombre": "Mango",
-        "nombre_cientifico": "Mangifera indica",
-        "punto": [
-            266.625,
-            621.5027241500087
-        ],
-        "descripcion": "Árbol frutal originario de la India, conocido por sus dulces y jugosos frutos.",
-        "usos_tradicionales": "Se consume su fruto, los frutos se consumen en fresco, como materia prima para jugos, helados, mermeladas y dulces.",
-        "codigoQR": "PLANTA_012_AMAZONIA",
-        "bloqueado": true,
-        "3d": "arbol_mango.glb"
     }
 ]

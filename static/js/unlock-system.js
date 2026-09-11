@@ -145,3 +145,11 @@ class UnlockSystem {
 
 // Crear instancia global que se usa en toda la app
 const unlocker = new UnlockSystem();
+window.unlocker = unlocker;
+window.resetearDesbloqueos = function () {
+  unlocker.resetAll();
+  if (typeof actualizarPlantas === 'function') {
+    actualizarPlantas();
+  }
+  console.log('🔄 Desbloqueos reseteados con éxito. Todas las plantas vuelven a su estado del JSON.');
+};

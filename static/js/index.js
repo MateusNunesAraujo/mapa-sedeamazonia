@@ -132,7 +132,9 @@ function mostrarDetalle(lugar, esPlanta = false) {
   const fotoUrl = lugar.foto ? `/static/fotos/${lugar.foto}` : null;
 
   // Verificar si planta está bloqueada
-  const plantaBloqueada = esPlanta && lugar.bloqueado && !unlocker.isUnlocked(lugar.codigoQR);
+  // true = Bloqueado (requiere QR), false = Desbloqueado
+  const isUnlocked = !esPlanta || !lugar.bloqueado || unlocker.isUnlocked(lugar.codigoQR);
+  const plantaBloqueada = esPlanta && !isUnlocked;
 
   if (fotoUrl && !plantaBloqueada) {
     detailPhoto.innerHTML = `<img src="${fotoUrl}" alt="${lugar.nombre}">`;
@@ -188,7 +190,41 @@ function mostrarDetalle(lugar, esPlanta = false) {
     sectionNews.style.display = "flex";
 
     detailSchedule.textContent = lugar.horario || "No especificado";
-    detailRules.textContent = lugar.reglas || "Sin reglas específicas.";
+    if (!lugar.reglas || lugar.reglas.trim() === "") {
+      detailRules.textContent = "Sin reglas específicas.";
+    } else {
+      const lineas = lugar.reglas
+        .split("\n")
+        .map((r) => r.trim())
+        .filter(Boolean);
+
+      if (lineas.length > 1) {
+        const ul = document.createElement("ul");
+        ul.className = "detail-rules-list";
+        lineas.forEach((linea) => {
+          const li = document.createElement("li");
+          const cleanLine = linea.replace(/^[•\-\*]\s*/, "");
+          const colonIndex = cleanLine.indexOf(":");
+          if (colonIndex !== -1 && colonIndex < 35) {
+            const strong = document.createElement("strong");
+            strong.textContent = cleanLine.substring(0, colonIndex + 1);
+            li.appendChild(strong);
+            li.appendChild(
+              document.createTextNode(
+                " " + cleanLine.substring(colonIndex + 1).trim(),
+              ),
+            );
+          } else {
+            li.textContent = cleanLine;
+          }
+          ul.appendChild(li);
+        });
+        detailRules.innerHTML = "";
+        detailRules.appendChild(ul);
+      } else {
+        detailRules.textContent = lugar.reglas;
+      }
+    }
     detailNews.textContent = lugar.novedades || "Sin novedades recientes.";
 
     // Ocultar info de plantas
@@ -331,12 +367,11 @@ plantsBtn.addEventListener("click", async () => {
     map.removeLayer(poligonosLayer);
     map.addLayer(plantasLayer);
 
-    if (!plantasCargadas) {
-      // Cargar plantas desde handler
-      await plantsHandler.loadPlants();
-      plantsHandler.addAllPlantsToMap(plantasLayer);
-      plantasCargadas = true;
-    }
+    // Limpiar capa y cargar plantas frescas
+    plantasLayer.clearLayers();
+    await plantsHandler.loadPlants();
+    plantsHandler.addAllPlantsToMap(plantasLayer);
+    plantasCargadas = true;
   } else {
     // Desactivar modo
     plantsBtn.classList.remove("active");
@@ -433,17 +468,16 @@ if (treesBtn) {
       treesBadge.style.display = 'none';
     }
 
-    // Asegurarse de que las plantas estén cargadas
-    if (!plantsHandler.plantas.length) {
-      await plantsHandler.loadPlants();
-    }
+    // Cargar siempre las plantas para tener la lista actualizada
+    await plantsHandler.loadPlants();
 
     // Limpiar el grid
     treesGrid.innerHTML = '';
 
     // Poblar el grid con cada planta/árbol
     plantsHandler.plantas.forEach(planta => {
-      const isUnlocked = unlocker.isUnlocked(planta.codigoQR) || !planta.bloqueado;
+      // true = Bloqueado (con candado 🔒), false = Desbloqueado (visible 🌳)
+      const isUnlocked = !planta.bloqueado || unlocker.isUnlocked(planta.codigoQR);
 
       const card = document.createElement('div');
       card.className = `tree-card ${isUnlocked ? '' : 'locked'}`;
