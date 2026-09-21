@@ -71,7 +71,245 @@
             "Alimento animal": "Las semillas se utilizan en artesanías, destacándose en la creación de bisutería por su forma, textura decorativa y llamativo color.",
             "Otros": "La madera se usa en la elaboración de objetos utilitarios como zuecos, muletas, fósforos y palillos."
         },
-        "codigoQR": "PLANTA_004_AMAZONIA",
+        "codigoQR": "PLANTA_004_ALGODONCILLO",
         "bloqueado": true
+    },
+    {
+        "nombre": "SWINGLEA (Placa 45)",
+        "nombre_cientifico": "Swinglea glutinosa",
+        "especie": "Swinglea glutinosa",
+        "familia": "RUTACEAE",
+        "punto": [
+            48.0,
+            895.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_045_SWINGLEA",
+        "bloqueado": false
+    },
+    {
+        "nombre": "BOROJÓ (Placa 74)",
+        "nombre_cientifico": "Alibertia patinoi",
+        "especie": "Alibertia patinoi",
+        "familia": "RUBIACEAE",
+        "punto": [
+            52.0,
+            858.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_074_ALIBERTIA",
+        "bloqueado": false
+    },
+    {
+        "nombre": "CARAMBOLO (Placa 76)",
+        "nombre_cientifico": "Averrhoa carambola",
+        "especie": "Averrhoa carambola",
+        "familia": "OXALIDACEAE",
+        "punto": [
+            68.0,
+            910.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_076_CARAMBOLO",
+        "bloqueado": false
+    },
+    {
+        "nombre": "UMARÍ (Placa 91)",
+        "nombre_cientifico": "Poraqueiba sericea",
+        "especie": "Poraqueiba sericea",
+        "familia": "ICACINACEAE",
+        "punto": [
+            50.0,
+            876.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_091_UMARI",
+        "bloqueado": false
+    },
+    {
+        "nombre": "CAUCHO (Placa 92)",
+        "nombre_cientifico": "Hevea brasiliensis",
+        "especie": "Hevea brasiliensis",
+        "familia": "EUPHORBIACEAE",
+        "punto": [
+            54.0,
+            828.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_092_CAUCHO",
+        "bloqueado": false
+    },
+    {
+        "nombre": "GUAYACÁN AMARILLO (Placa 137)",
+        "nombre_cientifico": "Handroanthus chrysanthus",
+        "especie": "Handroanthus chrysanthus",
+        "familia": "BIGNONIACEAE",
+        "punto": [
+            56.0,
+            792.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_137_GUAYACAN",
+        "bloqueado": false
+    },
+    {
+        "nombre": "CHIMUCO (Placa 151)",
+        "nombre_cientifico": "Pithecellobium dulce",
+        "especie": "Pithecellobium dulce",
+        "familia": "FABACEAE",
+        "punto": [
+            54.0,
+            780.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_151_CHIMUCO",
+        "bloqueado": false
+    },
+    {
+        "nombre": "COUSSAPOA (Placa 168)",
+        "nombre_cientifico": "Coussapoa orthoneura",
+        "especie": "Coussapoa orthoneura",
+        "familia": "URTICACEAE",
+        "punto": [
+            92.0,
+            918.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_168_COUSSAPOA",
+        "bloqueado": false
+    },
+    {
+        "nombre": "HIGUERÓN (Placa 181)",
+        "nombre_cientifico": "Ficus insipida",
+        "especie": "Ficus insipida",
+        "familia": "MORACEAE",
+        "punto": [
+            138.0,
+            925.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_181_HIGUERON",
+        "bloqueado": false
+    },
+    {
+        "nombre": "JUANSOCO (Placa 199)",
+        "nombre_cientifico": "Couma macrocarpa",
+        "especie": "Couma macrocarpa",
+        "familia": "APOCYNACEAE",
+        "punto": [
+            185.0,
+            900.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_199_JUANSOCO",
+        "bloqueado": false
+    },
+    {
+        "nombre": "CEDRO AMARGO (Placa 208)",
+        "nombre_cientifico": "Cedrela odorata",
+        "especie": "Cedrela odorata",
+        "familia": "MELIACEAE",
+        "punto": [
+            250.0,
+            835.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_208_CEDRO",
+        "bloqueado": false
+    },
+    {
+        "nombre": "ALMENDRO (Placa 225)",
+        "nombre_cientifico": "Caryocar sp. 1",
+        "especie": "Caryocar sp. 1",
+        "familia": "CARYOCARIACEAE",
+        "punto": [
+            315.0,
+            735.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_225_ALMENDRO",
+        "bloqueado": false
+    },
+    {
+        "nombre": "GUÁIMARO (Placa 229)",
+        "nombre_cientifico": "Pseudolmedia laevis",
+        "especie": "Pseudolmedia laevis",
+        "familia": "MORACEAE",
+        "punto": [
+            330.0,
+            600.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_229_GUAIMARO",
+        "bloqueado": false
+    },
+    {
+        "nombre": "UCUUBA (Placa 234)",
+        "nombre_cientifico": "Virola sp. 1",
+        "especie": "Virola sp. 1",
+        "familia": "MYRISTICACEAE",
+        "punto": [
+            440.0,
+            600.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_234_UCUUBA",
+        "bloqueado": false
+    },
+    {
+        "nombre": "LAUREL (Placa 240)",
+        "nombre_cientifico": "Nectandra membranacea",
+        "especie": "Nectandra membranacea",
+        "familia": "LAURACEAE",
+        "punto": [
+            490.0,
+            660.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_240_LAUREL",
+        "bloqueado": false
+    },
+    {
+        "nombre": "LACRE (Placa 244)",
+        "nombre_cientifico": "Vismia tomentosa",
+        "especie": "Vismia tomentosa",
+        "familia": "HYPERICACEAE",
+        "punto": [
+            590.0,
+            630.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_244_LACRE",
+        "bloqueado": false
+    },
+    {
+        "nombre": "CAMASEY (Placa 256)",
+        "nombre_cientifico": "Henriettea fascicularis",
+        "especie": "Henriettea fascicularis",
+        "familia": "MELASTOMATACEAE",
+        "punto": [
+            710.0,
+            600.0
+        ],
+        "descripcion": "",
+        "usos": {},
+        "codigoQR": "PLANTA_256_CAMASEY",
+        "bloqueado": false
     }
 ]

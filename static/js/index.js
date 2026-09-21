@@ -75,6 +75,11 @@ const detailDescription = document.getElementById("detailDescription");
 const detailSchedule = document.getElementById("detailSchedule");
 const detailRules = document.getElementById("detailRules");
 const detailNews = document.getElementById("detailNews");
+const sectionStory = document.getElementById("sectionStory");
+const detailStory = document.getElementById("detailStory");
+const storyLinkWrapper = document.getElementById("storyLinkWrapper");
+const detailStoryLink = document.getElementById("detailStoryLink");
+const detailStoryLinkText = document.getElementById("detailStoryLinkText");
 
 let lugares = [];
 let poligonos = {};
@@ -169,6 +174,7 @@ function mostrarDetalle(lugar, esPlanta = false) {
     sectionSchedule.style.display = "none";
     sectionRules.style.display = "none";
     sectionNews.style.display = "none";
+    if (sectionStory) sectionStory.style.display = "none";
 
     // Mostrar info de plantas solo si no está bloqueada
     if (!plantaBloqueada) {
@@ -226,6 +232,64 @@ function mostrarDetalle(lugar, esPlanta = false) {
       }
     }
     detailNews.textContent = lugar.novedades || "Sin novedades recientes.";
+
+    // Renderizado del apartado de Historias y Relatos
+    if (sectionStory) {
+      sectionStory.style.display = "block";
+
+      let historiaTexto = "";
+      let historiaLink = "";
+      let historiaLinkTitulo = "Explorar historia completa";
+
+      if (typeof lugar.historia === "string") {
+        historiaTexto = lugar.historia.trim();
+      } else if (lugar.historia && typeof lugar.historia === "object") {
+        historiaTexto = (lugar.historia.texto || lugar.historia.descripcion || "").trim();
+        if (lugar.historia.link || lugar.historia.enlace || lugar.historia.url) {
+          historiaLink = (lugar.historia.link || lugar.historia.enlace || lugar.historia.url).trim();
+        }
+        if (lugar.historia.titulo_link || lugar.historia.titulo_enlace || lugar.historia.link_texto) {
+          historiaLinkTitulo = lugar.historia.titulo_link || lugar.historia.titulo_enlace || lugar.historia.link_texto;
+        }
+      }
+
+      // Enlaces definidos a nivel raíz del objeto lugar
+      if (!historiaLink) {
+        historiaLink = (lugar.link_historia || lugar.enlace_historia || lugar.historia_link || lugar.link || "").trim();
+      }
+      if (lugar.titulo_link || lugar.link_texto) {
+        historiaLinkTitulo = lugar.titulo_link || lugar.link_texto;
+      }
+
+      if (detailStory) {
+        if (historiaTexto) {
+          detailStory.textContent = historiaTexto;
+          detailStory.classList.remove("empty-story");
+        } else {
+          detailStory.textContent =
+            "Aún no se han registrado relatos para este espacio. Pronto conocerás anécdotas y memorias de la comunidad universitaria.";
+          detailStory.classList.add("empty-story");
+        }
+      }
+
+      if (storyLinkWrapper && detailStoryLink) {
+        if (
+          historiaLink &&
+          (historiaLink.startsWith("http://") ||
+            historiaLink.startsWith("https://") ||
+            historiaLink.startsWith("/"))
+        ) {
+          detailStoryLink.href = historiaLink;
+          if (detailStoryLinkText) {
+            detailStoryLinkText.textContent = historiaLinkTitulo;
+          }
+          storyLinkWrapper.style.display = "flex";
+        } else {
+          detailStoryLink.removeAttribute("href");
+          storyLinkWrapper.style.display = "none";
+        }
+      }
+    }
 
     // Ocultar info de plantas
     sectionScientificName.style.display = "none";
