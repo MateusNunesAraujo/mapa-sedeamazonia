@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/dist/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css" />
+  <link rel="stylesheet" href="/static/css/index.css?v=11" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -139,12 +139,13 @@
         <img src="/static/iconos/lente-de-la-camara.png" alt="QR" class="btn-icon">
       </button>
 
-      <!-- Botón de Árboles 3D -->
-      <button class="action-btn" id="treesBtn" aria-label="Ver Árboles 3D"
-        style="margin-right: 8px; font-size: 22px; position: relative;">
-        🌳
-        <span class="notification-badge" id="treesBadge" style="display: none"></span>
+      <!-- Botón de Árboles Recolectados (Herbario) -->
+      <button class="action-btn" id="albumBtn" aria-label="Ver Árboles Recolectados"
+        style="margin-right: 8px; font-size: 20px; position: relative;" title="Árboles Recolectados">
+        🌿
+        <span class="notification-badge" id="albumBadge" style="display: none"></span>
       </button>
+
 
       <!-- Botón de Notificaciones -->
       <button class="action-btn notification-btn" id="notificationBtn" aria-label="Ver notificaciones">
@@ -155,33 +156,158 @@
     <div class="search-results-dropdown" id="searchResults"></div>
   </div>
 
-  <!-- Modal de Árboles 3D -->
-  <div id="treesModal" class="trees-modal">
-    <div class="trees-modal-content">
-      <div class="trees-modal-header">
-        <h2>Árboles descubiertos</h2>
-        <span class="close-trees" onclick="closeTreesModal()">&times;</span>
+  <!-- Modal Principal: Álbum de Árboles Recolectados -->
+  <div id="albumModal" class="album-modal" role="dialog" aria-labelledby="albumTitle" aria-modal="true">
+    <div class="album-modal-content">
+      <!-- Encabezado -->
+      <div class="album-modal-header">
+        <div class="album-header-title-wrap">
+          <span class="album-header-icon">🌿</span>
+          <div>
+            <h2 id="albumTitle" class="album-header-title">Árboles Recolectados</h2>
+            <p class="album-header-subtitle">Herbario botánico del campus Sede Amazonia</p>
+          </div>
+        </div>
+        <button class="album-close-btn" id="albumCloseBtn" aria-label="Cerrar herbario">&times;</button>
       </div>
-      <div class="trees-grid" id="treesGrid">
-        <!-- Contenido generado dinámicamente -->
+
+      <!-- Barra de Progreso y Contador -->
+      <div class="album-progress-card">
+        <div class="album-progress-info">
+          <span class="album-progress-label">Tu colección</span>
+          <span id="albumCounterText" class="album-counter-text">Cargando progreso...</span>
+        </div>
+        <div class="album-progress-track">
+          <div id="albumProgressBarFill" class="album-progress-fill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <!-- Barra de Búsqueda y Filtros -->
+      <div class="album-filter-panel">
+        <!-- Buscador por texto + flecha para desplegar filtros -->
+        <div class="album-search-row">
+          <div class="album-search-wrapper">
+            <span class="album-search-icon">🔍</span>
+            <input type="text" id="albumSearchInput" class="album-search-input" placeholder="Buscar por nombre, común o familia..." aria-label="Buscar plantas">
+          </div>
+          <button type="button" id="albumFiltersToggle" class="album-filters-toggle"
+            aria-expanded="false" aria-controls="albumFiltersCollapsible" title="Mostrar filtros">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Filtros desplegables (ocultos al inicio) -->
+        <div class="album-filters-collapsible" id="albumFiltersCollapsible">
+        <div class="album-filters-inner">
+        <!-- Fila de filtros desplegables -->
+        <div class="album-selects-row">
+          <div class="album-select-wrap">
+            <label for="albumFilterFamilia" class="album-select-label">Familia</label>
+            <select id="albumFilterFamilia" class="album-select" aria-label="Filtrar por familia">
+              <option value="">Todas las familias</option>
+            </select>
+          </div>
+
+          <div class="album-select-wrap">
+            <label for="albumFilterEspecie" class="album-select-label">Especie</label>
+            <select id="albumFilterEspecie" class="album-select" aria-label="Filtrar por especie">
+              <option value="">Todas las especies</option>
+            </select>
+          </div>
+
+          <div class="album-select-wrap">
+            <label for="albumFilterUso" class="album-select-label">Usos</label>
+            <select id="albumFilterUso" class="album-select" aria-label="Filtrar por uso">
+              <option value="">Todos los usos</option>
+            </select>
+          </div>
+
+          <div class="album-select-wrap">
+            <label for="albumFilterEstado" class="album-select-label">Estado</label>
+            <select id="albumFilterEstado" class="album-select" aria-label="Filtrar por estado">
+              <option value="todos">Todos</option>
+              <option value="desbloqueados">Solo recolectados</option>
+              <option value="bloqueados">Por recolectar</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Botón para limpiar filtros -->
+        <div class="album-filter-actions">
+          <button type="button" id="albumResetFiltersBtn" class="album-btn-reset-filters">Limpiar filtros</button>
+        </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- Grid de 2 Columnas de Árboles -->
+      <div class="album-grid-scroll">
+        <div class="album-grid" id="albumGrid">
+          <!-- Tarjetas renderizadas dinámicamente -->
+        </div>
+
+        <!-- Estado vacío si ningún resultado coincide -->
+        <div class="album-empty-state" id="albumEmptyState" style="display: none;">
+          <div class="empty-icon">🍃</div>
+          <h3>No se encontraron especies</h3>
+          <p>Prueba ajustando los filtros o el texto de búsqueda.</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal del Visor 3D -->
-  <div id="model3dModal" class="trees-modal" style="z-index: 10001;">
-    <div class="trees-modal-content" style="height: 80vh; max-height: 800px; display: flex; flex-direction: column;">
-      <div class="trees-modal-header">
-        <h2 id="model3dTitle">Modelo 3D</h2>
-        <span class="close-trees" onclick="closeModel3dModal()">&times;</span>
+  <!-- Modal de Detalle Botánico Ampliado -->
+  <div id="treeDetailModal" class="tree-detail-modal" role="dialog" aria-labelledby="detailPlantName" aria-modal="true">
+    <div class="tree-detail-content">
+      <!-- Barra superior del detalle con navegación de regreso -->
+      <div class="tree-detail-topbar">
+        <button class="tree-detail-back-btn" id="treeDetailBackBtn">
+          ← Volver a la lista
+        </button>
+        <button class="tree-detail-close-btn" id="treeDetailCloseBtn" aria-label="Cerrar detalle">&times;</button>
       </div>
-      <div style="flex: 1; position: relative; background: #e0e0e0;">
-        <model-viewer id="treeModelViewer" src="" camera-controls auto-rotate shadow-intensity="1"
-          style="width: 100%; height: 100%; outline: none;" alt="Modelo 3D del árbol">
-        </model-viewer>
+
+      <!-- Cuerpo deslizable del detalle -->
+      <div class="tree-detail-scroll">
+        <!-- 1. Foto al principio -->
+        <div id="detailPlantPhotoContainer" class="detail-photo-container">
+          <!-- Imagen generada dinámicamente -->
+        </div>
+
+        <div class="detail-body-content">
+          <!-- 2. Nombre de la planta -->
+          <h2 id="detailPlantName" class="detail-main-title">Nombre de la Planta</h2>
+
+          <!-- 3. Familia y Especie -->
+          <div id="detailPlantBadges" class="detail-badges-wrap">
+            <!-- Badges generados dinámicamente -->
+          </div>
+
+          <!-- 4. Apartado para la descripción -->
+          <div class="detail-section">
+            <h4 class="detail-section-title">Descripción Botánica</h4>
+            <div id="detailPlantDescription" class="detail-description-text">
+              <!-- Descripción dinámica -->
+            </div>
+          </div>
+
+          <!-- Usos y aplicaciones si existen -->
+          <div id="detailPlantUsesContainer" class="detail-section" style="display: none;">
+            <!-- Usos dinámicos -->
+          </div>
+
+          <!-- 5. Espacio reservado para Información Adicional -->
+          <div id="detailPlantExtraSection" class="detail-section detail-extra-section">
+            <!-- Placeholder para la información adicional futura -->
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
 
   <!-- Tarjeta Flotante / Bottom Sheet de Detalle de Lugares -->
   <div class="detail-card" id="detailCard">
@@ -321,14 +447,19 @@
   <script src="/static/js/unlock-system.js?v=6"></script>
   <!-- SweetAlert2 (offline) -->
   <script src="/static/js/sweetalert2.min.js"></script>
+  <!-- Almacenamiento y captura de fotos de árboles -->
+  <script src="/static/js/photo-storage.js?v=2"></script>
   <!-- Manejador de plantas -->
-  <script src="/static/js/plants-handler.js?v=6"></script>
+  <script src="/static/js/plants-handler.js?v=7"></script>
   <!-- Manejador de QR (importa QrScanner) -->
   <script src="/static/js/qr-handler.js" type="module"></script>
-  <!-- Scripts -->
-  <script type="module" src="/static/js/model-viewer.min.js"></script>
+  <!-- Álbum de Árboles Recolectados -->
+  <script src="/static/js/album-handler.js?v=5"></script>
   <!-- Script principal -->
   <script src="/static/js/index.js?v=6"></script>
+
+  <!-- Input invisible para captura con cámara o archivo -->
+  <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">
 </body>
 
 </html>

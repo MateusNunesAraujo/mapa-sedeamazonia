@@ -80,7 +80,7 @@ class UnlockSystem {
 
     this.saveUnlocked();
 
-    // Disparar evento para que la UI se entere (ej: punto rojo en árboles 3D)
+    // Disparar evento para que la UI se entere
     document.dispatchEvent(new CustomEvent('plantUnlocked', {
       detail: { codigoQR: codigoQR }
     }));

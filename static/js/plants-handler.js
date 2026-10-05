@@ -160,11 +160,24 @@ class PlantsHandler {
       `;
     }
 
+    // Foto tomada por el usuario o, en su defecto, la foto por defecto del JSON
+    const finalPhotoSrc = window.photoStorage ? window.photoStorage.getDisplayPhoto(planta) : null;
+
+    // Botón de cámara en la esquina superior derecha (SOLO para árboles desbloqueados)
+    const cameraBtnHTML = isUnlocked ? `
+      <button class="btn-camera-capture" 
+              onclick="event.stopPropagation(); window.photoStorage.promptCapture('${planta.codigoQR}')" 
+              title="Tomar o cambiar foto de este árbol" 
+              aria-label="Tomar foto del árbol">
+        📷
+      </button>
+    ` : '';
+
     // Espacio para la foto con fallback elegante si no existe archivo de imagen
     const photoHTML = `
       <div class="planta-card-photo">
-        ${planta.foto 
-          ? `<img src="/static/fotos/${planta.foto}" alt="${planta.nombre}" class="planta-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        ${finalPhotoSrc 
+          ? `<img src="${finalPhotoSrc}" alt="${planta.nombre}" class="planta-card-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
              <div class="planta-photo-placeholder" style="display: none;">
                <span class="placeholder-icon">🌳</span>
                <span>Fotografía botánica</span>
@@ -174,6 +187,7 @@ class PlantsHandler {
                <span>Espacio para fotografía</span>
              </div>`
         }
+        ${cameraBtnHTML}
       </div>
     `;
 
@@ -282,3 +296,14 @@ class PlantsHandler {
 
 // Crear instancia global
 const plantsHandler = new PlantsHandler();
+
+// Escuchar actualización de foto para refrescar el popup del mapa si está abierto
+document.addEventListener('treePhotoUpdated', (e) => {
+  const { codigoQR } = e.detail;
+  if (plantsHandler && plantsHandler.markers && plantsHandler.markers[codigoQR]) {
+    const marker = plantsHandler.markers[codigoQR];
+    if (marker.isPopupOpen && marker.isPopupOpen()) {
+      marker.setPopupContent(plantsHandler.getPlantHTML(codigoQR));
+    }
+  }
+});

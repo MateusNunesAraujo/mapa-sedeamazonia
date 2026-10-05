@@ -1,315 +1,269 @@
 [
-    {
-        "nombre": "ANDIROBA",
-        "nombres_comunes": "cedro güino, tangare, cedro carmín",
-        "nombre_cientifico": "Carapa guianensis",
-        "especie": "Carapa guianensis",
-        "familia": "MELIACEAE",
-        "punto": [
-            210.75,
-            685.75
-        ],
-        "descripcion": "Árbol hasta de 50 m de alto y corteza externa de marrón a gris. Hojas de 50-75cm de largo, divididas en hasta 20 foliolos de 14x40cm. Inflorescencia en forma de pirámide con flores de color blanco-amarillento. Fruto en cápsula semileñosa, marrón oscura, péndula, que se abre en 4 valvas. Florece de julio-octubre, y fructifica de enero-junio. Habita en bosques húmedos tropicales, en márgenes de pantanos, riberas de ríos y quebradas, desde las Indias Occidentales hasta Centro y Suramérica, desde el nivel del mar hasta los 1.400m de altitud.",
-        "usos": {
-            "Medicinal": "Corteza, hojas y semillas son usadas contra diarrea, reumatismo, malaria, fiebre, afecciones de piel y cicatrizante.",
-            "Aserrío": "Madera se usa en construcción, carpintería y ebanistería para elaborar muebles, pisos, embarcaciones e instrumentos.",
-            "Otros": "De las semillas se extrae aceite usado para iluminación doméstica y en la elaboración de jabón."
-        },
-        "codigoQR": "PLANTA_002_ANDIROBA",
-        "bloqueado": false
+  {
+    "nombre": "ANDIROBA",
+    "nombres_comunes": "cedro güino, tangare, cedro carmín",
+    "nombre_cientifico": "Carapa guianensis",
+    "especie": "Carapa guianensis",
+    "familia": "MELIACEAE",
+    "punto": [210.75, 685.75],
+    "descripcion": "Árbol hasta de 50 m de alto y corteza externa de marrón a gris. Hojas de 50-75cm de largo, divididas en hasta 20 foliolos de 14x40cm. Inflorescencia en forma de pirámide con flores de color blanco-amarillento. Fruto en cápsula semileñosa, marrón oscura, péndula, que se abre en 4 valvas. Florece de julio-octubre, y fructifica de enero-junio. Habita en bosques húmedos tropicales, en márgenes de pantanos, riberas de ríos y quebradas, desde las Indias Occidentales hasta Centro y Suramérica, desde el nivel del mar hasta los 1.400m de altitud.",
+    "usos": {
+      "Medicinal": "Corteza, hojas y semillas son usadas contra diarrea, reumatismo, malaria, fiebre, afecciones de piel y cicatrizante.",
+      "Aserrío": "Madera se usa en construcción, carpintería y ebanistería para elaborar muebles, pisos, embarcaciones e instrumentos.",
+      "Otros": "De las semillas se extrae aceite usado para iluminación doméstica y en la elaboración de jabón."
     },
-    {
-        "nombre": "PALO DE ARCO",
-        "nombres_comunes": "ipe, guayacán, poui",
-        "nombre_cientifico": "Handroanthus impetiginosus",
-        "especie": "Handroanthus impetiginosus",
-        "familia": "BIGNONIACEAE",
-        "punto": [
-            219.75,
-            674.75
-        ],
-        "descripcion": "Árboles hasta de 30m de alto y 60cm de diámetro. Hojas divididas y opuestas, en 5-7 foliolos de 5-25x8-20cm. Inflorescencia en forma de pirámide de color amarillo. Fruto en cápsula cilíndrica 30-80x1.5-2.4cm con semillas aladas. Se encuentra en bosques húmedos o zonas estacionalmente secas, en tierra firme y valles de tierras bajas. Durante la floración, es fácilmente reconocible a larga distancia por el intenso color amarillo de sus flores. Se distribuye en el trópico americano desde México hasta Perú, entre los 100-1.500m de altitud.",
-        "usos": {
-            "Medicinal": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
-            "Aserrío": "Madera se usa en construcción, carpintería y ebanistería para elaborar muebles, pisos, embarcaciones e instrumentos.",
-            "Ornamental": "Se planta en separadores viales, parques y como cercas vivas por su llamativa floración amarilla."
-        },
-        "codigoQR": "PLANTA_001_AMAZONIA",
-        "bloqueado": true
+    "codigoQR": "PLANTA_002_ANDIROBA",
+    "bloqueado": true
+  },
+  {
+    "nombre": "PALO DE ARCO",
+    "nombres_comunes": "ipe, guayacán, poui",
+    "nombre_cientifico": "Handroanthus impetiginosus",
+    "especie": "Handroanthus impetiginosus",
+    "familia": "BIGNONIACEAE",
+    "punto": [219.75, 674.75],
+    "descripcion": "Árboles hasta de 30m de alto y 60cm de diámetro. Hojas divididas y opuestas, en 5-7 foliolos de 5-25x8-20cm. Inflorescencia en forma de pirámide de color amarillo. Fruto en cápsula cilíndrica 30-80x1.5-2.4cm con semillas aladas. Se encuentra en bosques húmedos o zonas estacionalmente secas, en tierra firme y valles de tierras bajas. Durante la floración, es fácilmente reconocible a larga distancia por el intenso color amarillo de sus flores. Se distribuye en el trópico americano desde México hasta Perú, entre los 100-1.500m de altitud.",
+    "usos": {
+      "Medicinal": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
+      "Aserrío": "Madera se usa en construcción, carpintería y ebanistería para elaborar muebles, pisos, embarcaciones e instrumentos.",
+      "Ornamental": "Se planta en separadores viales, parques y como cercas vivas por su llamativa floración amarilla."
     },
-    {
-        "nombre": "CAMPANILLO",
-        "nombres_comunes": "guacamayo blanco, domichineé, jero",
-        "nombre_cientifico": "Handroanthus impetiginosus",
-        "especie": "Abarema jupunba",
-        "familia": "FABACEAE",
-        "punto": [
-            330,
-            161.5
-        ],
-        "descripcion": "Árbol hasta de 25m de alto. Hojas hasta de 18cm de largo, subdivididas en 3-12 pares de folíolos de 1.5-7x1.2-5cm. Inflorescencias blancas en forma de pompón. Frutos en legumbre aplanada, de 5.3-10x0.8-1.8cm, y de color verde y rojiza que se enrollan formando un círculo, con semillas morado-azules. Florece y fructifica a lo largo de todo el año. Habita bosques húmedos, muy húmedos y pluviales. Se distribuye desde las Antillas Menores hasta Perú, Bolivia y Brasil, desde el nivel del mar hasta los 2.084m de altitud.",
-        "usos": {
-            "Medicinal": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
-            "Artesanal": "Las semillas se utilizan en artesanías, destacándose en la creación de bisutería por su forma, textura decorativa y llamativo color."
-        },
-        "codigoQR": "PLANTA_003_AMAZONIA",
-        "bloqueado": true
+    "codigoQR": "PLANTA_001_AMAZONIA",
+    "bloqueado": true
+  },
+  {
+    "nombre": "CAMPANILLO",
+    "nombres_comunes": "guacamayo blanco, domichineé, jero",
+    "nombre_cientifico": "Handroanthus impetiginosus",
+    "especie": "Abarema jupunba",
+    "familia": "FABACEAE",
+    "punto": [330, 161.5],
+    "descripcion": "Árbol hasta de 25m de alto. Hojas hasta de 18cm de largo, subdivididas en 3-12 pares de folíolos de 1.5-7x1.2-5cm. Inflorescencias blancas en forma de pompón. Frutos en legumbre aplanada, de 5.3-10x0.8-1.8cm, y de color verde y rojiza que se enrollan formando un círculo, con semillas morado-azules. Florece y fructifica a lo largo de todo el año. Habita bosques húmedos, muy húmedos y pluviales. Se distribuye desde las Antillas Menores hasta Perú, Bolivia y Brasil, desde el nivel del mar hasta los 2.084m de altitud.",
+    "usos": {
+      "Medicinal": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
+      "Artesanal": "Las semillas se utilizan en artesanías, destacándose en la creación de bisutería por su forma, textura decorativa y llamativo color."
     },
-    {
-        "nombre": "ALGODONCILLO",
-        "nombres_comunes": "reventillo, parta, cáscara de yuca",
-        "nombre_cientifico": "Handroanthus impetiginosus",
-        "especie": "Alchornea triplinervia",
-        "familia": "EUPHORBIACEAE",
-        "punto": [
-            370,
-            105.5
-        ],
-        "descripcion": "Árbol hasta de 25m de alto con hojas de 6-10x3-5cm y borde aserrado. Inflorescencia en racimo, frutos con 2 lóbulos, de 0.3-0.4x0.5-0.65cm. Especie heliófita que florece y fructifica durante todo el año y presenta cambio de hojas entre julio-octubre. Habita bosques de tierra firme y secundarios, matorrales, sabanas, márgenes de ríos, zonas de restinga, caatinga, bordes de caminos y humedales. Se distribuye desde Trinidad y Tobago hasta Sudamérica Tropical, incluyendo Paraguay y Argentina, desde el nivel del mar hasta los 2.600m de altitud.",
-        "usos": {
-            "Aserrío": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
-            "Alimento animal": "Las semillas se utilizan en artesanías, destacándose en la creación de bisutería por su forma, textura decorativa y llamativo color.",
-            "Otros": "La madera se usa en la elaboración de objetos utilitarios como zuecos, muletas, fósforos y palillos."
-        },
-        "codigoQR": "PLANTA_004_ALGODONCILLO",
-        "bloqueado": true
+    "codigoQR": "PLANTA_003_AMAZONIA",
+    "bloqueado": true
+  },
+  {
+    "nombre": "ALGODONCILLO",
+    "nombres_comunes": "reventillo, parta, cáscara de yuca",
+    "nombre_cientifico": "Handroanthus impetiginosus",
+    "especie": "Alchornea triplinervia",
+    "familia": "EUPHORBIACEAE",
+    "punto": [370, 105.5],
+    "descripcion": "Árbol hasta de 25m de alto con hojas de 6-10x3-5cm y borde aserrado. Inflorescencia en racimo, frutos con 2 lóbulos, de 0.3-0.4x0.5-0.65cm. Especie heliófita que florece y fructifica durante todo el año y presenta cambio de hojas entre julio-octubre. Habita bosques de tierra firme y secundarios, matorrales, sabanas, márgenes de ríos, zonas de restinga, caatinga, bordes de caminos y humedales. Se distribuye desde Trinidad y Tobago hasta Sudamérica Tropical, incluyendo Paraguay y Argentina, desde el nivel del mar hasta los 2.600m de altitud.",
+    "usos": {
+      "Aserrío": "La corteza se usa para tratar reumatismo, artritis, cáncer, infecciones, úlceras, diabetes y regular el ciclo menstrual.",
+      "Alimento animal": "Las semillas se utilizan en artesanías, destacándose en la creación de bisutería por su forma, textura decorativa y llamativo color.",
+      "Otros": "La madera se usa en la elaboración de objetos utilitarios como zuecos, muletas, fósforos y palillos."
     },
-    {
-        "nombre": "SWINGLEA (Placa 45)",
-        "nombre_cientifico": "Swinglea glutinosa",
-        "especie": "Swinglea glutinosa",
-        "familia": "RUTACEAE",
-        "punto": [
-            48.0,
-            895.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_045_SWINGLEA",
-        "bloqueado": false
+    "codigoQR": "PLANTA_004_ALGODONCILLO",
+    "bloqueado": true
+  },
+  {
+    "nombre": "SWINGLEA (Placa 45)",
+    "nombre_cientifico": "Swinglea glutinosa",
+    "especie": "Swinglea glutinosa",
+    "familia": "RUTACEAE",
+    "punto": [48.0, 895.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_045_SWINGLEA",
+    "bloqueado": true
+  },
+  {
+    "nombre": "BOROJÓ (Placa 74)",
+    "nombre_cientifico": "Alibertia patinoi",
+    "especie": "Alibertia patinoi",
+    "familia": "RUBIACEAE",
+    "punto": [52.0, 858.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_074_ALIBERTIA",
+    "bloqueado": true
+  },
+  {
+    "nombre": "CARAMBOLO (Placa 76)",
+    "nombre_cientifico": "Averrhoa carambola",
+    "especie": "Averrhoa carambola",
+    "familia": "OXALIDACEAE",
+    "punto": [68.0, 910.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_076_CARAMBOLO",
+    "bloqueado": true
+  },
+  {
+    "nombre": "UMARÍ (Placa 91)",
+    "nombre_cientifico": "Poraqueiba sericea",
+    "especie": "Poraqueiba sericea",
+    "familia": "ICACINACEAE",
+    "punto": [50.0, 876.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_091_UMARI",
+    "bloqueado": true
+  },
+  {
+    "nombre": "CAUCHO (Placa 92)",
+    "nombre_cientifico": "Hevea brasiliensis",
+    "especie": "Hevea brasiliensis",
+    "familia": "EUPHORBIACEAE",
+    "punto": [54.0, 828.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_092_CAUCHO",
+    "bloqueado": true
+  },
+  {
+    "nombre": "GUAYACÁN AMARILLO (Placa 137)",
+    "nombre_cientifico": "Handroanthus chrysanthus",
+    "especie": "Handroanthus chrysanthus",
+    "familia": "BIGNONIACEAE",
+    "punto": [56.0, 792.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_137_GUAYACAN",
+    "bloqueado": true
+  },
+  {
+    "nombre": "CHIMUCO (Placa 151)",
+    "nombre_cientifico": "Pithecellobium dulce",
+    "especie": "Pithecellobium dulce",
+    "familia": "FABACEAE",
+    "punto": [54.0, 780.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_151_CHIMUCO",
+    "bloqueado": true
+  },
+  {
+    "nombre": "COUSSAPOA (Placa 168)",
+    "nombre_cientifico": "Coussapoa orthoneura",
+    "especie": "Coussapoa orthoneura",
+    "familia": "URTICACEAE",
+    "punto": [92.0, 918.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_168_COUSSAPOA",
+    "bloqueado": true
+  },
+  {
+    "nombre": "HIGUERÓN (Placa 181)",
+    "nombre_cientifico": "Ficus insipida",
+    "especie": "Ficus insipida",
+    "familia": "MORACEAE",
+    "punto": [138.0, 925.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_181_HIGUERON",
+    "bloqueado": true
+  },
+  {
+    "nombre": "JUANSOCO (Placa 199)",
+    "nombre_cientifico": "Couma macrocarpa",
+    "especie": "Couma macrocarpa",
+    "familia": "APOCYNACEAE",
+    "punto": [185.0, 900.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_199_JUANSOCO",
+    "bloqueado": true
+  },
+  {
+    "nombre": "CEDRO AMARGO (Placa 208)",
+    "nombre_cientifico": "Cedrela odorata",
+    "especie": "Cedrela odorata",
+    "familia": "MELIACEAE",
+    "punto": [250.0, 835.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_208_CEDRO",
+    "bloqueado": true
+  },
+  {
+    "nombre": "ALMENDRO (Placa 225)",
+    "nombre_cientifico": "Caryocar sp. 1",
+    "especie": "Caryocar sp. 1",
+    "familia": "CARYOCARIACEAE",
+    "punto": [315.0, 735.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_225_ALMENDRO",
+    "bloqueado": true
+  },
+  {
+    "nombre": "GUÁIMARO (Placa 229)",
+    "nombre_cientifico": "Pseudolmedia laevis",
+    "especie": "Pseudolmedia laevis",
+    "familia": "MORACEAE",
+    "punto": [330.0, 600.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_229_GUAIMARO",
+    "bloqueado": true
+  },
+  {
+    "nombre": "UCUUBA (Placa 234)",
+    "nombre_cientifico": "Virola sp. 1",
+    "especie": "Virola sp. 1",
+    "familia": "MYRISTICACEAE",
+    "punto": [440.0, 600.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_234_UCUUBA",
+    "bloqueado": true
+  },
+  {
+    "nombre": "LAUREL (Placa 240)",
+    "nombre_cientifico": "Nectandra membranacea",
+    "especie": "Nectandra membranacea",
+    "familia": "LAURACEAE",
+    "punto": [490.0, 660.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_240_LAUREL",
+    "bloqueado": true
+  },
+  {
+    "nombre": "LACRE (Placa 244)",
+    "nombre_cientifico": "Vismia tomentosa",
+    "especie": "Vismia tomentosa",
+    "familia": "HYPERICACEAE",
+    "punto": [590.0, 630.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_244_LACRE",
+    "bloqueado": true
+  },
+  {
+    "nombre": "CAMASEY (Placa 256)",
+    "nombre_cientifico": "Henriettea fascicularis",
+    "especie": "Henriettea fascicularis",
+    "familia": "MELASTOMATACEAE",
+    "punto": [710.0, 600.0],
+    "descripcion": "",
+    "usos": {},
+    "codigoQR": "PLANTA_256_CAMASEY",
+    "bloqueado": true
+  },
+  {
+    "nombre": "MYRTACEAE (Placa 1027)",
+    "nombre_cientifico": "",
+    "nombres_comunes": ": Pomarroso, pera, pomarrosa, pomorroso, pomorroso brasilero, ñambo ",
+    "especie": "Syzygium malaccense",
+    "familia": "MYRTACEAE",
+    "punto": [87.75, 647.75],
+    "descripcion": "Árboles de 8-15 metros de altura; corteza rojiza, escamosa. Hojas simples, opuestas, 12-26 x 4.5 -10 cm, elípticas u oblongas, coriáceas, verdes o verde olivo concoloro cuando secas; base cuneada a redondeada; ápice acuminado u obtuso; nervaduras laterales 7-12 pares; glándulas inconspicuas sobre ambas superficies; pecíolos 10-15 mm. Inflorescencias caulifloras; 6-12 flores; brácteas deciduas; botones 15-20 mm, turbinados, rojos. Flores pediceladas, pedicelos 1-3×1-2 mm; bractéolas deciduas; hipanto 15-20 mm, rojo, obcónico a infundibuliforme, base contraída para formar un seudopedículo 5-10 mm; lobos del cáliz 3-7×6-7 mm, en pares subiguales; pétalos 7-9×7-9 mm, ovados, cóncavos, rojos; estambres 100-150 y de 20-25 mm, rojos; estilo 20-25 mm. Frutos oblongos u obovoides o piriforme, 9x6 cm; pericarpo carnoso, ápice excavado; lobos del cáliz persistentes en el ápice; color rojo-rosado (Missouri Botanical Garden, s.f.; Vásquez et al., 1997). ",
+    "foto_defecto": "pomarosa.jpeg",
+    "usos": {
+        "Elaboracion": "se utilizan en la elaboración de vinos",
+      "Alimento": "Los frutos son comestibles y se consumen frescos, apreciados por su alto contenido de hierro",
+      "Otros": "La especie tiene un notable valor ornamental y se planta en parques y a lo largo de vías urbanas, gracias a su follaje atractivo que brinda sombra, su llamativa floración y sus frutos brillantes y coloridos "
     },
-    {
-        "nombre": "BOROJÓ (Placa 74)",
-        "nombre_cientifico": "Alibertia patinoi",
-        "especie": "Alibertia patinoi",
-        "familia": "RUBIACEAE",
-        "punto": [
-            52.0,
-            858.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_074_ALIBERTIA",
-        "bloqueado": false
-    },
-    {
-        "nombre": "CARAMBOLO (Placa 76)",
-        "nombre_cientifico": "Averrhoa carambola",
-        "especie": "Averrhoa carambola",
-        "familia": "OXALIDACEAE",
-        "punto": [
-            68.0,
-            910.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_076_CARAMBOLO",
-        "bloqueado": false
-    },
-    {
-        "nombre": "UMARÍ (Placa 91)",
-        "nombre_cientifico": "Poraqueiba sericea",
-        "especie": "Poraqueiba sericea",
-        "familia": "ICACINACEAE",
-        "punto": [
-            50.0,
-            876.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_091_UMARI",
-        "bloqueado": false
-    },
-    {
-        "nombre": "CAUCHO (Placa 92)",
-        "nombre_cientifico": "Hevea brasiliensis",
-        "especie": "Hevea brasiliensis",
-        "familia": "EUPHORBIACEAE",
-        "punto": [
-            54.0,
-            828.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_092_CAUCHO",
-        "bloqueado": false
-    },
-    {
-        "nombre": "GUAYACÁN AMARILLO (Placa 137)",
-        "nombre_cientifico": "Handroanthus chrysanthus",
-        "especie": "Handroanthus chrysanthus",
-        "familia": "BIGNONIACEAE",
-        "punto": [
-            56.0,
-            792.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_137_GUAYACAN",
-        "bloqueado": false
-    },
-    {
-        "nombre": "CHIMUCO (Placa 151)",
-        "nombre_cientifico": "Pithecellobium dulce",
-        "especie": "Pithecellobium dulce",
-        "familia": "FABACEAE",
-        "punto": [
-            54.0,
-            780.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_151_CHIMUCO",
-        "bloqueado": false
-    },
-    {
-        "nombre": "COUSSAPOA (Placa 168)",
-        "nombre_cientifico": "Coussapoa orthoneura",
-        "especie": "Coussapoa orthoneura",
-        "familia": "URTICACEAE",
-        "punto": [
-            92.0,
-            918.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_168_COUSSAPOA",
-        "bloqueado": false
-    },
-    {
-        "nombre": "HIGUERÓN (Placa 181)",
-        "nombre_cientifico": "Ficus insipida",
-        "especie": "Ficus insipida",
-        "familia": "MORACEAE",
-        "punto": [
-            138.0,
-            925.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_181_HIGUERON",
-        "bloqueado": false
-    },
-    {
-        "nombre": "JUANSOCO (Placa 199)",
-        "nombre_cientifico": "Couma macrocarpa",
-        "especie": "Couma macrocarpa",
-        "familia": "APOCYNACEAE",
-        "punto": [
-            185.0,
-            900.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_199_JUANSOCO",
-        "bloqueado": false
-    },
-    {
-        "nombre": "CEDRO AMARGO (Placa 208)",
-        "nombre_cientifico": "Cedrela odorata",
-        "especie": "Cedrela odorata",
-        "familia": "MELIACEAE",
-        "punto": [
-            250.0,
-            835.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_208_CEDRO",
-        "bloqueado": false
-    },
-    {
-        "nombre": "ALMENDRO (Placa 225)",
-        "nombre_cientifico": "Caryocar sp. 1",
-        "especie": "Caryocar sp. 1",
-        "familia": "CARYOCARIACEAE",
-        "punto": [
-            315.0,
-            735.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_225_ALMENDRO",
-        "bloqueado": false
-    },
-    {
-        "nombre": "GUÁIMARO (Placa 229)",
-        "nombre_cientifico": "Pseudolmedia laevis",
-        "especie": "Pseudolmedia laevis",
-        "familia": "MORACEAE",
-        "punto": [
-            330.0,
-            600.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_229_GUAIMARO",
-        "bloqueado": false
-    },
-    {
-        "nombre": "UCUUBA (Placa 234)",
-        "nombre_cientifico": "Virola sp. 1",
-        "especie": "Virola sp. 1",
-        "familia": "MYRISTICACEAE",
-        "punto": [
-            440.0,
-            600.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_234_UCUUBA",
-        "bloqueado": false
-    },
-    {
-        "nombre": "LAUREL (Placa 240)",
-        "nombre_cientifico": "Nectandra membranacea",
-        "especie": "Nectandra membranacea",
-        "familia": "LAURACEAE",
-        "punto": [
-            490.0,
-            660.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_240_LAUREL",
-        "bloqueado": false
-    },
-    {
-        "nombre": "LACRE (Placa 244)",
-        "nombre_cientifico": "Vismia tomentosa",
-        "especie": "Vismia tomentosa",
-        "familia": "HYPERICACEAE",
-        "punto": [
-            590.0,
-            630.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_244_LACRE",
-        "bloqueado": false
-    },
-    {
-        "nombre": "CAMASEY (Placa 256)",
-        "nombre_cientifico": "Henriettea fascicularis",
-        "especie": "Henriettea fascicularis",
-        "familia": "MELASTOMATACEAE",
-        "punto": [
-            710.0,
-            600.0
-        ],
-        "descripcion": "",
-        "usos": {},
-        "codigoQR": "PLANTA_256_CAMASEY",
-        "bloqueado": false
-    }
+    "codigoQR": "PLANTA_1027_MYRTACEAE",
+    "bloqueado": false
+  }
 ]

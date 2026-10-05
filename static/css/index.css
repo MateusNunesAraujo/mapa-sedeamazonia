@@ -1073,122 +1073,1108 @@
       }
   }
 
-  /* Modal de Árboles 3D */
-  .trees-modal {
+  /* ====================================================
+     ÁLBUM / HERBARIO DE ÁRBOLES RECOLECTADOS (Minimalista Blanco y Verde)
+     ==================================================== */
+  .album-modal,
+  .tree-detail-modal {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
+      background-color: rgba(15, 23, 18, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       z-index: 10000;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
-      padding-top: 10%;
+      padding: 16px;
+      box-sizing: border-box;
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+                  visibility 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .trees-modal.show {
+  .tree-detail-modal {
+      z-index: 10010;
+  }
+
+  .album-modal.show,
+  .tree-detail-modal.show {
       opacity: 1;
       visibility: visible;
       pointer-events: auto;
   }
 
-  .trees-modal-content {
-      background-color: var(--blanco);
-      width: 90%;
-      max-width: 600px;
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transform: translateY(-50px);
-      transition: transform 0.3s ease;
-      max-height: 80vh;
+  .album-modal-content,
+  .tree-detail-content {
+      background-color: #ffffff;
+      width: 100%;
+      max-width: 680px;
+      max-height: 88vh;
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(10, 35, 20, 0.22);
+      border: 1px solid rgba(46, 125, 50, 0.12);
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+      transform: scale(0.96) translateY(12px);
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .trees-modal.show .trees-modal-content {
-      transform: translateY(0);
+  .album-modal.show .album-modal-content,
+  .tree-detail-modal.show .tree-detail-content {
+      transform: scale(1) translateY(0);
   }
 
-  .trees-modal-header {
-      background-color: var(--azul-institucional);
-      color: var(--blanco);
-      padding: 16px 20px;
+  /* Encabezado del Álbum */
+  .album-modal-header {
+      padding: 18px 24px 14px;
+      background: #ffffff;
+      border-bottom: 1px solid #eef3ef;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-shrink: 0;
   }
 
-  .trees-modal-header h2 {
-      margin: 0;
-      font-size: 1.2rem;
-      font-weight: 600;
+  .album-header-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
   }
 
-  .close-trees {
-      color: var(--blanco);
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-      line-height: 1;
-  }
-
-  .close-trees:hover {
-      color: #e0e0e0;
-  }
-
-  .trees-grid {
-      padding: 20px;
-      overflow-y: auto;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-  }
-
-  /* Tarjeta individual de árbol en el grid */
-  .tree-card {
-      background: #f8f9fa;
-      border: 2px solid #e0e0e0;
+  .album-header-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
       border-radius: 12px;
-      padding: 15px;
+      background: #e8f5e9;
+      font-size: 22px;
+      flex-shrink: 0;
+  }
+
+  .album-header-title {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1b5e20;
+      letter-spacing: -0.2px;
+  }
+
+  .album-header-subtitle {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: #6b7280;
+  }
+
+  .album-close-btn {
+      background: #f3f4f6;
+      border: none;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 22px;
+      line-height: 1;
+      color: #4b5563;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+  }
+
+  .album-close-btn:hover {
+      background: #e5e7eb;
+      color: #111827;
+  }
+
+  /* Tarjeta de Progreso y Contador */
+  .album-progress-card {
+      margin: 14px 20px 10px;
+      padding: 12px 16px;
+      background: #f6fbf7;
+      border: 1px solid #dceede;
+      border-radius: 14px;
+      flex-shrink: 0;
+  }
+
+  .album-progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: #2e7d32;
+  }
+
+  .album-progress-label {
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 11px;
+  }
+
+  .album-counter-text {
+      color: #1b5e20;
+      font-weight: 500;
+  }
+
+  .album-counter-text strong {
+      color: #1b5e20;
+      font-weight: 700;
+  }
+
+  .album-progress-track {
+      width: 100%;
+      height: 8px;
+      background: #e0eee2;
+      border-radius: 99px;
+      overflow: hidden;
+  }
+
+  .album-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #2e7d32, #4caf50);
+      border-radius: 99px;
+      transition: width 0.4s ease;
+  }
+
+  /* Panel de Filtros y Búsqueda */
+  .album-filter-panel {
+      padding: 0 20px 12px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      border-bottom: 1px solid #f0f4f1;
+  }
+
+  .album-search-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+  }
+
+  /* Flecha para mostrar/ocultar filtros */
+  .album-filters-toggle {
+      position: relative;
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      border: 1px solid #dbe5dd;
+      background: #ffffff;
+      color: #2e7d32;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+  }
+
+  .album-filters-toggle:hover,
+  .album-filters-toggle[aria-expanded="true"] {
+      background: #e8f5e9;
+      border-color: #a5d6a7;
+  }
+
+  .album-filters-toggle svg {
+      transition: transform 0.25s ease;
+  }
+
+  .album-filters-toggle[aria-expanded="true"] svg {
+      transform: rotate(180deg);
+  }
+
+  /* Punto indicador: hay filtros aplicados mientras el panel está oculto */
+  .album-filters-toggle.has-active::after {
+      content: '';
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #2e7d32;
+  }
+
+  .album-filters-toggle[aria-expanded="true"].has-active::after {
+      display: none;
+  }
+
+  /* Panel desplegable (animación de altura con grid) */
+  .album-filters-collapsible {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.28s ease;
+  }
+
+  .album-filters-collapsible.open {
+      grid-template-rows: 1fr;
+  }
+
+  .album-filters-inner {
+      min-height: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.28s;
+  }
+
+  .album-filters-collapsible.open .album-filters-inner {
+      padding-top: 10px;
+      opacity: 1;
+      visibility: visible;
+  }
+
+  .album-search-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+  }
+
+  .album-search-icon {
+      position: absolute;
+      left: 12px;
+      font-size: 14px;
+      color: #9ca3af;
+      pointer-events: none;
+  }
+
+  .album-search-input {
+      width: 100%;
+      padding: 9px 12px 9px 34px;
+      border-radius: 10px;
+      border: 1px solid #dbe5dd;
+      background: #ffffff;
+      font-size: 13.5px;
+      color: #1f2937;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      box-sizing: border-box;
+  }
+
+  .album-search-input:focus {
+      border-color: #2e7d32;
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.14);
+  }
+
+  .album-selects-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+  }
+
+  @media (max-width: 600px) {
+      .album-selects-row {
+          grid-template-columns: repeat(2, 1fr);
+      }
+  }
+
+  .album-select-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+  }
+
+  .album-select-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #52795d;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin-left: 2px;
+  }
+
+  .album-select {
+      width: 100%;
+      padding: 7px 8px;
+      border-radius: 8px;
+      border: 1px solid #dbe5dd;
+      background: #ffffff;
+      font-size: 12px;
+      color: #1f2937;
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+  }
+
+  .album-select:focus {
+      border-color: #2e7d32;
+  }
+
+  .album-filter-actions {
+      display: flex;
+      justify-content: flex-end;
+  }
+
+  .album-btn-reset-filters {
+      background: none;
+      border: none;
+      color: #2e7d32;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 2px 6px;
+      border-radius: 6px;
+      transition: background 0.15s, color 0.15s;
+  }
+
+  .album-btn-reset-filters:hover {
+      background: #e8f5e9;
+      color: #1b5e20;
+  }
+
+  /* Grid de 2 Columnas de Árboles */
+  .album-grid-scroll {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 16px 20px 24px;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f8fafc;
+  }
+
+  .album-grid {
+      display: grid;
+      /* minmax(0, 1fr) evita que un nombre largo ensanche la columna */
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px 18px;
+      padding: 6px 4px 10px;
+  }
+
+  @media (max-width: 420px) {
+      .album-grid {
+          gap: 16px 12px;
+          padding: 6px 2px 10px;
+      }
+  }
+
+  /* Tarjeta Individual de Árbol: foto pegada con esquineros + rótulo */
+  .album-tree-card {
+      position: relative;
+      min-width: 0;
+      background: #fffdf8;
+      border-radius: 3px;
+      padding: 10px 10px 0;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      box-shadow:
+          0 1px 2px rgba(0, 0, 0, 0.12),
+          0 6px 14px rgba(0, 0, 0, 0.10);
+      transform: rotate(-1.2deg);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      user-select: none;
+  }
+
+  .album-tree-card:nth-child(even) {
+      transform: rotate(1deg);
+  }
+
+  .album-tree-card:nth-child(3n) {
+      transform: rotate(-0.4deg);
+  }
+
+  .album-tree-card:hover {
+      transform: rotate(0deg) translateY(-3px);
+      box-shadow:
+          0 2px 4px rgba(0, 0, 0, 0.12),
+          0 12px 24px rgba(0, 0, 0, 0.16);
+  }
+
+  /* Contenedor de la foto (sin overflow para que los esquineros sobresalgan) */
+  .album-photo-mount {
+      position: relative;
+  }
+
+  .album-card-media {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: #e9ecea;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.12);
+  }
+
+  .album-card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease;
+  }
+
+  .album-tree-card:hover .album-card-img {
+      transform: scale(1.04);
+  }
+
+  .album-card-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #eef3ef 0%, #dde6df 100%);
+  }
+
+  .album-card-icon {
+      font-size: 36px;
+      opacity: 0.85;
+  }
+
+  /* Esquineros tipo álbum de fotos */
+  .album-photo-corner {
+      position: absolute;
+      width: 22px;
+      height: 22px;
+      z-index: 5;
+      pointer-events: none;
+      background: linear-gradient(135deg, #4a4a4a 0%, #262626 55%, #151515 100%);
+      filter: drop-shadow(0 1px 1.5px rgba(0, 0, 0, 0.35));
+  }
+
+  .album-photo-corner.tl {
+      top: -4px;
+      left: -4px;
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+
+  .album-photo-corner.tr {
+      top: -4px;
+      right: -4px;
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+
+  .album-photo-corner.bl {
+      bottom: -4px;
+      left: -4px;
+      clip-path: polygon(0 0, 100% 100%, 0 100%);
+  }
+
+  .album-photo-corner.br {
+      bottom: -4px;
+      right: -4px;
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+
+  .album-card-locked-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 10;
+      background: rgba(17, 24, 39, 0.65);
+      backdrop-filter: blur(4px);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .album-card-locked-badge .lock-icon {
+      font-size: 14px;
+  }
+
+  .album-tree-card.locked {
+      background: #f5f4f0;
+      opacity: 0.85;
+  }
+
+  .album-tree-card.locked .album-card-img {
+      filter: grayscale(80%) blur(1px);
+  }
+
+  .album-tree-card.locked .album-photo-corner {
+      background: linear-gradient(135deg, #8a8a8a 0%, #5f5f5f 100%);
+  }
+
+  /* Rótulo inferior con el nombre (abre la ficha) */
+  .album-card-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      width: 100%;
+      margin: 0;
+      padding: 10px 4px 12px;
+      background: transparent;
+      border: none;
+      font: inherit;
       text-align: center;
       cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
+      color: inherit;
   }
 
-  .tree-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--azul-institucional);
+  .album-card-info:focus-visible {
+      outline: 2px solid #2e7d32;
+      outline-offset: -2px;
+      border-radius: 2px;
   }
 
-  .tree-card.locked {
-      background: #e9ecef;
-      border-color: #dee2e6;
-      cursor: not-allowed;
-      opacity: 0.7;
-  }
-
-  .tree-card.locked:hover {
-      transform: none;
-      border-color: #dee2e6;
-  }
-
-  .tree-icon {
-      font-size: 40px;
-      margin-bottom: 10px;
-  }
-
-  .tree-name {
+  .album-card-name {
+      margin: 0;
+      max-width: 100%;
+      font-family: "Georgia", serif;
       font-size: 14px;
       font-weight: 600;
-      color: var(--gris-oscuro);
+      font-style: italic;
+      color: #2b2b2b;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      transition: color 0.2s;
+  }
+
+  .album-card-hint {
+      font-size: 10.5px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #9ca3af;
+      transition: color 0.2s;
+  }
+
+  .album-tree-card:hover .album-card-name {
+      color: #1b5e20;
+  }
+
+  .album-tree-card:hover .album-card-hint {
+      color: #2e7d32;
+  }
+
+  .album-tree-card.locked .album-card-name {
+      color: #6b7280;
+      font-weight: 500;
+  }
+
+  /* Tarjetas foto pegada en pantallas de celular */
+  @media (max-width: 480px) {
+      .album-tree-card {
+          padding: 7px 7px 0;
+      }
+
+      .album-photo-corner {
+          width: 16px;
+          height: 16px;
+      }
+
+      .album-photo-corner.tl,
+      .album-photo-corner.tr {
+          top: -3px;
+      }
+
+      .album-photo-corner.bl,
+      .album-photo-corner.br {
+          bottom: -3px;
+      }
+
+      .album-photo-corner.tl,
+      .album-photo-corner.bl {
+          left: -3px;
+      }
+
+      .album-photo-corner.tr,
+      .album-photo-corner.br {
+          right: -3px;
+      }
+
+      .album-card-info {
+          padding: 6px 2px 8px;
+          gap: 1px;
+      }
+
+      .album-card-name {
+          font-size: 12px;
+      }
+
+      .album-card-hint {
+          font-size: 9px;
+      }
+
+      /* Selector más específico: la regla base del botón de cámara está más abajo */
+      .album-tree-card .album-btn-camera-capture,
+      .album-tree-card .album-card-locked-badge {
+          top: 9px;
+          right: 9px;
+          width: 26px;
+          height: 26px;
+          font-size: 13px;
+      }
+
+      .album-card-icon {
+          font-size: 30px;
+      }
+  }
+
+  /* Visor de foto ampliada (detalle del árbol) */
+  .detail-hero-img {
+      cursor: zoom-in;
+  }
+
+  .photo-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10020;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.88);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      cursor: zoom-out;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+  }
+
+  .photo-lightbox.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+  }
+
+  .photo-lightbox-img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+      transform: scale(0.94);
+      transition: transform 0.25s ease;
+  }
+
+  .photo-lightbox.show .photo-lightbox-img {
+      transform: scale(1);
+  }
+
+  .photo-lightbox-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+  }
+
+  .photo-lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+  }
+
+  /* Estado vacío */
+  .album-empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+      color: #6b7280;
+  }
+
+  .album-empty-state .empty-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+  }
+
+  .album-empty-state h3 {
+      margin: 0 0 6px;
+      color: #1f2937;
+      font-size: 16px;
+  }
+
+  .album-empty-state p {
       margin: 0;
+      font-size: 13px;
+  }
+
+  /* ====================================================
+     MODAL DE DETALLE BOTÁNICO AMPLIADO (Minimalista Blanco y Verde)
+     ==================================================== */
+  .tree-detail-topbar {
+      padding: 14px 20px;
+      background: #ffffff;
+      border-bottom: 1px solid #edf3ee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+  }
+
+  .tree-detail-back-btn {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #c8e6c9;
+      border-radius: 99px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s, transform 0.15s;
+  }
+
+  .tree-detail-back-btn:hover {
+      background: #c8e6c9;
+      transform: translateX(-2px);
+  }
+
+  .tree-detail-close-btn {
+      background: #f3f4f6;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 20px;
+      line-height: 1;
+      color: #4b5563;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+  }
+
+  .tree-detail-close-btn:hover {
+      background: #e5e7eb;
+      color: #111827;
+  }
+
+  .tree-detail-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px 30px;
+      scrollbar-width: thin;
+      scrollbar-color: #cbd5e1 #f8fafc;
+  }
+
+  /* 1. Foto al principio */
+  .detail-photo-container {
+      width: 100%;
+      max-height: 320px;
+      aspect-ratio: 16 / 10;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f0f7f2;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+  }
+
+  .detail-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+  }
+
+  .detail-hero-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e8f5e9 0%, #dcedc8 100%);
+      color: #2e7d32;
+      padding: 20px;
+      text-align: center;
+  }
+
+  .detail-placeholder-icon {
+      font-size: 52px;
+      margin-bottom: 8px;
+  }
+
+  .detail-hero-placeholder p {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 500;
+  }
+
+  .detail-body-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+  }
+
+  /* 2. Nombre de la planta */
+  .detail-main-title {
+      margin: 0;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1b5e20;
+      letter-spacing: -0.3px;
+      line-height: 1.25;
+  }
+
+  /* 3. Familia y Especie (Badges) */
+  .detail-badges-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+  }
+
+  .detail-chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 500;
+  }
+
+  .detail-chip-family {
+      background: #e8f5e9;
+      color: #1b5e20;
+      border: 1px solid #c8e6c9;
+  }
+
+  .detail-chip-family strong {
+      margin-left: 4px;
+      font-weight: 700;
+  }
+
+  .detail-chip-species {
+      background: #f1f8e9;
+      color: #33691e;
+      border: 1px solid #dcedc8;
+  }
+
+  .detail-chip-species em {
+      margin-left: 4px;
+      font-style: italic;
+      font-weight: 600;
+  }
+
+  .detail-chip-common {
+      background: #f9fafb;
+      color: #4b5563;
+      border: 1px solid #e5e7eb;
+  }
+
+  /* 4. Secciones y Descripción */
+  .detail-section {
+      background: #ffffff;
+      border: 1px solid #e8f0ea;
+      border-radius: 14px;
+      padding: 16px 18px;
+  }
+
+  .detail-section-title {
+      margin: 0 0 10px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #2e7d32;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+  }
+
+  .detail-description-text p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.65;
+      color: #374151;
+  }
+
+  .detail-text-empty {
+      color: #9ca3af !important;
+      font-style: italic;
+  }
+
+  /* Usos del espécimen */
+  .detail-uses-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+  }
+
+  .detail-use-card {
+      background: #f8faf8;
+      border: 1px solid #e2ede5;
+      border-left: 4px solid #388e3c;
+      border-radius: 8px;
+      padding: 8px 12px;
+  }
+
+  .detail-use-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1b5e20;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+  }
+
+  .detail-use-text {
+      margin: 0;
+      font-size: 13px;
+      color: #4b5563;
+      line-height: 1.45;
+  }
+
+  /* 5. Espacio reservado para Información Adicional */
+  .detail-extra-section {
+      background: #f9fdfa;
+      border: 2px dashed #a5d6a7;
+  }
+
+  .detail-extra-placeholder {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+  }
+
+  .detail-extra-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+  }
+
+  .detail-extra-icon {
+      font-size: 16px;
+  }
+
+  .detail-extra-notice {
+      margin: 0;
+      font-size: 12.5px;
+      color: #557b5e;
+      line-height: 1.5;
+  }
+
+  /* ====================================================
+     BOTONES DE CAPTURA DE FOTOS DE ÁRBOLES (Cámara)
+     ==================================================== */
+  /* 1. Botón de cámara en la tarjeta del álbum */
+  .album-btn-camera-capture {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(46, 125, 50, 0.25);
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      z-index: 10;
+      color: #1b5e20;
+      line-height: 1;
+      padding: 0;
+  }
+
+  .album-btn-camera-capture:hover {
+      transform: scale(1.1);
+      background: #ffffff;
+      border-color: #2e7d32;
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);
+  }
+
+  .album-btn-camera-capture:active {
+      transform: scale(0.95);
+  }
+
+  /* 2. Botón de cámara en la cabecera del detalle botánico */
+  .detail-photo-container {
+      position: relative;
+  }
+
+  .detail-btn-camera-capture {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(46, 125, 50, 0.3);
+      border-radius: 99px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #1b5e20;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      z-index: 10;
+  }
+
+  .detail-btn-camera-capture:hover {
+      transform: scale(1.04);
+      background: #ffffff;
+      box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
+  }
+
+  .detail-btn-camera-capture:active {
+      transform: scale(0.97);
+  }
+
+  /* 3. Botón de cámara en el popup del mapa */
+  .btn-camera-capture {
+      position: absolute !important;
+      top: 8px !important;
+      right: 36px !important; /* deja espacio para la 'x' de cerrar el popup */
+      left: auto !important;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(46, 125, 50, 0.25);
+      border-radius: 50%;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      z-index: 25;
+      color: #1b5e20;
+      line-height: 1;
+      padding: 0;
+  }
+
+  .btn-camera-capture:hover {
+      transform: scale(1.1);
+      background: #ffffff;
+      border-color: #2e7d32;
+      box-shadow: 0 4px 12px rgba(46, 125, 50, 0.35);
+  }
+
+  .btn-camera-capture:active {
+      transform: scale(0.95);
   }
 
   /* ====================================================

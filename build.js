@@ -54,6 +54,7 @@ async function main() {
           }
         };
         
+        fs.mkdirSync(path.join(__dirname, 'www'), { recursive: true });
         fs.copyFileSync(path.join(__dirname, 'templates', 'index.html'), path.join(__dirname, 'www', 'index.html'));
         console.log('📂 Copiando static...');
         copyDir(path.join(__dirname, 'static'), path.join(__dirname, 'www', 'static'));
