@@ -1975,6 +1975,12 @@
       border: 1px solid #e5e7eb;
   }
 
+  .detail-chip-placa {
+      background: #fff8e1;
+      color: #8d6e00;
+      border: 1px solid #ffecb3;
+  }
+
   /* 4. Secciones y Descripción */
   .detail-section {
       background: #ffffff;
@@ -1997,6 +2003,17 @@
       font-size: 14px;
       line-height: 1.65;
       color: #374151;
+  }
+
+  .detail-description-text p + p {
+      margin-top: 8px;
+  }
+
+  /* Bloques de la ficha técnica en "Información adicional" */
+  .detail-ficha-block + .detail-ficha-block {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid #e8f0ea;
   }
 
   .detail-text-empty {
@@ -2033,6 +2050,13 @@
       font-size: 13px;
       color: #4b5563;
       line-height: 1.45;
+  }
+
+  .detail-uses-note {
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: #6b7280;
+      font-style: italic;
   }
 
   /* 5. Espacio reservado para Información Adicional */
@@ -2303,6 +2327,13 @@
       font-size: 13px;
       color: #475569;
       font-style: italic;
+  }
+
+  .planta-card-placa {
+      align-self: flex-start;
+      font-size: 11px;
+      font-weight: 600;
+      color: #8d6e00;
   }
 
   .planta-card-alt-names {

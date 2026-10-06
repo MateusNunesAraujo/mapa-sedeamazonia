@@ -597,12 +597,19 @@ class AlbumHandler {
         ${planta.familia ? `<span class="detail-chip detail-chip-family">Familia: <strong>${planta.familia}</strong></span>` : ''}
         ${cientifico ? `<span class="detail-chip detail-chip-species">Especie: <em>${cientifico}</em></span>` : ''}
         ${planta.nombres_comunes ? `<span class="detail-chip detail-chip-common">Común: ${planta.nombres_comunes}</span>` : ''}
+        ${planta.placa ? `<span class="detail-chip detail-chip-placa">Placa: <strong>${planta.placa}</strong></span>` : ''}
       `;
     }
 
-    // Descripción
+    // Ficha técnica completa (si existe); cada sección es una lista de párrafos
+    const ficha = planta.ficha || null;
+    const parrafos = (lista) => lista.map(p => `<p>${p}</p>`).join('');
+
+    // Descripción: la botánica de la ficha técnica, o la corta de la placa
     if (descEl) {
-      if (planta.descripcion && planta.descripcion.trim()) {
+      if (ficha && ficha.descripcion_botanica && ficha.descripcion_botanica.length) {
+        descEl.innerHTML = parrafos(ficha.descripcion_botanica);
+      } else if (planta.descripcion && planta.descripcion.trim()) {
         descEl.innerHTML = `<p>${planta.descripcion}</p>`;
       } else {
         descEl.innerHTML = `<p class="detail-text-empty">Sin descripción registrada por el momento para este espécimen.</p>`;
@@ -625,6 +632,7 @@ class AlbumHandler {
               </div>
             `).join('')}
           </div>
+          ${planta.nota_usos ? `<p class="detail-uses-note">* ${planta.nota_usos}</p>` : ''}
         `;
       } else {
         usesContainer.style.display = 'none';
@@ -632,8 +640,26 @@ class AlbumHandler {
       }
     }
 
-    // Apartado reservado para Información Adicional futura
+    // Información adicional: resto de la ficha técnica o, si no hay, el apartado reservado
     if (extraEl) {
+      const secciones = ficha ? [
+        ['Nombres comunes', ficha.nombres_comunes],
+        ['Distribución y ecología', ficha.distribucion_ecologia],
+        ['Usos (ficha técnica)', ficha.usos]
+      ].filter(([, lista]) => lista && lista.length) : [];
+
+      extraEl.classList.toggle('detail-extra-section', secciones.length === 0);
+
+      if (secciones.length > 0) {
+        extraEl.innerHTML = secciones.map(([titulo, lista]) => `
+          <div class="detail-ficha-block">
+            <h4 class="detail-section-title">${titulo}</h4>
+            <div class="detail-description-text">${parrafos(lista)}</div>
+          </div>
+        `).join('');
+        return;
+      }
+
       extraEl.innerHTML = `
         <div class="detail-extra-placeholder">
           <div class="detail-extra-header">

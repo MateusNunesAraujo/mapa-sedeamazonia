@@ -203,6 +203,7 @@ class PlantsHandler {
             ${planta.familia ? `<span class="planta-badge-familia">${planta.familia}</span>` : ''}
             <h3 class="planta-card-title">${planta.nombre}</h3>
             ${cientifico ? `<p class="planta-card-especie"><em>${cientifico}</em></p>` : ''}
+            ${planta.placa ? `<span class="planta-card-placa">Placa ${planta.placa}</span>` : ''}
           </div>
 
           ${planta.nombres_comunes ? `
