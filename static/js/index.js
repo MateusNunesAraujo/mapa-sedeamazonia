@@ -9,8 +9,9 @@ const map = L.map("map", {
 });
 
 /* SOLO EN ENTORNO DE DESARROLLO  */
+// Si geoman no cargó, el mapa debe seguir funcionando sin la barra de dibujo
 
-map.pm.addControls({
+if (map.pm) map.pm.addControls({
   position: "topleft",
 
   drawMarker: false,
