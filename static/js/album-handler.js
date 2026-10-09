@@ -156,6 +156,13 @@ class AlbumHandler {
       }
     });
 
+    // Al marcar o quitar un favorito, re-aplicar filtros (el filtro de favoritos puede cambiar el resultado)
+    document.addEventListener('favoritesUpdated', () => {
+      if (this.modal && this.modal.classList.contains('show')) {
+        this.applyFilters();
+      }
+    });
+
     // Escuchar cuando se actualiza la foto de un árbol
     document.addEventListener('treePhotoUpdated', (e) => {
       // Refrescar el grid si el modal está abierto
@@ -205,6 +212,17 @@ class AlbumHandler {
     if (this.detailModal) {
       this.detailModal.classList.add('show');
     }
+  }
+
+  /**
+   * Abre el álbum directamente en la ficha de un árbol (botón "Ver más información" del mapa)
+   */
+  async openPlantFromMap(codigoQR) {
+    // `map` es la constante global declarada en index.js (no está en window)
+    if (typeof map !== 'undefined') map.closePopup();
+    await this.openAlbum();
+    const planta = this.plantas.find(p => p.codigoQR === codigoQR);
+    if (planta) this.openDetail(planta);
   }
 
   /**
@@ -397,6 +415,7 @@ class AlbumHandler {
       // Filtro por estado de desbloqueo
       if (estado === 'desbloqueados' && !isUnlocked) return false;
       if (estado === 'bloqueados' && isUnlocked) return false;
+      if (estado === 'favoritos' && !(window.favorites && window.favorites.isFavorite(planta.codigoQR))) return false;
 
       // Filtro por Familia
       if (selectedFamilia) {
@@ -486,15 +505,8 @@ class AlbumHandler {
         </div>
       `;
 
-      // Botón de cámara en la esquina superior derecha (SOLO para árboles desbloqueados)
-      const cameraBtnHTML = isUnlocked ? `
-        <button class="album-btn-camera-capture" 
-                onclick="event.stopPropagation(); window.photoStorage.promptCapture('${planta.codigoQR}')" 
-                title="Tomar o cambiar foto de este árbol" 
-                aria-label="Tomar foto del árbol">
-          📷
-        </button>
-      ` : '';
+      // Botón de favorito en la esquina superior derecha (SOLO para árboles desbloqueados)
+      const favoritoBtnHTML = isUnlocked ? window.favorites.buttonHTML(planta.codigoQR, 'album-btn-favorito') : '';
 
       // Cada carta es una foto "pegada" con esquineros y un rótulo con el nombre debajo
       const displayName = isUnlocked ? planta.nombre : 'Espécimen Bloqueado';
@@ -508,7 +520,7 @@ class AlbumHandler {
           <span class="album-photo-corner tr" aria-hidden="true"></span>
           <span class="album-photo-corner bl" aria-hidden="true"></span>
           <span class="album-photo-corner br" aria-hidden="true"></span>
-          ${!isUnlocked ? '<div class="album-card-locked-badge"><span class="lock-icon">🔒</span></div>' : cameraBtnHTML}
+          ${!isUnlocked ? '<div class="album-card-locked-badge"><span class="lock-icon">🔒</span></div>' : favoritoBtnHTML}
         </div>
         <button type="button" class="album-card-info" aria-label="Ver información de ${displayName}">
           <h3 class="album-card-name" title="${displayName}">${displayName}</h3>
@@ -543,8 +555,7 @@ class AlbumHandler {
     const photoEl = document.getElementById('detailPlantPhotoContainer');
     const nameEl = document.getElementById('detailPlantName');
     const badgesEl = document.getElementById('detailPlantBadges');
-    const descEl = document.getElementById('detailPlantDescription');
-    const extraEl = document.getElementById('detailPlantExtraSection');
+    const sectionsEl = document.getElementById('detailPlantSections');
 
     if (!planta) return;
 
@@ -596,81 +607,52 @@ class AlbumHandler {
       badgesEl.innerHTML = `
         ${planta.familia ? `<span class="detail-chip detail-chip-family">Familia: <strong>${planta.familia}</strong></span>` : ''}
         ${cientifico ? `<span class="detail-chip detail-chip-species">Especie: <em>${cientifico}</em></span>` : ''}
-        ${planta.nombres_comunes ? `<span class="detail-chip detail-chip-common">Común: ${planta.nombres_comunes}</span>` : ''}
         ${planta.placa ? `<span class="detail-chip detail-chip-placa">Placa: <strong>${planta.placa}</strong></span>` : ''}
       `;
     }
 
-    // Ficha técnica completa (si existe); cada sección es una lista de párrafos
-    const ficha = planta.ficha || null;
-    const parrafos = (lista) => lista.map(p => `<p>${p}</p>`).join('');
+    // Secciones de la ficha en orden: nombres comunes, descripción botánica,
+    // distribución y ecología, usos (ficha técnica) y categorías de uso (placa)
+    if (sectionsEl) {
+      const ficha = planta.ficha || {};
+      const parrafos = (lista) => lista.map(p => `<p>${p}</p>`).join('');
+      const conTexto = (lista) => Array.isArray(lista) && lista.length > 0;
+      const deTexto = (texto) => (texto && texto.trim() ? [texto.trim()] : []);
 
-    // Descripción: la botánica de la ficha técnica, o la corta de la placa
-    if (descEl) {
-      if (ficha && ficha.descripcion_botanica && ficha.descripcion_botanica.length) {
-        descEl.innerHTML = parrafos(ficha.descripcion_botanica);
-      } else if (planta.descripcion && planta.descripcion.trim()) {
-        descEl.innerHTML = `<p>${planta.descripcion}</p>`;
-      } else {
-        descEl.innerHTML = `<p class="detail-text-empty">Sin descripción registrada por el momento para este espécimen.</p>`;
-      }
-    }
+      const secciones = [];
+      const agregar = (titulo, contenido) => {
+        if (contenido) secciones.push({ titulo, contenido });
+      };
 
-    // Usos si existen
-    const usesContainer = document.getElementById('detailPlantUsesContainer');
-    if (usesContainer) {
-      const formattedUses = window.plantsHandler ? window.plantsHandler.formatearUsos(planta) : [];
-      if (formattedUses && formattedUses.length > 0) {
-        usesContainer.style.display = 'block';
-        usesContainer.innerHTML = `
-          <h4 class="detail-section-title">Usos y Aplicaciones</h4>
-          <div class="detail-uses-grid">
-            ${formattedUses.map(u => `
-              <div class="detail-use-card">
-                <span class="detail-use-badge">${u.titulo}</span>
-                <p class="detail-use-text">${u.texto}</p>
-              </div>
-            `).join('')}
-          </div>
-          ${planta.nota_usos ? `<p class="detail-uses-note">* ${planta.nota_usos}</p>` : ''}
-        `;
-      } else {
-        usesContainer.style.display = 'none';
-        usesContainer.innerHTML = '';
-      }
-    }
+      // Si no hay ficha técnica se usa la información corta de la placa
+      const comunes = conTexto(ficha.nombres_comunes) ? ficha.nombres_comunes : deTexto(planta.nombres_comunes);
+      const descripcion = conTexto(ficha.descripcion_botanica) ? ficha.descripcion_botanica : deTexto(planta.descripcion);
 
-    // Información adicional: resto de la ficha técnica o, si no hay, el apartado reservado
-    if (extraEl) {
-      const secciones = ficha ? [
-        ['Nombres comunes', ficha.nombres_comunes],
-        ['Distribución y ecología', ficha.distribucion_ecologia],
-        ['Usos (ficha técnica)', ficha.usos]
-      ].filter(([, lista]) => lista && lista.length) : [];
+      agregar('Nombres comunes', conTexto(comunes) && parrafos(comunes));
+      agregar('Descripción botánica', conTexto(descripcion)
+        ? parrafos(descripcion)
+        : '<p class="detail-text-empty">Sin descripción registrada por el momento para este espécimen.</p>');
+      agregar('Distribución y ecología', conTexto(ficha.distribucion_ecologia) && parrafos(ficha.distribucion_ecologia));
+      agregar('Usos (ficha técnica)', conTexto(ficha.usos) && parrafos(ficha.usos));
 
-      extraEl.classList.toggle('detail-extra-section', secciones.length === 0);
+      const usosCategorias = window.plantsHandler ? window.plantsHandler.formatearUsos(planta) : [];
+      agregar('Categorías de uso', usosCategorias.length > 0 && `
+        <ul class="planta-usos-lista detail-usos-lista">
+          ${usosCategorias.map(u => `
+            <li class="planta-uso-item">
+              <strong class="planta-uso-titulo">${u.titulo}:</strong> <span class="planta-uso-texto">${u.texto}</span>
+            </li>
+          `).join('')}
+        </ul>
+        ${planta.nota_usos ? `<p class="detail-uses-note">* ${planta.nota_usos}</p>` : ''}
+      `);
 
-      if (secciones.length > 0) {
-        extraEl.innerHTML = secciones.map(([titulo, lista]) => `
-          <div class="detail-ficha-block">
-            <h4 class="detail-section-title">${titulo}</h4>
-            <div class="detail-description-text">${parrafos(lista)}</div>
-          </div>
-        `).join('');
-        return;
-      }
-
-      extraEl.innerHTML = `
-        <div class="detail-extra-placeholder">
-          <div class="detail-extra-header">
-            <span class="detail-extra-icon">📋</span>
-            <h4 class="detail-section-title" style="margin: 0;">Información Adicional</h4>
-          </div>
-          <p class="detail-extra-notice">
-            Sección preparada para datos botánicos ampliados (dimensiones, hábitat amazónico, fenología, coordenadas y notas de campo).
-          </p>
+      sectionsEl.innerHTML = secciones.map(({ titulo, contenido }) => `
+        <div class="detail-section">
+          <h4 class="detail-section-title">${titulo}</h4>
+          <div class="detail-description-text">${contenido}</div>
         </div>
-      `;
+      `).join('');
     }
   }
 }

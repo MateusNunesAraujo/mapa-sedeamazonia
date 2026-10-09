@@ -30,7 +30,7 @@
       ]
     },
     "codigoQR": "PLANTA_045_SWINGLEA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "BOROJÓ",
@@ -65,7 +65,7 @@
       ]
     },
     "codigoQR": "PLANTA_074_ALIBERTIA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CARAMBOLO",
@@ -100,7 +100,7 @@
       ]
     },
     "codigoQR": "PLANTA_076_CARAMBOLO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "UMARÍ",
@@ -134,7 +134,7 @@
       ]
     },
     "codigoQR": "PLANTA_091_UMARI",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "SIRINGA",
@@ -169,7 +169,7 @@
       ]
     },
     "codigoQR": "PLANTA_092_CAUCHO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "PALO DE ARCO",
@@ -205,7 +205,7 @@
       ]
     },
     "codigoQR": "PLANTA_137_GUAYACAN",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CHIMINANGO",
@@ -241,7 +241,7 @@
       ]
     },
     "codigoQR": "PLANTA_151_CHIMUCO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "MATAPALO",
@@ -274,7 +274,7 @@
       ]
     },
     "codigoQR": "PLANTA_168_COUSSAPOA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "YANCHAMA OJÉ",
@@ -308,7 +308,7 @@
       ]
     },
     "codigoQR": "PLANTA_181_HIGUERON",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "JUANSOCO",
@@ -344,7 +344,7 @@
       ]
     },
     "codigoQR": "PLANTA_199_JUANSOCO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CEDRO",
@@ -378,7 +378,7 @@
       ]
     },
     "codigoQR": "PLANTA_208_CEDRO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "BARBASCO",
@@ -401,7 +401,7 @@
     },
     "ficha": {
       "nombres_comunes": [
-        "Barbasco, almendra, castaña, palo barbasco, barbasco mediano, barbasco de río, castaño, castañito, castaña de mico, palo de veneno, palo de trueno venenoso, peine de abuela (Bernal et al., 2017)."
+        "Barbasco, almendra, castaña, palo barbasco, barbasco mediano, barbasco de río, castaño, castañito, castaña de mico, palo de veneno, palo de falseno venenoso, peine de abuela (Bernal et al., 2017)."
       ],
       "descripcion_botanica": [
         "Árboles grandes con ramas opuestas y horizontales; estípulas caducas. Hojas opuestas, largamente pecioladas, trifoliadas; folíolos con pecíolos cortos, nervadura pinnada, márgen aserrado, crenados, dentados o raramente enteros; estipelas 2–4 la base de los folíolos. Inflorescencias en racimos terminales con un raquis corto, a menudo más o menos corimboso. Flores hermafroditas; cáliz 5(–6)-lobado; pétalos 5(-6), amarillos-purpúreos; estambres 57–750, sobrepasando los pétalos; ovario 4(-6) lóculos, 1 óvulo en cada lóculo; estilos 4. Fruto en drupa, globosa, de 4–6 lóculos, semillas 1-2; mesocarpo grueso y graso o carnoso; endocarpo leñoso, espinoso en el exterior; semillas reniformes o subreniformes (Prance y Freitas da Silva, 1973; Vásquez et al., 1997)."
@@ -415,7 +415,7 @@
       ]
     },
     "codigoQR": "PLANTA_225_ALMENDRO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CAPINURÍ",
@@ -451,7 +451,7 @@
       ]
     },
     "codigoQR": "PLANTA_229_GUAIMARO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "UCUUBA",
@@ -467,7 +467,7 @@
     "descripcion": "",
     "usos": {},
     "codigoQR": "PLANTA_234_UCUUBA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "LAUREL",
@@ -501,7 +501,7 @@
       ]
     },
     "codigoQR": "PLANTA_240_LAUREL",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "LACRE",
@@ -538,7 +538,7 @@
       ]
     },
     "codigoQR": "PLANTA_244_LACRE",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "LLORÓN",
@@ -573,7 +573,7 @@
       ]
     },
     "codigoQR": "PLANTA_256_CAMASEY",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "ASAÍ",
@@ -610,7 +610,7 @@
       ]
     },
     "codigoQR": "PLANTA_267_ASAI",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CARGUERO",
@@ -646,7 +646,7 @@
       ]
     },
     "codigoQR": "PLANTA_271_CARGUERO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "PLATANILLO",
@@ -681,7 +681,7 @@
       ]
     },
     "codigoQR": "PLANTA_291_PLATANILLO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "UVILLA",
@@ -717,7 +717,7 @@
       ]
     },
     "codigoQR": "PLANTA_298_UVILLA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "ALGODONCILLO",
@@ -752,7 +752,7 @@
       ]
     },
     "codigoQR": "PLANTA_313_ALGODONCILLO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CAFETILLO",
@@ -788,7 +788,7 @@
       ]
     },
     "codigoQR": "PLANTA_327_CAFETILLO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CHILCO",
@@ -822,7 +822,7 @@
       ]
     },
     "codigoQR": "PLANTA_333_CHILCO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "LAUREL",
@@ -855,7 +855,7 @@
       ]
     },
     "codigoQR": "PLANTA_349_LAUREL",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "COPOAZÚ",
@@ -888,7 +888,7 @@
       ]
     },
     "codigoQR": "PLANTA_363_COPOAZU",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CHICLE",
@@ -922,7 +922,7 @@
       ]
     },
     "codigoQR": "PLANTA_382_CHICLE",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "MOROCHILLO",
@@ -957,7 +957,7 @@
       ]
     },
     "codigoQR": "PLANTA_387_MOROCHILLO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "FLOR AMARILLO",
@@ -991,7 +991,7 @@
       ]
     },
     "codigoQR": "PLANTA_389_FLOR_AMARILLO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "AGUACATE",
@@ -1028,7 +1028,7 @@
       ]
     },
     "codigoQR": "PLANTA_413_AGUACATE",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CAMPANILLO",
@@ -1062,7 +1062,7 @@
       ]
     },
     "codigoQR": "PLANTA_429_CAMPANILLO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "ELAEIS GUINEENSIS",
@@ -1078,7 +1078,7 @@
     "descripcion": "",
     "usos": {},
     "codigoQR": "PLANTA_442_ELAEIS_GUINEENSIS",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CACAO",
@@ -1113,7 +1113,7 @@
       ]
     },
     "codigoQR": "PLANTA_450_CACAO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CANALETE",
@@ -1148,7 +1148,7 @@
       ]
     },
     "codigoQR": "PLANTA_478_CANALETE",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "COPAL",
@@ -1185,7 +1185,7 @@
       ]
     },
     "codigoQR": "PLANTA_504_COPAL",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "PARKIA CF. VAUPESIANA",
@@ -1201,7 +1201,7 @@
     "descripcion": "",
     "usos": {},
     "codigoQR": "PLANTA_505_PARKIA_CF_VAUPESIANA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "ALMENDRO",
@@ -1237,7 +1237,7 @@
       ]
     },
     "codigoQR": "PLANTA_518_ALMENDRO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "GUAMO BLANCO",
@@ -1272,7 +1272,7 @@
       ]
     },
     "codigoQR": "PLANTA_550_GUAMO_BLANCO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "SANGRE DE GRADO",
@@ -1305,7 +1305,7 @@
       ]
     },
     "codigoQR": "PLANTA_566_SANGRE_DE_GRADO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "PALO DE GALLINAZO",
@@ -1339,7 +1339,7 @@
       ]
     },
     "codigoQR": "PLANTA_589_PALO_DE_GALLINAZO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "PALO BREO",
@@ -1376,7 +1376,7 @@
       ]
     },
     "codigoQR": "PLANTA_606_PALO_BREO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "PAN DE ÁRBOL",
@@ -1412,7 +1412,7 @@
       ]
     },
     "codigoQR": "PLANTA_719_PAN_DE_ARBOL",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "ÁRBOL BENJAMÍN",
@@ -1446,7 +1446,7 @@
       ]
     },
     "codigoQR": "PLANTA_819_ARBOL_BENJAMIN",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "MADROÑO",
@@ -1481,7 +1481,7 @@
       ]
     },
     "codigoQR": "PLANTA_895_MADRONO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "GUAMA",
@@ -1517,7 +1517,7 @@
       ]
     },
     "codigoQR": "PLANTA_915_GUAMA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "BACABA",
@@ -1553,7 +1553,7 @@
       ]
     },
     "codigoQR": "PLANTA_929_BACABA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "PALETO",
@@ -1586,7 +1586,7 @@
       ]
     },
     "codigoQR": "PLANTA_933_PALETO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "MAMONCILLO",
@@ -1622,7 +1622,7 @@
       ]
     },
     "codigoQR": "PLANTA_939_MAMONCILLO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "CHONTADURO",
@@ -1659,7 +1659,7 @@
       ]
     },
     "codigoQR": "PLANTA_968_CHONTADURO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "UBO",
@@ -1694,7 +1694,7 @@
       ]
     },
     "codigoQR": "PLANTA_978_UBO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "ALMENDRO",
@@ -1730,7 +1730,7 @@
       ]
     },
     "codigoQR": "PLANTA_985_ALMENDRO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "LIVISTONA SP. 1",
@@ -1746,7 +1746,7 @@
     "descripcion": "",
     "usos": {},
     "codigoQR": "PLANTA_995_LIVISTONA_SP_1",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "ANDIROBA",
@@ -1781,7 +1781,7 @@
       ]
     },
     "codigoQR": "PLANTA_999_ANDIROBA",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "PALO DE ARCO",
@@ -1817,7 +1817,7 @@
       ]
     },
     "codigoQR": "PLANTA_1004_PALO_DE_ARCO",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "NAIDÍ",
@@ -1853,7 +1853,7 @@
       ]
     },
     "codigoQR": "PLANTA_1006_NAIDI",
-    "bloqueado": true
+    "bloqueado": false
   },
   {
     "nombre": "POMARROSO",

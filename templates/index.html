@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=11" />
+  <link rel="stylesheet" href="/static/css/index.css?v=13" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -231,6 +231,7 @@
               <option value="todos">Todos</option>
               <option value="desbloqueados">Solo recolectados</option>
               <option value="bloqueados">Por recolectar</option>
+              <option value="favoritos">❤️ Favoritos</option>
             </select>
           </div>
         </div>
@@ -286,22 +287,9 @@
             <!-- Badges generados dinámicamente -->
           </div>
 
-          <!-- 4. Apartado para la descripción -->
-          <div class="detail-section">
-            <h4 class="detail-section-title">Descripción Botánica</h4>
-            <div id="detailPlantDescription" class="detail-description-text">
-              <!-- Descripción dinámica -->
-            </div>
-          </div>
-
-          <!-- Usos y aplicaciones si existen -->
-          <div id="detailPlantUsesContainer" class="detail-section" style="display: none;">
-            <!-- Usos dinámicos -->
-          </div>
-
-          <!-- 5. Espacio reservado para Información Adicional -->
-          <div id="detailPlantExtraSection" class="detail-section detail-extra-section">
-            <!-- Placeholder para la información adicional futura -->
+          <!-- 4. Ficha: nombres comunes, descripción, distribución, usos y categorías de uso -->
+          <div id="detailPlantSections" class="detail-sections">
+            <!-- Secciones generadas dinámicamente -->
           </div>
         </div>
       </div>
@@ -449,14 +437,16 @@
   <script src="/static/js/sweetalert2.min.js"></script>
   <!-- Almacenamiento y captura de fotos de árboles -->
   <script src="/static/js/photo-storage.js?v=2"></script>
+  <!-- Árboles favoritos -->
+  <script src="/static/js/favorites.js?v=1"></script>
   <!-- Manejador de plantas -->
-  <script src="/static/js/plants-handler.js?v=7"></script>
+  <script src="/static/js/plants-handler.js?v=9"></script>
   <!-- Manejador de QR (importa QrScanner) -->
   <script src="/static/js/qr-handler.js" type="module"></script>
   <!-- Álbum de Árboles Recolectados -->
-  <script src="/static/js/album-handler.js?v=5"></script>
+  <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
-  <script src="/static/js/index.js?v=6"></script>
+  <script src="/static/js/index.js?v=7"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">

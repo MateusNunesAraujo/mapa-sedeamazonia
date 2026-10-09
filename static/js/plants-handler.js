@@ -142,36 +142,11 @@ class PlantsHandler {
       `;
     }
 
-    // Lista adaptable de usos (título seguido de texto)
-    const usos = this.formatearUsos(planta);
-    let usosHTML = '';
-    if (usos && usos.length > 0) {
-      usosHTML = `
-        <div class="planta-usos-seccion">
-          <span class="planta-seccion-subtitulo"><strong>Usos</strong></span>
-          <ul class="planta-usos-lista">
-            ${usos.map(u => `
-              <li class="planta-uso-item">
-                <strong class="planta-uso-titulo">${u.titulo}:</strong> <span class="planta-uso-texto">${u.texto}</span>
-              </li>
-            `).join('')}
-          </ul>
-        </div>
-      `;
-    }
-
     // Foto tomada por el usuario o, en su defecto, la foto por defecto del JSON
     const finalPhotoSrc = window.photoStorage ? window.photoStorage.getDisplayPhoto(planta) : null;
 
-    // Botón de cámara en la esquina superior derecha (SOLO para árboles desbloqueados)
-    const cameraBtnHTML = isUnlocked ? `
-      <button class="btn-camera-capture" 
-              onclick="event.stopPropagation(); window.photoStorage.promptCapture('${planta.codigoQR}')" 
-              title="Tomar o cambiar foto de este árbol" 
-              aria-label="Tomar foto del árbol">
-        📷
-      </button>
-    ` : '';
+    // Botón de favorito en la esquina superior derecha (SOLO para árboles desbloqueados)
+    const favoritoBtnHTML = isUnlocked ? window.favorites.buttonHTML(planta.codigoQR, 'btn-favorito-popup') : '';
 
     // Espacio para la foto con fallback elegante si no existe archivo de imagen
     const photoHTML = `
@@ -187,7 +162,7 @@ class PlantsHandler {
                <span>Espacio para fotografía</span>
              </div>`
         }
-        ${cameraBtnHTML}
+        ${favoritoBtnHTML}
       </div>
     `;
 
@@ -218,7 +193,11 @@ class PlantsHandler {
             </div>
           ` : ''}
 
-          ${usosHTML}
+          <!-- Los usos y la ficha técnica completa se ven en el álbum -->
+          <button onclick="window.albumHandler.openPlantFromMap('${planta.codigoQR}')"
+                  class="btn-desbloquear-popup btn-ver-mas-popup">
+            📖 Ver más información
+          </button>
         </div>
       </div>
     `;
@@ -297,9 +276,10 @@ class PlantsHandler {
 
 // Crear instancia global
 const plantsHandler = new PlantsHandler();
+window.plantsHandler = plantsHandler; // el álbum lo usa para formatear los usos
 
-// Escuchar actualización de foto para refrescar el popup del mapa si está abierto
-document.addEventListener('treePhotoUpdated', (e) => {
+// Escuchar actualización de foto o de favorito para refrescar el popup del mapa si está abierto
+const refrescarPopupAbierto = (e) => {
   const { codigoQR } = e.detail;
   if (plantsHandler && plantsHandler.markers && plantsHandler.markers[codigoQR]) {
     const marker = plantsHandler.markers[codigoQR];
@@ -307,4 +287,6 @@ document.addEventListener('treePhotoUpdated', (e) => {
       marker.setPopupContent(plantsHandler.getPlantHTML(codigoQR));
     }
   }
-});
+};
+document.addEventListener('treePhotoUpdated', refrescarPopupAbierto);
+document.addEventListener('favoritesUpdated', refrescarPopupAbierto);
