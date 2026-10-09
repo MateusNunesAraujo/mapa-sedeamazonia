@@ -210,14 +210,17 @@ class PlantsHandler {
     // true = Bloqueado (requiere QR), false = Desbloqueado
     const isUnlocked = !planta.bloqueado || unlocker.isUnlocked(planta.codigoQR);
 
-    const color = isUnlocked ? '#4caf50' : '#999'; // Verde si desbloqueado, gris si bloqueado
+    // Terracota (tierra amazónica) si desbloqueado, gris si bloqueado.
+    // No se usa verde porque se confunde con los árboles dibujados en la imagen del mapa;
+    // el borde blanco separa el punto del fondo.
+    const color = isUnlocked ? '#C2571A' : '#999';
 
     const marker = L.circleMarker(planta.punto, {
-      color: color,
+      color: '#ffffff',
       fillColor: color,
-      fillOpacity: isUnlocked ? 0.8 : 0.4,
-      radius: isUnlocked ? 10 : 6,
-      weight: 2
+      fillOpacity: isUnlocked ? 0.95 : 0.6,
+      radius: isUnlocked ? 9 : 6,
+      weight: isUnlocked ? 2.5 : 1.5
     }).bindPopup(() => this.getPlantHTML(planta.codigoQR), {
       maxWidth: 360,
       minWidth: 280,
