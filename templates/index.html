@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=13" />
+  <link rel="stylesheet" href="/static/css/index.css?v=14" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -146,6 +146,11 @@
         <span class="notification-badge" id="albumBadge" style="display: none"></span>
       </button>
 
+      <!-- PRUEBA glosario AR (paso 1): quitar cuando exista el glosario -->
+      <button class="action-btn" id="arTestBtn" aria-label="Prueba de 3D y realidad aumentada"
+        style="margin-right: 8px; font-size: 20px;" title="Prueba 3D / AR">
+        🧊
+      </button>
 
       <!-- Botón de Notificaciones -->
       <button class="action-btn notification-btn" id="notificationBtn" aria-label="Ver notificaciones">
@@ -428,6 +433,23 @@
     </div>
   </div>
 
+  <!-- PRUEBA glosario AR (paso 1) -->
+  <div id="arTestModal" class="ar-test-modal" role="dialog" aria-labelledby="arTestTitle" aria-modal="true"
+    style="display: none">
+    <div class="ar-test-content">
+      <div class="ar-test-header">
+        <h2 id="arTestTitle">Prueba 3D / AR</h2>
+        <button class="ar-test-close" id="arTestCloseBtn" aria-label="Cerrar prueba">&times;</button>
+      </div>
+      <div class="ar-test-opciones">
+        <label><input type="radio" name="arTestModelo" value="local" checked> Hoja (dentro de la app)</label>
+        <label><input type="radio" name="arTestModelo" value="online"> Ejemplo en línea</label>
+      </div>
+      <div id="arTestViewer" class="ar-test-viewer"></div>
+      <pre id="arTestEstado" class="ar-test-estado"></pre>
+    </div>
+  </div>
+
   <script src="/static/leaflet/leaflet.js"></script>
   <!-- Offline: Geoman local -->
   <script src="/static/geoman/leaflet-geoman.min.js"></script>
@@ -447,6 +469,8 @@
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
   <script src="/static/js/index.js?v=7"></script>
+  <!-- PRUEBA glosario AR (paso 1) -->
+  <script src="/static/js/ar-prueba.js?v=1"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">
