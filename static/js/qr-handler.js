@@ -102,32 +102,6 @@ class QRScannerHandler {
   }
 
   /**
-   * Mostrar mensaje de éxito
-   */
-  showSuccessMessage(data) {
-    this.scanResultElement.innerHTML = `
-      <div style="background: #4caf50; color: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
-        <h3>✅ ${data.message}</h3>
-        <p><strong>Planta desbloqueada:</strong> ${data.codigoQR}</p>
-        <p><strong>Hora:</strong> ${data.fecha}</p>
-      </div>
-    `;
-    this.scanResultElement.style.display = 'block';
-  }
-
-  /**
-   * Mostrar mensaje de advertencia
-   */
-  showWarningMessage(message) {
-    this.scanResultElement.innerHTML = `
-      <div style="background: #ff9800; color: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
-        <h3>${message}</h3>
-      </div>
-    `;
-    this.scanResultElement.style.display = 'block';
-  }
-
-  /**
    * Mostrar mensaje de error
    */
   showErrorMessage(message) {
@@ -179,14 +153,4 @@ window.abrirScanner = function() {
 
 window.closeQRScanner = function() {
   window.qrHandler.closeModal();
-}
-
-/**
- * Actualizar display después de desbloquear
- * Llama a la función en index.js para actualizar el mapa
- */
-function refreshDisplay() {
-  if (typeof actualizarPlantas === 'function') {
-    actualizarPlantas();
-  }
 }

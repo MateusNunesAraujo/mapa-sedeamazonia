@@ -30,6 +30,7 @@ if (map.pm) map.pm.addControls({
 
 /* -------------------------------------- */
 
+/* Solo para entorno de prueba */
 map.on("click", function (e) {
   var lat = e.latlng.lat;
   var lng = e.latlng.lng;
@@ -133,168 +134,112 @@ searchBox.addEventListener("click", (e) => {
   detailCard.classList.remove("active");
 });
 
-// Función para mostrar detalles del lugar seleccionado
-function mostrarDetalle(lugar, esPlanta = false) {
+// Función para mostrar detalles del edificio seleccionado
+function mostrarDetalle(lugar) {
   const fotoUrl = lugar.foto ? `/static/fotos/${lugar.foto}` : null;
 
-  // Verificar si planta está bloqueada
-  // true = Bloqueado (requiere QR), false = Desbloqueado
-  const isUnlocked = !esPlanta || !lugar.bloqueado || unlocker.isUnlocked(lugar.codigoQR);
-  const plantaBloqueada = esPlanta && !isUnlocked;
+  detailPhoto.innerHTML = fotoUrl
+    ? `<img src="${fotoUrl}" alt="${lugar.nombre}">`
+    : "📷";
 
-  if (fotoUrl && !plantaBloqueada) {
-    detailPhoto.innerHTML = `<img src="${fotoUrl}" alt="${lugar.nombre}">`;
-  } else if (plantaBloqueada) {
-    detailPhoto.innerHTML = '<div style="font-size: 4em; display: flex; align-items: center; justify-content: center; height: 200px; background: #f5f5f5;">🔒</div>';
+  detailTitle.textContent = lugar.nombre;
+  detailDescription.textContent =
+    lugar.descripcion || "Sin descripción disponible.";
+
+  detailSchedule.textContent = lugar.horario || "No especificado";
+  if (!lugar.reglas || lugar.reglas.trim() === "") {
+    detailRules.textContent = "Sin reglas específicas.";
   } else {
-    detailPhoto.innerHTML = esPlanta ? "🌿" : "📷";
-  }
+    const lineas = lugar.reglas
+      .split("\n")
+      .map((r) => r.trim())
+      .filter(Boolean);
 
-  // Mostrar estado bloqueado o contenido normal
-  if (plantaBloqueada) {
-    detailTitle.textContent = '🔒 Bloqueado';
-    detailDescription.textContent =
-      'Escanea un código QR para desbloquear esta planta y ver su contenido completo.';
-  } else {
-    detailTitle.textContent = lugar.nombre;
-    detailDescription.textContent =
-      lugar.descripcion || "Sin descripción disponible.";
-  }
-
-  // Elementos UI de detalles
-  const sectionSchedule = document.getElementById("sectionSchedule");
-  const sectionRules = document.getElementById("sectionRules");
-  const sectionNews = document.getElementById("sectionNews");
-  const sectionScientificName = document.getElementById(
-    "sectionScientificName",
-  );
-  const sectionUses = document.getElementById("sectionUses");
-
-  if (esPlanta) {
-    // Ocultar info de edificios
-    sectionSchedule.style.display = "none";
-    sectionRules.style.display = "none";
-    sectionNews.style.display = "none";
-    if (sectionStory) sectionStory.style.display = "none";
-
-    // Mostrar info de plantas solo si no está bloqueada
-    if (!plantaBloqueada) {
-      sectionScientificName.style.display = "flex";
-      document.getElementById("detailScientificName").textContent =
-        lugar.nombre_cientifico || "Desconocido";
-
-      sectionUses.style.display = "flex";
-      document.getElementById("detailUses").textContent =
-        lugar.usos_tradicionales || "No especificado";
+    if (lineas.length > 1) {
+      const ul = document.createElement("ul");
+      ul.className = "detail-rules-list";
+      lineas.forEach((linea) => {
+        const li = document.createElement("li");
+        const cleanLine = linea.replace(/^[•\-\*]\s*/, "");
+        const colonIndex = cleanLine.indexOf(":");
+        if (colonIndex !== -1 && colonIndex < 35) {
+          const strong = document.createElement("strong");
+          strong.textContent = cleanLine.substring(0, colonIndex + 1);
+          li.appendChild(strong);
+          li.appendChild(
+            document.createTextNode(
+              " " + cleanLine.substring(colonIndex + 1).trim(),
+            ),
+          );
+        } else {
+          li.textContent = cleanLine;
+        }
+        ul.appendChild(li);
+      });
+      detailRules.innerHTML = "";
+      detailRules.appendChild(ul);
     } else {
-      sectionScientificName.style.display = "none";
-      sectionUses.style.display = "none";
+      detailRules.textContent = lugar.reglas;
     }
-  } else {
-    // Mostrar info de edificios
-    sectionSchedule.style.display = "flex";
-    sectionRules.style.display = "flex";
-    sectionNews.style.display = "flex";
+  }
+  detailNews.textContent = lugar.novedades || "Sin novedades recientes.";
 
-    detailSchedule.textContent = lugar.horario || "No especificado";
-    if (!lugar.reglas || lugar.reglas.trim() === "") {
-      detailRules.textContent = "Sin reglas específicas.";
-    } else {
-      const lineas = lugar.reglas
-        .split("\n")
-        .map((r) => r.trim())
-        .filter(Boolean);
+  // Renderizado del apartado de Historias y Relatos
+  if (sectionStory) {
+    sectionStory.style.display = "block";
 
-      if (lineas.length > 1) {
-        const ul = document.createElement("ul");
-        ul.className = "detail-rules-list";
-        lineas.forEach((linea) => {
-          const li = document.createElement("li");
-          const cleanLine = linea.replace(/^[•\-\*]\s*/, "");
-          const colonIndex = cleanLine.indexOf(":");
-          if (colonIndex !== -1 && colonIndex < 35) {
-            const strong = document.createElement("strong");
-            strong.textContent = cleanLine.substring(0, colonIndex + 1);
-            li.appendChild(strong);
-            li.appendChild(
-              document.createTextNode(
-                " " + cleanLine.substring(colonIndex + 1).trim(),
-              ),
-            );
-          } else {
-            li.textContent = cleanLine;
-          }
-          ul.appendChild(li);
-        });
-        detailRules.innerHTML = "";
-        detailRules.appendChild(ul);
+    let historiaTexto = "";
+    let historiaLink = "";
+    let historiaLinkTitulo = "Explorar historia completa";
+
+    if (typeof lugar.historia === "string") {
+      historiaTexto = lugar.historia.trim();
+    } else if (lugar.historia && typeof lugar.historia === "object") {
+      historiaTexto = (lugar.historia.texto || lugar.historia.descripcion || "").trim();
+      if (lugar.historia.link || lugar.historia.enlace || lugar.historia.url) {
+        historiaLink = (lugar.historia.link || lugar.historia.enlace || lugar.historia.url).trim();
+      }
+      if (lugar.historia.titulo_link || lugar.historia.titulo_enlace || lugar.historia.link_texto) {
+        historiaLinkTitulo = lugar.historia.titulo_link || lugar.historia.titulo_enlace || lugar.historia.link_texto;
+      }
+    }
+
+    // Enlaces definidos a nivel raíz del objeto lugar
+    if (!historiaLink) {
+      historiaLink = (lugar.link_historia || lugar.enlace_historia || lugar.historia_link || lugar.link || "").trim();
+    }
+    if (lugar.titulo_link || lugar.link_texto) {
+      historiaLinkTitulo = lugar.titulo_link || lugar.link_texto;
+    }
+
+    if (detailStory) {
+      if (historiaTexto) {
+        detailStory.textContent = historiaTexto;
+        detailStory.classList.remove("empty-story");
       } else {
-        detailRules.textContent = lugar.reglas;
-      }
-    }
-    detailNews.textContent = lugar.novedades || "Sin novedades recientes.";
-
-    // Renderizado del apartado de Historias y Relatos
-    if (sectionStory) {
-      sectionStory.style.display = "block";
-
-      let historiaTexto = "";
-      let historiaLink = "";
-      let historiaLinkTitulo = "Explorar historia completa";
-
-      if (typeof lugar.historia === "string") {
-        historiaTexto = lugar.historia.trim();
-      } else if (lugar.historia && typeof lugar.historia === "object") {
-        historiaTexto = (lugar.historia.texto || lugar.historia.descripcion || "").trim();
-        if (lugar.historia.link || lugar.historia.enlace || lugar.historia.url) {
-          historiaLink = (lugar.historia.link || lugar.historia.enlace || lugar.historia.url).trim();
-        }
-        if (lugar.historia.titulo_link || lugar.historia.titulo_enlace || lugar.historia.link_texto) {
-          historiaLinkTitulo = lugar.historia.titulo_link || lugar.historia.titulo_enlace || lugar.historia.link_texto;
-        }
-      }
-
-      // Enlaces definidos a nivel raíz del objeto lugar
-      if (!historiaLink) {
-        historiaLink = (lugar.link_historia || lugar.enlace_historia || lugar.historia_link || lugar.link || "").trim();
-      }
-      if (lugar.titulo_link || lugar.link_texto) {
-        historiaLinkTitulo = lugar.titulo_link || lugar.link_texto;
-      }
-
-      if (detailStory) {
-        if (historiaTexto) {
-          detailStory.textContent = historiaTexto;
-          detailStory.classList.remove("empty-story");
-        } else {
-          detailStory.textContent =
-            "Aún no se han registrado relatos para este espacio. Pronto conocerás anécdotas y memorias de la comunidad universitaria.";
-          detailStory.classList.add("empty-story");
-        }
-      }
-
-      if (storyLinkWrapper && detailStoryLink) {
-        if (
-          historiaLink &&
-          (historiaLink.startsWith("http://") ||
-            historiaLink.startsWith("https://") ||
-            historiaLink.startsWith("/"))
-        ) {
-          detailStoryLink.href = historiaLink;
-          if (detailStoryLinkText) {
-            detailStoryLinkText.textContent = historiaLinkTitulo;
-          }
-          storyLinkWrapper.style.display = "flex";
-        } else {
-          detailStoryLink.removeAttribute("href");
-          storyLinkWrapper.style.display = "none";
-        }
+        detailStory.textContent =
+          "Aún no se han registrado relatos para este espacio. Pronto conocerás anécdotas y memorias de la comunidad universitaria.";
+        detailStory.classList.add("empty-story");
       }
     }
 
-    // Ocultar info de plantas
-    sectionScientificName.style.display = "none";
-    sectionUses.style.display = "none";
+    if (storyLinkWrapper && detailStoryLink) {
+      if (
+        historiaLink &&
+        (historiaLink.startsWith("http://") ||
+          historiaLink.startsWith("https://") ||
+          historiaLink.startsWith("/"))
+      ) {
+        detailStoryLink.href = historiaLink;
+        if (detailStoryLinkText) {
+          detailStoryLinkText.textContent = historiaLinkTitulo;
+        }
+        storyLinkWrapper.style.display = "flex";
+      } else {
+        detailStoryLink.removeAttribute("href");
+        storyLinkWrapper.style.display = "none";
+      }
+    }
   }
 
   // Aseguramos cerrar la barra de notificaciones si se abre un detalle para limpiar la pantalla
