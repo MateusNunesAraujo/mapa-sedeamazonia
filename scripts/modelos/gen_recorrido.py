@@ -12,10 +12,15 @@ y añádelo abajo.
 """
 import sys
 
+import gen_arawana
 import gen_auditorio
+import gen_banos
 import gen_biblioteca
 import gen_direccion
+import gen_maloca
+import gen_sala_profesores
 import gen_sala_sistemas2
+import gen_tienda
 from comun import CUMBRERA, Escena, distribucion, nombre_centro, nombre_inicio
 
 esc = Escena()
@@ -40,6 +45,12 @@ for nombre, construir in (("Auditorio", gen_auditorio.construir),
 # Edificios que se ubican solos (la biblioteca tiene varias partes)
 gen_direccion.colocar(esc, dist, inicio=nombre_inicio("Dirección"), terreno=False)
 gen_biblioteca.colocar(esc, dist, inicio=nombre_inicio("Biblioteca"), terreno=False)
+gen_sala_profesores.colocar(esc, dist, inicio=nombre_inicio("Sala de profesores"), terreno=False)
+gen_arawana.colocar(esc, dist, inicio=nombre_inicio("Arawana"), terreno=False)
+gen_maloca.colocar(esc, dist, inicio=nombre_inicio("Maloca"), terreno=False)
+gen_banos.colocar(esc, dist, "hombres", inicio=nombre_inicio("Baños para hombres"), terreno=False)
+gen_banos.colocar(esc, dist, "mujeres", inicio=nombre_inicio("Baño para mujeres"), terreno=False)
+gen_tienda.colocar(esc, dist, inicio=nombre_inicio("Bloque para tienda"), terreno=False)
 
 # Partida por defecto: la del auditorio
 inicio_def = dict(next(n for n in esc.nodos if n["name"] == nombre_inicio("Auditorio")))

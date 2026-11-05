@@ -125,7 +125,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "arawana.png"
+        "foto": "arawana.png",
+        "modelo3d": "arawana.glb"
     },
     {
         "nombre": "Biblioteca",
@@ -208,7 +209,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "profesores.png"
+        "foto": "profesores.png",
+        "modelo3d": "sala_profesores.glb"
     },
     {
         "nombre": "Sala de sistemas 2",
@@ -616,7 +618,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "arquitectura.png"
+        "foto": "arquitectura.png",
+        "modelo3d": "maloca.glb"
     },
     {
         "nombre": "Gestión de Bienes",
@@ -840,7 +843,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "banos_para_hombres.png"
+        "foto": "banos_para_hombres.png",
+        "modelo3d": "banos_hombres.glb"
     },
     {
         "nombre": "Baño para mujeres",
@@ -867,7 +871,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "banos_para_mujeres.png"
+        "foto": "banos_para_mujeres.png",
+        "modelo3d": "banos_mujeres.glb"
     },
     {
         "nombre": "Salones 3A,B y C",
@@ -1029,7 +1034,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "bloque_tienda.png"
+        "foto": "bloque_tienda.png",
+        "modelo3d": "tienda.glb"
     },
     {
         "nombre": "Salones 4A, B y C",

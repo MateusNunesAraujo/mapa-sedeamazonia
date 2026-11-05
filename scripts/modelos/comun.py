@@ -89,6 +89,19 @@ MATERIALES = {
     "blanco":     ((0.86, 0.86, 0.84), 0.0, 0.9),
     "piso_claro": ((0.78, 0.78, 0.76), 0.0, 0.35),
     "tubo":       ((1.00, 1.00, 1.00), 0.0, 0.5, (1.0, 1.0, 0.95)),   # lámpara fluorescente
+    # Sala de profesores (foto static/fotos/profesores.png): muros verdes y teja asfáltica café
+    "pared_verde": ((0.10, 0.33, 0.08), 0.0, 0.85),
+    "techo_cafe": ((0.16, 0.08, 0.05), 0.0, 0.85),
+    "nevera":     ((0.85, 0.86, 0.86), 0.2, 0.4),
+    "cojin":      ((0.30, 0.10, 0.05), 0.0, 0.9),
+    # Maloca (foto static/fotos/arquitectura.png): zócalo magenta y teja oscura
+    "pared_roja": ((0.50, 0.03, 0.09), 0.0, 0.85),
+    "teja_osc":   ((0.06, 0.06, 0.07), 0.0, 0.85),
+    # Baños y tienda (fotos banos_para_hombres.png, banos_para_mujeres.png, bloque_tienda.png)
+    "porcelana":  ((0.90, 0.90, 0.88), 0.0, 0.2),
+    "verde_osc":  ((0.01, 0.16, 0.08), 0.0, 0.8),
+    "lona_verde": ((0.02, 0.45, 0.32), 0.0, 0.6),
+    "rojo":       ((0.60, 0.02, 0.02), 0.0, 0.5),
 }
 
 # ---------------- Medidas comunes de los bloques (metros) ----------------
@@ -256,12 +269,13 @@ class Bloque:
     """
 
     def __init__(self, largo, fondo, alero_izq=ALERO_LADO, alero_der=ALERO_LADO,
-                 cuatro_aguas_izq=False, cuatro_aguas_der=False):
+                 cuatro_aguas_izq=False, cuatro_aguas_der=False,
+                 alero_frente=ALERO_FRENTE, alero_atras=ALERO_ATRAS):
         self.hip_izq, self.hip_der = cuatro_aguas_izq, cuatro_aguas_der
         self.RX0, self.RX1 = -largo / 2, largo / 2
         self.RZ0, self.RZ1 = -fondo / 2, fondo / 2
         self.X0, self.X1 = self.RX0 + alero_izq, self.RX1 - alero_der
-        self.Z0, self.Z1 = self.RZ0 + ALERO_ATRAS, self.RZ1 - ALERO_FRENTE   # Z1 = fachada
+        self.Z0, self.Z1 = self.RZ0 + alero_atras, self.RZ1 - alero_frente   # Z1 = fachada
         self.ZC = (self.Z0 + self.Z1) / 2                                    # bajo la cumbrera
         self.pend = (CUMBRERA - YT) / ((self.Z1 - self.Z0) / 2)
 
@@ -270,7 +284,7 @@ class Bloque:
             esc.caja("pasto", self.RX0 - 4, self.RX1 + 4, -0.05, 0.0, self.RZ0 - 4, self.RZ1 + 6)
         esc.caja("concreto", self.RX0, self.RX1, 0.0, PISO, self.RZ0 + 0.5, self.RZ1 + 0.3)
 
-    def cubierta(self, esc, mat_pared="pared", T=0.2):
+    def cubierta(self, esc, mat_pared="pared", T=0.2, mat_techo="techo"):
         """Techo con alero, caballete y, en los extremos a dos aguas, hastiales.
 
         Todas las aguas tienen la misma pendiente y pasan por el borde alto de los muros.
@@ -329,8 +343,8 @@ class Bloque:
             pts = limpiar(pts)
             if len(pts) < 3:
                 continue
-            esc.poligono("techo", [[x, y(x, z) + T, z] for x, z in pts])
-            esc.poligono("techo", [[x, y(x, z), z] for x, z in reversed(pts)])
+            esc.poligono(mat_techo, [[x, y(x, z) + T, z] for x, z in pts])
+            esc.poligono(mat_techo, [[x, y(x, z), z] for x, z in reversed(pts)])
 
         # Canto del techo, recorriendo el borde por fuera
         bordes = [
@@ -349,7 +363,7 @@ class Bloque:
                 if abs(x0 - x1) + abs(z0 - z1) < 1e-6:
                     continue
                 y0, y1 = alto(x0, z0), alto(x1, z1)
-                esc.poligono("techo", [[x0, y0, z0], [x1, y1, z1], [x1, y1 + T, z1], [x0, y0 + T, z0]])
+                esc.poligono(mat_techo, [[x0, y0, z0], [x1, y1, z1], [x1, y1 + T, z1], [x0, y0 + T, z0]])
 
         esc.caja("madera_osc", xa, xb, C - 0.05, C + T + 0.08, ZC - 0.2, ZC + 0.2)   # caballete
         if not self.hip_izq:
@@ -395,6 +409,35 @@ class Bloque:
                 esc.caja("madera_osc", xi0, xi1, y - 0.32, y - 0.14, z - 0.07, z + 0.07)
 
 
+def faldones(esc, mat, mat_abajo, ext, y_ext, inn, y_inn, T=0.2):
+    """Cuatro aguas entre un rectángulo exterior (x0, x1, z0, z1) a la altura y_ext y uno
+    interior a y_inn (si el interior no tiene ancho, queda una cumbrera o una punta).
+    Arriba en `mat`, la cara de abajo en `mat_abajo` (lo que se ve desde adentro) y un canto
+    alrededor del borde exterior. Sirve para techos de planta cuadrada (Arawana, Maloca)."""
+    def esquinas(r):
+        x0, x1, z0, z1 = r
+        return [(x0, z0), (x0, z1), (x1, z1), (x1, z0)]   # antihorario visto desde arriba
+    O, I = esquinas(ext), esquinas(inn)
+    for i in range(4):
+        a, b, c, d = O[i], O[(i + 1) % 4], I[(i + 1) % 4], I[i]
+        cara = [(a, y_ext), (b, y_ext), (c, y_inn), (d, y_inn)]
+        esc.poligono(mat, [[q[0], y + T, q[1]] for q, y in cara])
+        esc.poligono(mat_abajo, [[q[0], y, q[1]] for q, y in reversed(cara)])
+        esc.poligono(mat, [[a[0], y_ext, a[1]], [b[0], y_ext, b[1]], [b[0], y_ext + T, b[1]], [a[0], y_ext + T, a[1]]])
+
+
+def techo_caseta(esc, b, y_muro, pend, mat="teja_osc", abajo="madera"):
+    """Techo a cuatro aguas (o en punta si la planta es cuadrada) para bloques pequeños:
+    pasa por el borde alto de los muros (y_muro) y por debajo se ve la madera del alero."""
+    RX0, RX1, RZ0, RZ1 = b.RX0, b.RX1, b.RZ0, b.RZ1
+    y_alero = y_muro - pend * (b.X0 - b.RX0)
+    hx, hz = (RX1 - RX0) / 2, (RZ1 - RZ0) / 2
+    m = min(hx, hz)
+    cx, cz = RX0 + hx, RZ0 + hz
+    cima = (cx - (hx - m), cx + (hx - m), cz - (hz - m), cz + (hz - m))
+    faldones(esc, mat, abajo, (RX0, RX1, RZ0, RZ1), y_alero, cima, y_alero + pend * m)
+
+
 # ---------------- Ubicación según el mapa ----------------
 def distribucion():
     """Ubicación y medidas de los bloques modelados, sacadas de los polígonos del mapa.
@@ -404,6 +447,11 @@ def distribucion():
       - sur:   Biblioteca (ala sur)   | Dirección
     Entre las dos hileras queda un patio angosto; la Biblioteca une sus dos alas con
     un hall de entrada que da a ese patio (ver gen_biblioteca.py).
+
+    Aparte, al norte de la Biblioteca, va la Sala de profesores: un bloque suelto, largo
+    de norte a sur, con techo a cuatro aguas y el frente hacia el este (al corredor cubierto).
+    Más al norte, la Arawana (frente al sur) y, al este del corredor cubierto, la Maloca
+    (entrada al oeste); las dos de planta cuadrada con techo propio (ver faldones()).
 
     Devuelve {nombre: (Bloque, cx, cz, frente)}. Al girar 180° (frente al norte), el
     -X local de cada bloque queda al este y el +X local al oeste.
@@ -432,4 +480,39 @@ def distribucion():
                    alero_izq=alero_este, alero_der=alero_oeste, cuatro_aguas_der=hip_oeste)
         cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
         salida[nombre] = (b, cx, cz, "norte")
+
+    # Sala de profesores: girado al este, el X local va de sur (-X) a norte (+X)
+    lat0, lat1, lng0, lng1 = huella("Sala de profesores")
+    b = Bloque((lat1 - lat0) * M_POR_LAT, (lng1 - lng0) * M_POR_LNG,
+               cuatro_aguas_izq=True, cuatro_aguas_der=True)
+    cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+    salida["Sala de profesores"] = (b, cx, cz, "este")
+
+    # Arawana: al norte de la Sala de profesores, casi cuadrada, con el frente al sur
+    lat0, lat1, lng0, lng1 = huella("Arawana")
+    a = 1.3
+    b = Bloque((lng1 - lng0) * M_POR_LNG, (lat1 - lat0) * M_POR_LAT,
+               alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
+    cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+    salida["Arawana"] = (b, cx, cz, "sur")
+
+    # Maloca: cuadrada, al otro lado del corredor cubierto, con la entrada al oeste
+    # (girado al oeste, el X local va de norte (-X) a sur (+X))
+    lat0, lat1, lng0, lng1 = huella("Maloca")
+    a = 1.5
+    b = Bloque((lat1 - lat0) * M_POR_LAT, (lng1 - lng0) * M_POR_LNG,
+               alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
+    cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+    salida["Maloca"] = (b, cx, cz, "oeste")
+
+    # Al norte, a los dos lados del corredor cubierto: baño de hombres (oeste, puerta al este),
+    # y baño de mujeres y tienda (este, mirando al corredor / al pasillo entre los dos).
+    # Girados al este u oeste, el largo (X local) va de norte a sur.
+    for nombre, frente, a in (("Baños para hombres", "este", 0.9), ("Baño para mujeres", "oeste", 0.9),
+                              ("Bloque para tienda", "oeste", 1.0)):
+        lat0, lat1, lng0, lng1 = huella(nombre)
+        b = Bloque((lat1 - lat0) * M_POR_LAT, (lng1 - lng0) * M_POR_LNG,
+                   alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
+        cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+        salida[nombre] = (b, cx, cz, frente)
     return salida

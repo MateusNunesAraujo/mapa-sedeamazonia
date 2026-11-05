@@ -28,7 +28,7 @@ const ALTURAS_CHOQUE = [0.45, 1.0, 1.5];  // alturas (sobre los pies) donde se r
 
 // Mundo con todos los edificios en su sitio (scripts/modelos/gen_recorrido.py)
 // ?v=: súbelo cada vez que regeneres el mundo, para que el navegador no use una copia vieja
-const MUNDO = '/static/modelos/recorrido.glb?v=4';
+const MUNDO = '/static/modelos/recorrido.glb?v=7';
 
 let THREE = null;
 let GLTFLoader = null;
