@@ -2593,3 +2593,238 @@
   overflow-y: auto;
   white-space: pre-wrap;
 }
+.ar-test-viewer { position: relative; }
+.ar-test-pista {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  background: rgba(0, 51, 102, 0.85);
+  color: var(--blanco);
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.detail-ver3d-btn {
+  align-items: center;
+  gap: 6px;
+  margin: 4px 0 12px;
+  background: var(--azul-institucional);
+  color: var(--blanco);
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+}
+.detail-ver3d-btn:active { background: var(--azul-hover); }
+.detail-3d-acciones { display: flex; flex-wrap: wrap; gap: 8px; }
+.ar-test-recorrer-btn {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  background: var(--blanco);
+  color: var(--azul-institucional);
+  border: 2px solid var(--azul-institucional);
+  border-radius: 24px;
+  padding: 8px 16px;
+  font-size: 15px;
+  box-shadow: var(--sombra-suave);
+  white-space: nowrap;
+}
+
+/* ===== Recorrido a pie (primera persona) ===== */
+.recorrido {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  background: #bfe3ff;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.recorrido canvas { display: block; width: 100%; height: 100%; }
+.recorrido-barra {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  padding-top: max(12px, env(safe-area-inset-top));
+  background: linear-gradient(rgba(0, 34, 68, 0.75), rgba(0, 34, 68, 0));
+  color: var(--blanco);
+  pointer-events: none;
+}
+.recorrido-titulo { font-size: 18px; font-weight: 600; }
+.recorrido-salir {
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--azul-institucional);
+  border: none;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.recorrido-cargando {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  color: var(--azul-institucional);
+  font-size: 16px;
+}
+.recorrido-ayuda {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: calc(max(12px, env(safe-area-inset-top)) + 52px);
+  text-align: center;
+  color: var(--blanco);
+  font-size: 14px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
+.recorrido-ayuda.oculta { opacity: 0; }
+.recorrido-ayuda .solo-pc { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .recorrido-ayuda .solo-pc { display: inline; }
+  .recorrido-ayuda .solo-tactil { display: none; }
+}
+.recorrido-joystick {
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  display: none;
+  pointer-events: none;
+}
+.recorrido-joystick.activo { display: block; }
+.recorrido-palanca {
+  position: absolute;
+  left: 35px;
+  top: 35px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+}
+
+/* Flechas para caminar (abajo a la izquierda) */
+.recorrido-flechas {
+  position: absolute;
+  left: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  display: grid;
+  grid-template-columns: repeat(3, 56px);
+  grid-template-rows: repeat(3, 56px);
+  gap: 4px;
+}
+.recorrido-flecha,
+.recorrido-accion {
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  background: rgba(0, 34, 68, 0.45);
+  color: var(--blanco);
+  font-size: 20px;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+.recorrido-flecha { border-radius: 14px; }
+.recorrido-flecha.arriba { grid-column: 2; grid-row: 1; }
+.recorrido-flecha.izquierda { grid-column: 1; grid-row: 2; }
+.recorrido-flecha.derecha { grid-column: 3; grid-row: 2; }
+.recorrido-flecha.abajo { grid-column: 2; grid-row: 3; }
+.recorrido-flecha.presionado,
+.recorrido-accion:active { background: rgba(0, 51, 102, 0.85); }
+
+/* Correr y saltar (abajo a la derecha) */
+.recorrido-acciones {
+  position: absolute;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.recorrido-accion {
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.recorrido-accion span { font-size: 11px; margin-top: 3px; font-weight: 600; }
+.recorrido-accion.correr { width: 64px; height: 64px; font-size: 22px; }
+.recorrido-accion.saltar { width: 80px; height: 80px; font-size: 28px; }
+.recorrido-accion.correr.activo {
+  background: #e8a317;
+  border-color: var(--blanco);
+}
+
+/* Botones de la barra del recorrido: cambiar de modo y salir */
+.recorrido-barra-botones { display: flex; gap: 8px; pointer-events: auto; }
+.recorrido-modo {
+  background: var(--azul-institucional);
+  color: var(--blanco);
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Vista aérea: se esconden los controles de caminar y aparecen los nombres */
+.recorrido .solo-aereo,
+.recorrido.modo-aereo .solo-caminar,
+.recorrido.modo-aereo .recorrido-flechas,
+.recorrido.modo-aereo .recorrido-acciones,
+.recorrido.modo-aereo .recorrido-joystick { display: none; }
+.recorrido.modo-aereo .solo-aereo { display: block; }
+.recorrido-etiquetas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.recorrido:not(.modo-aereo) .recorrido-etiquetas { display: none; }
+.recorrido-etiqueta {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--azul-institucional);
+  border: none;
+  border-radius: 14px;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+.recorrido-etiqueta::after {   /* piquito que apunta al edificio */
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom: 0;
+  border-top-color: rgba(255, 255, 255, 0.95);
+}

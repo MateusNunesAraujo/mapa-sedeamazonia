@@ -164,7 +164,8 @@
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
         "novedades": "",
         "estado": "terminado",
-        "foto": "biblioteca.png"
+        "foto": "biblioteca.png",
+        "modelo3d": "biblioteca.glb"
     },
     {
         "nombre": "Sala de profesores",
@@ -242,7 +243,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "sistemas2.png"
+        "foto": "sistemas2.png",
+        "modelo3d": "sala_sistemas2.glb"
     },
     {
         "nombre": "Dirección",
@@ -268,7 +270,8 @@
         "horario": "",
         "reglas": "",
         "novedades": "",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "direccion.glb"
     },
     {
         "nombre": "Auditorio",
@@ -295,7 +298,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "auditorio.png"
+        "foto": "auditorio.png",
+        "modelo3d": "auditorio.glb"
     },
     {
         "nombre": "Admisión y Matrícula",

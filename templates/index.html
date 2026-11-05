@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=14" />
+  <link rel="stylesheet" href="/static/css/index.css?v=18" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -144,6 +144,12 @@
         style="margin-right: 8px; font-size: 20px; position: relative;" title="Árboles Recolectados">
         🌿
         <span class="notification-badge" id="albumBadge" style="display: none"></span>
+      </button>
+
+      <!-- Mapa 3D: vista aérea del campus en 3D (recorrido.js) -->
+      <button class="action-btn" id="mapa3DBtn" aria-label="Ver el mapa en 3D"
+        style="margin-right: 8px; font-size: 20px;" title="Mapa 3D">
+        🏙️
       </button>
 
       <!-- PRUEBA glosario AR (paso 1): quitar cuando exista el glosario -->
@@ -315,6 +321,10 @@
       <div class="detail-main-info">
         <h2 id="detailTitle">Cargando...</h2>
         <p id="detailDescription" class="detail-desc"></p>
+        <div class="detail-3d-acciones">
+          <button type="button" id="detailVer3DBtn" class="detail-ver3d-btn" style="display: none">🧊 Ver en 3D</button>
+          <button type="button" id="detailRecorrerBtn" class="detail-ver3d-btn" style="display: none">🚶 Caminar</button>
+        </div>
       </div>
 
       <div class="detail-sections">
@@ -438,14 +448,19 @@
     style="display: none">
     <div class="ar-test-content">
       <div class="ar-test-header">
-        <h2 id="arTestTitle">Prueba 3D / AR</h2>
+        <h2 id="arTestTitle">Vista 3D</h2>
         <button class="ar-test-close" id="arTestCloseBtn" aria-label="Cerrar prueba">&times;</button>
       </div>
-      <div class="ar-test-opciones">
+      <div class="ar-test-opciones" id="arTestOpciones">
         <label><input type="radio" name="arTestModelo" value="local" checked> Hoja (dentro de la app)</label>
+        <label><input type="radio" name="arTestModelo" value="auditorio"> Auditorio</label>
+        <label><input type="radio" name="arTestModelo" value="sala_sistemas2"> Sala de sistemas 2</label>
         <label><input type="radio" name="arTestModelo" value="online"> Ejemplo en línea</label>
       </div>
-      <div id="arTestViewer" class="ar-test-viewer"></div>
+      <div id="arTestViewer" class="ar-test-viewer">
+        <div id="arTestPista" class="ar-test-pista" style="display: none">👆 Toca el edificio para ir a él en el mapa</div>
+        <button type="button" id="arTestRecorrerBtn" class="ar-test-recorrer-btn" style="display: none">🚶 Entrar caminando</button>
+      </div>
       <pre id="arTestEstado" class="ar-test-estado"></pre>
     </div>
   </div>
@@ -468,9 +483,11 @@
   <!-- Álbum de Árboles Recolectados -->
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
-  <script src="/static/js/index.js?v=7"></script>
+  <script src="/static/js/index.js?v=10"></script>
   <!-- PRUEBA glosario AR (paso 1) -->
-  <script src="/static/js/ar-prueba.js?v=1"></script>
+  <script src="/static/js/ar-prueba.js?v=5"></script>
+  <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
+  <script src="/static/js/recorrido.js?v=9" type="module"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">

@@ -297,6 +297,37 @@ function mostrarDetalle(lugar, esPlanta = false) {
     sectionUses.style.display = "none";
   }
 
+  // Botón "Ver en 3D" solo para edificios que tienen modelo (campo "modelo3d" en edifcios.json)
+  const ver3DBtn = document.getElementById("detailVer3DBtn");
+  if (ver3DBtn) {
+    if (!esPlanta && lugar.modelo3d && window.abrirVisor3D) {
+      ver3DBtn.style.display = "inline-flex";
+      ver3DBtn.onclick = () => window.abrirVisor3D({
+        src: `/static/modelos/${lugar.modelo3d}`,
+        nombre: lugar.nombre,
+        lugar: lugar.nombre,
+      });
+    } else {
+      ver3DBtn.style.display = "none";
+      ver3DBtn.onclick = null;
+    }
+  }
+  // Botón "Caminar": recorrido a pie en primera persona por el modelo
+  const recorrerBtn = document.getElementById("detailRecorrerBtn");
+  if (recorrerBtn) {
+    if (!esPlanta && lugar.modelo3d) {
+      recorrerBtn.style.display = "inline-flex";
+      // Se camina por el mundo con todos los edificios, empezando frente a este
+      recorrerBtn.onclick = () => window.abrirRecorrido && window.abrirRecorrido({
+        nombre: lugar.nombre,
+        inicio: lugar.nombre,
+      });
+    } else {
+      recorrerBtn.style.display = "none";
+      recorrerBtn.onclick = null;
+    }
+  }
+
   // Aseguramos cerrar la barra de notificaciones si se abre un detalle para limpiar la pantalla
   notificationSidebar.classList.remove("active");
 
@@ -380,6 +411,15 @@ document.addEventListener("click", (e) => {
     // notificationSidebar.classList.remove("active");
   }
 });
+
+// Lleva el mapa a un lugar por su nombre y abre su tarjeta (lo usa el visor 3D)
+window.irALugar = function (nombre) {
+  const lugar = lugares.find((l) => l.nombre.toLowerCase() === nombre.toLowerCase());
+  if (!lugar) return false;
+  mostrarDetalle(lugar);
+  enfocarLugar(lugar);
+  return true;
+};
 
 // Consumo del JSON local para offline
 fetch("/data/edifcios.json")
