@@ -16,7 +16,7 @@ En el sistema local: +Z = frente (norte), +X = oeste.
 """
 import sys
 
-from comun import G, YT, Y0, Escena, distribucion, nombre_centro, techo_quiebre
+from comun import G, YT, Y0, Escena, cabios, distribucion, nombre_centro, techo_quiebre
 from muebles import computador, estante, mesa, muro_ventanas, planta, silla
 
 MURO = "verde_teal"
@@ -66,35 +66,6 @@ def fachada(esc, X0, X1, Z1):
         caja("madera", x - 0.05, x + 0.05, Y_DIN + 0.1, YT, zv - 0.06, zv + 0.06)
 
 
-def cabio(esc, a, b_, H=0.12, ancho=0.08):
-    """Viga inclinada de sección cuadrada entre los puntos a y b_ (x, y, z) de su cara de abajo."""
-    (xa, ya, za), (xb, yb, zb) = a, b_
-    dx, dz = xb - xa, zb - za
-    L = (dx * dx + dz * dz) ** 0.5
-    nx, nz = -dz / L * ancho / 2, dx / L * ancho / 2           # media anchura, de lado
-    p = [[xa - nx, ya, za - nz], [xa + nx, ya, za + nz], [xb + nx, yb, zb + nz], [xb - nx, yb, zb - nz]]
-    q = [[x, y + H, z] for x, y, z in p]
-    esc.poligono("madera_osc", [p[3], p[2], p[1], p[0]])        # abajo
-    esc.poligono("madera_osc", q)                               # arriba
-    for k in range(4):
-        m = (k + 1) % 4
-        esc.poligono("madera_osc", [p[k], p[m], q[m], q[k]])
-
-
-def cabios(esc, b, paso=0.9, H=0.12):
-    """Cabios de madera bajo el alero (a la vista en la foto), en los cuatro lados: van del
-    borde alto del muro al borde del techo, justo debajo de las tablas."""
-    a = b.X0 - b.RX0
-    y_muro, y_borde = YT - H, YT - P_BAJA * (a - 0.1) - H
-    reparto = lambda u0, u1: [u0 + 0.3 + i * paso for i in range(int((u1 - u0 - 0.6) / paso) + 1)]
-    for x in reparto(b.X0, b.X1):
-        cabio(esc, (x, y_muro, b.Z1), (x, y_borde, b.RZ1 - 0.1), H)
-        cabio(esc, (x, y_borde, b.RZ0 + 0.1), (x, y_muro, b.Z0), H)
-    for z in reparto(b.Z0, b.Z1):
-        cabio(esc, (b.X1, y_muro, z), (b.RX1 - 0.1, y_borde, z), H)
-        cabio(esc, (b.RX0 + 0.1, y_borde, z), (b.X0, y_muro, z), H)
-
-
 def construir(esc, b, inicio="inicio", terreno=True):
     """Dibuja el IMANI en el sistema local de `b` (frente hacia +Z)."""
     X0, X1, Z0, Z1 = b.X0, b.X1, b.Z0, b.Z1
@@ -108,7 +79,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
     muro_ventanas(esc, MURO, Z0, Z1 - 0.45, X1 - G, X1, "z", y_ante=Y0 + 2.0, y_dintel=YT - 0.15, paso=1.2)
     muro_ventanas(esc, MURO, X0 + G, X1 - G, Z0, Z0 + G, "x")
     techo_quiebre(esc, b, P_BAJA, P_ALTA, QUIEBRE, abajo="madera")
-    cabios(esc, b)
+    cabios(esc, b, P_BAJA)
 
     # ---------------- Interior ----------------
     XI0, XI1, ZI0, ZI1 = X0 + G, X1 - G, Z0 + G, Z1 - 0.45

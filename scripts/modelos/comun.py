@@ -112,6 +112,11 @@ MATERIALES = {
     "verde_teal": ((0.0, 0.24, 0.12), 0.0, 0.85),
     "lona_cruda": ((0.52, 0.40, 0.24), 0.0, 0.9),
     "tierra":     ((0.20, 0.12, 0.06), 0.0, 1.0),
+    # Sala de posgrado (foto sala_sistemas_posgrado.png): muros vinotinto
+    "vino":       ((0.25, 0.015, 0.03), 0.0, 0.85),
+    # Oficina de Asesoría y Orientación Tecnológica: cajas de cartón y luces de los equipos
+    "carton":     ((0.42, 0.26, 0.12), 0.0, 0.9),
+    "led":        ((0.10, 0.60, 0.15), 0.0, 0.4, (0.10, 0.90, 0.20)),
 }
 
 # ---------------- Medidas comunes de los bloques (metros) ----------------
@@ -461,6 +466,35 @@ def techo_quiebre(esc, b, p_baja, p_alta, quiebre, abajo="cielo"):
         esc.caja("madera_osc", x0, x1, YT, YT + 0.12, z0, z1)
 
 
+def cabio(esc, a, b_, H=0.12, ancho=0.08):
+    """Viga inclinada de sección cuadrada entre los puntos a y b_ (x, y, z) de su cara de abajo."""
+    (xa, ya, za), (xb, yb, zb) = a, b_
+    dx, dz = xb - xa, zb - za
+    L = (dx * dx + dz * dz) ** 0.5
+    nx, nz = -dz / L * ancho / 2, dx / L * ancho / 2           # media anchura, de lado
+    p = [[xa - nx, ya, za - nz], [xa + nx, ya, za + nz], [xb + nx, yb, zb + nz], [xb - nx, yb, zb - nz]]
+    q = [[x, y + H, z] for x, y, z in p]
+    esc.poligono("madera_osc", [p[3], p[2], p[1], p[0]])        # abajo
+    esc.poligono("madera_osc", q)                               # arriba
+    for k in range(4):
+        m = (k + 1) % 4
+        esc.poligono("madera_osc", [p[k], p[m], q[m], q[k]])
+
+
+def cabios(esc, b, p_baja, paso=0.9, H=0.12):
+    """Cabios de madera bajo el alero (a la vista en IMANI y las salas), en los cuatro lados: van del
+    borde alto del muro al borde del techo, justo debajo de las tablas."""
+    a = b.X0 - b.RX0
+    y_muro, y_borde = YT - H, YT - p_baja * (a - 0.1) - H
+    reparto = lambda u0, u1: [u0 + 0.3 + i * paso for i in range(int((u1 - u0 - 0.6) / paso) + 1)]
+    for x in reparto(b.X0, b.X1):
+        cabio(esc, (x, y_muro, b.Z1), (x, y_borde, b.RZ1 - 0.1), H)
+        cabio(esc, (x, y_borde, b.RZ0 + 0.1), (x, y_muro, b.Z0), H)
+    for z in reparto(b.Z0, b.Z1):
+        cabio(esc, (b.X1, y_muro, z), (b.RX1 - 0.1, y_borde, z), H)
+        cabio(esc, (b.RX0 + 0.1, y_borde, z), (b.X0, y_muro, z), H)
+
+
 def techo_caseta(esc, b, y_muro, pend, mat="teja_osc", abajo="madera"):
     """Techo a cuatro aguas (o en punta si la planta es cuadrada) para bloques pequeños:
     pasa por el borde alto de los muros (y_muro) y por debajo se ve la madera del alero."""
@@ -583,7 +617,27 @@ def distribucion():
                alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
     cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
     salida["APAPORIS"] = (b, cx, cz, "oeste")
+
+    # Sala de sistemas 1 (al sur de IMANI, pegada al corredor) y Sala de posgrado (al este de
+    # las dos, tocando a IMANI): ambas con el frente al oeste. La de posgrado da al paso que
+    # queda entre IMANI y la Sala de sistemas 1. Girado al oeste, el X local va de norte a sur.
+    for nombre in ("Sala de sistemas 1", "Sala de posgrado"):
+        lat0, lat1, lng0, lng1 = huella(nombre)
+        b = Bloque((lat1 - lat0) * M_POR_LAT, (lng1 - lng0) * M_POR_LNG,
+                   alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
+        cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+        salida[nombre] = (b, cx, cz, "oeste")
+
+    # Oficina de Asesoría y Orientación Tecnológica: al sur de la Sala de sistemas 1, también
+    # con el frente al corredor (oeste). Girado al oeste, el X local va de norte a sur.
+    lat0, lat1, lng0, lng1 = huella(OFICINA_TEC)
+    a = 1.2
+    b = Bloque((lat1 - lat0) * M_POR_LAT, (lng1 - lng0) * M_POR_LNG,
+               alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
+    cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+    salida[OFICINA_TEC] = (b, cx, cz, "oeste")
     return salida
 
 
 HUMEDALES = "Laboratorio - Manejo y gestión de humedales"
+OFICINA_TEC = "Oficina de Asesoría y Orientación Tecnológica"

@@ -16,11 +16,10 @@ tanques de agua, lavadero y tinas de humedal artificial (mesocosmos).
 
 En el sistema local: +Z = frente (oeste), +X = sur, -X = norte, -Z = este.
 """
-import math
 import sys
 
 from comun import G, HUMEDALES, M_POR_LAT, M_POR_LNG, YT, Y0, Escena, distribucion, huella, nombre_centro
-from muebles import _caja_eje, computador, estante, mesa, planta, silla
+from muebles import _caja_eje, cilindro, computador, estante, mesa, planta, silla
 
 MURO = "pared_mostaza"
 YP = Y0 + 0.02
@@ -144,13 +143,6 @@ def ventanal(esc, a0, a1, c0, c1, eje="x", puerta=None, adentro=1, macizo=False)
 
 
 # ---------------- Muebles del laboratorio ----------------
-def cilindro(esc, mat, x, z, r, y0, y1, n=12):
-    pts = [(x + r * math.cos(2 * math.pi * k / n), z - r * math.sin(2 * math.pi * k / n)) for k in range(n)]
-    esc.poligono(mat, [[px, y1, pz] for px, pz in pts])
-    for p, q in zip(pts, pts[1:] + pts[:1]):
-        esc.poligono(mat, [[p[0], y0, p[1]], [q[0], y0, q[1]], [q[0], y1, q[1]], [p[0], y1, p[1]]])
-
-
 def microscopio(esc, x, z, y):
     caja = esc.caja
     caja("blanco", x - 0.12, x + 0.12, y, y + 0.04, z - 0.15, z + 0.15)

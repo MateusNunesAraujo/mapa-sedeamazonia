@@ -681,7 +681,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "oficina_asesoria_y_orientacion_tecnologica.png"
+        "foto": "oficina_asesoria_y_orientacion_tecnologica.png",
+        "modelo3d": "oficina_tec.glb"
     },
     {
         "nombre": "Bloque 13",
@@ -735,7 +736,8 @@
         "reglas": "No entrar con bebidas ni comidas y dejar los bolsos en la parte trasera de la sala.",
         "novedades": "",
         "estado": "terminado",
-        "foto": "sala_sistemas_1.png"
+        "foto": "sala_sistemas_1.png",
+        "modelo3d": "sala_sistemas1.glb"
     },
     {
         "nombre": "IMANI",
@@ -790,7 +792,8 @@
         "reglas": "No entrar con bebidas ni comidas y dejar los bolsos en la parte trasera de la sala.",
         "novedades": "",
         "estado": "terminado",
-        "foto": "sala_sistemas_posgrado.png"
+        "foto": "sala_sistemas_posgrado.png",
+        "modelo3d": "sala_posgrado.glb"
     },
     {
         "nombre": "APAPORIS",

@@ -22,10 +22,13 @@ import gen_direccion
 import gen_imani
 import gen_lab_humedales
 import gen_maloca
+import gen_oficina_tec
+import gen_sala_posgrado
 import gen_sala_profesores
+import gen_sala_sistemas1
 import gen_sala_sistemas2
 import gen_tienda
-from comun import CUMBRERA, HUMEDALES, Escena, distribucion, nombre_centro, nombre_inicio
+from comun import CUMBRERA, HUMEDALES, OFICINA_TEC, Escena, distribucion, nombre_centro, nombre_inicio
 
 esc = Escena()
 dist = distribucion()
@@ -59,6 +62,9 @@ gen_aula_tic2.colocar(esc, dist, inicio=nombre_inicio("Aula tic 2"), terreno=Fal
 gen_lab_humedales.colocar(esc, dist, inicio=nombre_inicio(HUMEDALES), terreno=False)
 gen_imani.colocar(esc, dist, inicio=nombre_inicio("IMANI"), terreno=False)
 gen_apaporis.colocar(esc, dist, inicio=nombre_inicio("APAPORIS"), terreno=False)
+gen_sala_sistemas1.colocar(esc, dist, inicio=nombre_inicio("Sala de sistemas 1"), terreno=False)
+gen_sala_posgrado.colocar(esc, dist, inicio=nombre_inicio("Sala de posgrado"), terreno=False)
+gen_oficina_tec.colocar(esc, dist, inicio=nombre_inicio(OFICINA_TEC), terreno=False)
 
 # Partida por defecto: la del auditorio
 inicio_def = dict(next(n for n in esc.nodos if n["name"] == nombre_inicio("Auditorio")))
