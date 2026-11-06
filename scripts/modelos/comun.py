@@ -102,6 +102,16 @@ MATERIALES = {
     "verde_osc":  ((0.01, 0.16, 0.08), 0.0, 0.8),
     "lona_verde": ((0.02, 0.45, 0.32), 0.0, 0.6),
     "rojo":       ((0.60, 0.02, 0.02), 0.0, 0.5),
+    # Aula TIC 2 (foto static/fotos/aula_tic_2.png): murales sobre muro blanco y franja rosada
+    "rosa":       ((0.75, 0.20, 0.25), 0.0, 0.8),
+    "mural_azul": ((0.10, 0.22, 0.45), 0.0, 0.85),
+    "mural_verde": ((0.06, 0.24, 0.16), 0.0, 0.85),
+    # Laboratorio de humedales: tanques y acuarios con agua
+    "agua":       ((0.04, 0.16, 0.16), 0.1, 0.05),
+    # IMANI y APAPORIS (fotos IMANI.png y apaporis.png): verde azulado, lona cruda y tierra
+    "verde_teal": ((0.0, 0.24, 0.12), 0.0, 0.85),
+    "lona_cruda": ((0.52, 0.40, 0.24), 0.0, 0.9),
+    "tierra":     ((0.20, 0.12, 0.06), 0.0, 1.0),
 }
 
 # ---------------- Medidas comunes de los bloques (metros) ----------------
@@ -153,7 +163,11 @@ class Escena:
         """Cara plana (convexa) con sus puntos en orden antihorario visto desde afuera."""
         pts = [self._mundo(p) for p in pts]
         g = self.geo[mat]
-        n = norm(cross(sub(pts[1], pts[0]), sub(pts[2], pts[0])))
+        n = cross(sub(pts[1], pts[0]), sub(pts[2], pts[0]))
+        if sum(x * x for x in n) < 1e-12:   # primeros puntos repetidos o en línea: normal de Newell
+            n = [sum((p[(k + 1) % 3] - q[(k + 1) % 3]) * (p[(k + 2) % 3] + q[(k + 2) % 3])
+                     for p, q in zip(pts, pts[1:] + pts[:1])) for k in range(3)]
+        n = norm(n)
         base = len(g["pos"])
         for p in pts:
             g["pos"].append(p)
@@ -426,6 +440,27 @@ def faldones(esc, mat, mat_abajo, ext, y_ext, inn, y_inn, T=0.2):
         esc.poligono(mat, [[a[0], y_ext, a[1]], [b[0], y_ext, b[1]], [b[0], y_ext + T, b[1]], [a[0], y_ext + T, a[1]]])
 
 
+def techo_quiebre(esc, b, p_baja, p_alta, quiebre, abajo="cielo"):
+    """Teja oscura a cuatro aguas con quiebre: suave en el alero (p_baja) y más empinada arriba
+    (p_alta), a `quiebre` metros del borde. Pasa por el borde alto de los muros si el alero es
+    igual en los lados (b.X0 - b.RX0). Lleva una viga de amarre sobre los muros, por dentro."""
+    RX0, RX1, RZ0, RZ1 = b.RX0, b.RX1, b.RZ0, b.RZ1
+    alero = b.X0 - b.RX0
+    y_alero = YT - p_baja * alero
+    q = quiebre
+    medio = (RX0 + q, RX1 - q, RZ0 + q, RZ1 - q)
+    y_medio = y_alero + p_baja * q
+    hx, hz = (medio[1] - medio[0]) / 2, (medio[3] - medio[2]) / 2
+    m = min(hx, hz)
+    cx, cz = (RX0 + RX1) / 2, (RZ0 + RZ1) / 2
+    cima = (cx - (hx - m), cx + (hx - m), cz - (hz - m), cz + (hz - m))
+    faldones(esc, "teja_osc", abajo, (RX0, RX1, RZ0, RZ1), y_alero, medio, y_medio)
+    faldones(esc, "teja_osc", abajo, medio, y_medio, cima, y_medio + p_alta * m)
+    for x0, x1, z0, z1 in ((b.X0, b.X1, b.Z0, b.Z0 + G), (b.X0, b.X1, b.Z1 - G, b.Z1),
+                           (b.X0, b.X0 + G, b.Z0, b.Z1), (b.X1 - G, b.X1, b.Z0, b.Z1)):
+        esc.caja("madera_osc", x0, x1, YT, YT + 0.12, z0, z1)
+
+
 def techo_caseta(esc, b, y_muro, pend, mat="teja_osc", abajo="madera"):
     """Techo a cuatro aguas (o en punta si la planta es cuadrada) para bloques pequeños:
     pasa por el borde alto de los muros (y_muro) y por debajo se ve la madera del alero."""
@@ -515,4 +550,40 @@ def distribucion():
                    alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
         cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
         salida[nombre] = (b, cx, cz, frente)
+
+    # Aula TIC 2: entre los dos corredores cubiertos, al norte del baño de mujeres y la tienda.
+    # La espalda da al corredor del oeste y el frente (con alero hondo sobre columnas) al este,
+    # donde un pasillo la une al otro corredor. Girado al este, el X local va de sur a norte.
+    lat0, lat1, lng0, lng1 = huella("Aula tic 2")
+    b = Bloque((lat1 - lat0) * M_POR_LAT, (lng1 - lng0) * M_POR_LNG, alero_frente=2.2, alero_atras=1.2)
+    cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+    salida["Aula tic 2"] = (b, cx, cz, "este")
+
+    # Laboratorio de humedales: al este del corredor cubierto del este, con la puerta hacia él
+    # (oeste). Girado al oeste, el X local va de norte (-X) a sur (+X); la esquina noreste es
+    # un patio de servicio sin techo (ver gen_lab_humedales.py).
+    lat0, lat1, lng0, lng1 = huella(HUMEDALES)
+    b = Bloque((lat1 - lat0) * M_POR_LAT, (lng1 - lng0) * M_POR_LNG, alero_frente=1.2, alero_atras=1.2)
+    cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+    salida[HUMEDALES] = (b, cx, cz, "oeste")
+
+    # IMANI: pegado al corredor del este, con el frente al norte (al prado que lo separa del
+    # laboratorio de humedales). Girado al norte, el X local va de este (-X) a oeste (+X).
+    lat0, lat1, lng0, lng1 = huella("IMANI")
+    a = 1.3
+    b = Bloque((lng1 - lng0) * M_POR_LNG, (lat1 - lat0) * M_POR_LAT,
+               alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
+    cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+    salida["IMANI"] = (b, cx, cz, "norte")
+
+    # APAPORIS: al noreste de IMANI, con el frente al oeste (al mismo prado).
+    # Girado al oeste, el X local va de norte (-X) a sur (+X).
+    lat0, lat1, lng0, lng1 = huella("APAPORIS")
+    b = Bloque((lat1 - lat0) * M_POR_LAT, (lng1 - lng0) * M_POR_LNG,
+               alero_izq=a, alero_der=a, alero_frente=a, alero_atras=a)
+    cx, cz = a_metros((lat0 + lat1) / 2, (lng0 + lng1) / 2)
+    salida["APAPORIS"] = (b, cx, cz, "oeste")
     return salida
+
+
+HUMEDALES = "Laboratorio - Manejo y gestión de humedales"

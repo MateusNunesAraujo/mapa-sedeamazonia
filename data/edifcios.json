@@ -762,7 +762,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "IMANI.png"
+        "foto": "IMANI.png",
+        "modelo3d": "imani.glb"
     },
     {
         "nombre": "Sala de posgrado",
@@ -816,7 +817,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "apaporis.png"
+        "foto": "apaporis.png",
+        "modelo3d": "apaporis.glb"
     },
     {
         "nombre": "Baños para hombres",
@@ -926,7 +928,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "aula_tic_2.png"
+        "foto": "aula_tic_2.png",
+        "modelo3d": "aula_tic2.glb"
     },
     {
         "nombre": "Laboratorio - Manejo y gestión de humedales",
@@ -953,7 +956,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "laboratorio_investigacion_biologica.png"
+        "foto": "laboratorio_investigacion_biologica.png",
+        "modelo3d": "lab_humedales.glb"
     },
     {
         "nombre": "Laboratorio - Ecología y Conservación de Flora y Fauna Silvestre",

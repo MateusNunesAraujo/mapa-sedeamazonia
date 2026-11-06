@@ -14,7 +14,7 @@ En el sistema local: +X = este, +Z = frente (sur).
 """
 import sys
 
-from comun import YT, Y0, G, Escena, distribucion, faldones, nombre_centro
+from comun import YT, Y0, G, Escena, distribucion, nombre_centro, techo_quiebre
 from muebles import computador, estante, mesa, muro_ventanas, planta, silla
 
 MURO = "pared_mostaza"
@@ -72,22 +72,7 @@ def fachada(esc, X0, X1, Z1):
 
 def techo(esc, b):
     """Teja oscura a cuatro aguas con quiebre: suave en el alero y más empinada arriba."""
-    RX0, RX1, RZ0, RZ1 = b.RX0, b.RX1, b.RZ0, b.RZ1
-    alero = b.X0 - b.RX0
-    y_alero = YT - P_BAJA * alero
-    q = QUIEBRE
-    medio = (RX0 + q, RX1 - q, RZ0 + q, RZ1 - q)
-    y_medio = y_alero + P_BAJA * q
-    hx, hz = (medio[1] - medio[0]) / 2, (medio[3] - medio[2]) / 2
-    m = min(hx, hz)
-    cx, cz = (RX0 + RX1) / 2, (RZ0 + RZ1) / 2
-    cima = (cx - (hx - m), cx + (hx - m), cz - (hz - m), cz + (hz - m))
-    faldones(esc, "teja_osc", "cielo", (RX0, RX1, RZ0, RZ1), y_alero, medio, y_medio)
-    faldones(esc, "teja_osc", "cielo", medio, y_medio, cima, y_medio + P_ALTA * m)
-    # Viga de amarre sobre los muros, por dentro
-    for x0, x1, z0, z1 in ((b.X0, b.X1, b.Z0, b.Z0 + G), (b.X0, b.X1, b.Z1 - G, b.Z1),
-                           (b.X0, b.X0 + G, b.Z0, b.Z1), (b.X1 - G, b.X1, b.Z0, b.Z1)):
-        esc.caja("madera_osc", x0, x1, YT, YT + 0.12, z0, z1)
+    techo_quiebre(esc, b, P_BAJA, P_ALTA, QUIEBRE)
 
 
 def construir(esc, b, inicio="inicio", terreno=True):

@@ -12,16 +12,20 @@ y añádelo abajo.
 """
 import sys
 
+import gen_apaporis
 import gen_arawana
+import gen_aula_tic2
 import gen_auditorio
 import gen_banos
 import gen_biblioteca
 import gen_direccion
+import gen_imani
+import gen_lab_humedales
 import gen_maloca
 import gen_sala_profesores
 import gen_sala_sistemas2
 import gen_tienda
-from comun import CUMBRERA, Escena, distribucion, nombre_centro, nombre_inicio
+from comun import CUMBRERA, HUMEDALES, Escena, distribucion, nombre_centro, nombre_inicio
 
 esc = Escena()
 dist = distribucion()
@@ -51,6 +55,10 @@ gen_maloca.colocar(esc, dist, inicio=nombre_inicio("Maloca"), terreno=False)
 gen_banos.colocar(esc, dist, "hombres", inicio=nombre_inicio("Baños para hombres"), terreno=False)
 gen_banos.colocar(esc, dist, "mujeres", inicio=nombre_inicio("Baño para mujeres"), terreno=False)
 gen_tienda.colocar(esc, dist, inicio=nombre_inicio("Bloque para tienda"), terreno=False)
+gen_aula_tic2.colocar(esc, dist, inicio=nombre_inicio("Aula tic 2"), terreno=False)
+gen_lab_humedales.colocar(esc, dist, inicio=nombre_inicio(HUMEDALES), terreno=False)
+gen_imani.colocar(esc, dist, inicio=nombre_inicio("IMANI"), terreno=False)
+gen_apaporis.colocar(esc, dist, inicio=nombre_inicio("APAPORIS"), terreno=False)
 
 # Partida por defecto: la del auditorio
 inicio_def = dict(next(n for n in esc.nodos if n["name"] == nombre_inicio("Auditorio")))
