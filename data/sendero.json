@@ -1,0 +1,431 @@
+{
+  "nombre": "Sendero Interpretativo Ambiental y Cultural",
+  "tramos": [
+    [
+      [
+        57.5,
+        703.0
+      ],
+      [
+        75.0,
+        705.8
+      ],
+      [
+        81.0,
+        714.8
+      ],
+      [
+        77.5,
+        725.2
+      ],
+      [
+        65.0,
+        730.0
+      ],
+      [
+        53.5,
+        746.0
+      ],
+      [
+        38.5,
+        791.8
+      ],
+      [
+        23.5,
+        840.4
+      ],
+      [
+        21.0,
+        859.8
+      ],
+      [
+        27.5,
+        888.3
+      ],
+      [
+        37.5,
+        902.2
+      ],
+      [
+        83.5,
+        929.9
+      ],
+      [
+        144.0,
+        973.6
+      ],
+      [
+        160.0,
+        978.5
+      ],
+      [
+        174.0,
+        974.3
+      ],
+      [
+        197.5,
+        942.4
+      ],
+      [
+        252.5,
+        867.5
+      ],
+      [
+        309.0,
+        783.5
+      ],
+      [
+        326.0,
+        767.5
+      ],
+      [
+        352.0,
+        764.1
+      ],
+      [
+        383.0,
+        761.3
+      ],
+      [
+        406.5,
+        765.4
+      ],
+      [
+        432.5,
+        778.6
+      ],
+      [
+        453.5,
+        800.1
+      ],
+      [
+        479.5,
+        828.6
+      ],
+      [
+        510.5,
+        848.7
+      ],
+      [
+        534.0,
+        852.2
+      ],
+      [
+        790.0,
+        852.2
+      ],
+      [
+        801.5,
+        836.2
+      ],
+      [
+        930.0,
+        763.4
+      ],
+      [
+        952.5,
+        740.5
+      ],
+      [
+        958.5,
+        728.7
+      ],
+      [
+        957.0,
+        714.8
+      ],
+      [
+        900.0,
+        657.2
+      ],
+      [
+        825.0,
+        626.6
+      ],
+      [
+        800.0,
+        616.2
+      ],
+      [
+        698.0,
+        590.6
+      ],
+      [
+        680.0,
+        588.5
+      ],
+      [
+        550.0,
+        591.3
+      ],
+      [
+        521.0,
+        591.3
+      ],
+      [
+        500.0,
+        581.5
+      ],
+      [
+        458.0,
+        556.6
+      ],
+      [
+        395.0,
+        539.2
+      ],
+      [
+        382.5,
+        534.4
+      ],
+      [
+        144.0,
+        460.8
+      ]
+    ],
+    [
+      [
+        57.5,
+        703.0
+      ],
+      [
+        64.0,
+        687.7
+      ],
+      [
+        144.0,
+        460.8
+      ],
+      [
+        209.0,
+        276.2
+      ],
+      [
+        323.0,
+        276.2
+      ]
+    ],
+    [
+      [
+        323.0,
+        276.2
+      ],
+      [
+        326.5,
+        158.9
+      ],
+      [
+        328.5,
+        59.7
+      ],
+      [
+        425.0,
+        63.8
+      ],
+      [
+        461.0,
+        67.3
+      ],
+      [
+        500.0,
+        67.3
+      ],
+      [
+        500.0,
+        124.2
+      ],
+      [
+        499.0,
+        255.4
+      ],
+      [
+        498.0,
+        274.8
+      ],
+      [
+        465.0,
+        274.8
+      ],
+      [
+        387.0,
+        274.8
+      ],
+      [
+        323.0,
+        276.2
+      ]
+    ],
+    [
+      [
+        387.0,
+        274.8
+      ],
+      [
+        388.0,
+        291.5
+      ],
+      [
+        388.0,
+        527.4
+      ],
+      [
+        389.0,
+        536.4
+      ]
+    ],
+    [
+      [
+        389.0,
+        761.3
+      ],
+      [
+        389.0,
+        739.1
+      ],
+      [
+        534.0,
+        739.1
+      ],
+      [
+        536.0,
+        685.6
+      ],
+      [
+        532.5,
+        669.7
+      ],
+      [
+        532.5,
+        591.3
+      ]
+    ]
+  ],
+  "estaciones": [
+    {
+      "numero": 1,
+      "nombre": "Acceso",
+      "icono": "/static/iconos/estaciones/acceso.svg",
+      "punto": [
+        35.2,
+        802.4
+      ]
+    },
+    {
+      "numero": 2,
+      "nombre": "Entrada",
+      "icono": "/static/iconos/estaciones/entrada.svg",
+      "punto": [
+        93.4,
+        937.1
+      ]
+    },
+    {
+      "numero": 3,
+      "nombre": "Aves",
+      "icono": "/static/iconos/estaciones/aves.svg",
+      "punto": [
+        177.1,
+        970.2
+      ]
+    },
+    {
+      "numero": 4,
+      "nombre": "Cananguchales",
+      "icono": "/static/iconos/estaciones/cananguchales.svg",
+      "punto": [
+        250.1,
+        870.7
+      ]
+    },
+    {
+      "numero": 5,
+      "nombre": "Chagra",
+      "icono": "/static/iconos/estaciones/chagra.svg",
+      "punto": [
+        688.5,
+        852.2
+      ]
+    },
+    {
+      "numero": 6,
+      "nombre": "Estratos del Bosque",
+      "icono": "/static/iconos/estaciones/estratos.svg",
+      "punto": [
+        704.4,
+        592.2
+      ]
+    },
+    {
+      "numero": 7,
+      "nombre": "Descomposición",
+      "icono": "/static/iconos/estaciones/descomposicion.svg",
+      "punto": [
+        516.4,
+        589.1
+      ]
+    },
+    {
+      "numero": 8,
+      "nombre": "Maloca",
+      "icono": "/static/iconos/estaciones/maloca.svg",
+      "punto": [
+        535.2,
+        708.0
+      ]
+    },
+    {
+      "numero": 9,
+      "nombre": "Mamíferos",
+      "icono": "/static/iconos/estaciones/mamiferos.svg",
+      "punto": [
+        409.2,
+        543.1
+      ]
+    },
+    {
+      "numero": 10,
+      "nombre": "Insectos Sociales",
+      "icono": "/static/iconos/estaciones/insectos.svg",
+      "punto": [
+        323.4,
+        516.1
+      ]
+    },
+    {
+      "numero": 11,
+      "nombre": "Criaturas del pantano",
+      "icono": "/static/iconos/estaciones/criaturas.svg",
+      "punto": [
+        388.0,
+        397.4
+      ]
+    },
+    {
+      "numero": 12,
+      "nombre": "Orquideario",
+      "icono": "/static/iconos/estaciones/orquideario.svg",
+      "punto": [
+        458.5,
+        274.8
+      ]
+    },
+    {
+      "numero": 13,
+      "nombre": "Sonidos de la selva",
+      "icono": "/static/iconos/estaciones/sonidos.svg",
+      "punto": [
+        238.3,
+        276.2
+      ]
+    },
+    {
+      "numero": 14,
+      "nombre": "Salida",
+      "icono": "/static/iconos/estaciones/salida.svg",
+      "punto": [
+        101.6,
+        581.0
+      ]
+    }
+  ]
+}

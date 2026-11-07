@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=13" />
+  <link rel="stylesheet" href="/static/css/index.css?v=18" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -69,8 +69,33 @@
           autocomplete="off" />
       </div>
       <!-- Botones de Acción Rápida -->
-      <label class="switch" title="Modo Plantas"
-        style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; transform: scale(1.2); transform-origin: bottom left;">
+      <!-- Botón de Escanear QR -->
+      <button class="action-btn" id="scanQRBtn" aria-label="Escanear Código QR" style="margin-right: 8px">
+        <img src="/static/iconos/lente-de-la-camara.png" alt="QR" class="btn-icon">
+      </button>
+
+      <!-- Botón de Árboles Recolectados (Herbario) -->
+      <button class="action-btn" id="albumBtn" aria-label="Ver Árboles Recolectados"
+        style="margin-right: 8px; font-size: 20px; position: relative;" title="Árboles Recolectados">
+        🌿
+        <span class="notification-badge" id="albumBadge" style="display: none"></span>
+      </button>
+
+
+      <!-- Botón de Notificaciones -->
+      <button class="action-btn notification-btn" id="notificationBtn" aria-label="Ver notificaciones">
+        <img src="/static/iconos/campana.png" alt="Notificaciones" class="btn-icon">
+        <span class="notification-badge" id="notificationBadge" style="display: none"></span>
+      </button>
+    </div>
+    <div class="search-results-dropdown" id="searchResults"></div>
+  </div>
+
+  <!-- Panel deslizante de filtros del mapa (esquina inferior izquierda) -->
+  <div class="map-filters" id="mapFilters">
+    <div class="map-filters-panel" id="mapFiltersPanel">
+      <!-- Filtro 1: Modo Plantas -->
+      <label class="switch" title="Modo Plantas">
         <input type="checkbox" id="plantsBtn">
         <span class="slider">
           <svg class="seed" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
@@ -135,26 +160,64 @@
           </svg>
         </span>
       </label>
-      <!-- Botón de Escanear QR -->
-      <button class="action-btn" id="scanQRBtn" aria-label="Escanear Código QR" style="margin-right: 8px">
-        <img src="/static/iconos/lente-de-la-camara.png" alt="QR" class="btn-icon">
-      </button>
-
-      <!-- Botón de Árboles Recolectados (Herbario) -->
-      <button class="action-btn" id="albumBtn" aria-label="Ver Árboles Recolectados"
-        style="margin-right: 8px; font-size: 20px; position: relative;" title="Árboles Recolectados">
-        🌿
-        <span class="notification-badge" id="albumBadge" style="display: none"></span>
-      </button>
-
-
-      <!-- Botón de Notificaciones -->
-      <button class="action-btn notification-btn" id="notificationBtn" aria-label="Ver notificaciones">
-        <img src="/static/iconos/campana.png" alt="Notificaciones" class="btn-icon">
-        <span class="notification-badge" id="notificationBadge" style="display: none"></span>
-      </button>
+      <!-- Filtro 2: Edificios futuros (casco de obra → edificio gris con grúa) -->
+      <label class="switch switch--futuros" title="Edificios futuros">
+        <input type="checkbox" id="futurosBtn" aria-label="Mostrar edificios futuros">
+        <span class="slider">
+          <svg class="seed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true">
+            <path fill="#f5b301" d="M96 320C96 200 170 120 256 120s160 80 160 200z" />
+            <rect fill="#e09a00" x="226" y="104" width="60" height="216" rx="24" />
+            <rect fill="#d98a00" x="48" y="320" width="416" height="56" rx="28" />
+          </svg>
+          <svg class="plant" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true">
+            <!-- Grúa -->
+            <path fill="#f5b301" d="M430 60h20v452h-20zM390 60h110v16H390zM405 76h6v70h-6zM396 146h24v18h-24z" />
+            <!-- Ala baja -->
+            <rect fill="#b0b0b0" x="72" y="240" width="104" height="272" />
+            <path fill="#e3e6e8" d="M100 280h48v40h-48zM100 350h48v40h-48zM100 420h48v40h-48z" />
+            <!-- Torre -->
+            <rect fill="#9e9e9e" x="176" y="72" width="208" height="440" />
+            <rect fill="#757575" x="160" y="56" width="240" height="28" />
+            <path fill="#e3e6e8"
+              d="M208 112h36v40h-36zM262 112h36v40h-36zM316 112h36v40h-36zM208 176h36v40h-36zM262 176h36v40h-36zM316 176h36v40h-36zM208 240h36v40h-36zM262 240h36v40h-36zM316 240h36v40h-36zM208 304h36v40h-36zM262 304h36v40h-36zM316 304h36v40h-36zM208 368h36v40h-36zM262 368h36v40h-36zM316 368h36v40h-36z" />
+            <rect fill="#616161" x="250" y="432" width="60" height="80" />
+          </svg>
+        </span>
+      </label>
+      <!-- Filtro 3: Sendero ecológico (huellas → letrero y árbol) -->
+      <label class="switch switch--sendero" title="Sendero ecológico">
+        <input type="checkbox" id="senderoBtn" aria-label="Mostrar sendero ecológico">
+        <span class="slider">
+          <svg class="seed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true">
+            <g fill="#6b3f1d">
+              <ellipse cx="170" cy="150" rx="70" ry="100" />
+              <ellipse cx="180" cy="315" rx="48" ry="48" />
+              <ellipse cx="342" cy="230" rx="70" ry="100" />
+              <ellipse cx="332" cy="395" rx="48" ry="48" />
+            </g>
+          </svg>
+          <svg class="plant" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true">
+            <!-- Árbol -->
+            <rect fill="#8B4513" x="112" y="300" width="36" height="212" />
+            <circle fill="#5ABA63" cx="130" cy="230" r="100" />
+            <circle fill="#91CF96" cx="105" cy="205" r="50" />
+            <!-- Letrero -->
+            <rect fill="#8B4513" x="320" y="150" width="36" height="362" />
+            <path fill="#AF6D2D" d="M236 170h184l48 46-48 46H236z" />
+            <path fill="#864D18" d="M420 286H262l-46 44 46 44h158z" />
+            <rect fill="#ffe9c4" x="266" y="208" width="130" height="14" rx="7" />
+            <rect fill="#ffe9c4" x="282" y="323" width="114" height="14" rx="7" />
+          </svg>
+        </span>
+      </label>
     </div>
-    <div class="search-results-dropdown" id="searchResults"></div>
+    <button type="button" class="map-filters-tab" id="mapFiltersTab" aria-controls="mapFiltersPanel"
+      aria-expanded="false" aria-label="Mostrar filtros" title="Mostrar filtros">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+        <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"
+          stroke-linejoin="round" />
+      </svg>
+    </button>
   </div>
 
   <!-- Modal Principal: Álbum de Árboles Recolectados -->
@@ -430,7 +493,7 @@
   <!-- Álbum de Árboles Recolectados -->
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
-  <script src="/static/js/index.js?v=7"></script>
+  <script src="/static/js/index.js?v=13"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">

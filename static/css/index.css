@@ -2461,6 +2461,185 @@
       background: #1b5e20;
   }
 
+  /* Panel deslizante de filtros del mapa */
+  .map-filters {
+      --map-filters-tab-width: 26px;
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: stretch;
+      /* Cerrado: solo la pestaña queda dentro de la pantalla */
+      transform: translateX(calc(-100% + var(--map-filters-tab-width)));
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .map-filters.open {
+      transform: translateX(0);
+  }
+
+  .map-filters-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* Separación para que lo que crece de cada interruptor no tape al de arriba */
+      gap: 36px;
+      /* Arriba queda espacio para la planta, que crece desde el interruptor */
+      padding: 40px 14px calc(14px + env(safe-area-inset-bottom));
+      background: var(--blanco);
+      box-shadow: var(--sombra-moderna);
+      /* Fuera del foco del teclado mientras está cerrado */
+      visibility: hidden;
+      transition: visibility 0s linear 0.3s;
+  }
+
+  .map-filters.open .map-filters-panel {
+      visibility: visible;
+      transition-delay: 0s;
+  }
+
+  .map-filters-panel .switch {
+      font-size: 20px;
+  }
+
+  /* La planta invisible no debe activar el modo al tocar el espacio vacío del panel */
+  .map-filters-panel .plant {
+      pointer-events: none;
+  }
+
+  /* Variantes del interruptor: cambian el suelo y el tamaño de lo que crece */
+  .switch--futuros {
+      --mud: #8a8f94;
+  }
+
+  .switch--sendero {
+      --mud: #4d8f3a;
+  }
+
+  .switch--futuros .plant,
+  .switch--sendero .plant {
+      width: 72px;
+      height: 72px;
+      right: -10px;
+  }
+
+  .map-filters-tab {
+      width: var(--map-filters-tab-width);
+      padding: 0;
+      border: none;
+      border-radius: 0 14px 0 0;
+      background: var(--blanco);
+      box-shadow: var(--sombra-moderna);
+      /* Sin sombra hacia el panel, para que ambos se vean como una sola pieza */
+      clip-path: inset(-30px -30px 0 0);
+      color: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+
+  .map-filters-tab svg {
+      transition: transform 0.3s ease;
+  }
+
+  .map-filters.open .map-filters-tab svg {
+      transform: rotate(180deg);
+  }
+
+  /* Estaciones del sendero: pin blanco y verde, distinto de los círculos terracota de los árboles */
+  .estacion-contenido {
+      position: relative;
+      width: 32px;
+      height: 32px;
+      /* Se reduce hacia la punta del pin, que debe seguir sobre el sendero */
+      transform-origin: 16px 39px;
+      transition: transform 0.2s ease;
+  }
+
+  .estaciones-compactas .estacion-contenido {
+      transform: scale(0.65);
+  }
+
+  /* El número compensa la reducción para seguir siendo legible */
+  .estaciones-compactas .estacion-numero {
+      transform: scale(1.3);
+  }
+
+  .estacion-pin {
+      box-sizing: border-box;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--blanco);
+      border: 3px solid #1f5f3f;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  }
+
+  .estacion-pin img {
+      width: 17px;
+      height: 17px;
+      transform: rotate(45deg);
+  }
+
+  .estacion-numero {
+      position: absolute;
+      top: -6px;
+      right: -7px;
+      min-width: 16px;
+      height: 16px;
+      padding: 0 2px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f2a93b;
+      border: 1.5px solid #5b3a1a;
+      border-radius: 8px;
+      color: #3d2610;
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+  }
+
+  .estacion-popup {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+  }
+
+  .estacion-popup-icono {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e8f3ec;
+      border-radius: 50%;
+  }
+
+  .estacion-popup-icono img {
+      width: 22px;
+      height: 22px;
+  }
+
+  .estacion-popup small {
+      display: block;
+      color: var(--gris-medio);
+      font-size: 11px;
+  }
+
+  .estacion-popup strong {
+      color: #1f5f3f;
+      font-size: 14px;
+  }
+
   /* Splash Screen */
   #splash-screen {
       position: fixed;

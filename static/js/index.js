@@ -67,6 +67,13 @@ const notificationBadge = document.getElementById("notificationBadge");
 // Capas para estructuras y plantas
 const poligonosLayer = L.layerGroup().addTo(map);
 const plantasLayer = L.layerGroup();
+// Edificios planeados: ocultos hasta activar su filtro, y no dependen del modo plantas
+const edificiosFuturosLayer = L.layerGroup();
+const futurosBtn = document.getElementById("futurosBtn");
+// Sendero ecológico: oculto hasta activar su filtro, también independiente del modo plantas
+const senderoLayer = L.layerGroup();
+const estacionesLayer = L.layerGroup();
+const senderoBtn = document.getElementById("senderoBtn");
 let plantasCargadas = false;
 let modoPlantas = false;
 
@@ -89,9 +96,9 @@ let poligonos = {};
 function obtenerEstiloBase(lugar) {
   if (lugar.estado === "planeado") {
     return {
-      color: "#AFC4D9",
-      fillColor: "#6C8FA8",
-      fillOpacity: 0.35,
+      color: "#616161",
+      fillColor: "#9e9e9e",
+      fillOpacity: 0.6,
       weight: 2,
     };
   }
@@ -111,6 +118,12 @@ function enfocarLugar(lugar) {
   const polygon = poligonos[lugar.nombre.toLowerCase()];
 
   if (!polygon) return;
+
+  // Un edificio futuro elegido desde el buscador debe verse aunque el filtro esté apagado
+  if (lugar.estado === "planeado") {
+    futurosBtn.checked = true;
+    mostrarEdificiosFuturos(true);
+  }
 
   map.fitBounds(polygon.getBounds(), {
     padding: [50, 50],
@@ -336,7 +349,7 @@ fetch("/data/edifcios.json")
     data.forEach((lugar) => {
       console.log(lugar);
       polygon = L.polygon(lugar.puntos, obtenerEstiloBase(lugar)).addTo(
-        poligonosLayer,
+        lugar.estado === "planeado" ? edificiosFuturosLayer : poligonosLayer,
       );
       // Lo guardamos usando el nombre como llave
       poligonos[lugar.nombre.toLowerCase()] = polygon;
@@ -366,6 +379,98 @@ async function actualizarPlantas() {
 
   console.log('✅ Plantas actualizadas con nuevos desbloqueos');
 }
+
+// Panel deslizante de filtros
+const mapFilters = document.getElementById("mapFilters");
+const mapFiltersTab = document.getElementById("mapFiltersTab");
+
+mapFiltersTab.addEventListener("click", () => {
+  const abierto = mapFilters.classList.toggle("open");
+  const etiqueta = abierto ? "Ocultar filtros" : "Mostrar filtros";
+  mapFiltersTab.setAttribute("aria-expanded", String(abierto));
+  mapFiltersTab.setAttribute("aria-label", etiqueta);
+  mapFiltersTab.title = etiqueta;
+});
+
+// Filtros compartidos: todo se dibuja en el mismo SVG que los puntos de árboles, así que
+// el orden importa. De abajo hacia arriba: edificios futuros, borde y relleno del sendero.
+function ordenarCapasDeFondo() {
+  senderoLayer.getLayers().reverse().forEach((linea) => linea.bringToBack());
+  edificiosFuturosLayer.eachLayer((poligono) => poligono.bringToBack());
+}
+
+function alternarCapa(capa, visible) {
+  if (visible) {
+    map.addLayer(capa);
+    ordenarCapasDeFondo();
+  } else {
+    map.removeLayer(capa);
+  }
+}
+
+// Filtro de edificios futuros
+function mostrarEdificiosFuturos(visible) {
+  alternarCapa(edificiosFuturosLayer, visible);
+}
+
+futurosBtn.addEventListener("change", () => {
+  mostrarEdificiosFuturos(futurosBtn.checked);
+});
+
+// Filtro de sendero ecológico: línea ámbar con borde café, como un camino de tierra.
+// No es interactiva para no bloquear los clics sobre edificios y árboles.
+senderoBtn.addEventListener("change", () => {
+  alternarCapa(senderoLayer, senderoBtn.checked);
+  alternarCapa(estacionesLayer, senderoBtn.checked);
+});
+
+// Pin de estación: la punta del pin queda 39px debajo de la esquina superior del ícono
+// (si cambia, actualizar también transform-origin de .estacion-contenido)
+function crearMarcadorEstacion({ numero, nombre, icono, punto }) {
+  const imagen = `<img src="${icono}" alt="">`;
+  return L.marker(punto, {
+    title: `Estación ${numero}: ${nombre}`,
+    alt: `Estación ${numero}: ${nombre}`,
+    riseOnHover: true,
+    icon: L.divIcon({
+      className: "estacion-marker",
+      iconSize: [32, 32],
+      iconAnchor: [16, 39],
+      popupAnchor: [0, -39],
+      html: `<div class="estacion-contenido"><div class="estacion-pin">${imagen}</div><span class="estacion-numero">${numero}</span></div>`,
+    }),
+  }).bindPopup(
+    `<div class="estacion-popup">
+      <span class="estacion-popup-icono">${imagen}</span>
+      <div>
+        <small>Estación ${numero}</small>
+        <strong>${nombre}</strong>
+      </div>
+    </div>`,
+  );
+}
+
+// Con el mapa alejado (la vista inicial en celular) los pines se reducen para no amontonarse
+function ajustarTamanoEstaciones() {
+  map.getContainer().classList.toggle("estaciones-compactas", map.getZoom() < 0);
+}
+map.on("zoomend", ajustarTamanoEstaciones);
+ajustarTamanoEstaciones();
+
+fetch("/data/sendero.json")
+  .then((res) => res.json())
+  .then(({ tramos, estaciones }) => {
+    const estilo = { interactive: false, lineCap: "round", lineJoin: "round" };
+    L.polyline(tramos, { ...estilo, color: "#5B3A1A", weight: 7 }).addTo(senderoLayer);
+    L.polyline(tramos, { ...estilo, color: "#F2A93B", weight: 4 }).addTo(senderoLayer);
+    estaciones.forEach((estacion) => {
+      crearMarcadorEstacion(estacion).addTo(estacionesLayer);
+    });
+    ordenarCapasDeFondo();
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 
 // Lógica de Modo Plantas
 plantsBtn.addEventListener("click", async () => {
