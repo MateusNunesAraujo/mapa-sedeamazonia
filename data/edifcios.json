@@ -125,7 +125,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "arawana.png"
+        "foto": "arawana.png",
+        "modelo3d": "arawana.glb"
     },
     {
         "nombre": "Biblioteca",
@@ -164,7 +165,8 @@
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
         "novedades": "",
         "estado": "terminado",
-        "foto": "biblioteca.png"
+        "foto": "biblioteca.png",
+        "modelo3d": "biblioteca.glb"
     },
     {
         "nombre": "Sala de profesores",
@@ -207,7 +209,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "profesores.png"
+        "foto": "profesores.png",
+        "modelo3d": "sala_profesores.glb"
     },
     {
         "nombre": "Sala de sistemas 2",
@@ -242,7 +245,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "sistemas2.png"
+        "foto": "sistemas2.png",
+        "modelo3d": "sala_sistemas2.glb"
     },
     {
         "nombre": "Dirección",
@@ -268,7 +272,8 @@
         "horario": "",
         "reglas": "",
         "novedades": "",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "direccion.glb"
     },
     {
         "nombre": "Auditorio",
@@ -295,7 +300,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "auditorio.png"
+        "foto": "auditorio.png",
+        "modelo3d": "auditorio.glb"
     },
     {
         "nombre": "Admisión y Matrícula",
@@ -612,7 +618,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "arquitectura.png"
+        "foto": "arquitectura.png",
+        "modelo3d": "maloca.glb"
     },
     {
         "nombre": "Gestión de Bienes",
@@ -674,7 +681,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "oficina_asesoria_y_orientacion_tecnologica.png"
+        "foto": "oficina_asesoria_y_orientacion_tecnologica.png",
+        "modelo3d": "oficina_tec.glb"
     },
     {
         "nombre": "Bloque 13",
@@ -728,7 +736,8 @@
         "reglas": "No entrar con bebidas ni comidas y dejar los bolsos en la parte trasera de la sala.",
         "novedades": "",
         "estado": "terminado",
-        "foto": "sala_sistemas_1.png"
+        "foto": "sala_sistemas_1.png",
+        "modelo3d": "sala_sistemas1.glb"
     },
     {
         "nombre": "IMANI",
@@ -755,7 +764,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "IMANI.png"
+        "foto": "IMANI.png",
+        "modelo3d": "imani.glb"
     },
     {
         "nombre": "Sala de posgrado",
@@ -782,7 +792,8 @@
         "reglas": "No entrar con bebidas ni comidas y dejar los bolsos en la parte trasera de la sala.",
         "novedades": "",
         "estado": "terminado",
-        "foto": "sala_sistemas_posgrado.png"
+        "foto": "sala_sistemas_posgrado.png",
+        "modelo3d": "sala_posgrado.glb"
     },
     {
         "nombre": "APAPORIS",
@@ -809,7 +820,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "apaporis.png"
+        "foto": "apaporis.png",
+        "modelo3d": "apaporis.glb"
     },
     {
         "nombre": "Baños para hombres",
@@ -836,7 +848,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "banos_para_hombres.png"
+        "foto": "banos_para_hombres.png",
+        "modelo3d": "banos_hombres.glb"
     },
     {
         "nombre": "Baño para mujeres",
@@ -863,7 +876,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "banos_para_mujeres.png"
+        "foto": "banos_para_mujeres.png",
+        "modelo3d": "banos_mujeres.glb"
     },
     {
         "nombre": "Salones 3A,B y C",
@@ -917,7 +931,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "aula_tic_2.png"
+        "foto": "aula_tic_2.png",
+        "modelo3d": "aula_tic2.glb"
     },
     {
         "nombre": "Laboratorio - Manejo y gestión de humedales",
@@ -944,7 +959,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "laboratorio_investigacion_biologica.png"
+        "foto": "laboratorio_investigacion_biologica.png",
+        "modelo3d": "lab_humedales.glb"
     },
     {
         "nombre": "Laboratorio - Ecología y Conservación de Flora y Fauna Silvestre",
@@ -1025,7 +1041,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "bloque_tienda.png"
+        "foto": "bloque_tienda.png",
+        "modelo3d": "tienda.glb"
     },
     {
         "nombre": "Salones 4A, B y C",

@@ -17,7 +17,7 @@
   <div id="splash-screen">
     <img src="/static/img/amazonia_blanco_02.png" alt="Logo Amazonia" class="splash-logo-img">
     <div class="splash-subtitle">Cargando mapa...</div>
-    <div class="splash-credit">Desarrollado con ❤️ por Mateus Nunes</div>
+    <div class="splash-credit">Desarrollado con ❤️ por Mateus Nunes y Felix Salgado</div>
   </div>
 
   <!-- Mapa Principal -->
@@ -81,7 +81,18 @@
         <span class="notification-badge" id="albumBadge" style="display: none"></span>
       </button>
 
+      <!-- Mapa 3D: vista aérea del campus en 3D (recorrido.js) -->
+      <button class="action-btn" id="mapa3DBtn" aria-label="Ver el mapa en 3D"
+        style="margin-right: 8px; font-size: 20px;" title="Mapa 3D">
+        🏙️
+      </button>
 
+      <!-- PRUEBA glosario AR (paso 1): quitar cuando exista el glosario -->
+     <!--  <button class="action-btn" id="arTestBtn" aria-label="Prueba de 3D y realidad aumentada"
+        style="margin-right: 8px; font-size: 20px;" title="Prueba 3D / AR">
+        🧊
+      </button>
+ -->
       <!-- Botón de Notificaciones -->
       <button class="action-btn notification-btn" id="notificationBtn" aria-label="Ver notificaciones">
         <img src="/static/iconos/campana.png" alt="Notificaciones" class="btn-icon">
@@ -374,6 +385,10 @@
       <div class="detail-main-info">
         <h2 id="detailTitle">Cargando...</h2>
         <p id="detailDescription" class="detail-desc"></p>
+        <div class="detail-3d-acciones">
+          <button type="button" id="detailVer3DBtn" class="detail-ver3d-btn" style="display: none">🧊 Ver en 3D</button>
+          <button type="button" id="detailRecorrerBtn" class="detail-ver3d-btn" style="display: none">🚶 Caminar</button>
+        </div>
       </div>
 
       <div class="detail-sections">
@@ -475,6 +490,28 @@
     </div>
   </div>
 
+  <!-- PRUEBA glosario AR (paso 1) -->
+  <div id="arTestModal" class="ar-test-modal" role="dialog" aria-labelledby="arTestTitle" aria-modal="true"
+    style="display: none">
+    <div class="ar-test-content">
+      <div class="ar-test-header">
+        <h2 id="arTestTitle">Vista 3D</h2>
+        <button class="ar-test-close" id="arTestCloseBtn" aria-label="Cerrar prueba">&times;</button>
+      </div>
+      <div class="ar-test-opciones" id="arTestOpciones">
+        <label><input type="radio" name="arTestModelo" value="local" checked> Hoja (dentro de la app)</label>
+        <label><input type="radio" name="arTestModelo" value="auditorio"> Auditorio</label>
+        <label><input type="radio" name="arTestModelo" value="sala_sistemas2"> Sala de sistemas 2</label>
+        <label><input type="radio" name="arTestModelo" value="online"> Ejemplo en línea</label>
+      </div>
+      <div id="arTestViewer" class="ar-test-viewer">
+        <div id="arTestPista" class="ar-test-pista" style="display: none">👆 Toca el edificio para ir a él en el mapa</div>
+        <button type="button" id="arTestRecorrerBtn" class="ar-test-recorrer-btn" style="display: none">🚶 Entrar caminando</button>
+      </div>
+      <pre id="arTestEstado" class="ar-test-estado"></pre>
+    </div>
+  </div>
+
   <script src="/static/leaflet/leaflet.js"></script>
   <!-- Offline: Geoman local -->
   <script src="/static/geoman/leaflet-geoman.min.js"></script>
@@ -494,6 +531,10 @@
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
   <script src="/static/js/index.js?v=13"></script>
+  <!-- PRUEBA glosario AR (paso 1) -->
+  <script src="/static/js/ar-prueba.js?v=5"></script>
+  <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
+  <script src="/static/js/recorrido.js?v=9" type="module"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">
