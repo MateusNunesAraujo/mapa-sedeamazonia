@@ -258,7 +258,7 @@ function mostrarDetalle(lugar) {
   // Botón "Ver en 3D" solo para edificios que tienen modelo (campo "modelo3d" en edifcios.json)
   const ver3DBtn = document.getElementById("detailVer3DBtn");
   if (ver3DBtn) {
-    if (!esPlanta && lugar.modelo3d && window.abrirVisor3D) {
+    if (lugar.modelo3d && window.abrirVisor3D) {
       ver3DBtn.style.display = "inline-flex";
       ver3DBtn.onclick = () => window.abrirVisor3D({
         src: `/static/modelos/${lugar.modelo3d}`,
@@ -273,7 +273,7 @@ function mostrarDetalle(lugar) {
   // Botón "Caminar": recorrido a pie en primera persona por el modelo
   const recorrerBtn = document.getElementById("detailRecorrerBtn");
   if (recorrerBtn) {
-    if (!esPlanta && lugar.modelo3d) {
+    if (lugar.modelo3d) {
       recorrerBtn.style.display = "inline-flex";
       // Se camina por el mundo con todos los edificios, empezando frente a este
       recorrerBtn.onclick = () => window.abrirRecorrido && window.abrirRecorrido({

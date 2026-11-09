@@ -42,7 +42,8 @@
   const recorrerBtn = document.getElementById('arTestRecorrerBtn');
   const estado = document.getElementById('arTestEstado');
   const opciones = document.querySelectorAll('input[name="arTestModelo"]');
-  if (!modal || !abrirBtn) return;
+  // El botón 🧊 de prueba es opcional: sin él, el visor debe seguir disponible para "Ver en 3D"
+  if (!modal) return;
 
   let visor = null;
   let cargaLibreria = null;
@@ -143,10 +144,12 @@
   // Desde otros scripts (botón "Ver en 3D" de la tarjeta)
   window.abrirVisor3D = (modelo) => abrir(modelo, { conOpciones: false });
 
-  abrirBtn.addEventListener('click', () => {
-    const elegido = document.querySelector('input[name="arTestModelo"]:checked');
-    abrir(MODELOS[elegido ? elegido.value : 'local'], { conOpciones: true });
-  });
+  if (abrirBtn) {
+    abrirBtn.addEventListener('click', () => {
+      const elegido = document.querySelector('input[name="arTestModelo"]:checked');
+      abrir(MODELOS[elegido ? elegido.value : 'local'], { conOpciones: true });
+    });
+  }
   cerrarBtn.addEventListener('click', cerrar);
   recorrerBtn.addEventListener('click', (e) => {
     e.stopPropagation();
