@@ -6,7 +6,7 @@ Uso (desde la raíz del proyecto):
 Bloque casi cuadrado (~11,5 x 11,2 m de techo según el polígono del mapa) al este de IMANI y de
 la Sala de sistemas 1, con el frente al oeste: sus puertas dan al paso que queda entre esas dos
 y su esquina norte queda bajo el alero de IMANI (así se ve en la foto). Por fuera sigue la foto
-static/fotos/sala_sistemas_posgrado.png: muros vinotinto, muro macizo al norte con el extintor,
+static/fotos-edificios/sala_sistemas_posgrado.png: muros vinotinto, muro macizo al norte con el extintor,
 ventana de madera sobre antepecho, dos pares de puertas de vidrio, claraboya, cabios a la vista
 y techo de teja oscura con quiebre.
 Adentro: puestos con computador contra los dos costados, mesa de trabajo en el centro, tablero,

@@ -96,7 +96,8 @@ mapa-sedeamazonia/
 ├── static/              # Archivos estáticos
 │   ├── leaflet/         # Leaflet (descargado localmente)
 │   ├── geoman/          # Geoman (descargado localmente)
-│   └── fotos/           # Fotos de edificios y plantas
+│   ├── fotos-edificios/ # Fotos de los edificios (campo "foto" de edifcios.json)
+│   └── fotos-arboles/   # Fotos por defecto de los árboles (campo "foto_defecto" de plantas.json)
 ├── templates/           # HTML
 │   └── index.html
 ├── main.py              # Servidor FastAPI
@@ -109,7 +110,7 @@ mapa-sedeamazonia/
 
 - ✅ Leaflet y Geoman están descargados localmente
 - ✅ Datos JSON en carpeta `/data`
-- ✅ Imágenes en `/static/fotos`
+- ✅ Imágenes en `/static/fotos-edificios` y `/static/fotos-arboles`
 - ✅ No depende de CDNs
 - ✅ Funciona completamente sin internet
 
@@ -117,7 +118,7 @@ mapa-sedeamazonia/
 
 Para modificar datos, edita:
 - `data/edifcios.json` - Información de edificios
-- `static/fotos/` - Imágenes
+- `static/fotos-edificios/` y `static/fotos-arboles/` - Imágenes
 
 Luego recarga la página en el navegador.
 

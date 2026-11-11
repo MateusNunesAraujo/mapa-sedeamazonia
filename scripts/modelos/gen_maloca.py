@@ -4,7 +4,7 @@ Uso (desde la raíz del proyecto):
     python scripts/modelos/gen_maloca.py static/modelos/maloca.glb
 
 Salón cuadrado (~17 x 17 m de techo según el polígono del mapa) al este del corredor cubierto,
-con la entrada al oeste. Por fuera sigue la foto static/fotos/arquitectura.png: zócalo magenta,
+con la entrada al oeste. Por fuera sigue la foto static/fotos-edificios/arquitectura.png: zócalo magenta,
 postes de madera con persianas de tablillas, puertas dobles de madera abiertas y techo de teja
 oscura a cuatro aguas con una linterna (parte alta elevada y ventilada) en el centro.
 Adentro: salón del pregrado de arquitectura con un pasillo de puerta a puerta (oeste-este),

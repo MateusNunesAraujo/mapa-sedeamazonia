@@ -7,7 +7,7 @@ Uso (desde la raíz del proyecto):
 Bloque de ~13,6 x 17,3 m de techo (polígono del mapa) pegado al corredor cubierto del este,
 con la puerta hacia él (oeste). En el plano, la esquina noreste no tiene techo: es un patio de
 servicio, así que el techo tiene forma de L (cuatro aguas con un limahoya en la esquina).
-Por fuera sigue la foto static/fotos/laboratorio_investigacion_biologica.png: muros ocre con
+Por fuera sigue la foto static/fotos-edificios/laboratorio_investigacion_biologica.png: muros ocre con
 pilastras en las esquinas, ventanales con marcos de madera y persianas, una franja de listones
 de madera bajo el alero, una lona pintada en el muro norte y techo de teja oscura.
 Adentro: laboratorio con mesones, isla central con microscopios, lavaplatos, acuarios y

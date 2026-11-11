@@ -3,10 +3,10 @@
 Uso (desde la raíz del proyecto):
     python scripts/modelos/gen_auditorio.py static/modelos/auditorio.glb
 
-Por fuera, basado en static/fotos/auditorio.png: bloque largo de un piso, paredes ocre,
+Por fuera, basado en static/fotos-edificios/auditorio.png: bloque largo de un piso, paredes ocre,
 techo a dos aguas oscuro con alero grande, columnas de madera, puertas de vidrio
 y una franja de celosías de madera arriba de las puertas.
-Por dentro, basado en static/fotos/fotos para 3d/auditorio.png: estructura de madera a
+Por dentro, basado en static/fotos-edificios/referencias-3d/auditorio.png: estructura de madera a
 la vista, lámparas fluorescentes, piso claro, tarima baja a todo el ancho, muro del fondo
 blanco (letrero de la Universidad, banderas, atril, tablero) y pupitres con pasillo central.
 Las medidas salen del polígono del mapa (ver comun.distribucion); el interior se

@@ -6,7 +6,7 @@ Uso (desde la raíz del proyecto):
 
 Bloque casi cuadrado (~11,4 x 11,1 m de techo según el polígono del mapa) al sur de la Sala de
 sistemas 1, con el frente al corredor cubierto del este (oeste). En la foto
-static/fotos/oficina_asesoria_y_orientacion_tecnologica.png se ve la sala ocre y la buganvilia
+static/fotos-edificios/oficina_asesoria_y_orientacion_tecnologica.png se ve la sala ocre y la buganvilia
 detrás, a la izquierda (al norte), lo que confirma la orientación.
 
 Por fuera, como en la foto: muros vinotinto; frente de madera con celosías a los lados de la

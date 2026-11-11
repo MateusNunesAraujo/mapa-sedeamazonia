@@ -135,7 +135,8 @@ mapa-sedeamazonia/
 ├── static/
 │   ├── leaflet/          ← Leaflet local
 │   ├── geoman/           ← Geoman local
-│   ├── fotos/
+│   ├── fotos-edificios/
+│   ├── fotos-arboles/
 │   ├── campus.png
 │   └── ...
 ├── templates/
@@ -159,7 +160,7 @@ export JAVA_HOME=/path/to/java
 
 ### APK funciona pero sin internet
 - ✅ Es normal y esperado. Verifica que:
-  - Las imágenes están en `static/fotos/`
+  - Las imágenes están en `static/fotos-edificios/` y `static/fotos-arboles/`
   - Los JSON están en `data/`
   - No hay URLs externas en el código
 

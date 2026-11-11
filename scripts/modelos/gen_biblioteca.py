@@ -7,7 +7,7 @@ En el plano la biblioteca tiene forma de L y se arma con tres partes:
   - Ala norte: sigue la hilera del Auditorio hacia el oeste, con techo a cuatro aguas
     en la punta. Adentro, estanterías y mesas de estudio.
   - Ala sur: sigue la hilera de la Dirección hacia el oeste. Es la sala de lectura;
-    por fuera, el muro mostaza con el mural en relieve (foto static/fotos/biblioteca.png).
+    por fuera, el muro mostaza con el mural en relieve (foto static/fotos-edificios/biblioteca.png).
   - Hall de entrada entre las dos alas, con la puerta de vidrio hacia el patio.
 """
 import math

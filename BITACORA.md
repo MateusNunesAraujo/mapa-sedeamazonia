@@ -92,7 +92,8 @@ mapa-sedeamazonia/
 │   │   └── three/               three.js y sus complementos
 │   ├── leaflet/             Librería Leaflet local
 │   ├── geoman/              Librería Geoman local; `dist/` está ignorada por Git
-│   ├── fotos/               35 archivos de fotos de edificios y árboles (73 MB)
+│   ├── fotos-edificios/     30 fotos de edificios (71 MB) y referencias-3d/ con la foto interior del auditorio
+│   ├── fotos-arboles/       Fotos por defecto de los árboles; hoy solo pomarosa.jpeg
 │   ├── iconos/              Íconos de la interfaz y 14 SVG de estaciones
 │   ├── img/                 Logo de la pantalla de carga
 │   └── modelos/             19 modelos .glb (12 MB en total)
@@ -215,8 +216,7 @@ mapa-sedeamazonia/
 ### Modelos y fotos
 
 - `hoja-trifoliada.glb` solo se usa en el menú de prueba, hoy inaccesible.
-- Cuatro fotos no se usan: `cacao.jpg`, `caucho.webp`, `R.jpg` y `fotos para 3d/auditorio.png`.
-- La carpeta `static/fotos/arboles/` está vacía.
+- Todas las fotos de `static/fotos-edificios/` y `static/fotos-arboles/` están en uso, salvo `referencias-3d/auditorio.png`, que es la referencia de los generadores 3D y no la muestra la app.
 
 ## 5. Almacenamiento del usuario
 
@@ -283,9 +283,9 @@ No hay comentarios `TODO` ni `FIXME` en el código propio. Estas marcas equivale
 
 ### Compilación, tamaño y configuración
 
-- **La APK lleva unos 107 MB de recursos.** Pesan sobre todo los PNG de 3–4 MB de `static/fotos/`.
-- **`sync-app` no borra archivos antiguos:** `www/` y la APK aún contienen un PDF de 3,7 MB que ya no existe en `data/`.
-- Se empaquetan archivos innecesarios: `static/geoman/dist/`, mapas de fuentes de Leaflet y la carpeta `fotos para 3d`.
+- **La APK lleva unos 107 MB de recursos.** Pesan sobre todo los PNG de 3–4 MB de `static/fotos-edificios/`.
+- **`sync-app` no borra archivos antiguos:** `www/` y la APK aún contienen un PDF de 3,7 MB que ya no existe en `data/`. Tras reorganizar las fotos (2026-11-10), también conservarían la carpeta vieja `static/fotos/` (unos 73 MB duplicados) si no se borra `www/` antes de sincronizar.
+- Se empaquetan archivos innecesarios: `static/geoman/dist/`, mapas de fuentes de Leaflet y `fotos-edificios/referencias-3d/`.
 - `__pycache__/main.cpython-313.pyc` está en Git pese a estar en `.gitignore`.
 - En `capacitor.config.json`, `webContentsDebuggingEnabled` y `allowMixedContent` están activos: conviene revisarlos para producción. Además, se configura el plugin `Filesystem`, que no está instalado.
 - Dependencias sin uso o redundantes: `localforage` y `@capacitor/ios`. `leaflet`, Geoman y `qr-scanner` figuran en npm, pero se usan copias manuales en `static/`. Así se había perdido el worker del QR, y puede volver a pasar al actualizar librerías.
@@ -311,6 +311,7 @@ Anotar aquí cada cambio significativo, con el más reciente primero. Las entrad
 
 | Fecha | Cambio | Commit |
 |---|---|---|
+| 2026-11-10 | **Fotos organizadas por tipo:** `static/fotos/` se dividió en `static/fotos-edificios/` (30 fotos y `referencias-3d/auditorio.png`) y `static/fotos-arboles/` (`pomarosa.jpeg`). Se eliminaron las fotos de árboles sin uso (`cacao.jpg`, `caucho.webp` y `R.jpg`, esta última de banco de imágenes con marca de agua) y la carpeta vacía `arboles/`. Motivo: ordenar los recursos antes de construir el jardín. Los JSON no cambian: guardan solo el nombre del archivo y la carpeta la pone el código (`index.js` `v=17` para edificios, `photo-storage.js` `v=3` para árboles). Se actualizaron las rutas en los comentarios de `scripts/modelos/`, README, SETUP y CLAUDE.md | Sin commit |
 | 2026-11-10 | **Nuevas opciones en el menú:** Mi jardín, Bibliografía, Configuraciones y Acerca del aplicativo, separadas en principales y secundarias. Motivo: reservar el lugar de funciones planeadas. Por ahora muestran un aviso de "Próximamente" (atributo `data-proximamente`, manejado en `index.js`) (`index.css` `v=22`, `index.js` `v=16`) | Sin commit |
 | 2026-11-10 | **Paleta verde:** el azul institucional (`#003366`) de la interfaz pasa a tonos verdes que combinan con el verde lima (`#9ec636`) de la pantalla de inicio. Hay nuevas variables en `:root` (`--verde-institucional` `#025928`, `--verde-hover` `#01260A`, `--verde-selva` `#027333`, `--verde-hoja` `#03A65A`, `--verde-menta` `#41F2A0`, `--verde-lima`), que reemplazan a `--azul-institucional` y `--azul-hover`. Afecta botones, títulos, encabezados, el menú lateral y el botón "Ir a la planta" del QR. Los polígonos de los edificios en el mapa siguen en azul (`index.js`) (`index.css` `v=21`, `qr-handler.js` `v=2`) | Sin commit |
 | 2026-11-10 | **Menú lateral:** los botones de herbario, mapa 3D y notificaciones pasan a un menú que se abre con ☰ desde el borde derecho; ☰ ocupa el lugar de la campana. Motivo: despejar la barra superior, que solo conserva el buscador y el QR. Se mantuvieron los `id` de los botones, así que su lógica no cambió. También se ajustó el ancho de los resultados del buscador a la nueva barra. En escritorio (desde 768 px) ☰ va fijo en la esquina superior derecha, junto al borde por donde sale el menú (`index.html`, `index.css` `v=20`, `index.js` `v=15`) | Sin commit |

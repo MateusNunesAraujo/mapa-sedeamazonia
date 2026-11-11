@@ -6,7 +6,7 @@ Uso (desde la raíz del proyecto):
 
 Dos casetas al norte de la Arawana y la Maloca, a los dos lados del corredor cubierto, con la
 puerta hacia el corredor. Medidas de los polígonos del mapa: hombres ~7,9 x 7,6 m de techo y
-mujeres ~5,0 x 7,6 m. Por fuera siguen las fotos static/fotos/banos_para_hombres.png y
+mujeres ~5,0 x 7,6 m. Por fuera siguen las fotos static/fotos-edificios/banos_para_hombres.png y
 banos_para_mujeres.png: muros verdes, marco de puerta de madera, una franja abierta con marcos
 de madera bajo el alero y techo de teja oscura a cuatro aguas con el alero de madera a la vista.
 Adentro: enchape blanco con una franja oscura, cubículos, lavamanos y (hombres) orinales.

@@ -5,7 +5,7 @@ Uso (desde la raíz del proyecto):
 
 Bloque casi cuadrado (~11,2 x 11,4 m de techo según el polígono del mapa) al sur de IMANI,
 pegado al corredor cubierto del este y con el frente hacia él (oeste). Por fuera sigue la foto
-static/fotos/sala_sistemas_1.png: muros ocre, frente de madera y vidrio con dos pares de puertas
+static/fotos-edificios/sala_sistemas_1.png: muros ocre, frente de madera y vidrio con dos pares de puertas
 y claraboya, muro macizo al sur con la frase "Nuestra piel es una gran página en blanco; el
 cuerpo, un libro", alero con los cabios a la vista, techo de teja oscura con quiebre y una
 buganvilia en la esquina.

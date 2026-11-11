@@ -5,7 +5,7 @@ Uso (desde la raíz del proyecto):
 
 Bloque casi cuadrado (~11,3 x 12 m de techo según el polígono del mapa) pegado al corredor
 cubierto del este, con el frente al norte, hacia el prado que lo separa del laboratorio de
-humedales. Por fuera sigue la foto static/fotos/IMANI.png: pilastras verde azulado en las
+humedales. Por fuera sigue la foto static/fotos-edificios/IMANI.png: pilastras verde azulado en las
 esquinas, frente de vidrio con marcos de madera y dos pares de puertas (el del oeste abierto),
 franja alta tapada con lona cruda, alero con los cabios de madera a la vista y techo de teja
 oscura a cuatro aguas con quiebre de pendiente.

@@ -5,7 +5,7 @@ Uso (desde la raíz del proyecto):
 
 Caseta al este del Baño para mujeres (~6,6 x 7,1 m de techo según el polígono del mapa), con
 la ventana de atención hacia el pasillo que la separa del baño. Por fuera sigue la foto
-static/fotos/bloque_tienda.png: zócalo verde oscuro, marcos de madera con vidrio, mostrador
+static/fotos-edificios/bloque_tienda.png: zócalo verde oscuro, marcos de madera con vidrio, mostrador
 con la contraventana abierta hacia afuera, techo de teja oscura a cuatro aguas y una cubierta
 verde translúcida sobre el pasillo.
 Adentro: mostrador con vitrina y caja registradora, estantes con productos y nevera.

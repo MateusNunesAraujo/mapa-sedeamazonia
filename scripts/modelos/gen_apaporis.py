@@ -5,7 +5,7 @@ Uso (desde la raíz del proyecto):
 
 Sala de reuniones casi cuadrada (~11,8 x 11,6 m de techo según el polígono del mapa) al noreste
 de IMANI, con el frente al oeste, hacia el prado que comparte con IMANI. Por fuera sigue la foto
-static/fotos/apaporis.png: zócalo verde azulado, ventanales con marcos de madera y algunas
+static/fotos-edificios/apaporis.png: zócalo verde azulado, ventanales con marcos de madera y algunas
 persianas, puerta doble a la izquierda (norte), claraboya de vidrio arriba, pilastra verde en
 la esquina sur y techo de teja oscura a cuatro aguas con quiebre. Al frente, un jardinero con
 borde de concreto y el andén que pasa hacia IMANI.

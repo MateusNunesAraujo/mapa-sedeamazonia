@@ -76,7 +76,7 @@ MATERIALES = {
     "tablero":    ((0.97, 0.97, 0.97), 0.0, 0.3),
     "aire":       ((0.94, 0.94, 0.92), 0.0, 0.6),
     "lampara":    ((1.00, 0.95, 0.80), 0.0, 0.5, (1.0, 0.85, 0.55)),
-    # Biblioteca (foto static/fotos/biblioteca.png): muros mostaza y mural en relieve de barro
+    # Biblioteca (foto static/fotos-edificios/biblioteca.png): muros mostaza y mural en relieve de barro
     "pared_mostaza": ((0.62, 0.32, 0.03), 0.0, 0.85),
     "relieve":    ((0.55, 0.24, 0.12), 0.0, 0.9),
     "libro_rojo": ((0.45, 0.06, 0.05), 0.0, 0.8),
@@ -85,16 +85,16 @@ MATERIALES = {
     "libro_crema": ((0.80, 0.72, 0.55), 0.0, 0.8),
     "archivador": ((0.55, 0.57, 0.58), 0.4, 0.5),
     "planta":     ((0.10, 0.35, 0.08), 0.0, 0.9),
-    # Interior del auditorio (foto static/fotos/fotos para 3d/auditorio.png)
+    # Interior del auditorio (foto static/fotos-edificios/referencias-3d/auditorio.png)
     "blanco":     ((0.86, 0.86, 0.84), 0.0, 0.9),
     "piso_claro": ((0.78, 0.78, 0.76), 0.0, 0.35),
     "tubo":       ((1.00, 1.00, 1.00), 0.0, 0.5, (1.0, 1.0, 0.95)),   # lámpara fluorescente
-    # Sala de profesores (foto static/fotos/profesores.png): muros verdes y teja asfáltica café
+    # Sala de profesores (foto static/fotos-edificios/profesores.png): muros verdes y teja asfáltica café
     "pared_verde": ((0.10, 0.33, 0.08), 0.0, 0.85),
     "techo_cafe": ((0.16, 0.08, 0.05), 0.0, 0.85),
     "nevera":     ((0.85, 0.86, 0.86), 0.2, 0.4),
     "cojin":      ((0.30, 0.10, 0.05), 0.0, 0.9),
-    # Maloca (foto static/fotos/arquitectura.png): zócalo magenta y teja oscura
+    # Maloca (foto static/fotos-edificios/arquitectura.png): zócalo magenta y teja oscura
     "pared_roja": ((0.50, 0.03, 0.09), 0.0, 0.85),
     "teja_osc":   ((0.06, 0.06, 0.07), 0.0, 0.85),
     # Baños y tienda (fotos banos_para_hombres.png, banos_para_mujeres.png, bloque_tienda.png)
@@ -102,7 +102,7 @@ MATERIALES = {
     "verde_osc":  ((0.01, 0.16, 0.08), 0.0, 0.8),
     "lona_verde": ((0.02, 0.45, 0.32), 0.0, 0.6),
     "rojo":       ((0.60, 0.02, 0.02), 0.0, 0.5),
-    # Aula TIC 2 (foto static/fotos/aula_tic_2.png): murales sobre muro blanco y franja rosada
+    # Aula TIC 2 (foto static/fotos-edificios/aula_tic_2.png): murales sobre muro blanco y franja rosada
     "rosa":       ((0.75, 0.20, 0.25), 0.0, 0.8),
     "mural_azul": ((0.10, 0.22, 0.45), 0.0, 0.85),
     "mural_verde": ((0.06, 0.24, 0.16), 0.0, 0.85),

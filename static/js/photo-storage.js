@@ -111,7 +111,7 @@ class TreePhotoStorage {
 
   /**
    * Resuelve la ruta de la foto por defecto definida en plantas.json
-   * - "foto_defecto": "arboles/andiroba.jpg"  -> /static/fotos/arboles/andiroba.jpg
+   * - "foto_defecto": "andiroba.jpg"  -> /static/fotos-arboles/andiroba.jpg
    * - "foto_defecto": "/static/img/x.png" o "https://..." se usan tal cual
    * - "foto" se mantiene como campo heredado
    * @param {Object} planta - Datos de la planta
@@ -122,7 +122,7 @@ class TreePhotoStorage {
     const ruta = (planta.foto_defecto || planta.foto || '').trim();
     if (!ruta) return null;
     if (/^(\/|https?:|data:)/i.test(ruta)) return ruta;
-    return `/static/fotos/${ruta}`;
+    return `/static/fotos-arboles/${ruta}`;
   }
 
   /**

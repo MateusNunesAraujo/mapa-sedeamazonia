@@ -5,7 +5,7 @@ Uso (desde la raíz del proyecto):
 
 Bloque suelto al norte de la Biblioteca, largo de norte a sur (~28,6 x 11,1 m de techo según
 el polígono del mapa), con techo a cuatro aguas y el frente hacia el este, al corredor cubierto.
-Por fuera sigue la foto static/fotos/profesores.png: muros verdes, teja café, columnas de
+Por fuera sigue la foto static/fotos-edificios/profesores.png: muros verdes, teja café, columnas de
 madera con ventanales y celosía, y la puerta de vidrio cerca de la punta sur.
 Adentro: cafetería junto a la entrada (sur), zona de trabajo con puestos para los docentes
 (centro) y sala de reuniones cerrada (norte).

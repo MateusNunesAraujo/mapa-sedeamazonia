@@ -4,7 +4,7 @@ Uso (desde la raíz del proyecto):
     python scripts/modelos/gen_arawana.py static/modelos/arawana.glb
 
 Bloque casi cuadrado (~11 x 11,5 m de techo según el polígono del mapa) al norte de la
-Sala de profesores, con el frente hacia el sur. Por fuera sigue la foto static/fotos/arawana.png:
+Sala de profesores, con el frente hacia el sur. Por fuera sigue la foto static/fotos-edificios/arawana.png:
 muros ocre, frente de vidrio con marcos de madera (dos puertas dobles en el centro) y techo
 de teja oscura a cuatro aguas que se empina en la parte alta.
 Adentro: espacio de investigación con mesa de reuniones, puestos con computador, biblioteca

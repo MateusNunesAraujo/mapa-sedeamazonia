@@ -149,7 +149,7 @@ searchBox.addEventListener("click", (e) => {
 
 // Función para mostrar detalles del edificio seleccionado
 function mostrarDetalle(lugar) {
-  const fotoUrl = lugar.foto ? `/static/fotos/${lugar.foto}` : null;
+  const fotoUrl = lugar.foto ? `/static/fotos-edificios/${lugar.foto}` : null;
 
   detailPhoto.innerHTML = fotoUrl
     ? `<img src="${fotoUrl}" alt="${lugar.nombre}">`

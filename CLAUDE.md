@@ -12,7 +12,7 @@ HTML/CSS/JS sin framework ni empaquetador, Leaflet 1.9.4 (`L.CRS.Simple`), Geoma
 
 - `data/`: JSON de edificios (`edifcios.json`, así escrito), plantas y sendero.
 - `templates/index.html`: página única. Se copia tal cual a la APK, así que no puede usar sintaxis Jinja.
-- `static/`: JS, CSS, fotos, modelos `.glb` y copias manuales de las librerías (la app no usa las de `node_modules`).
+- `static/`: JS, CSS, modelos `.glb` y copias manuales de las librerías (la app no usa las de `node_modules`). Las fotos están en `fotos-edificios/` (campo `foto` de `edifcios.json`) y `fotos-arboles/` (campo `foto_defecto` de `plantas.json`); los JSON guardan solo el nombre del archivo.
 - `scripts/modelos/`: generadores Python (solo biblioteca estándar) de los `.glb`.
 - `www/` y `android/`: generadas y fuera de Git. Nunca editar `www/` a mano.
 

@@ -7,7 +7,7 @@ Bloque casi cuadrado (~14,7 x 16 m de techo según el polígono del mapa) entre 
 corredores cubiertos, al norte del Baño para mujeres y la tienda. La espalda da al corredor
 del oeste; el frente mira al este, donde un pasillo con cubierta plana la une al otro corredor
 (y otro pasillo igual sale al norte, como se ve en el plano).
-Por fuera sigue la foto static/fotos/aula_tic_2.png: muros blancos, alero hondo sobre columnas
+Por fuera sigue la foto static/fotos-edificios/aula_tic_2.png: muros blancos, alero hondo sobre columnas
 de madera, frente de vidrio con marcos de madera, murales en los muros macizos, franja rosada y
 mural blanco y negro en el costado norte (con los condensadores del aire) y techo de teja
 oscura a cuatro aguas con quiebre de pendiente.
