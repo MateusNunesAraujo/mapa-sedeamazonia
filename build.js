@@ -54,7 +54,12 @@ async function main() {
           }
         };
         
-        fs.mkdirSync(path.join(__dirname, 'www'), { recursive: true });
+        // www/ se regenera completa: así no quedan archivos que ya se borraron o movieron en el código
+        // (por ejemplo la antigua static/fotos/), que de otro modo terminarían también en la APK
+        const wwwDir = path.join(__dirname, 'www');
+        console.log('🧹 Limpiando www/...');
+        fs.rmSync(wwwDir, { recursive: true, force: true });
+        fs.mkdirSync(wwwDir, { recursive: true });
         fs.copyFileSync(path.join(__dirname, 'templates', 'index.html'), path.join(__dirname, 'www', 'index.html'));
         console.log('📂 Copiando static...');
         copyDir(path.join(__dirname, 'static'), path.join(__dirname, 'www', 'static'));

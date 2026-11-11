@@ -23,7 +23,7 @@
 
 **Corregidos el 2026-11-08** (detalle en la sección 7): tarjeta de edificios (`esPlanta` sin definir), botón "Ver en 3D" y worker del lector QR.
 
-**Pendiente tras las correcciones:** ejecutar `npm run sync-app` para llevarlas a `www/` y a la APK.
+Esas correcciones ya están en `www/` y en el proyecto Android (`npm run sync-app` del 2026-11-10).
 
 ---
 
@@ -138,7 +138,7 @@ mapa-sedeamazonia/
 | Novedades | ⚠️ A medias | Cuatro mensajes de ejemplo fijos en el HTML; el indicador rojo nunca se activa |
 | Historias de los lugares | ⚠️ A medias | HTML comentado y ningún dato `historia` en el JSON; la lógica sigue en `index.js` |
 | Barra de dibujo Geoman | ⚠️ A medias | Marcada "solo desarrollo", pero también se activa para el usuario final |
-| APK de Android | ❓ Por verificar | `www/` y los assets de Android aún no incluyen las correcciones del 2026-11-08. No se compiló ni instaló |
+| APK de Android | ❓ Por verificar | `www/` y los assets de Android están sincronizados con el código al 2026-11-10. No se compiló ni instaló |
 
 ## 4. Datos
 
@@ -283,8 +283,7 @@ No hay comentarios `TODO` ni `FIXME` en el código propio. Estas marcas equivale
 
 ### Compilación, tamaño y configuración
 
-- **La APK lleva unos 107 MB de recursos.** Pesan sobre todo los PNG de 3–4 MB de `static/fotos-edificios/`.
-- **`sync-app` no borra archivos antiguos:** `www/` y la APK aún contienen un PDF de 3,7 MB que ya no existe en `data/`. Tras reorganizar las fotos (2026-11-10), también conservarían la carpeta vieja `static/fotos/` (unos 73 MB duplicados) si no se borra `www/` antes de sincronizar.
+- **La APK lleva unos 102 MB de recursos.** Pesan sobre todo los PNG de 3–4 MB de `static/fotos-edificios/`.
 - Se empaquetan archivos innecesarios: `static/geoman/dist/`, mapas de fuentes de Leaflet y `fotos-edificios/referencias-3d/`.
 - `__pycache__/main.cpython-313.pyc` está en Git pese a estar en `.gitignore`.
 - En `capacitor.config.json`, `webContentsDebuggingEnabled` y `allowMixedContent` están activos: conviene revisarlos para producción. Además, se configura el plugin `Filesystem`, que no está instalado.
@@ -311,6 +310,7 @@ Anotar aquí cada cambio significativo, con el más reciente primero. Las entrad
 
 | Fecha | Cambio | Commit |
 |---|---|---|
+| 2026-11-10 | **`sync-app` limpia `www/`:** `build.js` borra `www/` antes de copiar `templates/`, `static/` y `data/`. Motivo: antes solo copiaba encima y dejaba archivos borrados o movidos (la antigua `static/fotos/` y un PDF de 3,7 MB), que también terminaban en la APK. Probado: la carpeta de recursos de Android bajó de 107 a 102 MB y coincide con `www/` | Sin commit |
 | 2026-11-10 | **Fotos organizadas por tipo:** `static/fotos/` se dividió en `static/fotos-edificios/` (30 fotos y `referencias-3d/auditorio.png`) y `static/fotos-arboles/` (`pomarosa.jpeg`). Se eliminaron las fotos de árboles sin uso (`cacao.jpg`, `caucho.webp` y `R.jpg`, esta última de banco de imágenes con marca de agua) y la carpeta vacía `arboles/`. Motivo: ordenar los recursos antes de construir el jardín. Los JSON no cambian: guardan solo el nombre del archivo y la carpeta la pone el código (`index.js` `v=17` para edificios, `photo-storage.js` `v=3` para árboles). Se actualizaron las rutas en los comentarios de `scripts/modelos/`, README, SETUP y CLAUDE.md | Sin commit |
 | 2026-11-10 | **Nuevas opciones en el menú:** Mi jardín, Bibliografía, Configuraciones y Acerca del aplicativo, separadas en principales y secundarias. Motivo: reservar el lugar de funciones planeadas. Por ahora muestran un aviso de "Próximamente" (atributo `data-proximamente`, manejado en `index.js`) (`index.css` `v=22`, `index.js` `v=16`) | Sin commit |
 | 2026-11-10 | **Paleta verde:** el azul institucional (`#003366`) de la interfaz pasa a tonos verdes que combinan con el verde lima (`#9ec636`) de la pantalla de inicio. Hay nuevas variables en `:root` (`--verde-institucional` `#025928`, `--verde-hover` `#01260A`, `--verde-selva` `#027333`, `--verde-hoja` `#03A65A`, `--verde-menta` `#41F2A0`, `--verde-lima`), que reemplazan a `--azul-institucional` y `--azul-hover`. Afecta botones, títulos, encabezados, el menú lateral y el botón "Ir a la planta" del QR. Los polígonos de los edificios en el mapa siguen en azul (`index.js`) (`index.css` `v=21`, `qr-handler.js` `v=2`) | Sin commit |
