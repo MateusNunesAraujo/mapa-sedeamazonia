@@ -34,7 +34,7 @@ Es un mapa interactivo del campus de la Universidad Nacional de Colombia, Sede A
 - Consultar 58 edificios (41 terminados y 17 planeados) sobre un plano del campus.
 - Explorar un catálogo de 56 árboles con mecánica de colección: QR, herbario, favoritos y fotos propias.
 - Ver el sendero ecológico con sus 14 estaciones.
-- Recorrer 17 edificios modelados en 3D, a pie o en vista aérea.
+- Recorrer los 41 lugares existentes modelados en 3D, a pie o en vista aérea (24 de ellos solo por fuera).
 
 | Capa | Tecnología | Versión | Nota |
 |---|---|---|---|
@@ -92,15 +92,16 @@ mapa-sedeamazonia/
 │   │   └── three/               three.js y sus complementos
 │   ├── leaflet/             Librería Leaflet local
 │   ├── geoman/              Librería Geoman local; `dist/` está ignorada por Git
-│   ├── fotos-edificios/     30 fotos de edificios (71 MB) y referencias-3d/ con la foto interior del auditorio
+│   ├── fotos-edificios/     30 fotos de edificios (71 MB) y referencias-3d/ con fotos interiores del auditorio y de la biblioteca (2,7 MB)
 │   ├── fotos-arboles/       Fotos por defecto de los árboles; hoy solo pomarosa.jpeg
 │   ├── iconos/              Íconos de la interfaz y 14 SVG de estaciones
 │   ├── img/                 Logo de la pantalla de carga
-│   └── modelos/             19 modelos .glb (12 MB en total)
+│   └── modelos/             38 modelos .glb (17 MB en total)
 ├── scripts/modelos/
 │   ├── comun.py             Clase Escena, geometría, escritura de GLB y posición de edificios
 │   ├── muebles.py           Muebles reutilizables
 │   ├── gen_recorrido.py     Une todos los edificios en recorrido.glb
+│   ├── gen_complementarios.py  Las 24 estructuras más sencillas (19 .glb)
 │   └── gen_*.py             Un generador por modelo (17 archivos más)
 ├── www/                     Generada por `npm run sync-app`; no está en Git
 ├── android/                 Proyecto Android generado; no está en Git
@@ -134,7 +135,7 @@ mapa-sedeamazonia/
 | Visor 3D | ✅ Funciona | "Ver en 3D" abre y carga el modelo; probado con Auditorio |
 | Realidad aumentada | ❓ Por verificar | Requiere dispositivo. El propio código advierte de dudas con modelos locales |
 | Recorrido a pie | ✅ Funciona | Carga en modo caminar y el botón "Caminar" aparece en la tarjeta. Controles táctiles por verificar |
-| Vista aérea (botón 🏙️) | ✅ Funciona | Carga con 17 etiquetas. Controles táctiles por verificar |
+| Vista aérea (botón 🏙️) | ✅ Funciona | Carga con 41 etiquetas. Controles táctiles por verificar |
 | Novedades | ⚠️ A medias | Cuatro mensajes de ejemplo fijos en el HTML; el indicador rojo nunca se activa |
 | Historias de los lugares | ⚠️ A medias | HTML comentado y ningún dato `historia` en el JSON; la lógica sigue en `index.js` |
 | Barra de dibujo Geoman | ⚠️ A medias | Marcada "solo desarrollo", pero también se activa para el usuario final |
@@ -156,7 +157,7 @@ mapa-sedeamazonia/
 | `reglas` | 58 | **52 vacíos** |
 | `novedades` | 58 | **57 vacíos** |
 | `foto` | 33 | Faltan 25 edificios |
-| `modelo3d` | 17 | Todos los archivos existen y tienen punto de inicio en `recorrido.glb` |
+| `modelo3d` | 41 | Todos los lugares `terminado`. Todos los archivos existen y tienen punto de inicio en `recorrido.glb`. Varios lugares de una misma hilera comparten archivo (`fila_admision.glb`, `fila_oficinas.glb`) |
 
 **Inconsistencias:**
 
@@ -216,7 +217,7 @@ mapa-sedeamazonia/
 ### Modelos y fotos
 
 - `hoja-trifoliada.glb` solo se usa en el menú de prueba, hoy inaccesible.
-- Todas las fotos de `static/fotos-edificios/` y `static/fotos-arboles/` están en uso, salvo `referencias-3d/auditorio.png`, que es la referencia de los generadores 3D y no la muestra la app.
+- Todas las fotos de `static/fotos-edificios/` y `static/fotos-arboles/` están en uso, salvo las de `referencias-3d/` (interior del auditorio y 16 de la biblioteca), que son referencia de los generadores 3D y no las muestra la app.
 
 ## 5. Almacenamiento del usuario
 
@@ -310,6 +311,9 @@ Anotar aquí cada cambio significativo, con el más reciente primero. Las entrad
 
 | Fecha | Cambio | Commit |
 |---|---|---|
+| 2026-11-11 | **Vista aérea despejada:** (1) las etiquetas ya no se amontonan: se dibujan primero las más cercanas a la cámara y se oculta la que se encimaría con otra o queda muy lejos (más de 2,2 veces la distancia de la cámara); son más pequeñas y los nombres largos se cortan con "…" (el completo queda en el `title`). (2) Árboles: antes iban en un anillo alrededor de todo el modelo y, con la Casa hija y los Alojamientos, caían sobre el parqueadero y la cancha o fuera del piso verde (fijo de 400 m en el origen). Ahora el piso se centra en el modelo y lo cubre, y 160 árboles se reparten solo sobre el pasto, a 4 m o más de todo lo construido y de los puntos de partida (cuadrícula de 2 m), dibujados con `InstancedMesh`. (3) La vista aérea arranca sobre el punto de partida a 90 m como máximo, en vez de alejarse para mostrar todo el mundo (`recorrido.js` `v=12`, `index.css` `v=23`). Motivo: reporte del usuario con captura. Comprobado: sintaxis con `node --check` y simulación en Python de la colocación de árboles sobre `recorrido.glb`; no se probó en el navegador | Sin commit |
+| 2026-11-11 | **Interior de la Biblioteca según fotos reales:** `gen_biblioteca.py` usa las 16 fotos nuevas de `static/fotos-edificios/referencias-3d/` (`1.jpeg` a `10.jpeg` y las `WhatsApp Image 2026-11-05 ...`). Cambios: muros blancos por dentro con zócalo de madera (el mostaza queda solo por fuera), franja de ventanas altas, piso de baldosa blanca, techo de tablas de madera a la vista que sigue las aguas (también la del extremo a cuatro aguas) con cabios, limas, viga de cumbrera, tirantes y viga de amarre, lámparas fluorescentes colgantes, estanterías metálicas grises de doble cara con cartel de clasificación, mesas naranjas redondas y rectangulares con sillas azules y verdes, sala de computadores tras un cerramiento de vidrio con marcos de madera (ala sur), oficina con planera, televisor, armarios grises con franja azul y vitrina de películas (ala norte), tablero en caballete, dispensador de agua, aires acondicionados y, en el hall, ventanilla de préstamo con repisa, cartelera, revistero y antenas antirrobo. El exterior no cambia. `comun.py`: 6 materiales nuevos. `biblioteca.glb` pasa de 0,54 a 0,79 MB y `recorrido.glb` a 8,4 MB (`MUNDO` `v=13`, `recorrido.js` `v=11`). Motivo: pulir la biblioteca con las referencias del usuario. **Pendiente de verificar:** dónde va cada espacio dentro de las alas (las fotos no muestran la planta) y si la oficina y la sala de computadores están en el ala correcta. Revisado con vistas renderizadas del `.glb`; no se probó en el navegador | Sin commit |
+| 2026-11-11 | **Modelos 3D de las 24 estructuras existentes que faltaban:** nuevo `scripts/modelos/gen_complementarios.py` genera 19 `.glb` (Admisión, Secretaría, UGÍ, Oficina 3, Sala 2 Videoconferencia, Laboratorio de Innovación, Adquisición, Baños 2, Gestión de Bienes, Bloque 13, Salones 3, 4 y 5, Laboratorio de Ecología, Cocina, Cafetería, MediaLab, Bienestar, Edificio apartado 1, Alojamientos, Piscina, Casa hija, Cancha y Parqueadero) y `gen_recorrido.py` los suma al mundo (`recorrido.glb` pasa de 6,1 a 8,1 MB; `MUNDO` `v=12`, `recorrido.js` `v=10`). Se agregó `modelo3d` a esos 24 lugares en `edifcios.json` (sin cambiar claves). `comun.py`: 14 materiales nuevos y `Escena.colocar` acepta un ángulo (la Casa hija está en diagonal). Motivo: que todos los lugares existentes tengan "Ver en 3D" y "Caminar". Son modelos de exterior: interiores vacíos. **Pendiente de verificar en el campus:** el aspecto de Secretaría, Oficina 3, Adquisición, Baños 2, Cafetería y Bienestar (sin foto, llevan el estilo de sus vecinos), Cancha y Parqueadero (sin foto, siguen el plano) y hacia dónde mira la fachada cuando la foto no lo muestra. Revisado con vistas renderizadas del `.glb`; no se probó en el navegador | Sin commit |
 | 2026-11-10 | **`sync-app` limpia `www/`:** `build.js` borra `www/` antes de copiar `templates/`, `static/` y `data/`. Motivo: antes solo copiaba encima y dejaba archivos borrados o movidos (la antigua `static/fotos/` y un PDF de 3,7 MB), que también terminaban en la APK. Probado: la carpeta de recursos de Android bajó de 107 a 102 MB y coincide con `www/` | Sin commit |
 | 2026-11-10 | **Fotos organizadas por tipo:** `static/fotos/` se dividió en `static/fotos-edificios/` (30 fotos y `referencias-3d/auditorio.png`) y `static/fotos-arboles/` (`pomarosa.jpeg`). Se eliminaron las fotos de árboles sin uso (`cacao.jpg`, `caucho.webp` y `R.jpg`, esta última de banco de imágenes con marca de agua) y la carpeta vacía `arboles/`. Motivo: ordenar los recursos antes de construir el jardín. Los JSON no cambian: guardan solo el nombre del archivo y la carpeta la pone el código (`index.js` `v=17` para edificios, `photo-storage.js` `v=3` para árboles). Se actualizaron las rutas en los comentarios de `scripts/modelos/`, README, SETUP y CLAUDE.md | Sin commit |
 | 2026-11-10 | **Nuevas opciones en el menú:** Mi jardín, Bibliografía, Configuraciones y Acerca del aplicativo, separadas en principales y secundarias. Motivo: reservar el lugar de funciones planeadas. Por ahora muestran un aviso de "Próximamente" (atributo `data-proximamente`, manejado en `index.js`) (`index.css` `v=22`, `index.js` `v=16`) | Sin commit |

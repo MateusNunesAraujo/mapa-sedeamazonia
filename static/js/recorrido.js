@@ -28,7 +28,7 @@ const ALTURAS_CHOQUE = [0.45, 1.0, 1.5];  // alturas (sobre los pies) donde se r
 
 // Mundo con todos los edificios en su sitio (scripts/modelos/gen_recorrido.py)
 // ?v=: súbelo cada vez que regeneres el mundo, para que el navegador no use una copia vieja
-const MUNDO = '/static/modelos/recorrido.glb?v=11';
+const MUNDO = '/static/modelos/recorrido.glb?v=13';
 
 let THREE = null;
 let GLTFLoader = null;
@@ -77,42 +77,87 @@ function crearInterfaz(nombre) {
   return raiz;
 }
 
-// Árboles sencillos alrededor para que se sienta el campus
-function crearEntorno(scene, caja, obstaculos) {
+// Árboles sencillos para que se sienta el campus. Van en el pasto, lejos de edificios,
+// andenes, canchas y puntos de partida (evitar: posiciones donde no puede haber árboles).
+function crearEntorno(scene, modelo, caja, obstaculos, evitar) {
+  const centro = caja.getCenter(new THREE.Vector3());
+  const tam = caja.getSize(new THREE.Vector3());
+  const MARGEN = 30;
+
+  // Piso bajo todo el modelo y alrededor (antes era fijo en el origen y quedaba corto)
+  const lado = Math.max(tam.x, tam.z) + 2 * MARGEN + 200;
   const piso = new THREE.Mesh(
-    new THREE.PlaneGeometry(400, 400),
+    new THREE.PlaneGeometry(lado, lado),
     // mismo verde que el pasto del modelo (valores lineales, como en el .glb)
     new THREE.MeshLambertMaterial({ color: new THREE.Color().setRGB(0.20, 0.38, 0.10) }),
   );
   piso.rotation.x = -Math.PI / 2;
-  piso.position.y = -0.06;
+  piso.position.set(centro.x, -0.06, centro.z);
   scene.add(piso);
 
-  const tronco = new THREE.CylinderGeometry(0.18, 0.28, 3.2, 7);
-  const copa = new THREE.IcosahedronGeometry(2.2, 0);
-  const matTronco = new THREE.MeshLambertMaterial({ color: 0x5a3a1f });
-  const matCopas = [0x2f6b26, 0x3d7d2c, 0x285c22].map((c) => new THREE.MeshLambertMaterial({ color: c, flatShading: true }));
+  // Cuadrícula de 2 m con lo ocupado: todo lo del modelo que no es pasto
+  const CEL = 2;
+  const x0 = caja.min.x - MARGEN, z0 = caja.min.z - MARGEN;
+  const nx = Math.ceil((tam.x + 2 * MARGEN) / CEL), nz = Math.ceil((tam.z + 2 * MARGEN) / CEL);
+  const ocupado = new Uint8Array(nx * nz);
+  const marcar = (xa, xb, za, zb) => {
+    const i0 = Math.max(0, Math.floor((xa - x0) / CEL)), i1 = Math.min(nx - 1, Math.floor((xb - x0) / CEL));
+    const j0 = Math.max(0, Math.floor((za - z0) / CEL)), j1 = Math.min(nz - 1, Math.floor((zb - z0) / CEL));
+    for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) ocupado[j * nx + i] = 1;
+  };
+  const v = new THREE.Vector3();
+  modelo.updateMatrixWorld(true);
+  modelo.traverse((o) => {
+    if (!o.isMesh || o.material.name === 'pasto') return;
+    const pos = o.geometry.attributes.position, idx = o.geometry.index;
+    const n = idx ? idx.count : pos.count;
+    const punto = (k) => v.fromBufferAttribute(pos, idx ? idx.getX(k) : k).applyMatrix4(o.matrixWorld);
+    for (let k = 0; k < n; k += 3) {
+      let xa = Infinity, xb = -Infinity, za = Infinity, zb = -Infinity;
+      for (let m = 0; m < 3; m++) {
+        punto(k + m);
+        xa = Math.min(xa, v.x); xb = Math.max(xb, v.x); za = Math.min(za, v.z); zb = Math.max(zb, v.z);
+      }
+      marcar(xa, xb, za, zb);
+    }
+  });
+  for (const p of evitar) marcar(p.x - 4, p.x + 4, p.z - 4, p.z + 4);
+  const libre = (x, z) => {           // ni la celda ni sus vecinas a 4 m están ocupadas
+    const i = Math.floor((x - x0) / CEL), j = Math.floor((z - z0) / CEL);
+    for (let dj = -2; dj <= 2; dj++) {
+      for (let di = -2; di <= 2; di++) {
+        const a = i + di, b = j + dj;
+        if (a >= 0 && b >= 0 && a < nx && b < nz && ocupado[b * nx + a]) return false;
+      }
+    }
+    return true;
+  };
 
-  const centro = caja.getCenter(new THREE.Vector3());
-  const tam = caja.getSize(new THREE.Vector3());
-  let semilla = 7;
+  // Árboles en instancias (pocas llamadas de dibujo aunque sean muchos)
+  const MAX = 160;
+  const matCopas = [0x2f6b26, 0x3d7d2c, 0x285c22].map((c) => new THREE.MeshLambertMaterial({ color: c, flatShading: true }));
+  const troncos = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.18, 0.28, 3.2, 7),
+    new THREE.MeshLambertMaterial({ color: 0x5a3a1f }), MAX);
+  const copas = matCopas.map((m) => new THREE.InstancedMesh(new THREE.IcosahedronGeometry(2.2, 0), m, MAX));
+  const cuenta = [0, 0, 0];
+  const mat = new THREE.Matrix4(), q = new THREE.Quaternion(), esc = new THREE.Vector3(), eje = new THREE.Vector3(0, 1, 0);
+  let semilla = 7, puestos = 0;
   const azar = () => ((semilla = (semilla * 9301 + 49297) % 233280) / 233280);
-  for (let i = 0; i < 45; i++) {
-    const ang = azar() * Math.PI * 2;
-    const dist = Math.max(tam.x, tam.z) / 2 + 6 + azar() * 40;
-    const x = centro.x + Math.cos(ang) * dist;
-    const z = centro.z + Math.sin(ang) * dist;
+  for (let intento = 0; intento < 2000 && puestos < MAX; intento++) {
+    const x = x0 + azar() * nx * CEL, z = z0 + azar() * nz * CEL;
     const escala = 0.8 + azar() * 0.7;
-    const t = new THREE.Mesh(tronco, matTronco);
-    t.position.set(x, 1.6 * escala, z);
-    t.scale.setScalar(escala);
-    const c = new THREE.Mesh(copa, matCopas[i % matCopas.length]);
-    c.position.set(x, 4.2 * escala, z);
-    c.scale.setScalar(escala);
-    c.rotation.y = azar() * 3;
-    scene.add(t, c);
-    obstaculos.push(t);
+    if (!libre(x, z)) continue;
+    marcar(x - 3, x + 3, z - 3, z + 3);            // que no queden encimados
+    esc.setScalar(escala);
+    troncos.setMatrixAt(puestos, mat.compose(v.set(x, 1.6 * escala, z), q.identity(), esc));
+    const c = puestos % 3;
+    copas[c].setMatrixAt(cuenta[c]++, mat.compose(v.set(x, 4.2 * escala, z), q.setFromAxisAngle(eje, azar() * 3), esc));
+    puestos++;
   }
+  troncos.count = puestos;
+  copas.forEach((m, c) => { m.count = cuenta[c]; });
+  scene.add(troncos, ...copas);
+  obstaculos.push(troncos);
 }
 
 function controlesTactiles(raiz, estado) {
@@ -369,7 +414,9 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
     const obstaculos = [];
     gltf.scene.traverse((o) => { if (o.isMesh) obstaculos.push(o); });
     const caja = new THREE.Box3().setFromObject(gltf.scene);
-    crearEntorno(scene, caja, obstaculos);
+    const partidas = [];
+    gltf.scene.traverse((o) => { if (o.name.startsWith('inicio')) partidas.push(o.getWorldPosition(new THREE.Vector3())); });
+    crearEntorno(scene, gltf.scene, caja, obstaculos, partidas);
 
     // Punto de partida: frente al edificio pedido ("inicio_<nombre>", misma regla que
     // scripts/modelos/comun.py) o el "inicio" por defecto
@@ -392,10 +439,16 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
     }
     irAInicio(inicio);
 
-    // Vista aérea: arranca mostrando todo el lugar
+    // Vista aérea: arranca sobre el punto de partida (el centro del campus en el mundo
+    // completo, donde está la mayoría de edificios) o sobre todo el lugar en un modelo suelto.
+    // Ya no se ve todo el mundo de una vez: con la Casa hija y los Alojamientos mide cientos
+    // de metros y los nombres quedaban amontonados.
     const tam = caja.getSize(new THREE.Vector3());
-    estado.orbita.objetivo = caja.getCenter(new THREE.Vector3()).setY(0);
-    estado.orbita.dist = Math.max(tam.x, tam.z) * 0.9;
+    const partida = gltf.scene.getObjectByName('inicio');
+    estado.orbita.objetivo = partida
+      ? partida.getWorldPosition(new THREE.Vector3()).setY(0)
+      : caja.getCenter(new THREE.Vector3()).setY(0);
+    estado.orbita.dist = Math.min(90, Math.max(tam.x, tam.z) * 0.9);
 
     // Marcador de dónde estás caminando (solo se ve desde arriba)
     const marcador = new THREE.Mesh(
@@ -414,7 +467,9 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
       const el = document.createElement('button');
       el.type = 'button';
       el.className = 'recorrido-etiqueta';
-      el.textContent = lugar;
+      const texto = document.createElement('span');   // se recorta con "…" si es muy largo
+      texto.textContent = lugar;
+      el.appendChild(texto);
       el.title = `Entrar caminando a ${lugar}`;
       el.addEventListener('click', () => { irAInicio(lugar); cambiarModo('caminar'); });
       capaEtiquetas.appendChild(el);
@@ -521,12 +576,29 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
       marcador.position.set(pies.x, pies.y + 2.2 + Math.sin(performance.now() / 300) * 0.3, pies.z);
       renderer.render(scene, camera);
 
+      // Etiquetas sin amontonarse: primero las más cercanas a la cámara; una etiqueta que se
+      // encimaría con otra ya puesta, o que está muy lejos, se oculta hasta que haya espacio.
       const W = window.innerWidth, H = window.innerHeight;
-      for (const { el, pos } of etiquetas) {
-        proy.copy(pos).project(camera);
-        const visible = proy.z < 1 && Math.abs(proy.x) < 1.1 && Math.abs(proy.y) < 1.1;
-        el.style.display = visible ? '' : 'none';
-        if (visible) el.style.transform = `translate(${(proy.x + 1) / 2 * W}px, ${(1 - proy.y) / 2 * H}px) translate(-50%, -100%)`;
+      const lejos = o.dist * 2.2;
+      for (const e of etiquetas) e.d = e.pos.distanceTo(camera.position);
+      etiquetas.sort((a, b) => a.d - b.d);
+      const puestas = [];
+      for (const e of etiquetas) {
+        proy.copy(e.pos).project(camera);
+        let visible = proy.z < 1 && Math.abs(proy.x) < 1.1 && Math.abs(proy.y) < 1.1 && e.d < lejos;
+        const px = (proy.x + 1) / 2 * W, py = (1 - proy.y) / 2 * H;
+        if (visible) {
+          if (!e.ancho) {                       // tamaño medido una sola vez
+            e.el.style.display = '';
+            e.ancho = e.el.offsetWidth;
+            e.alto = e.el.offsetHeight;
+          }
+          const r = { x0: px - e.ancho / 2 - 3, x1: px + e.ancho / 2 + 3, y0: py - e.alto - 9, y1: py + 2 };
+          visible = !puestas.some((p) => r.x0 < p.x1 && r.x1 > p.x0 && r.y0 < p.y1 && r.y1 > p.y0);
+          if (visible) puestas.push(r);
+        }
+        e.el.style.display = visible ? '' : 'none';
+        if (visible) e.el.style.transform = `translate(${px}px, ${py}px) translate(-50%, -100%)`;
       }
     }
 

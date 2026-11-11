@@ -3249,12 +3249,18 @@
   color: var(--verde-institucional);
   border: none;
   border-radius: 14px;
-  padding: 5px 10px;
-  font-size: 13px;
+  padding: 4px 9px;
+  font-size: 12px;
   font-weight: 600;
   white-space: nowrap;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   cursor: pointer;
+}
+.recorrido-etiqueta span {   /* nombres largos con "…"; el completo va en el title */
+  display: block;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .recorrido-etiqueta::after {   /* piquito que apunta al edificio */
   content: "";

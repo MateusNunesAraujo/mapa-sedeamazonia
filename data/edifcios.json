@@ -24,7 +24,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "casa-hija.jpg"
+        "foto": "casa-hija.jpg",
+        "modelo3d": "casa_hija.glb"
     },
     {
         "nombre": "Cancha",
@@ -55,7 +56,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "cancha.png"
+        "foto": "cancha.png",
+        "modelo3d": "cancha.glb"
     },
     {
         "nombre": "Parqueadero",
@@ -98,7 +100,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "parqueadero.png"
+        "foto": "parqueadero.png",
+        "modelo3d": "parqueadero.glb"
     },
     {
         "nombre": "Arawana",
@@ -328,7 +331,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "sarita.png"
+        "foto": "sarita.png",
+        "modelo3d": "fila_admision.glb"
     },
     {
         "nombre": "Secretaría de Sede",
@@ -354,7 +358,8 @@
         "horario": "",
         "reglas": "",
         "novedades": "",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "fila_admision.glb"
     },
     {
         "nombre": "UGÍ - Unidad de Gestión e Integral",
@@ -381,7 +386,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "oficinas.png"
+        "foto": "oficinas.png",
+        "modelo3d": "ugi.glb"
     },
     {
         "nombre": "Oficina 3",
@@ -407,7 +413,8 @@
         "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
         "novedades": "",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "fila_oficinas.glb"
     },
     {
         "nombre": "Sala 2 Videoconferencia",
@@ -434,7 +441,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "sala2_videoconferencia.jpeg"
+        "foto": "sala2_videoconferencia.jpeg",
+        "modelo3d": "fila_oficinas.glb"
     },
     {
         "nombre": "Laboratorio - Innovación y Sostenibilidad",
@@ -461,7 +469,8 @@
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
         "novedades": "",
         "estado": "terminado",
-        "foto": "laboratorio.png"
+        "foto": "laboratorio.png",
+        "modelo3d": "fila_oficinas.glb"
     },
     {
         "nombre": "Adquisición de Bienes y Servicios",
@@ -487,7 +496,8 @@
         "horario": "",
         "reglas": "",
         "novedades": "",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "fila_oficinas.glb"
     },
     {
         "nombre": "Baños 2",
@@ -513,7 +523,8 @@
         "horario": "Lunes a viernes: 8:00 AM - 6:00 PM",
         "reglas": "Silencio absoluto, prohibido alimentos y bebidas.",
         "novedades": ".",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "fila_oficinas.glb"
     },
     {
         "nombre": "Sala de docentes",
@@ -654,7 +665,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "bloque_7.png"
+        "foto": "bloque_7.png",
+        "modelo3d": "gestion_bienes.glb"
     },
     {
         "nombre": "Oficina de Asesoría y Orientación Tecnológica",
@@ -709,7 +721,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "bloque_13.png"
+        "foto": "bloque_13.png",
+        "modelo3d": "bloque13.glb"
     },
     {
         "nombre": "Sala de sistemas 1",
@@ -904,7 +917,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "salones_3A_B_C.png"
+        "foto": "salones_3A_B_C.png",
+        "modelo3d": "salones3.glb"
     },
     {
         "nombre": "Aula tic 2",
@@ -987,7 +1001,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "bloque_17.png"
+        "foto": "bloque_17.png",
+        "modelo3d": "lab_ecologia.glb"
     },
     {
         "nombre": "Cocina",
@@ -1014,7 +1029,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "cocina.png"
+        "foto": "cocina.png",
+        "modelo3d": "cocina.glb"
     },
     {
         "nombre": "Bloque para tienda",
@@ -1069,7 +1085,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "salones_4A_B_C.png"
+        "foto": "salones_4A_B_C.png",
+        "modelo3d": "salones4.glb"
     },
     {
         "nombre": "Cafetería",
@@ -1095,7 +1112,8 @@
         "horario": "",
         "reglas": "",
         "novedades": "",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "cafeteria.glb"
     },
     {
         "nombre": "MediaLab - Laboratorio de Medios Audiovisuales",
@@ -1122,7 +1140,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "centro_soporte_y_recursos_tecnologicos.png"
+        "foto": "centro_soporte_y_recursos_tecnologicos.png",
+        "modelo3d": "medialab.glb"
     },
     {
         "nombre": "Bienestar",
@@ -1148,7 +1167,8 @@
         "horario": "",
         "reglas": "",
         "novedades": "",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "bienestar.glb"
     },
     {
         "nombre": "Salones 5A, B y C",
@@ -1175,7 +1195,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "salones_5A_B_C.png"
+        "foto": "salones_5A_B_C.png",
+        "modelo3d": "salones5.glb"
     },
     {
         "nombre": "Aula de fisica",
@@ -1254,7 +1275,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "image.png"
+        "foto": "image.png",
+        "modelo3d": "edificio_apartado1.glb"
     },
     {
         "nombre": "Piscina",
@@ -1281,7 +1303,8 @@
         "reglas": "",
         "novedades": "",
         "estado": "terminado",
-        "foto": "piscina.png"
+        "foto": "piscina.png",
+        "modelo3d": "piscina.glb"
     },
     {
         "nombre": "Alojamientos",
@@ -1335,7 +1358,8 @@
         "horario": "",
         "reglas": "",
         "novedades": "",
-        "estado": "terminado"
+        "estado": "terminado",
+        "modelo3d": "alojamientos.glb"
     },
     {
         "nombre": "Aulas 1",

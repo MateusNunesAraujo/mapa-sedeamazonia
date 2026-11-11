@@ -117,6 +117,28 @@ MATERIALES = {
     # Oficina de Asesoría y Orientación Tecnológica: cajas de cartón y luces de los equipos
     "carton":     ((0.42, 0.26, 0.12), 0.0, 0.9),
     "led":        ((0.10, 0.60, 0.15), 0.0, 0.4, (0.10, 0.90, 0.20)),
+    # Estructuras de gen_complementarios.py (colores sacados de sus fotos en static/fotos-edificios/)
+    "teja_gris":  ((0.30, 0.31, 0.33), 0.0, 0.85),   # sarita.png
+    "lamina_verde": ((0.015, 0.20, 0.16), 0.3, 0.5),  # laboratorio.png, bloque_7.png, salones_5A_B_C.png
+    "salmon":     ((0.85, 0.20, 0.08), 0.0, 0.85),   # oficinas.png
+    "rojo_muro":  ((0.80, 0.06, 0.035), 0.0, 0.85),  # laboratorio.png, sala2_videoconferencia.jpeg
+    "magenta":    ((0.68, 0.012, 0.06), 0.0, 0.85),  # cocina.png, salones_4A_B_C.png
+    "amarillo_muro": ((0.78, 0.36, 0.03), 0.0, 0.85),  # bloque_13.png, bloque_17.png, salones_5A_B_C.png
+    "verde_claro": ((0.14, 0.36, 0.06), 0.0, 0.85),  # sarita.png, centro_soporte_y_recursos_tecnologicos.png
+    "policarbonato": ((0.80, 0.80, 0.76), 0.0, 0.4),
+    "asfalto":    ((0.06, 0.06, 0.065), 0.0, 0.95),
+    "cancha_piso": ((0.30, 0.31, 0.33), 0.0, 0.8),
+    "linea":      ((0.95, 0.95, 0.95), 0.0, 0.7),
+    "paja":       ((0.33, 0.24, 0.13), 0.0, 1.0),    # casa-hija.jpg
+    "agua_piscina": ((0.02, 0.12, 0.25), 0.1, 0.05),
+    "malla_azul": ((0.02, 0.06, 0.45), 0.2, 0.6),    # piscina.png
+    # Interior de la biblioteca (fotos static/fotos-edificios/referencias-3d/ de la biblioteca)
+    "madera_techo": ((0.30, 0.11, 0.045), 0.0, 0.7),  # tablas del techo a la vista
+    "gris_panel": ((0.17, 0.19, 0.21), 0.2, 0.6),    # costados de las estanterías metálicas
+    "mesa_naranja": ((0.61, 0.17, 0.03), 0.0, 0.5),  # tablero laminado de las mesas
+    "azul_plastico": ((0.01, 0.07, 0.60), 0.0, 0.5),  # sillas plásticas
+    "teal":       ((0.0, 0.17, 0.17), 0.0, 0.8),     # sillas tapizadas verdes
+    "corcho":     ((0.70, 0.30, 0.03), 0.0, 0.8),    # cartelera
 }
 
 # ---------------- Medidas comunes de los bloques (metros) ----------------
@@ -156,8 +178,10 @@ class Escena:
         self.colocar(0.0, 0.0, "sur")
 
     def colocar(self, cx, cz, frente):
-        """Lo que se dibuje después queda centrado en (cx, cz) con el frente hacia ese lado."""
-        self.cx, self.cz, self.giro = cx, cz, GIROS[frente]
+        """Lo que se dibuje después queda centrado en (cx, cz) con el frente hacia ese lado.
+        frente: "sur", "este", "norte", "oeste" o un ángulo en radianes (edificios en diagonal)."""
+        self.cx, self.cz = cx, cz
+        self.giro = GIROS[frente] if isinstance(frente, str) else frente
 
     def _mundo(self, p):
         x, y, z = p

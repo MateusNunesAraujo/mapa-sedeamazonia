@@ -18,6 +18,7 @@ import gen_aula_tic2
 import gen_auditorio
 import gen_banos
 import gen_biblioteca
+import gen_complementarios
 import gen_direccion
 import gen_imani
 import gen_lab_humedales
@@ -39,6 +40,9 @@ for b, cx, cz, _ in dist.values():
     r = max(b.RX1 - b.RX0, b.RZ1 - b.RZ0) / 2
     xs += [cx - r, cx + r]
     zs += [cz - r, cz + r]
+for x0, x1, z0, z1 in gen_complementarios.extensiones():
+    xs += [x0, x1]
+    zs += [z0, z1]
 esc.caja("pasto", min(xs) - 10, max(xs) + 10, -0.05, 0.0, min(zs) - 12, max(zs) + 12)
 
 # Bloques sencillos: un construir() en el sistema local del bloque
@@ -65,6 +69,10 @@ gen_apaporis.colocar(esc, dist, inicio=nombre_inicio("APAPORIS"), terreno=False)
 gen_sala_sistemas1.colocar(esc, dist, inicio=nombre_inicio("Sala de sistemas 1"), terreno=False)
 gen_sala_posgrado.colocar(esc, dist, inicio=nombre_inicio("Sala de posgrado"), terreno=False)
 gen_oficina_tec.colocar(esc, dist, inicio=nombre_inicio(OFICINA_TEC), terreno=False)
+
+# Estructuras más sencillas (solo exterior), ver gen_complementarios.py
+gen_complementarios.colocar_todos(esc)
+esc.colocar(0.0, 0.0, "sur")
 
 # Partida por defecto: la del auditorio
 inicio_def = dict(next(n for n in esc.nodos if n["name"] == nombre_inicio("Auditorio")))
