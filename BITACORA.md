@@ -76,7 +76,7 @@ mapa-sedeamazonia/
 │   ├── Mapa U.png           Plano del campus usado como fondo (7,2 MB)
 │   ├── css/index.css        Todos los estilos (3009 líneas)
 │   ├── js/
-│   │   ├── index.js             Mapa, capas, buscador, tarjeta de edificio y filtros
+│   │   ├── index.js             Mapa, capas, buscador, tarjeta de edificio, filtros y menú lateral
 │   │   ├── plants-handler.js    Carga de plantas, marcadores y popups
 │   │   ├── unlock-system.js     Registro de plantas desbloqueadas
 │   │   ├── qr-handler.js        Modal y lectura de códigos QR
@@ -116,6 +116,8 @@ mapa-sedeamazonia/
 | Buscador de lugares | ✅ Funciona | Filtra y abre la tarjeta del resultado |
 | Enfocar un lugar en el mapa | ✅ Funciona | Probado con clic e `irALugar` |
 | Panel deslizante de filtros | ✅ Funciona | |
+| Menú lateral (☰) | ✅ Funciona | Agrupa herbario, mapa 3D y notificaciones. Se despliega desde el borde derecho; se cierra con ✕, el fondo, Escape o al elegir una opción. Un punto rojo en ☰ avisa si hay novedades dentro. En la barra superior quedan el buscador y el QR; ☰ está en la esquina superior derecha, tanto en celular como en escritorio |
+| Mi jardín, Bibliografía, Configuraciones y Acerca del aplicativo | ⚠️ A medias | Solo existe la opción en el menú; al tocarla aparece un aviso de "Próximamente" con lo que tendrá. Pendiente: modelos 3D caricaturizados de cada árbol (jardín); referencias y documentos Word/PDF solo de los árboles (bibliografía); definir qué preferencias incluir (configuraciones); propósito y agradecimientos (acerca de) |
 | Filtro de edificios futuros | ✅ Funciona | Muestra 17 polígonos |
 | Filtro de sendero ecológico | ✅ Funciona | 2 líneas superpuestas (borde y relleno) y 14 estaciones |
 | Modo plantas | ✅ Funciona | 56 marcadores y su popup |
@@ -309,6 +311,9 @@ Anotar aquí cada cambio significativo, con el más reciente primero. Las entrad
 
 | Fecha | Cambio | Commit |
 |---|---|---|
+| 2026-11-10 | **Nuevas opciones en el menú:** Mi jardín, Bibliografía, Configuraciones y Acerca del aplicativo, separadas en principales y secundarias. Motivo: reservar el lugar de funciones planeadas. Por ahora muestran un aviso de "Próximamente" (atributo `data-proximamente`, manejado en `index.js`) (`index.css` `v=22`, `index.js` `v=16`) | Sin commit |
+| 2026-11-10 | **Paleta verde:** el azul institucional (`#003366`) de la interfaz pasa a tonos verdes que combinan con el verde lima (`#9ec636`) de la pantalla de inicio. Hay nuevas variables en `:root` (`--verde-institucional` `#025928`, `--verde-hover` `#01260A`, `--verde-selva` `#027333`, `--verde-hoja` `#03A65A`, `--verde-menta` `#41F2A0`, `--verde-lima`), que reemplazan a `--azul-institucional` y `--azul-hover`. Afecta botones, títulos, encabezados, el menú lateral y el botón "Ir a la planta" del QR. Los polígonos de los edificios en el mapa siguen en azul (`index.js`) (`index.css` `v=21`, `qr-handler.js` `v=2`) | Sin commit |
+| 2026-11-10 | **Menú lateral:** los botones de herbario, mapa 3D y notificaciones pasan a un menú que se abre con ☰ desde el borde derecho; ☰ ocupa el lugar de la campana. Motivo: despejar la barra superior, que solo conserva el buscador y el QR. Se mantuvieron los `id` de los botones, así que su lógica no cambió. También se ajustó el ancho de los resultados del buscador a la nueva barra. En escritorio (desde 768 px) ☰ va fijo en la esquina superior derecha, junto al borde por donde sale el menú (`index.html`, `index.css` `v=20`, `index.js` `v=15`) | Sin commit |
 | 2026-11-08 | **Fix tarjeta de edificios:** se quitó `esPlanta`, que no existía tras unir `0003275` y `c3046ea` y lanzaba `ReferenceError` en `mostrarDetalle` (`index.js`, caché `v=14`) | Sin commit |
 | 2026-11-08 | **Fix "Ver en 3D":** `ar-prueba.js` ya no depende del botón de prueba `arTestBtn`, hoy comentado (caché `v=6`) | Sin commit |
 | 2026-11-08 | **Fix lector QR:** se añadió `static/js/qr-scanner-worker.min.js`, copiado de `node_modules` (v1.4.2) | Sin commit |

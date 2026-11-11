@@ -88,7 +88,7 @@ class QRScannerHandler {
         text: resultData.message,
         icon: 'info',
         confirmButtonText: 'Ir a la planta',
-        confirmButtonColor: '#2196F3'
+        confirmButtonColor: '#027333'
       }).then(() => {
         if (typeof window.enfocarPlantaQR === 'function') {
           window.enfocarPlantaQR(qrCode);

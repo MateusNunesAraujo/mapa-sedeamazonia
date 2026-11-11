@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=18" />
+  <link rel="stylesheet" href="/static/css/index.css?v=22" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -74,33 +74,116 @@
         <img src="/static/iconos/lente-de-la-camara.png" alt="QR" class="btn-icon">
       </button>
 
-      <!-- Botón de Árboles Recolectados (Herbario) -->
-      <button class="action-btn" id="albumBtn" aria-label="Ver Árboles Recolectados"
-        style="margin-right: 8px; font-size: 20px; position: relative;" title="Árboles Recolectados">
-        🌿
-        <span class="notification-badge" id="albumBadge" style="display: none"></span>
-      </button>
-
-      <!-- Mapa 3D: vista aérea del campus en 3D (recorrido.js) -->
-      <button class="action-btn" id="mapa3DBtn" aria-label="Ver el mapa en 3D"
-        style="margin-right: 8px; font-size: 20px;" title="Mapa 3D">
-        🏙️
-      </button>
-
-      <!-- PRUEBA glosario AR (paso 1): quitar cuando exista el glosario -->
-     <!--  <button class="action-btn" id="arTestBtn" aria-label="Prueba de 3D y realidad aumentada"
-        style="margin-right: 8px; font-size: 20px;" title="Prueba 3D / AR">
-        🧊
-      </button>
- -->
-      <!-- Botón de Notificaciones -->
-      <button class="action-btn notification-btn" id="notificationBtn" aria-label="Ver notificaciones">
-        <img src="/static/iconos/campana.png" alt="Notificaciones" class="btn-icon">
-        <span class="notification-badge" id="notificationBadge" style="display: none"></span>
+      <!-- Botón del menú lateral (abre el panel desde el borde derecho) -->
+      <button type="button" class="action-btn menu-btn" id="menuBtn" aria-label="Abrir menú"
+        aria-controls="menuLateral" aria-expanded="false" title="Menú">
+        <span class="menu-btn-lineas" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="notification-badge" id="menuBadge" style="display: none"></span>
       </button>
     </div>
     <div class="search-results-dropdown" id="searchResults"></div>
   </div>
+
+  <!-- Menú lateral: se despliega desde el borde derecho hacia la izquierda -->
+  <div class="menu-lateral-fondo" id="menuLateralFondo"></div>
+  <nav class="menu-lateral" id="menuLateral" aria-label="Menú principal" aria-hidden="true" inert>
+    <div class="menu-lateral-header">
+      <div>
+        <span class="menu-lateral-subtitulo">Sede Amazonia</span>
+        <h3 class="menu-lateral-titulo">Menú</h3>
+      </div>
+      <button type="button" class="menu-lateral-cerrar" id="menuLateralCerrar" aria-label="Cerrar menú">&times;</button>
+    </div>
+
+    <div class="menu-lateral-lista">
+      <!-- Árboles Recolectados (Herbario): lo maneja album-handler.js -->
+      <button type="button" class="menu-item" id="albumBtn">
+        <span class="menu-item-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M5 19c0-8 6-14 15-14 0 9-6 15-14 15H5z" /><path d="M5 19l8-8" /></svg>
+          <span class="notification-badge" id="albumBadge" style="display: none"></span>
+        </span>
+        <span class="menu-item-texto">
+          <strong>Árboles recolectados</strong>
+          <small>Tu herbario del campus</small>
+        </span>
+      </button>
+
+      <!-- Mi jardín (pendiente): árboles en modelos 3D caricaturizados -->
+      <button type="button" class="menu-item" id="menuJardinBtn" data-proximamente="Aquí verás un jardín con modelos 3D caricaturizados de cada árbol, para animarte a recorrer aún más el campus.">
+        <span class="menu-item-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M7 14h10l-1.5 7h-7z" /><path d="M12 14V9" /><path d="M12 10.5C8.5 10.5 7 8.5 7 5.5c3.2 0 5 1.8 5 5" /><path d="M12 9c0-3 1.8-5 5-5 0 3-1.5 5-5 5" /></svg>
+        </span>
+        <span class="menu-item-texto">
+          <strong>Mi jardín</strong>
+          <small>Tus árboles en 3D</small>
+        </span>
+      </button>
+
+      <!-- Mapa 3D: vista aérea del campus en 3D (recorrido.js) -->
+      <button type="button" class="menu-item" id="mapa3DBtn">
+        <span class="menu-item-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2.5l8.5 4.75v9.5L12 21.5l-8.5-4.75v-9.5z" /><path d="M3.5 7.25L12 12l8.5-4.75" /><path d="M12 12v9.5" /></svg>
+        </span>
+        <span class="menu-item-texto">
+          <strong>Mapa 3D</strong>
+          <small>Recorre el campus en 3D</small>
+        </span>
+      </button>
+
+      <!-- Bibliografía (pendiente): referencias solo de los árboles, con documentos Word o PDF descargables -->
+      <button type="button" class="menu-item" id="menuBibliografiaBtn" data-proximamente="Aquí encontrarás las referencias de donde se tomó la información de los árboles, y podrás descargar los documentos (Word o PDF) disponibles.">
+        <span class="menu-item-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M2.5 5H8a4 4 0 0 1 4 4v11.5a3 3 0 0 0-3-3H2.5z" /><path d="M21.5 5H16a4 4 0 0 0-4 4v11.5a3 3 0 0 1 3-3h6.5z" /></svg>
+        </span>
+        <span class="menu-item-texto">
+          <strong>Bibliografía</strong>
+          <small>Fuentes y documentos de los árboles</small>
+        </span>
+      </button>
+
+      <!-- PRUEBA glosario AR (paso 1): quitar cuando exista el glosario -->
+      <!-- <button class="action-btn" id="arTestBtn" aria-label="Prueba de 3D y realidad aumentada"
+        style="margin-right: 8px; font-size: 20px;" title="Prueba 3D / AR">
+        🧊
+      </button> -->
+
+      <!-- Notificaciones: abre el panel de novedades (index.js) -->
+      <button type="button" class="menu-item" id="notificationBtn">
+        <span class="menu-item-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6.5 2.5 8.5 2.5 8.5h-17S6 15.5 6 9" /><path d="M10.2 20.5a2 2 0 0 0 3.6 0" /></svg>
+          <span class="notification-badge" id="notificationBadge" style="display: none"></span>
+        </span>
+        <span class="menu-item-texto">
+          <strong>Notificaciones</strong>
+          <small>Novedades del campus</small>
+        </span>
+      </button>
+
+      <div class="menu-separador" role="separator"></div>
+
+      <!-- Configuraciones (pendiente) -->
+      <button type="button" class="menu-item menu-item--secundario" id="menuConfigBtn" data-proximamente="Aquí podrás ajustar las preferencias de la aplicación.">
+        <span class="menu-item-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 7h9" /><path d="M19 7h1" /><circle cx="16" cy="7" r="2.5" /><path d="M4 17h1" /><path d="M11 17h9" /><circle cx="8" cy="17" r="2.5" /></svg>
+        </span>
+        <span class="menu-item-texto">
+          <strong>Configuraciones</strong>
+          <small>Preferencias de la app</small>
+        </span>
+      </button>
+
+      <!-- Acerca del aplicativo (pendiente): propósito y agradecimientos -->
+      <button type="button" class="menu-item menu-item--secundario" id="menuAcercaBtn" data-proximamente="Aquí encontrarás información sobre la aplicación, para qué fue creada y los agradecimientos a quienes contribuyeron a su desarrollo.">
+        <span class="menu-item-icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5" /><path d="M12 7.8v.1" /></svg>
+        </span>
+        <span class="menu-item-texto">
+          <strong>Acerca del aplicativo</strong>
+          <small>Propósito y agradecimientos</small>
+        </span>
+      </button>
+    </div>
+  </nav>
 
   <!-- Panel deslizante de filtros del mapa (esquina inferior izquierda) -->
   <div class="map-filters" id="mapFilters">
@@ -526,11 +609,11 @@
   <!-- Manejador de plantas -->
   <script src="/static/js/plants-handler.js?v=10"></script>
   <!-- Manejador de QR (importa QrScanner) -->
-  <script src="/static/js/qr-handler.js" type="module"></script>
+  <script src="/static/js/qr-handler.js?v=2" type="module"></script>
   <!-- Álbum de Árboles Recolectados -->
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
-  <script src="/static/js/index.js?v=14"></script>
+  <script src="/static/js/index.js?v=16"></script>
   <!-- PRUEBA glosario AR (paso 1) -->
   <script src="/static/js/ar-prueba.js?v=6"></script>
   <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->

@@ -307,6 +307,73 @@ closeSidebarBtn.addEventListener("click", () => {
   notificationSidebar.classList.remove("active");
 });
 
+// Menú lateral: agrupa álbum, mapa 3D y notificaciones, y se despliega desde el borde derecho.
+// Cada opción conserva su id original, así que su lógica sigue en album-handler.js, recorrido.js y aquí.
+const menuBtn = document.getElementById("menuBtn");
+const menuLateral = document.getElementById("menuLateral");
+const menuLateralFondo = document.getElementById("menuLateralFondo");
+const menuLateralCerrar = document.getElementById("menuLateralCerrar");
+const menuBadge = document.getElementById("menuBadge");
+
+// El punto rojo del botón del menú avisa que hay novedades dentro (álbum o notificaciones)
+function actualizarPuntoMenu() {
+  const hayAviso = ["albumBadge", "notificationBadge"].some((id) => {
+    const punto = document.getElementById(id);
+    return punto && punto.style.display !== "none";
+  });
+  menuBadge.style.display = hayAviso ? "block" : "none";
+}
+
+function alternarMenu(abrir, { devolverFoco = false } = {}) {
+  menuLateral.inert = !abrir;
+  menuLateral.setAttribute("aria-hidden", String(!abrir));
+  menuLateral.classList.toggle("activo", abrir);
+  menuLateralFondo.classList.toggle("activo", abrir);
+  menuBtn.setAttribute("aria-expanded", String(abrir));
+  menuBtn.setAttribute("aria-label", abrir ? "Cerrar menú" : "Abrir menú");
+
+  if (abrir) {
+    // Dentro del menú ya se ven los puntos de cada opción
+    menuBadge.style.display = "none";
+    menuLateral.querySelector(".menu-item")?.focus();
+  } else {
+    actualizarPuntoMenu();
+    if (devolverFoco) menuBtn.focus();
+  }
+}
+
+const menuAbierto = () => menuLateral.classList.contains("activo");
+
+menuBtn.addEventListener("click", () => alternarMenu(!menuAbierto(), { devolverFoco: true }));
+menuLateralCerrar.addEventListener("click", () => alternarMenu(false, { devolverFoco: true }));
+menuLateralFondo.addEventListener("click", () => alternarMenu(false, { devolverFoco: true }));
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && menuAbierto()) alternarMenu(false, { devolverFoco: true });
+});
+
+// Al elegir una opción el menú se cierra para dejar ver lo que se abrió
+menuLateral.querySelectorAll(".menu-item").forEach((opcion) => {
+  opcion.addEventListener("click", () => alternarMenu(false));
+});
+
+// Opciones del menú que aún no existen (data-proximamente): muestran qué habrá en ellas
+menuLateral.querySelectorAll(".menu-item[data-proximamente]").forEach((opcion) => {
+  opcion.addEventListener("click", () => {
+    Swal.fire({
+      title: opcion.querySelector("strong").textContent,
+      text: opcion.dataset.proximamente,
+      footer: "Próximamente",
+      icon: "info",
+      iconColor: "#03A65A",
+      confirmButtonText: "Entendido",
+      confirmButtonColor: "#025928",
+    });
+  });
+});
+
+// album-handler.js muestra su punto al desbloquear una planta; se espera un instante a que lo haga
+document.addEventListener("plantUnlocked", () => setTimeout(actualizarPuntoMenu, 0));
+
 // Evento para cerrar la tarjeta de detalles
 closeCardBtn.addEventListener("click", () => {
   detailCard.classList.remove("active");
