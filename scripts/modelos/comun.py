@@ -139,6 +139,10 @@ MATERIALES = {
     "azul_plastico": ((0.01, 0.07, 0.60), 0.0, 0.5),  # sillas plásticas
     "teal":       ((0.0, 0.17, 0.17), 0.0, 0.8),     # sillas tapizadas verdes
     "corcho":     ((0.70, 0.30, 0.03), 0.0, 0.8),    # cartelera
+    # Plazoleta cubierta frente al Auditorio (fotos referencias-3d/11.jpeg a 14.jpeg)
+    "baldosa_rosa": ((0.60, 0.42, 0.34), 0.0, 0.5),
+    "granito":    ((0.24, 0.18, 0.13), 0.0, 0.95),   # franjas de gravilla entre baldosas
+    "verde_cartelera": ((0.02, 0.30, 0.08), 0.0, 0.8),
 }
 
 # ---------------- Medidas comunes de los bloques (metros) ----------------
@@ -327,8 +331,9 @@ class Bloque:
             esc.caja("pasto", self.RX0 - 4, self.RX1 + 4, -0.05, 0.0, self.RZ0 - 4, self.RZ1 + 6)
         esc.caja("concreto", self.RX0, self.RX1, 0.0, PISO, self.RZ0 + 0.5, self.RZ1 + 0.3)
 
-    def cubierta(self, esc, mat_pared="pared", T=0.2, mat_techo="techo"):
-        """Techo con alero, caballete y, en los extremos a dos aguas, hastiales.
+    def cubierta(self, esc, mat_pared="pared", T=0.2, mat_techo="techo", hastiales=True):
+        """Techo con alero, caballete y, en los extremos a dos aguas, hastiales
+        (hastiales=False: sin los triángulos de pared, para cubiertas abiertas).
 
         Todas las aguas tienen la misma pendiente y pasan por el borde alto de los muros.
         Se arma como un sólido de grosor T: caras de arriba, de abajo y canto.
@@ -409,6 +414,8 @@ class Bloque:
                 esc.poligono(mat_techo, [[x0, y0, z0], [x1, y1, z1], [x1, y1 + T, z1], [x0, y0 + T, z0]])
 
         esc.caja("madera_osc", xa, xb, C - 0.05, C + T + 0.08, ZC - 0.2, ZC + 0.2)   # caballete
+        if not hastiales:
+            return
         if not self.hip_izq:
             esc.hastial(mat_pared, self.X0 + G / 2, G, YT, self.Z0, self.Z1, C)
         if not self.hip_der:

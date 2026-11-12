@@ -46,12 +46,15 @@ for x0, x1, z0, z1 in gen_complementarios.extensiones():
 esc.caja("pasto", min(xs) - 10, max(xs) + 10, -0.05, 0.0, min(zs) - 12, max(zs) + 12)
 
 # Bloques sencillos: un construir() en el sistema local del bloque
-for nombre, construir in (("Auditorio", gen_auditorio.construir),
-                          ("Sala de sistemas 2", gen_sala_sistemas2.construir)):
+for nombre, construir in (("Sala de sistemas 2", gen_sala_sistemas2.construir),):
     b, cx, cz, frente = dist[nombre]
     esc.colocar(cx, cz, frente)
     construir(esc, b, inicio=nombre_inicio(nombre), terreno=False)
     esc.punto(nombre_centro(nombre), 0.0, b.ZC, y=CUMBRERA + 1.5, extras={"nombre": nombre})
+
+# Auditorio con la plazoleta cubierta delante de su entrada (punta este)
+b = gen_auditorio.colocar(esc, dist, inicio=nombre_inicio("Auditorio"), terreno=False)
+esc.punto(nombre_centro("Auditorio"), 0.0, b.ZC, y=CUMBRERA + 1.5, extras={"nombre": "Auditorio"})
 
 # Edificios que se ubican solos (la biblioteca tiene varias partes)
 gen_direccion.colocar(esc, dist, inicio=nombre_inicio("Dirección"), terreno=False)
