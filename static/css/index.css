@@ -3076,6 +3076,823 @@
   white-space: nowrap;
 }
 
+/* ===== Mi jardín (vista isométrica, jardin.js) ===== */
+.jardin {
+  position: fixed;
+  inset: 0;
+  z-index: 4000;
+  background: #dff0d0;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.jardin canvas { display: block; width: 100%; height: 100%; cursor: grab; }
+.jardin canvas:active { cursor: grabbing; }
+.jardin-barra {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 26px;
+  padding-top: max(14px, env(safe-area-inset-top));
+  background: linear-gradient(rgba(1, 38, 10, 0.78), rgba(1, 38, 10, 0));
+  color: var(--blanco);
+  pointer-events: none;
+}
+.jardin-subtitulo {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.jardin-titulo { margin: 2px 0 0; font-size: 22px; font-weight: 600; }
+.jardin-salir {
+  pointer-events: auto;
+  width: 40px;
+  height: 40px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--verde-institucional);
+  font-size: 26px;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--sombra-suave);
+}
+.jardin-cargando {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  text-align: center;
+  color: var(--verde-institucional);
+  font-size: 16px;
+}
+.jardin-ayuda {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(max(14px, env(safe-area-inset-bottom)) + 100px);
+  text-align: center;
+  color: var(--verde-hover);
+  font-size: 14px;
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
+.jardin-ayuda.oculta { opacity: 0; }
+.jardin-ayuda-aviso {
+  display: block;
+  max-width: 420px;
+  margin: 0 auto 8px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--gris-medio);
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.jardin-ayuda .solo-pc { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .jardin-ayuda .solo-pc { display: inline; }
+  .jardin-ayuda .solo-tactil { display: none; }
+}
+/* Tarjeta de la parcela elegida */
+.jardin-info {
+  position: absolute;
+  left: 50%;
+  bottom: calc(max(14px, env(safe-area-inset-bottom)) + 96px);
+  transform: translateX(-50%);
+  width: min(380px, calc(100% - 32px));
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px 12px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border-left: 5px solid var(--verde-hoja);
+  box-shadow: var(--sombra-moderna);
+  pointer-events: none;
+}
+.jardin-info[hidden] { display: none; }
+.jardin-info-textos { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.jardin-info-accion {
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.jardin-info-accion[hidden] { display: none; }
+.jardin-info-accion:hover { background: var(--verde-selva); }
+.jardin-info-titulo { color: var(--verde-institucional); font-size: 16px; }
+.jardin-info-texto { color: var(--gris-medio); font-size: 13.5px; }
+
+/* --- Interfaz del juego (jardin-ui.js) --- */
+.jardin-barra-derecha {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: auto;
+}
+.jardin-monedas { display: flex; gap: 6px; }
+.jardin-moneda-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-width: 52px;
+  padding: 4px 10px 4px 4px;
+  border-radius: 999px;
+  background: rgba(1, 38, 10, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--blanco);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.jardin-moneda { width: 22px; height: 22px; flex-shrink: 0; }
+/* Salto del contador al ganar una moneda */
+.jardin-moneda-chip.ganada { animation: jardinMonedaGanada 0.7s ease-out; }
+@keyframes jardinMonedaGanada {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.25); background: rgba(65, 242, 160, 0.55); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jardin-moneda-chip.ganada { animation: none; }
+}
+.jardin-monedas--claro .jardin-moneda-chip {
+  background: #f2f8f3;
+  border-color: rgba(2, 89, 40, 0.12);
+  color: var(--verde-institucional);
+}
+
+/* Barra de herramientas inferior */
+.jardin-herramientas {
+  position: absolute;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 6px 24px rgba(1, 38, 10, 0.25);
+}
+.jardin-herramienta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 72px;
+  padding: 4px 0 2px;
+  border: none;
+  border-radius: 16px;
+  background: transparent;
+  color: var(--verde-institucional);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+.jardin-herramienta:hover { background: #eaf6ee; }
+.jardin-herramienta:active { transform: scale(0.95); }
+.jardin-herramienta:focus-visible { outline: 3px solid var(--verde-menta); outline-offset: 1px; }
+.jardin-herramienta-icono {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--verde-hoja) 0%, var(--verde-selva) 100%);
+  box-shadow: 0 4px 10px rgba(3, 166, 90, 0.3);
+}
+.jardin-herramienta-icono svg,
+.jardin-modo-icono svg,
+.lista-arbol-icono svg,
+.tienda-item-imagen svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.jardin-herramienta-icono svg { width: 24px; height: 24px; color: var(--blanco); }
+.jardin-herramienta-icono { position: relative; }
+/* Riegos disponibles en la regadera (gota con el número) */
+.jardin-herramienta-contador {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  border: 2px solid var(--blanco);
+  background: #1e9be0;
+  color: var(--blanco);
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+.jardin-herramienta-contador:empty { display: none; }
+.jardin-herramienta-contador.vacia { background: #9aa5ad; }
+/* Herramienta tomada (pala o regadera) */
+.jardin-herramienta[aria-pressed="true"] { background: #eaf6ee; }
+.jardin-herramienta[aria-pressed="true"] .jardin-herramienta-icono {
+  background: linear-gradient(135deg, var(--verde-menta) 0%, var(--verde-hoja) 100%);
+  box-shadow: 0 0 0 3px var(--blanco), 0 0 0 6px var(--verde-menta);
+}
+
+/* Aviso de la herramienta activa */
+.jardin-modo {
+  position: absolute;
+  left: 50%;
+  top: calc(max(14px, env(safe-area-inset-top)) + 74px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* Con left: 50% el navegador solo le daría la mitad del ancho: se ajusta al texto */
+  width: max-content;
+  max-width: calc(100% - 32px);
+  box-sizing: border-box;
+  padding: 8px 14px 8px 8px;
+  border-radius: 999px;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font-size: 13.5px;
+  box-shadow: var(--sombra-moderna);
+  pointer-events: none;
+}
+.jardin-modo[hidden] { display: none; }
+.jardin-modo-icono {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+}
+.jardin-modo-icono svg { width: 18px; height: 18px; }
+.jardin-modo-cancelar {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-left: 2px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--blanco);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* Paneles 2D (tienda y lista de árboles): hoja inferior en celular, ventana en escritorio */
+.jardin-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.jardin-panel[hidden] { display: none; }
+.jardin-panel-fondo {
+  position: absolute;
+  inset: 0;
+  background: rgba(1, 38, 10, 0.4);
+}
+.jardin-hoja {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 560px;
+  max-height: 82vh;
+  max-height: 82dvh;
+  overflow: hidden;
+  border-radius: 24px 24px 0 0;
+  background: var(--blanco);
+  box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+  animation: jardinHojaSube 0.28s ease-out;
+}
+@keyframes jardinHojaSube {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@media (min-width: 768px) {
+  .jardin-panel { align-items: center; }
+  .jardin-hoja { border-radius: 24px; max-height: 80vh; }
+}
+.jardin-hoja-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 20px 18px;
+  color: var(--blanco);
+  background: linear-gradient(135deg, var(--verde-hover) 0%, var(--verde-institucional) 45%, var(--verde-selva) 75%, var(--verde-lima) 100%);
+}
+.jardin-hoja-subtitulo {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+.jardin-hoja-titulo { margin: 2px 0 0; font-size: 22px; font-weight: 600; }
+.jardin-hoja-cerrar {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--blanco);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+.jardin-hoja-cerrar:hover { background: rgba(255, 255, 255, 0.32); }
+.jardin-hoja-cerrar:focus-visible,
+.jardin-salir:focus-visible { outline: 3px solid var(--verde-menta); outline-offset: 2px; }
+.jardin-hoja-saldo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(2, 89, 40, 0.08);
+  color: var(--gris-medio);
+  font-size: 13px;
+}
+.jardin-hoja-cuerpo {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px max(20px, env(safe-area-inset-bottom));
+  touch-action: pan-y;
+}
+
+/* Pestañas de la tienda */
+.jardin-pestanas {
+  display: flex;
+  gap: 6px;
+  margin: 14px 20px 0;
+  padding: 4px;
+  border-radius: 14px;
+  background: #eef5ef;
+}
+.jardin-pestana {
+  flex: 1;
+  padding: 9px 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--gris-medio);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.jardin-pestana[aria-selected="true"] {
+  background: var(--blanco);
+  color: var(--verde-institucional);
+  box-shadow: var(--sombra-suave);
+}
+
+/* Tarjetas de accesorios */
+.tienda-grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+.tienda-grilla[hidden], .tienda-espacios[hidden] { display: none; }
+.tienda-error {
+  grid-column: 1 / -1;
+  margin: 8px 0;
+  padding: 20px 12px;
+  text-align: center;
+  color: var(--gris-medio);
+  font-size: 14px;
+}
+.tienda-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 10px 12px;
+  border-radius: 18px;
+  background: #f7fbf8;
+  border: 1px solid rgba(2, 89, 40, 0.08);
+}
+.tienda-item-imagen {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: var(--blanco);
+  border: 2px dashed rgba(2, 89, 40, 0.18);
+  color: rgba(2, 89, 40, 0.45);
+  font-size: 11.5px;
+  overflow: hidden;
+}
+.tienda-item-imagen svg { width: 30px; height: 30px; }
+/* El borde punteado es solo para "Imagen pendiente" */
+.tienda-item-imagen:has(img) { border-color: transparent; }
+.tienda-item-imagen img { width: 100%; height: 100%; object-fit: contain; }
+.tienda-item-nombre {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--verde-institucional);
+  text-align: center;
+}
+.tienda-comprar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 84px;
+  padding: 6px 14px 6px 6px;
+  border: none;
+  border-radius: 999px;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+.tienda-comprar:hover:not(:disabled) { background: var(--verde-selva); }
+.tienda-comprar:active:not(:disabled) { transform: scale(0.96); }
+.tienda-comprar:disabled {
+  background: #e3e7e4;
+  color: #7d8a80;
+  cursor: not-allowed;
+}
+.tienda-comprar:disabled .jardin-moneda { opacity: 0.7; }
+.tienda-item-unidades { margin: 2px 0 0; font-size: 12px; font-weight: 600; color: var(--verde-institucional); }
+.tienda-item-qr {
+  margin: 4px 0 0;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #4c5a50;
+  background: #eef2ef;
+}
+.tienda-item-qr--listo { color: var(--verde-institucional); background: #e4f3d0; }
+
+/* Botón "?" de la pregunta y su modal */
+.jardin-pregunta-boton {
+  position: absolute;
+  left: 50%;
+  top: calc(max(14px, env(safe-area-inset-top)) + 126px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 8px;
+  border: none;
+  border-radius: 999px;
+  background: #ffd54f;
+  color: #5a3b00;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(1, 38, 10, 0.3);
+  animation: preguntaAparece 0.4s ease-out, preguntaLate 1.6s ease-in-out 0.4s infinite;
+}
+.jardin-pregunta-icono {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.jardin-pregunta-icono svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+@keyframes preguntaAparece { from { opacity: 0; transform: translateX(-50%) scale(0.6); } to { opacity: 1; transform: translateX(-50%) scale(1); } }
+@keyframes preguntaLate { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.06); } }
+.pregunta-texto { margin: 0 0 14px; font-size: 16px; font-weight: 600; color: var(--verde-institucional); line-height: 1.4; }
+.pregunta-opciones { display: flex; flex-direction: column; gap: 8px; }
+.pregunta-opcion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid rgba(2, 89, 40, 0.15);
+  border-radius: 14px;
+  background: #f7fbf8;
+  color: var(--texto-principal, #1f2d24);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+.pregunta-opcion:hover:not(:disabled) { background: #e4f3d0; }
+.pregunta-opcion:disabled { cursor: default; opacity: 0.85; }
+.pregunta-letra {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pregunta-opcion.correcta { background: #dff5e3; border-color: #03a65a; opacity: 1; }
+.pregunta-opcion.correcta .pregunta-letra { background: #03a65a; }
+.pregunta-opcion.incorrecta { background: #fbeaea; border-color: #d84343; }
+.pregunta-opcion.incorrecta .pregunta-letra { background: #d84343; }
+.pregunta-resultado {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fbeaea;
+  color: #7a2626;
+  font-size: 14px;
+  line-height: 1.45;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.pregunta-resultado[hidden] { display: none; }
+.pregunta-resultado.acierto { background: #dff5e3; color: var(--verde-institucional); }
+
+/* Botones de las zonas (copa, rostro, cuello) sobre el árbol elegido */
+.jardin-zonas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.jardin-zonas[hidden] { display: none; }
+.jardin-zona {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.jardin-zona-boton {
+  pointer-events: auto;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 2px solid var(--verde-institucional);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--verde-institucional);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(1, 38, 10, 0.25);
+  transition: transform 0.15s ease;
+}
+.jardin-zona-boton:active { transform: scale(0.94); }
+.jardin-zona-boton svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+.jardin-zona-boton img { width: 34px; height: 34px; object-fit: contain; }
+.jardin-zona-quitar {
+  pointer-events: auto;
+  position: absolute;
+  top: 30px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 2px solid var(--blanco);
+  border-radius: 50%;
+  background: #d84343;
+  color: var(--blanco);
+  font-size: 15px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.jardin-zona-nombre {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--verde-institucional);
+  background: rgba(255, 255, 255, 0.85);
+  padding: 1px 7px;
+  border-radius: 8px;
+}
+.lista-arbol-icono img { width: 30px; height: 30px; object-fit: contain; }
+.lista-ir-tienda {
+  display: block;
+  margin: 10px auto 0;
+  padding: 6px 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.colocar-arbol-boton,
+.colocar-arbol-quitar {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.colocar-arbol-boton { background: var(--verde-institucional); color: var(--blanco); }
+.colocar-arbol-boton:hover:not(:disabled) { background: var(--verde-selva); }
+.colocar-arbol-boton:disabled { background: #e3e7e4; color: #7d8a80; cursor: not-allowed; }
+.colocar-arbol-quitar { background: #fbeaea; color: #a33; }
+.colocar-arbol-quitar:hover { background: #f6d8d8; }
+
+/* Pestaña de espacios */
+.tienda-espacio {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border-radius: 18px;
+  background: #f7fbf8;
+  border: 1px solid rgba(2, 89, 40, 0.08);
+}
+.tienda-espacio-icono {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e4f3d0;
+}
+.tienda-espacio-icono svg { width: 52px; height: 52px; }
+.tienda-espacio-texto { flex: 1; min-width: 0; }
+.tienda-espacio-texto h4 { margin: 0 0 2px; font-size: 15px; color: var(--verde-institucional); }
+.tienda-espacio-texto p { margin: 0; font-size: 13px; color: var(--gris-medio); line-height: 1.4; }
+.tienda-nota { margin: 14px 2px 0; font-size: 12.5px; color: var(--gris-medio); line-height: 1.45; }
+
+/* Lista de árboles del usuario */
+.lista-resumen {
+  margin: 0;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(2, 89, 40, 0.08);
+  color: var(--gris-medio);
+  font-size: 13px;
+}
+.lista-resumen strong { color: var(--verde-institucional); }
+.lista-arboles { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.lista-arbol {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 16px;
+  background: #f7fbf8;
+}
+.lista-arbol-icono {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--verde-hoja) 0%, var(--verde-selva) 100%);
+  color: var(--blanco);
+}
+.lista-arbol-icono svg { width: 20px; height: 20px; }
+.lista-arbol-texto { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.lista-arbol-texto strong {
+  color: var(--verde-institucional);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lista-arbol-texto em { color: var(--gris-medio); font-size: 12.5px; }
+.lista-arbol-estado {
+  flex-shrink: 0;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #fff3d6;
+  color: #8a5a00;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.lista-arbol-estado--plantado { background: #e4f3d0; color: var(--verde-institucional); }
+.lista-arbol-plantar {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lista-arbol-plantar:hover:not(:disabled) { background: var(--verde-selva); }
+.lista-arbol-plantar:disabled { background: #e3e7e4; color: #7d8a80; cursor: not-allowed; }
+.lista-arbol-observar {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  border: 1px solid var(--verde-institucional);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--verde-institucional);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lista-arbol-observar:hover { background: rgba(2, 89, 40, 0.08); }
+.lista-vacia { padding: 24px 8px; text-align: center; color: var(--gris-medio); font-size: 14px; }
+
+/* Observar un árbol de cerca */
+.jardin-observar {
+  position: absolute;
+  left: 50%;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(420px, calc(100% - 32px));
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 12px 12px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.95);
+  border-left: 5px solid var(--verde-hoja);
+  box-shadow: var(--sombra-moderna);
+}
+.jardin-observar[hidden] { display: none; }
+.jardin-observar-textos { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.jardin-observar-nombre { color: var(--verde-institucional); font-size: 16px; }
+.jardin-observar-textos span { color: var(--gris-medio); font-size: 12.5px; }
+.jardin-observar .solo-pc { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .jardin-observar .solo-tactil { display: none; }
+  .jardin-observar .solo-pc { display: inline; }
+}
+.jardin-observar-volver {
+  flex-shrink: 0;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 999px;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.jardin-observar-volver:hover { background: var(--verde-selva); }
+/* Mientras se observa un árbol se esconden las herramientas y lo que depende de la vista del jardín */
+.jardin.observando .jardin-herramientas,
+.jardin.observando .jardin-info,
+.jardin.observando .jardin-ayuda,
+.jardin.observando .jardin-modo,
+.jardin.observando .jardin-zonas { display: none; }
+@media (max-width: 420px) {
+  .jardin-titulo { font-size: 19px; }
+  .jardin-moneda-chip { min-width: 0; font-size: 13px; }
+  /* En pantallas angostas basta con el botón "Plantar": se oculta la etiqueta "Guardado" */
+  .lista-arbol-estado:not(.lista-arbol-estado--plantado) { display: none; }
+}
+
 /* ===== Recorrido a pie (primera persona) ===== */
 .recorrido {
   position: fixed;

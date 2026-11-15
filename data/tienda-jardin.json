@@ -1,0 +1,187 @@
+{
+  "nota": "Catálogo de la tienda del jardín. Los precios de la parcela y del espacio de regadera todavía son de EJEMPLO. Formato en static/img/accesorios/README.md",
+  "parcela": {
+    "precio": { "moneda": "oro", "valor": 5 }
+  },
+  "regadera": {
+    "precio": { "moneda": "plata", "valor": 3 }
+  },
+  "accesorios": [
+    {
+      "id": "sombrero-copa-negro",
+      "nombre": "Sombrero elegante",
+      "imagen": "sombrero-copa-negro.png",
+      "zona": "cabeza",
+      "modelo": "sombrero-copa-negro.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "collar-chambira",
+      "nombre": "Collar de chambira",
+      "imagen": "collar-chambira.png",
+      "zona": "cuello",
+      "modelo": "collar-chambira.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "pintura-achiote",
+      "nombre": "Pintura de achiote",
+      "imagen": "pintura-achiote.png",
+      "zona": "rostro",
+      "pintura": "pintura-achiote.png",
+      "precio": { "moneda": "oro", "valor": 1 }
+    },
+    {
+      "id": "pintura-huito",
+      "nombre": "Pintura de huito",
+      "imagen": "pintura-huito.png",
+      "zona": "rostro",
+      "pintura": "pintura-huito.png",
+      "precio": { "moneda": "oro", "valor": 1 }
+    },
+    {
+      "id": "corona-plumas",
+      "nombre": "Coran de plumas",
+      "imagen": "corona-plumas.png",
+      "zona": "cabeza",
+      "modelo": "corona-plumas.glb",
+      "precio": { "moneda": "oro", "valor": 1 }
+    },
+    {
+      "id": "bigote-musgo",
+      "nombre": "Bigote de musgo",
+      "imagen": "bigote-musgo-icono.png",
+      "zona": "rostro",
+      "modelo": "bigote-musgo.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "bufanda-lianas-orquidea",
+      "nombre": "Bufanda de orquidea",
+      "imagen": "bufanda-lianas-orquidea-icono.png",
+      "zona": "cuello",
+      "modelo": "bufanda-lianas-orquidea.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "collar-dientes-escamas",
+      "nombre": "Collar dientes de escamas",
+      "imagen": "collar-dientes-escamas-icono.png",
+      "zona": "cuello",
+      "modelo": "collar-dientes-escamas.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "collar-huayruro",
+      "nombre": "Collar huayruro",
+      "imagen": "collar-huayruro.png",
+      "zona": "cuello",
+      "modelo": "collar-huayruro.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "nariguera-oro",
+      "nombre": "Nariguera de oro",
+      "imagen": "nariguera-oro-icono.png",
+      "zona": "rostro",
+      "modelo": "nariguera-oro.glb",
+      "precio": { "moneda": "oro", "valor": 1 }
+    },
+    {
+      "id": "sombrero-tejido-palma",
+      "nombre": "Sombrero de tejido de palma",
+      "imagen": "sombrero-tejido-palma-icono.png",
+      "zona": "cabeza",
+      "modelo": "sombrero-tejido-palma.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "tocado-victoria-regia",
+      "nombre": "Tocado de victoria regia",
+      "imagen": "tocado-victoria-regia-icono.png",
+      "zona": "cabeza",
+      "modelo": "tocado-victoria-regia.glb",
+      "precio": { "moneda": "oro", "valor": 1 }
+    },
+    {
+      "id": "mini-maloca-techo",
+      "nombre": "Mini maloca techo",
+      "imagen": "mini-maloca-techo-icono.png",
+      "zona": "cabeza",
+      "modelo": "mini-maloca-techo.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "faja-tikuna-cocama",
+      "nombre": "Faja tikuna cocama",
+      "imagen": "faja-tikuna-cocama-icono.png",
+      "zona": "cuello",
+      "modelo": "faja-tikuna-cocama.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "mascara-tikuna",
+      "nombre": "Mascara tikuna",
+      "imagen": "mascara-ticuna-icono.png",
+      "zona": "rostro",
+      "modelo": "mascara-ticuna.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "vestido-falda-amazonica",
+      "nombre": "Vestido falda amazónica",
+      "imagen": "vestido-falda-amazonica-icono.png",
+      "zona": "cuello",
+      "modelo": "vestido-falda-amazónica.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "ramillete-heliconia",
+      "nombre": "Ramillete heliconia",
+      "imagen": "ramillete-heliconia-icono.png",
+      "zona": "cabeza",
+      "modelo": "ramillete-heliconia.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "birrete-academico-unal",
+      "nombre": "Birrete ácademico unal",
+      "imagen": "birrete-academico-unal-icono.png",
+      "zona": "cabeza",
+      "modelo": "birrete-academico-unal.glb",
+      "precio": { "moneda": "oro", "valor": 1 }
+    },
+    {
+      "id": "medallon-copa-unal",
+      "nombre": "Medallón copa unal",
+      "imagen": "medallon-copa-unal-icono.png",
+      "zona": "cabeza",
+      "modelo": "medallon-copa-unal.glb",
+      "precio": { "moneda": "oro", "valor": 1 }
+    },
+    {
+      "id": "maloca-mirador-botanico",
+      "nombre": "Maloca mirador botánico",
+      "imagen": "maloca-mirador-botanico-icono.png",
+      "zona": "cabeza",
+      "modelo": "maloca-mirador-botanico.glb",
+      "precio": { "moneda": "oro", "valor": 1 }
+    },
+    {
+      "id": "gorro-navidad",
+      "nombre": "Gorro navidad",
+      "imagen": "gorro-navidad-icono.png",
+      "zona": "cabeza",
+      "modelo": "gorro-navidad.glb",
+      "precio": { "moneda": "plata", "valor": 1 }
+    },
+    {
+      "id": "capibara-sentada",
+      "nombre": "Capibara sentada",
+      "imagen": "capibara-sentada-icono.png",
+      "zona": "cabeza",
+      "modelo": "capibara-sentada.glb",
+      "precio": { "moneda": "oro", "valor": 1 }
+    }
+  ]
+}

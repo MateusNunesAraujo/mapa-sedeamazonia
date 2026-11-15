@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=22" />
+  <link rel="stylesheet" href="/static/css/index.css?v=35" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -108,8 +108,8 @@
         </span>
       </button>
 
-      <!-- Mi jardín (pendiente): árboles en modelos 3D caricaturizados -->
-      <button type="button" class="menu-item" id="menuJardinBtn" data-proximamente="Aquí verás un jardín con modelos 3D caricaturizados de cada árbol, para animarte a recorrer aún más el campus.">
+      <!-- Mi jardín: vista isométrica del jardín (jardin.js) -->
+      <button type="button" class="menu-item" id="menuJardinBtn">
         <span class="menu-item-icono" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d="M7 14h10l-1.5 7h-7z" /><path d="M12 14V9" /><path d="M12 10.5C8.5 10.5 7 8.5 7 5.5c3.2 0 5 1.8 5 5" /><path d="M12 9c0-3 1.8-5 5-5 0 3-1.5 5-5 5" /></svg>
         </span>
@@ -607,9 +607,9 @@
   <!-- Árboles favoritos -->
   <script src="/static/js/favorites.js?v=1"></script>
   <!-- Manejador de plantas -->
-  <script src="/static/js/plants-handler.js?v=10"></script>
+  <script src="/static/js/plants-handler.js?v=11"></script>
   <!-- Manejador de QR (importa QrScanner) -->
-  <script src="/static/js/qr-handler.js?v=2" type="module"></script>
+  <script src="/static/js/qr-handler.js?v=3" type="module"></script>
   <!-- Álbum de Árboles Recolectados -->
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
@@ -618,6 +618,8 @@
   <script src="/static/js/ar-prueba.js?v=6"></script>
   <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
   <script src="/static/js/recorrido.js?v=9" type="module"></script>
+  <!-- Mi jardín (three.js se carga solo al abrirlo) -->
+  <script src="/static/js/jardin.js?v=31" type="module"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">

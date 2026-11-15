@@ -56,6 +56,21 @@ class PlantsHandler {
   }
 
   /**
+   * Ruta del modelo 3D caricaturizado del árbol (campo "modelo3d" de plantas.json: nombre del
+   * archivo dentro de static/modelos/3d-arboles/, o una ruta que empiece por "/").
+   * Igual que su información (getPlantData), el modelo solo está disponible si el árbol está
+   * desbloqueado. Devuelve null si está bloqueado o si aún no tiene modelo.
+   */
+  getModelUrl(codigoQR) {
+    const planta = this.plantas.find(p => p.codigoQR === codigoQR);
+    if (!planta || !planta.modelo3d) return null;
+    if (planta.bloqueado && !unlocker.isUnlocked(codigoQR)) return null;
+    const ruta = String(planta.modelo3d).trim();
+    if (!ruta) return null;
+    return /^(\/|https?:)/i.test(ruta) ? ruta : `/static/modelos/3d-arboles/${encodeURIComponent(ruta)}`;
+  }
+
+  /**
    * Normaliza los usos de una planta para soportar cualquier estructura de datos:
    * - Objeto clave-valor: { "Medicinal": "...", "Aserrío": "...", "Otros": "..." }
    * - Arreglo: [{ titulo: "Medicinal", texto: "..." }] o [{ tipo: "Medicinal", descripcion: "..." }]
