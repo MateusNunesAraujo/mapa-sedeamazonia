@@ -6,8 +6,8 @@
 import {
   parcelaDe, parcelasLibres, celdasParaAmpliar, comprarAccesorio, comprarEspacioRegadera, puedeAmpliarRegadera,
   desbloquearAccesorioQR, accesorioCanjeadoQR, cargarEstado, accesorioEn, ponerAccesorio, quitarAccesorio,
-  elegirPregunta, responderPregunta, PREGUNTA,
-} from './jardin-estado.js?v=11';
+  elegirPregunta, responderPregunta, PREGUNTA, abrirCaja,
+} from './jardin-estado.js?v=12';
 
 // Preguntas del botón "?": data/preguntas-jardin.json
 const RUTA_PREGUNTAS = '/data/preguntas-jardin.json';
@@ -82,6 +82,76 @@ export function cargarCatalogo() {
   return catalogoCargado;
 }
 
+// Caja sorpresa: data/caja-sorpresa.json (formato en su campo "nota")
+const RUTA_CAJA = '/data/caja-sorpresa.json';
+const CARPETA_ARBOLES = '/static/modelos/3d-arboles/';
+let cajaCargada = null;
+
+/**
+ * Lee la caja una sola vez: { intervaloMs, idPrimera, exclusivos: Map(codigoQR -> árbol), premios }.
+ * Descarta (con aviso en consola) los premios mal escritos o que apuntan a algo que no existe.
+ */
+export function cargarCaja() {
+  if (!cajaCargada) {
+    cajaCargada = Promise.all([
+      fetch(RUTA_CAJA).then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      }),
+      cargarCatalogo().catch(() => ({ accesorios: [] })),
+    ])
+      .then(([datos, catalogo]) => {
+        const exclusivos = new Map();
+        for (const a of Array.isArray(datos.arboles_exclusivos) ? datos.arboles_exclusivos : []) {
+          if (!a || typeof a.codigoQR !== 'string' || !a.codigoQR.trim() || typeof a.nombre !== 'string') {
+            console.warn('caja-sorpresa.json: se ignora un árbol exclusivo sin codigoQR o nombre');
+            continue;
+          }
+          const ruta = typeof a.modelo3d === 'string' && a.modelo3d.trim() ? a.modelo3d.trim() : null;
+          exclusivos.set(a.codigoQR, {
+            codigoQR: a.codigoQR,
+            nombre: a.nombre,
+            especie: a.especie || '',
+            exclusivo: true,
+            rutaModelo: ruta ? (/^(\/|https?:)/i.test(ruta) ? ruta : `${CARPETA_ARBOLES}${encodeURIComponent(ruta)}`) : null,
+          });
+        }
+        const accesorios = new Map(catalogo.accesorios.map((a) => [a.id, a]));
+        const ids = new Set();
+        const premios = (Array.isArray(datos.premios) ? datos.premios : []).filter((p, i) => {
+          if (p?.activo === false) return false;
+          const problema = !p || typeof p.id !== 'string' || !p.id.trim() ? 'sin id'
+            : ids.has(p.id) ? `id repetido "${p.id}"`
+              : !Number.isInteger(p.cantidad) || p.cantidad < 1 ? `"${p.id}" con cantidad inválida`
+                : !(Number(p.peso) > 0) ? `"${p.id}" con peso inválido`
+                  : p.tipo === 'monedas' ? (p.objeto === 'plata' || p.objeto === 'oro' ? null : `"${p.id}": moneda desconocida`)
+                    : p.tipo === 'accesorio' ? (accesorios.has(p.objeto) ? null : `"${p.id}": accesorio "${p.objeto}" no está en la tienda`)
+                      : p.tipo === 'arbol' ? (exclusivos.has(p.objeto) ? null : `"${p.id}": árbol "${p.objeto}" no está en arboles_exclusivos`)
+                        : `"${p.id}": tipo desconocido`;
+          if (problema) {
+            console.warn(`caja-sorpresa.json: se ignora el premio ${i + 1} (${problema})`);
+            return false;
+          }
+          ids.add(p.id);
+          return true;
+        }).map((p) => ({
+          ...p,
+          peso: Number(p.peso),
+          cantidad: p.tipo === 'arbol' ? 1 : p.cantidad,
+          accesorio: p.tipo === 'accesorio' ? accesorios.get(p.objeto) : null,
+          arbol: p.tipo === 'arbol' ? exclusivos.get(p.objeto) : null,
+        }));
+        const horas = Number(datos.intervalo_horas) > 0 ? Number(datos.intervalo_horas) : 24;
+        return { intervaloMs: horas * 60 * 60 * 1000, idPrimera: datos.primera_caja || null, exclusivos, premios };
+      })
+      .catch((err) => {
+        cajaCargada = null;
+        throw err;
+      });
+  }
+  return cajaCargada;
+}
+
 /**
  * Canjea un código QR escaneado si es el `id` de un accesorio con "desbloqueo_qr": true.
  * Lo usa qr-handler.js. Devuelve { nombre, nuevo } o null si el código no es de un accesorio.
@@ -118,6 +188,7 @@ const ICONOS = {
   imagen: '<svg viewBox="0 0 24 24"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5" /><circle cx="9" cy="10" r="1.8" /><path d="M20.5 16l-5-5-8.5 8.5" /></svg>',
   mas: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg>',
   pregunta: '<svg viewBox="0 0 24 24"><path d="M9 9.5a3 3 0 1 1 4.2 2.75c-.8.4-1.2 1-1.2 1.85v.4" /><path d="M12 18v.01" /></svg>',
+  caja: '<svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11.5" rx="1.5" /><path d="M2.5 6.5h19V9h-19z" /><path d="M12 6.5v14" /><path d="M12 6.5C10 3 7 3 7.2 5c.2 1.3 2.6 1.5 4.8 1.5zM12 6.5c2-3.5 5-3.5 4.8-1.5-.2 1.3-2.6 1.5-4.8 1.5z" /></svg>',
 };
 ICONOS.plantar = ICONOS.arboles;
 
@@ -252,7 +323,7 @@ function htmlListaArboles(arboles, { estado, parcelaDestino }) {
         <span class="lista-arbol-icono" aria-hidden="true">${ICONOS.arboles}</span>
         <span class="lista-arbol-texto">
           <strong>${escapar(p.nombre)}</strong>
-          <em>${escapar(p.especie || p.nombre_cientifico || '')}</em>
+          <em>${escapar(p.especie || p.nombre_cientifico || '')}${p.exclusivo ? ' · <span class="lista-arbol-exclusivo">Exclusivo</span>' : ''}</em>
         </span>
         ${accion}
       </li>`;
@@ -338,11 +409,61 @@ function htmlPregunta(pregunta) {
     </div>`;
 }
 
-/** Árboles que el usuario ya tiene: los desbloqueados (mismo criterio que el álbum) */
+const RAREZA = { comun: 'Común', rara: 'Rara', epica: 'Épica', legendaria: 'Legendaria' };
+
+/** Caja cerrada (toca para abrir) o el premio que salió */
+function htmlCaja(premio = null) {
+  let cuerpo;
+  if (!premio) {
+    cuerpo = `
+      <button type="button" class="caja-sorpresa" aria-label="Abrir la caja sorpresa">
+        <img src="/static/iconos/caja-sorpresa.gif" alt="">
+      </button>
+      <p class="caja-texto">Toca la caja para abrirla</p>`;
+  } else {
+    const imagen = premio.tipo === 'monedas' ? moneda(premio.objeto, 'caja-premio-moneda')
+      : premio.tipo === 'accesorio' ? imagenAccesorio(premio.accesorio)
+        : ICONOS.arboles;
+    const nombre = premio.tipo === 'monedas' ? `${premio.cantidad} ${NOMBRE_MONEDA[premio.objeto]}`
+      : premio.tipo === 'accesorio' ? `${premio.cantidad > 1 ? `${premio.cantidad} × ` : ''}${premio.accesorio.nombre}`
+        : premio.arbol.nombre;
+    const detalle = premio.tipo === 'monedas' ? 'Ya están en tu monedero'
+      : premio.tipo === 'accesorio' ? 'Ya está en tu inventario: tócale la copa, el rostro o el cuello a un árbol para ponérselo'
+        : `Árbol exclusivo · ${premio.arbol.especie}. Búscalo en "Árboles" para plantarlo`;
+    const rareza = RAREZA[premio.rareza] ? `<span class="caja-rareza caja-rareza--${escapar(premio.rareza)}">${RAREZA[premio.rareza]}</span>` : '';
+    cuerpo = `
+      <div class="caja-premio caja-premio--${premio.tipo}">
+        <span class="caja-premio-imagen" aria-hidden="true">${imagen}</span>
+        ${rareza}
+        <strong class="caja-premio-nombre">${escapar(nombre)}</strong>
+        <p class="caja-texto">${escapar(detalle)}</p>
+      </div>
+      <button type="button" class="caja-aceptar">¡Genial!</button>`;
+  }
+  return `
+    <header class="jardin-hoja-cabecera">
+      <div>
+        <span class="jardin-hoja-subtitulo">${premio ? '¡Ganaste!' : 'Árboles exclusivos, monedas y accesorios'}</span>
+        <h3 class="jardin-hoja-titulo" id="jardinCajaTitulo">Caja sorpresa</h3>
+      </div>
+      <button type="button" class="jardin-hoja-cerrar" aria-label="Cerrar caja sorpresa">&times;</button>
+    </header>
+    <div class="jardin-hoja-cuerpo caja-cuerpo" aria-live="polite">${cuerpo}</div>`;
+}
+
+/** Árboles que el usuario ya tiene: los desbloqueados (mismo criterio que el álbum) y los exclusivos de la caja */
 export async function arbolesDelUsuario() {
   if (!window.plantsHandler) return [];
   const plantas = window.plantsHandler.plantas.length ? window.plantsHandler.plantas : await window.plantsHandler.loadPlants();
-  return plantas.filter((p) => !p.bloqueado || (window.unlocker && window.unlocker.isUnlocked(p.codigoQR)));
+  const desbloqueados = plantas.filter((p) => !p.bloqueado || (window.unlocker && window.unlocker.isUnlocked(p.codigoQR)));
+  let exclusivos = [];
+  try {
+    const caja = await cargarCaja();
+    exclusivos = cargarEstado().exclusivos.map((c) => caja.exclusivos.get(c)).filter(Boolean);
+  } catch (err) {
+    console.warn('No se pudieron leer los árboles exclusivos de la caja:', err);
+  }
+  return [...desbloqueados, ...exclusivos];
 }
 
 /**
@@ -356,7 +477,7 @@ export async function arbolesDelUsuario() {
  *   (jardin.js muestra los lugares libres y cobra al confirmar).
  */
 export function montarInterfazJuego(raiz, {
-  estado, alCambiarModo, alElegirArbol, alCambiarAccesorios, alObservarArbol, alComprarParcela, alAmpliarRegadera,
+  estado, alCambiarModo, alElegirArbol, alCambiarAccesorios, alObservarArbol, alComprarParcela, alAmpliarRegadera, alGanarArbol,
 }) {
   monedas = estado.monedas;
 
@@ -416,13 +537,24 @@ export function montarInterfazJuego(raiz, {
     alCambiarModo?.(modoActual);
   }
 
+  let alCerrarPanel = null; // se llama una vez cuando el panel actual se cierra o se reemplaza
+
+  function soltarAlCerrar() {
+    const fn = alCerrarPanel;
+    alCerrarPanel = null;
+    fn?.();
+  }
+
   function cerrarPanel() {
     panel.hidden = true;
     hoja.innerHTML = '';
+    soltarAlCerrar();
   }
 
-  function abrirPanel(html, idTitulo) {
+  function abrirPanel(html, idTitulo, alCerrar = null) {
     if (modoActual) ponerModo(null); // al abrir un panel se suelta la herramienta
+    soltarAlCerrar();
+    alCerrarPanel = alCerrar;
     hoja.innerHTML = html;
     hoja.setAttribute('aria-labelledby', idTitulo);
     panel.hidden = false;
@@ -516,6 +648,45 @@ export function montarInterfazJuego(raiz, {
           ${pregunta.explicacion ? `<span>${escapar(pregunta.explicacion)}</span>` : ''}`;
         resultado.hidden = false;
         if (acierto) api.actualizarMonedas('oro');
+      });
+    });
+  }
+
+  // --- Caja sorpresa: se abre sola al entrar si toca; si se cierra sin abrirla queda un botón para volver ---
+  function quitarBotonCaja() {
+    raiz.querySelector('.jardin-caja-boton')?.remove();
+  }
+
+  /** Abre el panel de la caja. Devuelve una promesa que se cumple al cerrar el panel */
+  function mostrarCaja(caja) {
+    if (!raiz.querySelector('.jardin-caja-boton')) {
+      raiz.insertAdjacentHTML('beforeend', `
+        <button type="button" class="jardin-caja-boton" aria-label="Abrir la caja sorpresa">
+          <span class="jardin-pregunta-icono">${ICONOS.caja}</span><span>Caja sorpresa</span>
+        </button>`);
+      raiz.querySelector('.jardin-caja-boton').addEventListener('click', () => mostrarCaja(caja));
+    }
+    return new Promise((resolver) => {
+      abrirPanel(htmlCaja(), 'jardinCajaTitulo', resolver);
+      const boton = hoja.querySelector('.caja-sorpresa');
+      boton.addEventListener('click', () => {
+        if (boton.classList.contains('abriendo')) return;
+        boton.classList.add('abriendo');
+        setTimeout(() => {
+          if (!hoja.contains(boton)) return; // se cerró mientras se sacudía: sigue sin abrir
+          const premio = abrirCaja(estado, caja.premios, { idPrimera: caja.idPrimera });
+          quitarBotonCaja();
+          if (!premio) { cerrarPanel(); return; }
+          hoja.innerHTML = htmlCaja(premio); // mismo panel: el aviso de cierre (resolver) se mantiene
+          hoja.querySelector('.jardin-hoja-cerrar').addEventListener('click', cerrarPanel);
+          hoja.querySelector('.caja-aceptar').addEventListener('click', cerrarPanel);
+          hoja.querySelector('.caja-aceptar').focus();
+          hoja.querySelectorAll('.caja-premio-imagen img').forEach((img) => {
+            img.addEventListener('error', () => { img.replaceWith(document.createRange().createContextualFragment(ICONOS.imagen)); }, { once: true });
+          });
+          if (premio.tipo === 'monedas') api.actualizarMonedas(premio.objeto);
+          if (premio.tipo === 'arbol') alGanarArbol?.(premio.arbol);
+        }, 900);
       });
     });
   }
@@ -699,6 +870,8 @@ export function montarInterfazJuego(raiz, {
     ocultarZonas,
     /** Muestra el botón "?" con una pregunta pendiente (si hay) */
     mostrarBotonPregunta,
+    /** Abre la caja sorpresa (datos de cargarCaja); se cumple al cerrar el panel */
+    mostrarCaja,
   };
   return api;
 }

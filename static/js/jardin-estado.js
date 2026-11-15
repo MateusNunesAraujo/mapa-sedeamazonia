@@ -80,6 +80,8 @@ function estadoInicial(ahora = Date.now()) {
     lluvia: { ultima: 0 }, // cuándo llovió por última vez (ms)
     avisos: { programado: 0, ultimo: 0 }, // notificación de sed pendiente y última entregada (ms)
     preguntas: { ultima: 0, respondidas: [] }, // última pregunta (ms) e ids ya respondidas
+    caja: { ultima: 0, abiertas: 0 }, // última caja sorpresa abierta (ms) y cuántas se han abierto
+    exclusivos: [],   // codigoQR de los árboles exclusivos ganados en la caja (data/caja-sorpresa.json)
   };
 }
 
@@ -153,6 +155,13 @@ export function cargarEstado() {
   if (Number.isFinite(ultimaPregunta) && ultimaPregunta > 0) estado.preguntas.ultima = Math.min(ultimaPregunta, Date.now());
   if (Array.isArray(datos.preguntas?.respondidas)) {
     estado.preguntas.respondidas = datos.preguntas.respondidas.filter((id) => typeof id === 'string');
+  }
+
+  const ultimaCaja = datos.caja?.ultima;
+  if (Number.isFinite(ultimaCaja) && ultimaCaja > 0) estado.caja.ultima = Math.min(ultimaCaja, Date.now());
+  estado.caja.abiertas = enteroPositivo(datos.caja?.abiertas);
+  if (Array.isArray(datos.exclusivos)) {
+    estado.exclusivos = [...new Set(datos.exclusivos.filter((c) => typeof c === 'string' && c.trim()))];
   }
 
   // Regadera: capacidad entre la inicial y el tope (los guardados viejos no la traen), cargas enteras
@@ -422,6 +431,39 @@ export function responderPregunta(estado, pregunta, opcion, totalPreguntas, ahor
   }
   guardarEstado(estado);
   return acierto;
+}
+
+/** ¿Toca caja sorpresa? La primera vez siempre, y luego cuando pasan `intervaloMs` desde la última abierta */
+export function tocaCaja(estado, intervaloMs, ahora = Date.now()) {
+  return !estado.caja.ultima || ahora - estado.caja.ultima >= intervaloMs;
+}
+
+/** Tiempo que falta para la próxima caja (0 si ya está disponible) */
+export function faltaParaCaja(estado, intervaloMs, ahora = Date.now()) {
+  return tocaCaja(estado, intervaloMs, ahora) ? 0 : intervaloMs - (ahora - estado.caja.ultima);
+}
+
+/**
+ * Abre la caja: sortea un premio por `peso` entre `premios` (ya validados) y lo entrega.
+ * Los árboles exclusivos que ya se tienen no entran al sorteo. En la primera caja se entrega
+ * `idPrimera` si sigue disponible. Devuelve el premio entregado o null si no hay ninguno.
+ */
+export function abrirCaja(estado, premios, { idPrimera = null, ahora = Date.now(), azar = Math.random } = {}) {
+  const disponibles = premios.filter((p) => p.tipo !== 'arbol' || !estado.exclusivos.includes(p.objeto));
+  if (!disponibles.length) return null;
+  let premio = estado.caja.abiertas === 0 && idPrimera ? disponibles.find((p) => p.id === idPrimera) : null;
+  if (!premio) {
+    const total = disponibles.reduce((s, p) => s + p.peso, 0);
+    let tiro = azar() * total;
+    premio = disponibles.find((p) => (tiro -= p.peso) < 0) || disponibles[disponibles.length - 1];
+  }
+  if (premio.tipo === 'monedas') estado.monedas[premio.objeto] += premio.cantidad;
+  else if (premio.tipo === 'accesorio') estado.inventario[premio.objeto] = (estado.inventario[premio.objeto] || 0) + premio.cantidad;
+  else if (premio.tipo === 'arbol') estado.exclusivos.push(premio.objeto);
+  estado.caja.ultima = ahora;
+  estado.caja.abiertas += 1;
+  guardarEstado(estado);
+  return premio;
 }
 
 /** ¿Este accesorio ya se canjeó con su código QR? */

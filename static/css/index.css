@@ -3650,6 +3650,83 @@
 .pregunta-resultado[hidden] { display: none; }
 .pregunta-resultado.acierto { background: #dff5e3; color: var(--verde-institucional); }
 
+/* Caja sorpresa: botón flotante (si se cerró sin abrir) y su panel */
+.jardin-caja-boton {
+  position: absolute;
+  left: 50%;
+  top: calc(max(14px, env(safe-area-inset-top)) + 178px);
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px 8px 8px;
+  border: none;
+  border-radius: 999px;
+  background: #ff8a65;
+  color: #4a1405;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(1, 38, 10, 0.3);
+  animation: preguntaAparece 0.4s ease-out, preguntaLate 1.6s ease-in-out 0.4s infinite;
+}
+.jardin-caja-boton .jardin-pregunta-icono svg { stroke-width: 1.8; stroke-linejoin: round; }
+.caja-cuerpo { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; }
+.caja-sorpresa {
+  width: 180px;
+  height: 180px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.caja-sorpresa img { width: 100%; height: 100%; object-fit: contain; }
+.caja-sorpresa.abriendo { animation: cajaSacude 0.9s ease-in-out; }
+@keyframes cajaSacude {
+  0%, 100% { transform: rotate(0) scale(1); }
+  15% { transform: rotate(-8deg) scale(1.05); }
+  30% { transform: rotate(8deg) scale(1.08); }
+  45% { transform: rotate(-10deg) scale(1.1); }
+  60% { transform: rotate(10deg) scale(1.14); }
+  80% { transform: rotate(0) scale(1.25); opacity: 1; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.caja-texto { margin: 0; font-size: 14px; color: #4c5a50; line-height: 1.45; }
+.caja-premio { display: flex; flex-direction: column; align-items: center; gap: 8px; animation: cajaPremio 0.45s cubic-bezier(0.2, 1.4, 0.4, 1); }
+@keyframes cajaPremio { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+.caja-premio-imagen {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fff6c9 0%, #e4f3d0 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--verde-institucional);
+}
+.caja-premio-imagen img { width: 86px; height: 86px; object-fit: contain; }
+.caja-premio-imagen svg { width: 72px; height: 72px; }
+.caja-premio--arbol .caja-premio-imagen svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; }
+.caja-premio-nombre { font-size: 18px; color: var(--verde-institucional); }
+.caja-rareza { padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+.caja-rareza--comun { background: #eef2ef; color: #4c5a50; }
+.caja-rareza--rara { background: #dbeafe; color: #1e4fa3; }
+.caja-rareza--epica { background: #ede0fb; color: #6b2fa8; }
+.caja-rareza--legendaria { background: #ffe8a3; color: #7a4b00; }
+.caja-aceptar {
+  margin-top: 6px;
+  padding: 10px 28px;
+  border: none;
+  border-radius: 999px;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lista-arbol-exclusivo { color: #b07a00; font-style: normal; font-weight: 700; }
+
 /* Botones de las zonas (copa, rostro, cuello) sobre el árbol elegido */
 .jardin-zonas { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .jardin-zonas[hidden] { display: none; }

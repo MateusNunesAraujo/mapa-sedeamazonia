@@ -14,13 +14,13 @@
  * animados; con "reducir movimiento" activado en el sistema, los árboles quedan quietos.
  * three.js se carga únicamente al abrir el jardín.
  */
-import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo } from './jardin-ui.js?v=13';
+import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=14';
 import { pedirPermisoAvisos, cancelarAvisoSed, programarAvisoSed, alTocarAviso } from './jardin-notificaciones.js?v=1';
 import {
   cargarEstado, arbolEn, plantar, parcelaDe, parcelasLibres, quitarDesconocidos,
   moverArbol, regar, estadoRegadera, estaMojado, tieneSed, asegurarSed, accesoriosDe, tocaLlover, llover, tocaPregunta, PREGUNTA,
-  celdasParaAmpliar, comprarParcela, CUADRICULA_INICIAL, guardarEstado,
-} from './jardin-estado.js?v=11';
+  celdasParaAmpliar, comprarParcela, CUADRICULA_INICIAL, guardarEstado, tocaCaja,
+} from './jardin-estado.js?v=12';
 
 // Distribución del jardín
 const { filas: FILAS, columnas: COLUMNAS } = CUADRICULA_INICIAL; // cuadrícula inicial, centrada en el origen
@@ -443,7 +443,8 @@ async function abrirJardin() {
     cancelarAvisoSed(estado).then((cambio) => { if (cambio) guardarEstado(estado); });
     if (Object.keys(estado.plantados).length) pedirPermisoAvisos();
     // Solo si plantas.json cargó: si falló, no se debe liberar ninguna parcela por error
-    if (todasLasPlantas.length) quitarDesconocidos(estado, new Set(todasLasPlantas.map((p) => p.codigoQR)));
+    // Los árboles exclusivos ganados en la caja no están en plantas.json: también son válidos
+    if (todasLasPlantas.length) quitarDesconocidos(estado, new Set([...todasLasPlantas.map((p) => p.codigoQR), ...estado.exclusivos]));
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -661,7 +662,7 @@ async function abrirJardin() {
      * Sin ruta (árbol bloqueado o sin modelo todavía) se usa el brote provisional.
      */
     async function crearArbol(codigo) {
-      const ruta = window.plantsHandler?.getModelUrl(codigo) || null;
+      const ruta = window.plantsHandler?.getModelUrl(codigo) || plantasPorCodigo.get(codigo)?.rutaModelo || null;
       const gltf = ruta ? await cargarModelo(ruta) : null;
       const original = gltf?.scene || null;
       const modelo = original ? original.clone(true) : crearBrote();
@@ -1704,6 +1705,12 @@ async function abrirJardin() {
         const indice = parcelaDe(estado, codigo);
         if (indice !== null) observarArbol(indice);
       },
+      // Árbol exclusivo ganado en la caja sorpresa: ya queda guardado para plantarlo
+      alGanarArbol: (arbol) => {
+        if (plantasPorCodigo.has(arbol.codigoQR)) return;
+        arboles.push(arbol);
+        plantasPorCodigo.set(arbol.codigoQR, arbol);
+      },
     });
 
     // Riegos de la regadera, tierra mojada y burbujas de sed: se refrescan al abrir y cada 30 s mientras el jardín está abierto
@@ -1717,10 +1724,24 @@ async function abrirJardin() {
     dibujar();
     // La ayuda se esconde sola después de unos segundos
     setTimeout(() => ocultarAyuda(), 6000);
+    // Caja sorpresa: la primera vez que se entra y luego cada intervalo_horas (data/caja-sorpresa.json)
+    let caja = null;
+    try {
+      caja = await cargarCaja();
+    } catch (err) {
+      console.warn('No se pudo cargar la caja sorpresa:', err);
+    }
+    if (cerrado) return;
+    const hayCaja = !!caja?.premios.length && tocaCaja(estado, caja.intervaloMs);
+    const cajaCerrada = hayCaja ? ui.mostrarCaja(caja) : Promise.resolve();
     // Solo se decide al entrar (nunca en segundo plano): si toca, empieza a llover enseguida
+    // (si hay caja, después de cerrarla para no taparla)
     if (tocaLlover(estado)) {
-      const esperaLluvia = setTimeout(iniciarLluvia, 2000);
-      quitarEventos.push(() => clearTimeout(esperaLluvia));
+      cajaCerrada.then(() => {
+        if (cerrado) return;
+        const esperaLluvia = setTimeout(iniciarLluvia, hayCaja ? 600 : 2000);
+        quitarEventos.push(() => clearTimeout(esperaLluvia));
+      });
     }
     // Botón de pregunta: si toca, aparece en un momento al azar de esta visita
     if (tocaPregunta(estado)) {
@@ -1763,6 +1784,7 @@ async function abrirJardin() {
       },
       llover: iniciarLluvia,
       pregunta: () => ui?.mostrarBotonPregunta(),
+      caja: async () => ui?.mostrarCaja(await cargarCaja()), // prueba: abre la caja aunque no toque
       observar: observarArbol,
       observando: () => observando && { indice: observando.indice, distancia: +observando.distancia.toFixed(2) },
       tiempoAnimacion(indice) {
