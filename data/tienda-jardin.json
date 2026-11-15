@@ -13,7 +13,8 @@
       "imagen": "sombrero-copa-negro.png",
       "zona": "cabeza",
       "modelo": "sombrero-copa-negro.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "collar-chambira",
@@ -21,7 +22,8 @@
       "imagen": "collar-chambira.png",
       "zona": "cuello",
       "modelo": "collar-chambira.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "pintura-achiote",
@@ -29,7 +31,8 @@
       "imagen": "pintura-achiote.png",
       "zona": "rostro",
       "pintura": "pintura-achiote.png",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "pintura-huito",
@@ -37,7 +40,8 @@
       "imagen": "pintura-huito.png",
       "zona": "rostro",
       "pintura": "pintura-huito.png",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "corona-plumas",
@@ -45,7 +49,8 @@
       "imagen": "corona-plumas.png",
       "zona": "cabeza",
       "modelo": "corona-plumas.glb",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "bigote-musgo",
@@ -53,7 +58,8 @@
       "imagen": "bigote-musgo-icono.png",
       "zona": "rostro",
       "modelo": "bigote-musgo.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "bufanda-lianas-orquidea",
@@ -61,7 +67,8 @@
       "imagen": "bufanda-lianas-orquidea-icono.png",
       "zona": "cuello",
       "modelo": "bufanda-lianas-orquidea.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "collar-dientes-escamas",
@@ -69,7 +76,8 @@
       "imagen": "collar-dientes-escamas-icono.png",
       "zona": "cuello",
       "modelo": "collar-dientes-escamas.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "collar-huayruro",
@@ -77,7 +85,8 @@
       "imagen": "collar-huayruro.png",
       "zona": "cuello",
       "modelo": "collar-huayruro.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "nariguera-oro",
@@ -85,7 +94,8 @@
       "imagen": "nariguera-oro-icono.png",
       "zona": "rostro",
       "modelo": "nariguera-oro.glb",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "sombrero-tejido-palma",
@@ -93,7 +103,8 @@
       "imagen": "sombrero-tejido-palma-icono.png",
       "zona": "cabeza",
       "modelo": "sombrero-tejido-palma.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "tocado-victoria-regia",
@@ -101,7 +112,8 @@
       "imagen": "tocado-victoria-regia-icono.png",
       "zona": "cabeza",
       "modelo": "tocado-victoria-regia.glb",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "mini-maloca-techo",
@@ -109,7 +121,8 @@
       "imagen": "mini-maloca-techo-icono.png",
       "zona": "cabeza",
       "modelo": "mini-maloca-techo.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "faja-tikuna-cocama",
@@ -117,7 +130,8 @@
       "imagen": "faja-tikuna-cocama-icono.png",
       "zona": "cuello",
       "modelo": "faja-tikuna-cocama.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "mascara-tikuna",
@@ -125,7 +139,8 @@
       "imagen": "mascara-ticuna-icono.png",
       "zona": "rostro",
       "modelo": "mascara-ticuna.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "vestido-falda-amazonica",
@@ -133,7 +148,8 @@
       "imagen": "vestido-falda-amazonica-icono.png",
       "zona": "cuello",
       "modelo": "vestido-falda-amazónica.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "ramillete-heliconia",
@@ -141,7 +157,8 @@
       "imagen": "ramillete-heliconia-icono.png",
       "zona": "cabeza",
       "modelo": "ramillete-heliconia.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "birrete-academico-unal",
@@ -149,7 +166,8 @@
       "imagen": "birrete-academico-unal-icono.png",
       "zona": "cabeza",
       "modelo": "birrete-academico-unal.glb",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "medallon-copa-unal",
@@ -157,7 +175,8 @@
       "imagen": "medallon-copa-unal-icono.png",
       "zona": "cabeza",
       "modelo": "medallon-copa-unal.glb",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "maloca-mirador-botanico",
@@ -165,7 +184,8 @@
       "imagen": "maloca-mirador-botanico-icono.png",
       "zona": "cabeza",
       "modelo": "maloca-mirador-botanico.glb",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "gorro-navidad",
@@ -173,7 +193,8 @@
       "imagen": "gorro-navidad-icono.png",
       "zona": "cabeza",
       "modelo": "gorro-navidad.glb",
-      "precio": { "moneda": "plata", "valor": 1 }
+      "precio": { "moneda": "plata", "valor": 1 },
+      "desbloqueo_qr": true
     },
     {
       "id": "capibara-sentada",
@@ -181,7 +202,8 @@
       "imagen": "capibara-sentada-icono.png",
       "zona": "cabeza",
       "modelo": "capibara-sentada.glb",
-      "precio": { "moneda": "oro", "valor": 1 }
+      "precio": { "moneda": "oro", "valor": 1 },
+      "desbloqueo_qr": true
     }
   ]
 }
