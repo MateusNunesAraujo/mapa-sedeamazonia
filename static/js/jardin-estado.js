@@ -82,10 +82,28 @@ function estadoInicial(ahora = Date.now()) {
     preguntas: { ultima: 0, respondidas: [] }, // última pregunta (ms) e ids ya respondidas
     caja: { ultima: 0, abiertas: 0 }, // última caja sorpresa abierta (ms) y cuántas se han abierto
     exclusivos: [],   // codigoQR de los árboles exclusivos ganados en la caja (data/caja-sorpresa.json)
+    sobres: { abiertos: 0, ultimoArbolNuevo: -1 }, // sobres abiertos y en cuál salió el último árbol nuevo (-1: nunca)
+    copias: {},       // copias extra de cada árbol ganadas en los sobres: { "<codigoQR>": cantidad } (ver idCopia)
+    iniciales: false, // true cuando ya recibió las monedas iniciales (tienda-jardin.json → monedas_iniciales)
   };
 }
 
 const enteroPositivo = (v) => (Number.isInteger(v) && v >= 0 ? v : 0);
+
+/*
+ * Copias de un mismo árbol: el original usa su codigoQR y cada copia extra (ganada en un sobre)
+ * "<codigoQR>#2", "<codigoQR>#3"... Ese id es el que se guarda en plantados, sed, riegos y accesorios,
+ * así cada copia se riega y se viste por separado. Para buscar la especie se usa codigoBase().
+ */
+const SEPARADOR_COPIA = '#';
+export const codigoBase = (id) => String(id).split(SEPARADOR_COPIA)[0];
+export const idCopia = (codigoQR, n) => (n <= 1 ? codigoQR : `${codigoQR}${SEPARADOR_COPIA}${n}`);
+
+/** Ids de todas las copias que se tienen de un árbol (el original primero) */
+export function idsDeCopias(estado, codigoQR) {
+  const total = 1 + (estado.copias[codigoQR] || 0);
+  return Array.from({ length: total }, (_, i) => idCopia(codigoQR, i + 1));
+}
 
 /** Lee el progreso; si falta o está dañado, empieza de cero sin romper la app */
 export function cargarEstado() {
@@ -98,6 +116,8 @@ export function cargarEstado() {
   }
   if (!datos || typeof datos !== 'object') return estado;
 
+  // Los progresos guardados antes de existir las monedas iniciales ya habían empezado: no se les dan
+  estado.iniciales = typeof datos.iniciales === 'boolean' ? datos.iniciales : true;
   estado.monedas.plata = enteroPositivo(datos.monedas?.plata);
   estado.monedas.oro = enteroPositivo(datos.monedas?.oro);
   // Parcelas compradas: celdas después de las iniciales, cada una libre y pegada a una anterior
@@ -163,6 +183,14 @@ export function cargarEstado() {
   if (Array.isArray(datos.exclusivos)) {
     estado.exclusivos = [...new Set(datos.exclusivos.filter((c) => typeof c === 'string' && c.trim()))];
   }
+  estado.sobres.abiertos = enteroPositivo(datos.sobres?.abiertos);
+  const ultimoNuevo = datos.sobres?.ultimoArbolNuevo;
+  if (Number.isInteger(ultimoNuevo) && ultimoNuevo >= 0 && ultimoNuevo < estado.sobres.abiertos) estado.sobres.ultimoArbolNuevo = ultimoNuevo;
+  for (const [codigo, cantidad] of Object.entries(datos.copias || {})) {
+    if (typeof codigo === 'string' && codigo.trim() && !codigo.includes(SEPARADOR_COPIA) && enteroPositivo(cantidad) > 0) {
+      estado.copias[codigo] = enteroPositivo(cantidad);
+    }
+  }
 
   // Regadera: capacidad entre la inicial y el tope (los guardados viejos no la traen), cargas enteras
   // entre 0 y la capacidad; una fecha en el futuro (reloj cambiado) se corrige
@@ -186,6 +214,19 @@ export function guardarEstado(estado) {
     console.warn('No se pudo guardar el jardín:', err);
     return false;
   }
+}
+
+/**
+ * Entrega una sola vez las monedas iniciales { plata, oro } a un jugador nuevo.
+ * Devuelve true si se entregaron ahora.
+ */
+export function darMonedasIniciales(estado, monedas) {
+  if (estado.iniciales) return false;
+  estado.monedas.plata += enteroPositivo(monedas?.plata);
+  estado.monedas.oro += enteroPositivo(monedas?.oro);
+  estado.iniciales = true;
+  guardarEstado(estado);
+  return true;
 }
 
 export const arbolEn = (estado, indice) => estado.plantados[indice] || null;
@@ -485,15 +526,71 @@ export function desbloquearAccesorioQR(estado, accesorio) {
   return 'nuevo';
 }
 
-/** Compra un accesorio: descuenta sus monedas y suma una unidad al inventario (sin colocar) */
-export function comprarAccesorio(estado, accesorio) {
-  if (!accesorio.precio) return false;
-  const { moneda, valor } = accesorio.precio;
-  if (estado.monedas[moneda] < valor) return false;
+/** Elige al azar un elemento de la lista */
+const unoAlAzar = (lista, azar) => lista[Math.floor(azar() * lista.length)];
+
+/**
+ * Sortea la rareza con los pesos de `probabilidades` (solo entre las rarezas que tiene `lista`)
+ * y luego un elemento de esa rareza. Cada elemento trae su `rareza`. Devuelve null si no hay ninguno.
+ */
+function sortearPorRareza(lista, probabilidades, azar) {
+  const rarezas = Object.entries(probabilidades).filter(([r, peso]) => peso > 0 && lista.some((x) => x.rareza === r));
+  if (!rarezas.length) return null;
+  const total = rarezas.reduce((s, [, peso]) => s + peso, 0);
+  let tiro = azar() * total;
+  const rareza = (rarezas.find(([, peso]) => (tiro -= peso) < 0) || rarezas[rarezas.length - 1])[0];
+  return unoAlAzar(lista.filter((x) => x.rareza === rareza), azar);
+}
+
+/** ¿Ya puede salir otro árbol nuevo? (pasaron `enfriamiento` sobres desde el último) */
+export function puedeSalirArbolNuevo(estado, enfriamiento) {
+  const ultimo = estado.sobres.ultimoArbolNuevo;
+  return ultimo < 0 || estado.sobres.abiertos - ultimo >= enfriamiento;
+}
+
+/**
+ * Compra y abre un sobre (tienda-jardin.json → sobres.tipos[]). Entrega UN premio:
+ *  - con `sobre.arbol.probabilidad`, un árbol: casi siempre una copia más de uno de `conocidos` (se puede
+ *    plantar otra vez; se elige con las mismas probabilidades de rareza del sobre que los accesorios) y solo
+ *    con `sobre.arbol.nuevo` (y fuera del enfriamiento) uno de `nuevos` al azar, que la UI desbloquea;
+ *  - si no, un accesorio: se sortea la rareza con `sobre.probabilidades` y luego uno de esa rareza.
+ * `conocidos` es una lista de { codigo, rareza } (sin copias) y `nuevos` una de codigoQR. Devuelve null si no
+ * alcanzan las monedas o no hay premio; si no: { tipo: 'accesorio', accesorio, rareza } o
+ * { tipo: 'arbol', codigo, nuevo, id } (`id` de la copia ganada).
+ */
+export function abrirSobre(estado, sobre, {
+  accesorios, conocidos = [], nuevos = [], enfriamiento = 25, azar = Math.random,
+}) {
+  const { moneda, valor } = sobre.precio;
+  if (!(moneda in estado.monedas) || estado.monedas[moneda] < valor) return null;
+
+  let premio = null;
+  if (azar() < sobre.arbol.probabilidad) {
+    if (nuevos.length && puedeSalirArbolNuevo(estado, enfriamiento) && azar() < sobre.arbol.nuevo) {
+      const codigo = unoAlAzar(nuevos, azar);
+      premio = { tipo: 'arbol', codigo, nuevo: true, id: codigo };
+      estado.sobres.ultimoArbolNuevo = estado.sobres.abiertos;
+    } else {
+      const elegido = sortearPorRareza(conocidos, sobre.probabilidades, azar);
+      if (elegido) {
+        const { codigo } = elegido;
+        estado.copias[codigo] = (estado.copias[codigo] || 0) + 1;
+        premio = { tipo: 'arbol', codigo, nuevo: false, id: idCopia(codigo, estado.copias[codigo] + 1) };
+      }
+    }
+  }
+  if (!premio) {
+    // Solo cuentan las rarezas que tienen algún accesorio
+    const accesorio = sortearPorRareza(accesorios, sobre.probabilidades, azar);
+    if (!accesorio) return null;
+    premio = { tipo: 'accesorio', accesorio, rareza: accesorio.rareza };
+    estado.inventario[accesorio.id] = (estado.inventario[accesorio.id] || 0) + 1;
+  }
+
   estado.monedas[moneda] -= valor;
-  estado.inventario[accesorio.id] = (estado.inventario[accesorio.id] || 0) + 1;
+  estado.sobres.abiertos += 1;
   guardarEstado(estado);
-  return true;
+  return premio;
 }
 
 /** Accesorio puesto en una zona de un árbol, o null */
@@ -537,7 +634,7 @@ export function quitarAccesorio(estado, codigoQR, zona) {
 export function quitarDesconocidos(estado, codigosValidos) {
   let cambio = false;
   for (const [indice, codigo] of Object.entries(estado.plantados)) {
-    if (!codigosValidos.has(codigo)) {
+    if (!codigosValidos.has(codigoBase(codigo))) {
       console.warn(`jardinEstado: "${codigo}" ya no está en plantas.json; se libera la parcela ${Number(indice) + 1}`);
       delete estado.plantados[indice];
       cambio = true;

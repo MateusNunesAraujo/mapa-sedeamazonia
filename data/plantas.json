@@ -31,7 +31,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_045_SWINGLEA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Guardaespaldas oficial del campus: con sus espinas nadie se cuela sin permiso. Si estrujas una hoja, ¡huele a limonada!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "BOROJÓ",
@@ -67,7 +71,11 @@
     },
     "modelo3d": "alibertia-patinoi.glb",
     "codigoQR": "PLANTA_074_ALIBERTIA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su fruto parece un balón de fútbol café y tiene fama de dar energía para todo el día. ¡Batido de campeones!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "CARAMBOLO",
@@ -103,7 +111,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_076_CARAMBOLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Corta su fruto en rodajas y obtendrás estrellitas comestibles. Es el árbol más astronómico del jardín.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "UMARÍ",
@@ -138,7 +150,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_091_UMARI",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su fruto tiene una pulpa cremosa y aromática que se come con fariña. Un snack amazónico de toda la vida.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "SIRINGA",
@@ -174,7 +190,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_092_CAUCHO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Si le haces un cortecito, llora leche blanca... ¡que se convierte en caucho! Culpable de llantas, pelotas y de una fiebre histórica en la Amazonía.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "PALO DE ARCO",
@@ -211,7 +231,11 @@
     },
     "modelo3d": "handroanthus-chrysanthus.glb",
     "codigoQR": "PLANTA_137_GUAYACAN",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Pasa el año tranquilo y de repente, ¡pum!, se viste todo de amarillo sin una sola hoja. Todo un influencer de las flores.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "CHIMINANGO",
@@ -248,7 +272,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_151_CHIMUCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus vainas se enroscan como rizos y guardan una pulpa dulce que enloquece a pájaros y niños.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "MATAPALO",
@@ -282,7 +310,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_168_COUSSAPOA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Empieza como semillita en lo alto de otro árbol y baja sus raíces hasta el suelo. Un abrazo... un poquito demasiado apretado.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "YANCHAMA OJÉ",
@@ -317,7 +349,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_181_HIGUERON",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su corteza se golpea hasta volverla tela: con ella se hacen máscaras y trajes de baile. ¡Árbol diseñador de moda!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "JUANSOCO",
@@ -354,7 +390,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_199_JUANSOCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su látex dulce se masticaba como chicle y sus frutos saben a gloria. Una golosina con raíces.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "CEDRO",
@@ -389,7 +429,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_208_CEDRO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su madera es tan perfumada que espanta a las polillas. Todos los carpinteros de la selva lo tienen en su lista de deseos.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "BARBASCO",
@@ -427,7 +471,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_225_ALMENDRO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su nombre suena a pócima de chamán y sus semillas esconden una almendra. Misterioso y con sorpresa adentro.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "CAPINURÍ",
@@ -464,7 +512,11 @@
     },
     "modelo3d": "maquira-coriacea.glb",
     "codigoQR": "PLANTA_229_GUAIMARO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Si lo raspas suelta leche, por eso le dicen «lecheperra». Sus frutitos son el buffet favorito de murciélagos y monos.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "UCUUBA",
@@ -481,7 +533,11 @@
     "usos": {},
     "modelo3d": null,
     "codigoQR": "PLANTA_234_UCUUBA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus semillas tienen tanta grasa que con ellas se hacían velas. ¡Un árbol que literalmente ilumina!",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "LAUREL",
@@ -516,7 +572,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_240_LAUREL",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le encanta tener los pies mojados: vive feliz donde el río se desborda en las crecientes. Nadador experto.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "LACRE",
@@ -554,7 +614,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_244_LACRE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Raspa su corteza y sale un líquido naranja de película de terror. Tranquilo: es inofensivo y muy bueno para la piel.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "LLORÓN",
@@ -590,7 +654,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_256_CAMASEY",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "No está triste, solo tiene ramas dramáticas que cuelgan. Sus bayas moradas son el postre favorito de las aves.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "ASAÍ",
@@ -628,7 +696,11 @@
     },
     "modelo3d": "euterpe-oleracea.glb",
     "codigoQR": "PLANTA_267_ASAI",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "La palmera de las superfrutas: sus bolitas moradas se vuelven el famoso açaí. Delgada, elegante y llena de energía.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "CARGUERO",
@@ -665,7 +737,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_271_CARGUERO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su corteza es tan fibrosa que sirve de cuerda para cargar cosas. El árbol que siempre te ayuda con la mudanza.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PLATANILLO",
@@ -701,7 +777,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_291_PLATANILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Parece primo del plátano, pero sus flores son picos de colores que vuelven locos a los colibríes.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "UVILLA",
@@ -738,7 +818,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_298_UVILLA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Da racimos que parecen uvas de selva. Monos, aves y personas hacen fila para probarlas.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "ALGODONCILLO",
@@ -774,7 +858,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_313_ALGODONCILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Cuando sus frutos revientan sueltan pelusitas que vuelan como copos de algodón. ¡Nieve en plena Amazonía!",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "CAFETILLO",
@@ -811,7 +899,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_327_CAFETILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus frutos parecen granos de café, pero no intentes hacer tinto con ellos. Un impostor muy simpático.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "CHILCO",
@@ -846,7 +938,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_333_CHILCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le dicen «mata de borugo» porque a ese roedor le encanta merodear cerca. El vecino más popular del sendero.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "LAUREL",
@@ -880,7 +976,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_349_LAUREL",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Primo lejano del aguacate: sus frutitos son una fiesta para tucanes y pavas.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "COPOAZÚ",
@@ -914,7 +1014,11 @@
     },
     "modelo3d": "theobroma-grandiflorum.glb",
     "codigoQR": "PLANTA_363_COPOAZU",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Primo del cacao con un fruto gigante que perfuma toda la cocina. Su pulpa se vuelve jugos, helados y dulces.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "CHICLE",
@@ -949,7 +1053,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_382_CHICLE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su látex fue chicle mucho antes de que existieran los de sabores. Masticar historia, literalmente.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "MOROCHILLO",
@@ -985,7 +1093,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_387_MOROCHILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le dicen «dormidero» porque sus hojas se cierran al anochecer. Hasta los árboles necesitan su siesta.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "FLOR AMARILLO",
@@ -1020,7 +1132,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_389_FLOR_AMARILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus flores brillan tanto que le dicen «yema de huevo». Desayuno visual garantizado.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "AGUACATE",
@@ -1058,7 +1174,11 @@
     },
     "modelo3d": "persea-americana.glb",
     "codigoQR": "PLANTA_413_AGUACATE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sí, el del guacamole. Pero este vive en la selva y comparte sus frutos con las dantas.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "CAMPANILLO",
@@ -1093,7 +1213,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_429_CAMPANILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus flores cuelgan como campanitas. Cuando sopla el viento, imagina el concierto.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "ELAEIS GUINEENSIS",
@@ -1110,7 +1234,11 @@
     "usos": {},
     "modelo3d": null,
     "codigoQR": "PLANTA_442_ELAEIS_GUINEENSIS",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Viajera de África que llegó para quedarse. De sus frutos naranjas sale aceite para medio supermercado.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "CACAO",
@@ -1146,7 +1274,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_450_CACAO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "El responsable del chocolate. Sus mazorcas salen directo del tronco, como por arte de magia.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "CANALETE",
@@ -1182,7 +1314,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_478_CANALETE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Crece rapidísimo hacia el cielo y se corona de flores moradas. El velocista del bosque.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "COPAL",
@@ -1220,7 +1356,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_504_COPAL",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Suelta una resina perfumada que se quema como incienso. El árbol que huele a ceremonia.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PARKIA CF. VAUPESIANA",
@@ -1237,7 +1377,11 @@
     "usos": {},
     "modelo3d": null,
     "codigoQR": "PLANTA_505_PARKIA_CF_VAUPESIANA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus flores son pompones que cuelgan de largos hilos y de noche reciben a los murciélagos. ¡Discoteca nocturna!",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "ALMENDRO",
@@ -1274,7 +1418,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_518_ALMENDRO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Un gigante de madera durísima: le dicen «almanegra» por su corazón oscuro. Respeto total.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "GUAMO BLANCO",
@@ -1310,7 +1458,11 @@
     },
     "modelo3d": "inga-pezizifera.glb",
     "codigoQR": "PLANTA_550_GUAMO_BLANCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus vainas largas guardan una pulpa blanca y dulce como algodón de azúcar. Postre natural de la selva.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "SANGRE DE GRADO",
@@ -1344,7 +1496,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_566_SANGRE_DE_GRADO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Si se hiere su corteza, sangra una savia roja que ayuda a curar heridas. Un árbol con superpoderes de enfermería.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PALO DE GALLINAZO",
@@ -1379,7 +1535,11 @@
     },
     "modelo3d": "hymenolobium-pulcherrimum.glb",
     "codigoQR": "PLANTA_589_PALO_DE_GALLINAZO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Esconde semillas rojas y negras que se usan en collares de buena suerte. El talismán de la selva profunda.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PALO BREO",
@@ -1417,7 +1577,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_606_PALO_BREO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su resina pegajosa sellaba las canoas para que no les entrara agua. Ingeniero naval desde siempre.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PAN DE ÁRBOL",
@@ -1454,7 +1618,11 @@
     },
     "modelo3d": "artocarpus-altilis.glb",
     "codigoQR": "PLANTA_719_PAN_DE_ARBOL",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su fruto cocinado sabe a pan recién horneado. ¡Una panadería que crece en las ramas!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "ÁRBOL BENJAMÍN",
@@ -1489,7 +1657,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_819_ARBOL_BENJAMIN",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Famoso en oficinas y salas, pero aquí afuera muestra su verdadero tamaño. Raíces aventureras incluidas.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "MADROÑO",
@@ -1525,7 +1697,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_895_MADRONO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus frutos amarillos son tan ácidos y dulces que te hacen fruncir la cara... y pedir otro.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "GUAMA",
@@ -1562,7 +1738,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_915_GUAMA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Abres la vaina y aparecen nubecitas blancas y dulces. La merienda oficial de los recreos amazónicos.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "BACABA",
@@ -1599,7 +1779,11 @@
     },
     "modelo3d": "oenocarpus-minor.glb",
     "codigoQR": "PLANTA_929_BACABA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Palmera de racimos morados que se vuelven una bebida espesa y deliciosa. La prima golosa del asaí.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "PALETO",
@@ -1633,7 +1817,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_933_PALETO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le dicen «tangarana» y en su tronco viven hormigas guardianas que no perdonan. ¡Mejor míralo y no lo toques!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "MAMONCILLO",
@@ -1670,7 +1858,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_939_MAMONCILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le quitas la cáscara verde y chupas la pulpa como un caramelo. Imposible comerse solo uno.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "CHONTADURO",
@@ -1708,7 +1900,11 @@
     },
     "modelo3d": "bactris-gasipaes.glb",
     "codigoQR": "PLANTA_968_CHONTADURO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Palmera con espinas y racimos naranjas. Con sal y miel, el snack más amado de la región.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "UBO",
@@ -1744,7 +1940,11 @@
     },
     "modelo3d": "mangifera-indica.glb",
     "codigoQR": "PLANTA_978_UBO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus frutas amarillas caen al suelo y atraen a todo el vecindario animal. Fiesta garantizada bajo su sombra.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "ALMENDRO",
@@ -1781,7 +1981,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_985_ALMENDRO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Los roedores esconden sus semillas para después... y se les olvida dónde. Así, sin querer, plantan nuevos árboles.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "LIVISTONA SP. 1",
@@ -1798,7 +2002,11 @@
     "usos": {},
     "modelo3d": null,
     "codigoQR": "PLANTA_995_LIVISTONA_SP_1",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Palmera de hojas en abanico gigante. Si hace calor, ella ya está lista para echarte aire.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "ANDIROBA",
@@ -1834,7 +2042,11 @@
     },
     "modelo3d": null,
     "codigoQR": "PLANTA_999_ANDIROBA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "De sus semillas sale un aceite que espanta mosquitos y suaviza la piel. El repelente natural de la casa.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "PALO DE ARCO",
@@ -1871,7 +2083,11 @@
     },
     "modelo3d": "handroanthus-chrysanthus.glb",
     "codigoQR": "PLANTA_1004_PALO_DE_ARCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Cuando florece pinta de amarillo todo a su alrededor. Brilla más que el sol de mediodía.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "NAIDÍ",
@@ -1908,7 +2124,11 @@
     },
     "modelo3d": "euterpe-oleracea.glb",
     "codigoQR": "PLANTA_1006_NAIDI",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Palmera que crece en familia, con varios tallos juntitos. Sus frutos morados también dan un jugo lleno de energía.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "POMARROSO",
@@ -1944,6 +2164,10 @@
     "foto_defecto": "pomarosa.jpeg",
     "modelo3d": "syzygium-malaccense.glb",
     "codigoQR": "PLANTA_1027_MYRTACEAE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su fruta huele y sabe a rosas. Comerla es como darle un mordisco a un perfume.",
+      "rareza": "rara"
+    }
   }
 ]

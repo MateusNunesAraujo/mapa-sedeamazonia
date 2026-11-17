@@ -12,8 +12,8 @@ Agrega un objeto a la lista `accesorios` de `data/tienda-jardin.json`:
   "nombre": "Sombrero elegante",
   "imagen": "sombrero-copa-negro.png",
   "zona": "cabeza",
-  "modelo": "sombrero-copa-negro.glb",
-  "precio": { "moneda": "plata", "valor": 15 }
+  "rareza": "comun",
+  "modelo": "sombrero-copa-negro.glb"
 }
 ```
 
@@ -25,13 +25,12 @@ Agrega un objeto a la lista `accesorios` de `data/tienda-jardin.json`:
 | `zona` | Dónde va en el árbol: `"cabeza"` (sobre la copa), `"cuello"` (alrededor del tronco, bajo la boca) o `"rostro"` (sobre la cara) |
 | `modelo` | Para accesorios 3D: archivo `.glb` dentro de `static/modelos/accesorios/` |
 | `pintura` | Para pinturas faciales: imagen PNG transparente (1024 × 1024) dentro de esta carpeta, que se proyecta sobre la cara del árbol |
-| `precio.moneda` | `"plata"` u `"oro"` (el oro vale más) |
-| `precio.valor` | Cantidad de monedas: número entero mayor que 0 |
-| `desbloqueo_qr` | `true` para que se consiga escaneando un código QR cuyo contenido sea exactamente el `id` del accesorio (por ejemplo, un QR con el texto `corona-plumas`). Cada QR da una sola unidad por usuario. Con esta clave el `precio` es opcional: si también lo tiene, además se puede comprar |
+| `rareza` | `"comun"`, `"rara"`, `"epica"`, `"legendaria"` o `"exclusiva"`. Los accesorios no se compran: salen en los sobres de la tienda según su rareza (probabilidades en `sobres.tipos[].probabilidades`) |
+| `desbloqueo_qr` | `true` para que se consiga escaneando un código QR cuyo contenido sea exactamente el `id` del accesorio (por ejemplo, un QR con el texto `corona-plumas`). Cada QR da una sola unidad por usuario. |
 
-El precio de una parcela nueva está en `parcela.precio`, con el mismo formato.
+El precio de una parcela nueva está en `parcela.precio` y el de cada sobre en `sobres.tipos[].precio`, con el formato `{ "moneda": "plata" | "oro", "valor": entero > 0 }`. Las reglas de los sobres están en la `nota` de `sobres` en `tienda-jardin.json`.
 
-Cada accesorio usa `modelo` **o** `pintura`, no ambos. Por ahora la tienda solo usa `id`, `nombre`, `imagen` y `precio`; `zona`, `modelo` y `pintura` se usarán al colocar los accesorios en los árboles.
+Cada accesorio usa `modelo` **o** `pintura`, no ambos. `zona`, `modelo` y `pintura` se usan al colocar los accesorios en los árboles.
 
 ## Modelos 3D de los accesorios
 
@@ -51,4 +50,4 @@ En `static/modelos/accesorios/`: GLB, eje Y arriba, frente hacia +Z, pensados pa
 - Livianas: idealmente menos de 100 KB cada una, porque van dentro de la APK.
 - Nombre en minúsculas, sin tildes ni espacios (por ejemplo `sombrero-paja.png`). Android distingue mayúsculas de minúsculas.
 
-La app ignora, con un aviso en la consola, las entradas con `id` repetido, sin nombre o con un precio inválido.
+La app ignora, con un aviso en la consola, las entradas con `id` repetido, sin nombre o con una rareza inválida.

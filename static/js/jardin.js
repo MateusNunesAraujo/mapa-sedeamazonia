@@ -14,13 +14,13 @@
  * animados; con "reducir movimiento" activado en el sistema, los árboles quedan quietos.
  * three.js se carga únicamente al abrir el jardín.
  */
-import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=14';
+import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=23';
 import { pedirPermisoAvisos, cancelarAvisoSed, programarAvisoSed, alTocarAviso } from './jardin-notificaciones.js?v=1';
 import {
   cargarEstado, arbolEn, plantar, parcelaDe, parcelasLibres, quitarDesconocidos,
   moverArbol, regar, estadoRegadera, estaMojado, tieneSed, asegurarSed, accesoriosDe, tocaLlover, llover, tocaPregunta, PREGUNTA,
-  celdasParaAmpliar, comprarParcela, CUADRICULA_INICIAL, guardarEstado, tocaCaja,
-} from './jardin-estado.js?v=12';
+  celdasParaAmpliar, comprarParcela, CUADRICULA_INICIAL, guardarEstado, tocaCaja, codigoBase, darMonedasIniciales,
+} from './jardin-estado.js?v=16';
 
 // Distribución del jardín
 const { filas: FILAS, columnas: COLUMNAS } = CUADRICULA_INICIAL; // cuadrícula inicial, centrada en el origen
@@ -38,12 +38,12 @@ const ANCHO_ARBOL = TAM_PARCELA * 0.9; // ancho máximo, para que no se salga de
 const GIRO = Math.PI / 4;
 const ELEVACION = Math.atan(1 / Math.SQRT2);
 const ZOOM_MIN = 0.8;
-const ZOOM_MAX = 3;
+const ZOOM_MAX = 9;   // acercar en la vista isométrica
 
 // Observar un árbol de cerca: cámara en perspectiva que gira alrededor de él
 const OBSERVAR = {
   fov: 45,
-  distancia: [2.5, 7],     // mínima y máxima (la máxima no llega a los árboles vecinos)
+  distancia: [2.5, 12],    // mínima y máxima para acercar y alejar
   distanciaInicial: 5.5,
   elevacion: [0.1, 1.25],  // ángulo sobre el horizonte, en radianes
   elevacionInicial: 0.35,
@@ -82,6 +82,8 @@ const COLOR = {
 };
 
 const CARPETA_ACCESORIOS = '/static/img/accesorios/';
+// Rareza de los árboles (plantas.json → info_juego.rareza)
+const RAREZA_ARBOL = { comun: 'Común', rara: 'Raro', epica: 'Épico', legendaria: 'Legendario', exclusiva: 'Exclusivo' };
 
 let THREE = null;
 let GLTFLoader = null;
@@ -122,7 +124,9 @@ function crearInterfaz() {
     </div>
     <div class="jardin-observar" hidden>
       <div class="jardin-observar-textos">
+        <span class="jardin-observar-rareza caja-rareza" hidden></span>
         <strong class="jardin-observar-nombre"></strong>
+        <p class="jardin-observar-descripcion" hidden></p>
         <span class="solo-tactil">Arrastra para girar · Pellizca para acercar</span>
         <span class="solo-pc">Arrastra para girar · Rueda para acercar</span>
       </div>
@@ -427,9 +431,11 @@ async function abrirJardin() {
     if (cerrado) return; // se salió mientras cargaba
 
     let catalogoAccesorios = new Map();
+    let monedasIniciales = null;
     try {
       const catalogo = await cargarCatalogo();
       catalogoAccesorios = new Map(catalogo.accesorios.map((a) => [a.id, a]));
+      monedasIniciales = catalogo.monedasIniciales;
     } catch (err) {
       console.warn('No se pudo cargar el catálogo de accesorios para el jardín:', err);
     }
@@ -439,6 +445,9 @@ async function abrirJardin() {
     const todasLasPlantas = window.plantsHandler?.plantas || [];
     const estado = cargarEstado();
     estadoAbierto = estado;
+    // Jugador nuevo: recibe una sola vez las monedas iniciales (tienda-jardin.json → monedas_iniciales).
+    // Si el catálogo no cargó, se intenta en la próxima visita
+    if (monedasIniciales) darMonedasIniciales(estado, monedasIniciales);
     // Mientras se está en el jardín no hace falta el aviso; se vuelve a programar al salir
     cancelarAvisoSed(estado).then((cambio) => { if (cambio) guardarEstado(estado); });
     if (Object.keys(estado.plantados).length) pedirPermisoAvisos();
@@ -662,7 +671,7 @@ async function abrirJardin() {
      * Sin ruta (árbol bloqueado o sin modelo todavía) se usa el brote provisional.
      */
     async function crearArbol(codigo) {
-      const ruta = window.plantsHandler?.getModelUrl(codigo) || plantasPorCodigo.get(codigo)?.rutaModelo || null;
+      const ruta = window.plantsHandler?.getModelUrl(codigoBase(codigo)) || plantasPorCodigo.get(codigo)?.rutaModelo || null;
       const gltf = ruta ? await cargarModelo(ruta) : null;
       const original = gltf?.scene || null;
       const modelo = original ? original.clone(true) : crearBrote();
@@ -1197,7 +1206,11 @@ async function abrirJardin() {
         ? `Tus árboles te dieron ${partes.join(' y ')}`
         : 'Esta vez los árboles no soltaron monedas';
       if (window.Swal) {
-        window.Swal.fire({ title: 'Dejó de llover', text: texto, icon: 'success', iconColor: '#03A65A', confirmButtonColor: '#025928' });
+        window.Swal.fire({
+          title: 'Dejó de llover', text: texto, icon: 'success', iconColor: '#03A65A', confirmButtonColor: '#025928',
+          // El jardín (.jardin) tiene z-index 4000 y SweetAlert 1060: sin esto el resumen queda oculto detrás
+          didOpen: (popup) => { popup.closest('.swal2-container').style.zIndex = '5000'; },
+        });
       } else {
         mostrarTarjeta('Dejó de llover', texto);
       }
@@ -1417,6 +1430,15 @@ async function abrirJardin() {
       camaraActiva = camaraCerca;
       ubicarCamaraCerca();
       observarCapa.querySelector('.jardin-observar-nombre').textContent = nombreDe(codigo);
+      // Datos de juego del árbol (plantas.json → info_juego): rareza y descripción divertida
+      const info = plantasPorCodigo.get(codigo)?.info_juego;
+      const rareza = observarCapa.querySelector('.jardin-observar-rareza');
+      rareza.hidden = !RAREZA_ARBOL[info?.rareza];
+      rareza.className = `jardin-observar-rareza caja-rareza caja-rareza--${info?.rareza || ''}`;
+      rareza.textContent = RAREZA_ARBOL[info?.rareza] || '';
+      const descripcion = observarCapa.querySelector('.jardin-observar-descripcion');
+      descripcion.hidden = !info?.descripcion;
+      descripcion.textContent = info?.descripcion || '';
       observarCapa.hidden = false;
       raiz.classList.add('observando');
       ocultarAyuda();

@@ -4,10 +4,10 @@
  * progreso guardado en jardin-estado.js.
  */
 import {
-  parcelaDe, parcelasLibres, celdasParaAmpliar, comprarAccesorio, comprarEspacioRegadera, puedeAmpliarRegadera,
+  parcelaDe, parcelasLibres, celdasParaAmpliar, abrirSobre, comprarEspacioRegadera, puedeAmpliarRegadera,
   desbloquearAccesorioQR, accesorioCanjeadoQR, cargarEstado, accesorioEn, ponerAccesorio, quitarAccesorio,
-  elegirPregunta, responderPregunta, PREGUNTA, abrirCaja,
-} from './jardin-estado.js?v=12';
+  elegirPregunta, responderPregunta, PREGUNTA, abrirCaja, idCopia,
+} from './jardin-estado.js?v=16';
 
 // Preguntas del botón "?": data/preguntas-jardin.json
 const RUTA_PREGUNTAS = '/data/preguntas-jardin.json';
@@ -43,6 +43,34 @@ let catalogoCargado = null;
 
 const precioValido = (p) => p && (p.moneda === 'plata' || p.moneda === 'oro') && Number.isInteger(p.valor) && p.valor > 0;
 
+// Rarezas de los accesorios (misma clave que `rareza` en tienda-jardin.json), de menor a mayor
+const RAREZA = { comun: 'Común', rara: 'Raro', epica: 'Épico', legendaria: 'Legendario', exclusiva: 'Exclusivo' };
+const CARPETA_SOBRES = '/static/iconos/sobres/';
+const probabilidad = (v) => (Number(v) >= 0 && Number(v) <= 1 ? Number(v) : 0);
+
+/** Lee la sección `sobres` del catálogo: { tipos: [...], duracionMs, enfriamiento } */
+function leerSobres(datos) {
+  const tipos = (Array.isArray(datos?.tipos) ? datos.tipos : []).filter((s, i) => {
+    const problema = !s || typeof s.id !== 'string' || !s.id.trim() ? 'sin id'
+      : typeof s.nombre !== 'string' ? `"${s.id}" sin nombre`
+        : !precioValido(s.precio) ? `"${s.id}" con precio inválido`
+          : !s.probabilidades || typeof s.probabilidades !== 'object' ? `"${s.id}" sin probabilidades`
+            : null;
+    if (problema) console.warn(`tienda-jardin.json: se ignora el sobre ${i + 1} (${problema})`);
+    return !problema;
+  }).map((s) => ({
+    ...s,
+    probabilidades: Object.fromEntries(Object.keys(RAREZA).map((r) => [r, Math.max(0, Number(s.probabilidades[r]) || 0)])),
+    arbol: { probabilidad: probabilidad(s.arbol?.probabilidad), nuevo: probabilidad(s.arbol?.nuevo) },
+  }));
+  const enfriamiento = Number.isInteger(datos?.arboles?.enfriamiento_sobres) ? Math.max(0, datos.arboles.enfriamiento_sobres) : 25;
+  return {
+    tipos,
+    duracionMs: Number(datos?.duracion_animacion_ms) > 0 ? Number(datos.duracion_animacion_ms) : 2600,
+    enfriamiento,
+  };
+}
+
 /** Lee el catálogo una sola vez y descarta (con aviso en consola) las entradas mal escritas */
 export function cargarCatalogo() {
   if (!catalogoCargado) {
@@ -54,13 +82,12 @@ export function cargarCatalogo() {
       .then((datos) => {
         const ids = new Set();
         const accesorios = (Array.isArray(datos.accesorios) ? datos.accesorios : []).filter((a, i) => {
-          // Con "desbloqueo_qr": true el precio es opcional (se consigue escaneando el QR con su id)
+          // Los accesorios no se compran: salen en los sobres (según su rareza) o con su código QR
           const problema = !a || typeof a.id !== 'string' || !a.id.trim() ? 'sin id'
             : ids.has(a.id) ? `id repetido "${a.id}"`
               : typeof a.nombre !== 'string' || !a.nombre.trim() ? `"${a.id}" sin nombre`
-                : a.desbloqueo_qr === true ? (a.precio != null && !precioValido(a.precio) ? `"${a.id}" con precio inválido` : null)
-                  : !precioValido(a.precio) ? `"${a.id}" con precio inválido`
-                    : null;
+                : !(a.rareza in RAREZA) ? `"${a.id}" con rareza inválida`
+                  : null;
           if (problema) {
             console.warn(`tienda-jardin.json: se ignora el accesorio ${i + 1} (${problema})`);
             return false;
@@ -68,11 +95,15 @@ export function cargarCatalogo() {
           ids.add(a.id);
           return true;
         });
+        const sobres = leerSobres(datos.sobres);
         const precioParcela = precioValido(datos.parcela?.precio) ? datos.parcela.precio : null;
         if (!precioParcela) console.warn('tienda-jardin.json: falta o es inválido parcela.precio');
         const precioRegadera = precioValido(datos.regadera?.precio) ? datos.regadera.precio : null;
         if (!precioRegadera) console.warn('tienda-jardin.json: falta o es inválido regadera.precio');
-        return { accesorios, precioParcela, precioRegadera };
+        // Monedas con las que empieza cada jugador nuevo (enteros >= 0)
+        const entero = (v) => (Number.isInteger(v) && v >= 0 ? v : 0);
+        const monedasIniciales = { plata: entero(datos.monedas_iniciales?.plata), oro: entero(datos.monedas_iniciales?.oro) };
+        return { accesorios, sobres, precioParcela, precioRegadera, monedasIniciales };
       })
       .catch((err) => {
         catalogoCargado = null; // permitir reintentar al volver a abrir la tienda
@@ -113,6 +144,7 @@ export function cargarCaja() {
             nombre: a.nombre,
             especie: a.especie || '',
             exclusivo: true,
+            info_juego: a.info_juego && typeof a.info_juego === 'object' ? a.info_juego : null,
             rutaModelo: ruta ? (/^(\/|https?:)/i.test(ruta) ? ruta : `${CARPETA_ARBOLES}${encodeURIComponent(ruta)}`) : null,
           });
         }
@@ -191,6 +223,8 @@ const ICONOS = {
   caja: '<svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11.5" rx="1.5" /><path d="M2.5 6.5h19V9h-19z" /><path d="M12 6.5v14" /><path d="M12 6.5C10 3 7 3 7.2 5c.2 1.3 2.6 1.5 4.8 1.5zM12 6.5c2-3.5 5-3.5 4.8-1.5-.2 1.3-2.6 1.5-4.8 1.5z" /></svg>',
 };
 ICONOS.plantar = ICONOS.arboles;
+ICONOS.mano = '<svg viewBox="0 0 24 24"><path d="M9 11.5V5a1.5 1.5 0 0 1 3 0v5.5" /><path d="M12 10V8.5a1.5 1.5 0 0 1 3 0V11" /><path d="M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.6a6 6 0 0 1-4.6-2.2l-2.6-3.3a1.6 1.6 0 0 1 2.3-2.2L9 15" /></svg>';
+ICONOS.candado ='<svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /><path d="M12 14.5v2.5" /></svg>';
 
 /** Moneda en SVG; la de oro es dorada y la de plata gris claro, con una hoja grabada */
 function moneda(tipo, clase = '') {
@@ -215,10 +249,10 @@ function chipMonedas(clase = '') {
   </div>`;
 }
 
-function botonPrecio({ moneda: tipo, valor }, id = null, espacio = null) {
+function botonPrecio({ moneda: tipo, valor }, sobre = null, espacio = null) {
   const alcanza = monedas[tipo] >= valor;
   const etiqueta = `${valor} ${NOMBRE_MONEDA[tipo]}`;
-  return `<button type="button" class="tienda-comprar" data-moneda="${tipo}" data-valor="${valor}" ${id ? `data-id="${escapar(id)}"` : ''}
+  return `<button type="button" class="tienda-comprar" data-moneda="${tipo}" data-valor="${valor}" ${sobre ? `data-sobre="${escapar(sobre)}"` : ''}
     ${espacio ? `data-espacio="${espacio}"` : ''}
     ${alcanza ? '' : 'disabled'} aria-label="Comprar por ${etiqueta}" title="${alcanza ? `Comprar por ${etiqueta}` : `Te faltan ${NOMBRE_MONEDA[tipo]}`}">
     ${moneda(tipo)}<span>${valor}</span>
@@ -227,30 +261,100 @@ function botonPrecio({ moneda: tipo, valor }, id = null, espacio = null) {
 
 const IMAGEN_PENDIENTE = `${ICONOS.imagen}<span>Imagen pendiente</span>`;
 
-function htmlTienda(catalogo, estado) {
+const ORDEN_RAREZA = Object.keys(RAREZA);
+
+/** Probabilidad (texto "12 %") de cada rareza en un sobre, sin contar las que no tienen accesorios */
+function probabilidadesSobre(sobre, accesorios) {
+  const rarezas = ORDEN_RAREZA.filter((r) => sobre.probabilidades[r] > 0 && accesorios.some((a) => a.rareza === r));
+  const total = rarezas.reduce((s, r) => s + sobre.probabilidades[r], 0);
+  return rarezas.map((r) => {
+    const pct = (sobre.probabilidades[r] / total) * 100 * (1 - sobre.arbol.probabilidad);
+    return [r, `${pct < 1 ? pct.toFixed(1) : Math.round(pct)} %`];
+  });
+}
+
+/**
+ * Revelación del premio en la escena del sobre (`arbol` es la planta o el exclusivo cuando el premio
+ * es un árbol). El brillo y el color de la tarjeta dependen de la rareza.
+ */
+function htmlRevelacion(sobre, premio, arbol, copias = 1) {
+  let imagen, nombre, detalle, rareza, etiqueta = '';
+  if (premio.tipo === 'accesorio') {
+    imagen = imagenAccesorio(premio.accesorio);
+    nombre = premio.accesorio.nombre;
+    rareza = premio.rareza;
+    detalle = 'Ya está en tu inventario: toca la copa, el rostro o el cuello de un árbol para ponérselo.';
+  } else {
+    imagen = ICONOS.arboles;
+    nombre = arbol?.nombre || premio.codigo;
+    rareza = arbol?.info_juego?.rareza in RAREZA ? arbol.info_juego.rareza : arbol?.exclusivo ? 'exclusiva' : 'comun';
+    etiqueta = premio.nuevo ? '¡Árbol nuevo!' : `Copia · tienes ${copias}`;
+    detalle = premio.nuevo
+      ? 'Desbloqueado: búscalo en "Árboles" para plantarlo.'
+      : 'Búscalo en "Árboles" para plantarlo otra vez.';
+  }
+  return `
+    <div class="sobre-revelacion sobre-revelacion--${rareza}${premio.nuevo ? ' sobre-revelacion--nuevo' : ''}" aria-live="polite">
+      <div class="sobre-rayos" aria-hidden="true"></div>
+      <div class="sobre-tarjeta">
+        <span class="sobre-tarjeta-tipo">${premio.tipo === 'arbol' ? 'Árbol' : 'Accesorio'}</span>
+        <span class="sobre-tarjeta-imagen sobre-tarjeta-imagen--${premio.tipo}" aria-hidden="true">${imagen}</span>
+        <span class="caja-rareza caja-rareza--${rareza}">${RAREZA[rareza]}</span>
+        <strong class="sobre-tarjeta-nombre" id="sobreEscenaTitulo">${escapar(nombre)}</strong>
+        ${etiqueta ? `<span class="sobre-tarjeta-etiqueta">${escapar(etiqueta)}</span>` : ''}
+        <p class="sobre-tarjeta-detalle">${escapar(detalle)}</p>
+      </div>
+      <div class="sobre-acciones">
+        <button type="button" class="sobre-listo">Listo</button>
+        <span class="sobre-otro">Abrir otro ${botonPrecio(sobre.precio, sobre.id)}</span>
+      </div>
+    </div>`;
+}
+
+function htmlTienda(catalogo, estado, pestana = 'sobres') {
+  // Conseguido: lo tiene en el inventario, puesto en algún árbol o ya lo canjeó con su QR
+  const puestos = new Set(Object.values(estado.accesorios).flatMap((zonas) => Object.values(zonas)));
+  const conseguido = (a) => (estado.inventario[a.id] || 0) > 0 || puestos.has(a.id) || accesorioCanjeadoQR(estado, a.id);
   const tarjetas = !catalogo
     ? '<p class="tienda-error">No se pudo cargar el catálogo de la tienda. Inténtalo de nuevo más tarde.</p>'
     : catalogo.accesorios.length === 0
       ? '<p class="tienda-error">Aún no hay accesorios en la tienda.</p>'
-      : catalogo.accesorios.map((a) => {
+      : [...catalogo.accesorios].sort((a, b) => ORDEN_RAREZA.indexOf(a.rareza) - ORDEN_RAREZA.indexOf(b.rareza)).map((a) => {
         const unidades = estado.inventario[a.id] || 0;
         return `
-    <article class="tienda-item">
+    <article class="tienda-item tienda-item--${a.rareza}${conseguido(a) ? '' : ' tienda-item--falta'}">
       <div class="tienda-item-imagen">
-        ${a.imagen
-          ? `<img src="${CARPETA_ACCESORIOS}${encodeURIComponent(a.imagen)}" alt="" data-pendiente>`
-          : IMAGEN_PENDIENTE}
+        ${!conseguido(a) ? `${ICONOS.candado}<span>Bloqueado</span>`
+          : a.imagen ? `<img src="${CARPETA_ACCESORIOS}${encodeURIComponent(a.imagen)}" alt="" data-pendiente>`
+            : IMAGEN_PENDIENTE}
       </div>
+      <span class="caja-rareza caja-rareza--${a.rareza}">${RAREZA[a.rareza]}</span>
       <h4 class="tienda-item-nombre">${escapar(a.nombre)}</h4>
       ${a.desbloqueo_qr === true
         ? (accesorioCanjeadoQR(estado, a.id)
           ? '<p class="tienda-item-qr tienda-item-qr--listo">Canjeado con QR</p>'
           : '<p class="tienda-item-qr">Escanea su código QR</p>')
         : ''}
-      ${a.precio ? botonPrecio(a.precio, a.id) : ''}
-      ${unidades > 0 ? `<p class="tienda-item-unidades">Tienes ${unidades}</p>` : ''}
+      <p class="tienda-item-unidades">${unidades > 0 ? `Tienes ${unidades}` : conseguido(a) ? 'Puesto en un árbol' : 'Aún no lo tienes'}</p>
     </article>`;
       }).join('');
+  const sobres = catalogo?.sobres.tipos || [];
+  const tarjetasSobres = !catalogo
+    ? '<p class="tienda-error">No se pudo cargar el catálogo de la tienda. Inténtalo de nuevo más tarde.</p>'
+    : sobres.length === 0
+      ? '<p class="tienda-error">Aún no hay sobres en la tienda.</p>'
+      : sobres.map((s) => `
+    <article class="tienda-sobre tienda-sobre--${escapar(s.id)}">
+      <div class="tienda-sobre-imagen">
+        ${s.imagen ? `<img src="${CARPETA_SOBRES}${encodeURIComponent(s.imagen)}" alt="" data-pendiente>` : IMAGEN_PENDIENTE}
+      </div>
+      <h4 class="tienda-item-nombre">${escapar(s.nombre)}</h4>
+      <ul class="tienda-sobre-probabilidades">
+        ${probabilidadesSobre(s, catalogo.accesorios).map(([r, pct]) => `
+        <li><span class="caja-rareza caja-rareza--${r}">${RAREZA[r]}</span><span>${pct}</span></li>`).join('')}
+      </ul>
+      ${botonPrecio(s.precio, s.id)}
+    </article>`).join('');
   const precioParcela = catalogo?.precioParcela;
   const puedeAmpliar = celdasParaAmpliar(estado).length > 0;
   const precioRegadera = catalogo?.precioRegadera;
@@ -270,12 +374,17 @@ function htmlTienda(catalogo, estado) {
       ${chipMonedas('jardin-monedas--claro')}
     </div>
     <div class="jardin-pestanas" role="tablist" aria-label="Secciones de la tienda">
-      <button type="button" role="tab" class="jardin-pestana" aria-selected="true" data-pestana="accesorios">Accesorios</button>
-      <button type="button" role="tab" class="jardin-pestana" aria-selected="false" data-pestana="espacios">Espacios</button>
+      <button type="button" role="tab" class="jardin-pestana" aria-selected="${pestana === 'sobres'}" data-pestana="sobres">Sobres</button>
+      <button type="button" role="tab" class="jardin-pestana" aria-selected="${pestana === 'accesorios'}" data-pestana="accesorios">Colección</button>
+      <button type="button" role="tab" class="jardin-pestana" aria-selected="${pestana === 'espacios'}" data-pestana="espacios">Espacios</button>
     </div>
     <div class="jardin-hoja-cuerpo">
-      <div class="tienda-grilla" data-contenido="accesorios" role="tabpanel">${tarjetas}</div>
-      <div class="tienda-espacios" data-contenido="espacios" role="tabpanel" hidden>
+      <div class="tienda-sobres" data-contenido="sobres" role="tabpanel" ${pestana === 'sobres' ? '' : 'hidden'}>
+        ${tarjetasSobres}
+        <p class="tienda-nota">Cada sobre trae un solo premio: un accesorio o, a veces, una copia de uno de tus árboles para plantarlo otra vez. Muy rara vez desbloquea un árbol nuevo: ¡recorre el sendero y escanea sus QR!</p>
+      </div>
+      <div class="tienda-grilla" data-contenido="accesorios" role="tabpanel" ${pestana === 'accesorios' ? '' : 'hidden'}>${tarjetas}</div>
+      <div class="tienda-espacios" data-contenido="espacios" role="tabpanel" ${pestana === 'espacios' ? '' : 'hidden'}>
         <article class="tienda-espacio">
           <div class="tienda-espacio-icono">${ICONOS.parcela}</div>
           <div class="tienda-espacio-texto">
@@ -306,18 +415,39 @@ function htmlListaArboles(arboles, { estado, parcelaDestino }) {
   const libres = parcelasLibres(estado, estado.parcelas);
   const plantado = (p) => parcelaDe(estado, p.codigoQR) !== null;
   const cantidadPlantados = arboles.filter(plantado).length;
-  // Primero los guardados (los que se pueden plantar) y después los ya plantados
-  const orden = [...arboles].sort((a, b) => plantado(a) - plantado(b));
+  // Una fila por especie: el original y sus copias de los sobres juntos, con un contador
+  const grupos = new Map();
+  for (const p of arboles) {
+    const base = p.copiaDe || p.codigoQR;
+    if (!grupos.has(base)) grupos.set(base, []);
+    grupos.get(base).push(p);
+  }
+  const filasDatos = [...grupos.values()].map((copias) => ({
+    arbol: copias[0],
+    total: copias.length,
+    plantadas: copias.filter(plantado),
+    guardada: copias.find((p) => !plantado(p)) || null,
+  }));
+  // Primero las especies con algún árbol guardado (los que se pueden plantar) y después las ya plantadas
+  filasDatos.sort((a, b) => !a.guardada - !b.guardada);
 
-  const filas = orden.length
-    ? orden.map((p) => {
-      const parcela = parcelaDe(estado, p.codigoQR);
-      const accion = parcela !== null
-        ? `<span class="lista-arbol-estado lista-arbol-estado--plantado">Parcela ${parcela + 1}</span>
-           <button type="button" class="lista-arbol-observar" data-codigo="${escapar(p.codigoQR)}">Observar</button>`
-        : `<span class="lista-arbol-estado">Guardado</span>
-           <button type="button" class="lista-arbol-plantar" data-codigo="${escapar(p.codigoQR)}"
-             ${libres ? '' : 'disabled title="No hay parcelas libres: compra una en la tienda"'}>Plantar</button>`;
+  const filas = filasDatos.length
+    ? filasDatos.map(({ arbol: p, total, plantadas, guardada }) => {
+      const guardadas = total - plantadas.length;
+      // Con una sola copia, la etiqueta de siempre; con varias, el contador debajo de los botones
+      const estadoTexto = plantadas.length ? `Parcela ${parcelaDe(estado, plantadas[0].codigoQR) + 1}` : 'Guardado';
+      const contador = [plantadas.length && `${plantadas.length} plantado${plantadas.length > 1 ? 's' : ''}`,
+        guardadas && `${guardadas} guardado${guardadas > 1 ? 's' : ''}`].filter(Boolean).join(' · ');
+      const accion = `
+        <div class="lista-arbol-acciones">
+          <div class="lista-arbol-botones">
+            ${total === 1 ? `<span class="lista-arbol-estado${guardada ? '' : ' lista-arbol-estado--plantado'}">${estadoTexto}</span>` : ''}
+            ${plantadas.length ? `<button type="button" class="lista-arbol-observar" data-codigo="${escapar(plantadas[0].codigoQR)}">Observar</button>` : ''}
+            ${guardada ? `<button type="button" class="lista-arbol-plantar" data-codigo="${escapar(guardada.codigoQR)}"
+                 ${libres ? '' : 'disabled title="No hay parcelas libres: compra una en la tienda"'}>Plantar</button>` : ''}
+          </div>
+          ${total > 1 ? `<span class="lista-arbol-contador"><strong>×${total}</strong> ${contador}</span>` : ''}
+        </div>`;
       return `
       <li class="lista-arbol">
         <span class="lista-arbol-icono" aria-hidden="true">${ICONOS.arboles}</span>
@@ -343,7 +473,7 @@ function htmlListaArboles(arboles, { estado, parcelaDestino }) {
       <button type="button" class="jardin-hoja-cerrar" aria-label="Cerrar lista de árboles">&times;</button>
     </header>
     <p class="lista-resumen">
-      <strong>${arboles.length}</strong> desbloqueados · <strong>${cantidadPlantados}</strong> plantados ·
+      <strong>${grupos.size}</strong> desbloqueados · <strong>${cantidadPlantados}</strong> plantados ·
       <strong>${libres}</strong> parcelas libres
     </p>
     <div class="jardin-hoja-cuerpo"><ul class="lista-arboles">${filas}</ul></div>`;
@@ -409,8 +539,6 @@ function htmlPregunta(pregunta) {
     </div>`;
 }
 
-const RAREZA = { comun: 'Común', rara: 'Rara', epica: 'Épica', legendaria: 'Legendaria' };
-
 /** Caja cerrada (toca para abrir) o el premio que salió */
 function htmlCaja(premio = null) {
   let cuerpo;
@@ -451,19 +579,28 @@ function htmlCaja(premio = null) {
     <div class="jardin-hoja-cuerpo caja-cuerpo" aria-live="polite">${cuerpo}</div>`;
 }
 
-/** Árboles que el usuario ya tiene: los desbloqueados (mismo criterio que el álbum) y los exclusivos de la caja */
+/** Copia `n` (2, 3...) de un árbol: la misma especie con su propio id (ver idCopia en jardin-estado.js) */
+export const copiaDeArbol = (arbol, n) => ({ ...arbol, codigoQR: idCopia(arbol.codigoQR, n), copiaDe: arbol.codigoQR });
+
+/**
+ * Árboles que el usuario ya tiene: los desbloqueados (mismo criterio que el álbum), los exclusivos de la
+ * caja y una entrada más por cada copia ganada en los sobres (con `copiaDe` = codigoQR del original)
+ */
 export async function arbolesDelUsuario() {
   if (!window.plantsHandler) return [];
   const plantas = window.plantsHandler.plantas.length ? window.plantsHandler.plantas : await window.plantsHandler.loadPlants();
   const desbloqueados = plantas.filter((p) => !p.bloqueado || (window.unlocker && window.unlocker.isUnlocked(p.codigoQR)));
+  const estado = cargarEstado();
   let exclusivos = [];
   try {
     const caja = await cargarCaja();
-    exclusivos = cargarEstado().exclusivos.map((c) => caja.exclusivos.get(c)).filter(Boolean);
+    exclusivos = estado.exclusivos.map((c) => caja.exclusivos.get(c)).filter(Boolean);
   } catch (err) {
     console.warn('No se pudieron leer los árboles exclusivos de la caja:', err);
   }
-  return [...desbloqueados, ...exclusivos];
+  return [...desbloqueados, ...exclusivos].flatMap((p) => [
+    p, ...Array.from({ length: estado.copias[p.codigoQR] || 0 }, (_, i) => copiaDeArbol(p, i + 2)),
+  ]);
 }
 
 /**
@@ -562,14 +699,171 @@ export function montarInterfazJuego(raiz, {
     hoja.querySelector('.jardin-hoja-cerrar').focus();
   }
 
-  async function abrirTienda() {
+  /**
+   * Compra y abre un sobre: se cobra y se sortea al momento (si se cierra el panel durante la
+   * animación, el premio ya quedó guardado), se muestra el GIF de apertura y luego el premio.
+   */
+  let comprandoSobre = false; // evita cobrar dos veces con un doble toque
+  async function comprarSobre(catalogo, sobre) {
+    if (comprandoSobre || monedas[sobre.precio.moneda] < sobre.precio.valor) return;
+    comprandoSobre = true;
+    try {
+      await abrirSobreComprado(catalogo, sobre);
+    } finally {
+      comprandoSobre = false;
+    }
+  }
+
+  async function abrirSobreComprado(catalogo, sobre) {
+    const { duracionMs, enfriamiento } = catalogo.sobres;
+    const mios = (await arbolesDelUsuario()).filter((p) => !p.copiaDe); // una vez por especie
+    const plantas = window.plantsHandler?.plantas || [];
+    const bloqueadas = window.unlocker
+      ? plantas.filter((p) => p.bloqueado && !window.unlocker.isUnlocked(p.codigoQR))
+      : [];
+    const premio = abrirSobre(estado, sobre, {
+      accesorios: catalogo.accesorios,
+      // Rareza de cada árbol (plantas.json → info_juego.rareza); sin ella, exclusivo si viene de la caja y si no común
+      conocidos: mios.map((p) => ({
+        codigo: p.codigoQR,
+        rareza: p.info_juego?.rareza in RAREZA ? p.info_juego.rareza : p.exclusivo ? 'exclusiva' : 'comun',
+      })),
+      nuevos: bloqueadas.map((p) => p.codigoQR),
+      enfriamiento,
+    });
+    if (!premio) return;
+    let arbol = null;
+    if (premio.tipo === 'arbol') {
+      arbol = (premio.nuevo ? bloqueadas : mios).find((p) => p.codigoQR === premio.codigo) || null;
+      if (premio.nuevo) window.unlocker.unlockPlant(premio.codigo);
+      // Nuevo o repetido, queda guardado para plantarlo (el repetido como una copia más)
+      if (arbol) alGanarArbol?.(premio.nuevo ? arbol : { ...arbol, codigoQR: premio.id, copiaDe: arbol.codigoQR });
+    }
+    api.actualizarMonedas(sobre.precio.moneda);
+
+    mostrarEscenaSobre(catalogo, sobre, premio, arbol, duracionMs);
+  }
+
+  // Gesto de rasgar: se empieza en la franja de arriba del sobre y se desliza de lado
+  const RASGAR = {
+    franja: 0.34,    // alto de la franja de arriba donde empieza el gesto (fracción del sobre)
+    tolerancia: 0.5, // si el dedo baja más de esto (fracción del sobre), el corte se cancela
+    recorrido: 0.6,  // cuánto hay que deslizar de lado (fracción del ancho) para abrirlo
+  };
+
+  /**
+   * Escena del sobre: fondo oscuro sobre todo el jardín y el sobre cerrado en el centro, con una mano
+   * que enseña a rasgar la parte de arriba. Al rasgarlo arranca el GIF de apertura (tocarlo lo salta) y
+   * luego se revela el premio. "Listo" vuelve a la tienda; "Abrir otro" compra otro igual.
+   * El premio ya se entregó al comprar: aquí solo se muestra.
+   */
+  function mostrarEscenaSobre(catalogo, sobre, premio, arbol, duracionMs) {
+    if (modoActual) ponerModo(null);
+    cerrarPanel();
+    raiz.querySelector('.sobre-escena')?.remove();
+    raiz.insertAdjacentHTML('beforeend', `
+      <div class="sobre-escena sobre-escena--${escapar(sobre.id)}" role="dialog" aria-modal="true" aria-label="${escapar(sobre.nombre)}">
+        <div class="sobre-escena-contenido">
+          <span class="sobre-escena-titulo">${escapar(sobre.nombre)}</span>
+          <div class="sobre-rasgar" tabindex="0" role="button" aria-label="Rasgar el sobre para abrirlo">
+            <img class="sobre-rasgar-imagen" src="${CARPETA_SOBRES}${encodeURIComponent(sobre.imagen || sobre.animacion)}" alt="" draggable="false">
+            <div class="sobre-corte" aria-hidden="true"><span class="sobre-corte-progreso"></span></div>
+            <div class="sobre-guia" aria-hidden="true">
+              <span class="sobre-guia-estela"></span>
+              <span class="sobre-guia-mano">${ICONOS.mano}</span>
+            </div>
+          </div>
+          <p class="sobre-escena-ayuda">Desliza el dedo por la parte de arriba para rasgarlo</p>
+        </div>
+      </div>`);
+    const escena = raiz.querySelector('.sobre-escena');
+    const contenido = escena.querySelector('.sobre-escena-contenido');
+    const zona = escena.querySelector('.sobre-rasgar');
+    const progreso = escena.querySelector('.sobre-corte-progreso');
+    let gesto = null; // { id, x0, y0 } mientras el dedo está rasgando
+    let abierto = false;
+    let espera = null;
+
+    // La línea de corte va del 8 % al 92 % del ancho del sobre (ver .sobre-corte en index.css)
+    const enLinea = (x) => Math.max(0, Math.min(1, (x - 0.08) / 0.84));
+    const pintarCorte = (desde, hasta) => {
+      const [a, b] = [enLinea(desde), enLinea(hasta)];
+      progreso.style.left = `${Math.min(a, b) * 100}%`;
+      progreso.style.width = `${Math.abs(b - a) * 100}%`;
+    };
+    const cancelarGesto = () => {
+      gesto = null;
+      zona.classList.remove('rasgando');
+      pintarCorte(0, 0);
+    };
+
+    // Rasgado completo: el sobre cerrado se cambia por el GIF de apertura (un <img> nuevo para que empiece desde el principio)
+    const abrir = () => {
+      if (abierto || !escena.isConnected) return;
+      abierto = true;
+      gesto = null;
+      zona.outerHTML = `
+        <button type="button" class="sobre-abriendo" aria-label="Saltar animación">
+          <img src="${CARPETA_SOBRES}${encodeURIComponent(sobre.animacion || sobre.imagen)}" alt="">
+        </button>`;
+      contenido.querySelector('.sobre-escena-ayuda').textContent = '¡Abriendo!';
+      const animacion = contenido.querySelector('.sobre-abriendo');
+      animacion.addEventListener('click', revelar);
+      animacion.focus();
+      espera = setTimeout(revelar, duracionMs);
+    };
+
+    zona.addEventListener('pointerdown', (e) => {
+      if (abierto) return;
+      const caja = zona.getBoundingClientRect();
+      const y = (e.clientY - caja.top) / caja.height;
+      if (y > RASGAR.franja) return; // hay que empezar por la parte de arriba
+      gesto = { id: e.pointerId, x0: (e.clientX - caja.left) / caja.width, y0: y };
+      zona.setPointerCapture(e.pointerId);
+      zona.classList.add('rasgando');
+      e.preventDefault();
+    });
+    zona.addEventListener('pointermove', (e) => {
+      if (!gesto || e.pointerId !== gesto.id) return;
+      const caja = zona.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (e.clientX - caja.left) / caja.width));
+      const y = (e.clientY - caja.top) / caja.height;
+      if (y > RASGAR.tolerancia) { cancelarGesto(); return; } // se fue hacia abajo: no cuenta
+      pintarCorte(gesto.x0, x);
+      if (Math.abs(x - gesto.x0) >= RASGAR.recorrido) abrir();
+    });
+    zona.addEventListener('pointerup', cancelarGesto);
+    zona.addEventListener('pointercancel', cancelarGesto);
+    // Con teclado (Enter o espacio) también se puede abrir
+    zona.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrir(); }
+    });
+
+    let revelado = false;
+    const revelar = () => {
+      if (revelado || !escena.isConnected) return;
+      revelado = true;
+      clearTimeout(espera);
+      contenido.innerHTML = htmlRevelacion(sobre, premio, arbol, 1 + (estado.copias[premio.codigo] || 0));
+      escena.setAttribute('aria-labelledby', 'sobreEscenaTitulo');
+      contenido.querySelectorAll('.sobre-tarjeta-imagen img').forEach((img) => {
+        img.addEventListener('error', () => { img.replaceWith(document.createRange().createContextualFragment(ICONOS.imagen)); }, { once: true });
+      });
+      contenido.querySelector('.sobre-listo').addEventListener('click', () => { escena.remove(); abrirTienda('sobres'); });
+      contenido.querySelector('.tienda-comprar[data-sobre]').addEventListener('click', () => comprarSobre(catalogo, sobre));
+      contenido.querySelector('.sobre-listo').focus();
+    };
+    zona.focus();
+  }
+
+  async function abrirTienda(pestanaInicial = 'sobres') {
     let catalogo = null;
     try {
       catalogo = await cargarCatalogo();
     } catch (err) {
       console.error('No se pudo cargar la tienda:', err);
     }
-    abrirPanel(htmlTienda(catalogo, estado), 'jardinTiendaTitulo');
+    abrirPanel(htmlTienda(catalogo, estado, pestanaInicial), 'jardinTiendaTitulo');
     // Si la imagen de un accesorio no existe, se muestra el recuadro de "Imagen pendiente"
     hoja.querySelectorAll('img[data-pendiente]').forEach((img) => {
       img.addEventListener('error', () => { img.parentElement.innerHTML = IMAGEN_PENDIENTE; }, { once: true });
@@ -580,12 +874,12 @@ export function montarInterfazJuego(raiz, {
         hoja.querySelectorAll('[data-contenido]').forEach((c) => { c.hidden = c.dataset.contenido !== pestana.dataset.pestana; });
       });
     });
-    hoja.querySelectorAll('.tienda-comprar[data-id]').forEach((boton) => {
+    // Precarga las animaciones para que el GIF arranque al instante al comprar
+    catalogo?.sobres.tipos.forEach((s) => { if (s.animacion) new Image().src = `${CARPETA_SOBRES}${encodeURIComponent(s.animacion)}`; });
+    hoja.querySelectorAll('.tienda-comprar[data-sobre]').forEach((boton) => {
       boton.addEventListener('click', () => {
-        const accesorio = catalogo?.accesorios.find((a) => a.id === boton.dataset.id);
-        if (!accesorio || !comprarAccesorio(estado, accesorio)) return;
-        api.actualizarMonedas(accesorio.precio.moneda);
-        abrirTienda();
+        const sobre = catalogo?.sobres.tipos.find((s) => s.id === boton.dataset.sobre);
+        if (sobre) comprarSobre(catalogo, sobre);
       });
     });
     hoja.querySelector('.tienda-comprar[data-espacio="parcela"]')?.addEventListener('click', () => {
@@ -600,7 +894,7 @@ export function montarInterfazJuego(raiz, {
       if (!catalogo?.precioRegadera || !comprarEspacioRegadera(estado, catalogo.precioRegadera)) return;
       api.actualizarMonedas(catalogo.precioRegadera.moneda);
       alAmpliarRegadera?.();
-      abrirTienda();
+      abrirTienda('espacios');
     });
   }
 
@@ -783,7 +1077,7 @@ export function montarInterfazJuego(raiz, {
       cerrarPanel();
       pintarZonas();
     });
-    hoja.querySelector('.lista-ir-tienda')?.addEventListener('click', abrirTienda);
+    hoja.querySelector('.lista-ir-tienda')?.addEventListener('click', () => abrirTienda('sobres'));
   }
 
   /** Lista de árboles. Con `parcelaDestino`, el árbol elegido se planta directamente en esa parcela */
