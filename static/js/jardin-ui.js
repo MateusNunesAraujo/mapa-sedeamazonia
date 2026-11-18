@@ -46,6 +46,9 @@ const precioValido = (p) => p && (p.moneda === 'plata' || p.moneda === 'oro') &&
 // Rarezas de los accesorios (misma clave que `rareza` en tienda-jardin.json), de menor a mayor
 const RAREZA = { comun: 'Común', rara: 'Raro', epica: 'Épico', legendaria: 'Legendario', exclusiva: 'Exclusivo' };
 const CARPETA_SOBRES = '/static/iconos/sobres/';
+// Súbelo cada vez que cambies una imagen o animación de los sobres sin cambiarle el nombre
+const VERSION_SOBRES = 2;
+const rutaSobre = (archivo) => `${CARPETA_SOBRES}${encodeURIComponent(archivo)}?v=${VERSION_SOBRES}`;
 const probabilidad = (v) => (Number(v) >= 0 && Number(v) <= 1 ? Number(v) : 0);
 
 /** Lee la sección `sobres` del catálogo: { tipos: [...], duracionMs, enfriamiento } */
@@ -346,7 +349,7 @@ function htmlTienda(catalogo, estado, pestana = 'sobres') {
       : sobres.map((s) => `
     <article class="tienda-sobre tienda-sobre--${escapar(s.id)}">
       <div class="tienda-sobre-imagen">
-        ${s.imagen ? `<img src="${CARPETA_SOBRES}${encodeURIComponent(s.imagen)}" alt="" data-pendiente>` : IMAGEN_PENDIENTE}
+        ${s.imagen ? `<img src="${rutaSobre(s.imagen)}" alt="" data-pendiente>` : IMAGEN_PENDIENTE}
       </div>
       <h4 class="tienda-item-nombre">${escapar(s.nombre)}</h4>
       <ul class="tienda-sobre-probabilidades">
@@ -442,7 +445,6 @@ function htmlListaArboles(arboles, { estado, parcelaDestino }) {
         <div class="lista-arbol-acciones">
           <div class="lista-arbol-botones">
             ${total === 1 ? `<span class="lista-arbol-estado${guardada ? '' : ' lista-arbol-estado--plantado'}">${estadoTexto}</span>` : ''}
-            ${plantadas.length ? `<button type="button" class="lista-arbol-observar" data-codigo="${escapar(plantadas[0].codigoQR)}">Observar</button>` : ''}
             ${guardada ? `<button type="button" class="lista-arbol-plantar" data-codigo="${escapar(guardada.codigoQR)}"
                  ${libres ? '' : 'disabled title="No hay parcelas libres: compra una en la tienda"'}>Plantar</button>` : ''}
           </div>
@@ -766,7 +768,7 @@ export function montarInterfazJuego(raiz, {
         <div class="sobre-escena-contenido">
           <span class="sobre-escena-titulo">${escapar(sobre.nombre)}</span>
           <div class="sobre-rasgar" tabindex="0" role="button" aria-label="Rasgar el sobre para abrirlo">
-            <img class="sobre-rasgar-imagen" src="${CARPETA_SOBRES}${encodeURIComponent(sobre.imagen || sobre.animacion)}" alt="" draggable="false">
+            <img class="sobre-rasgar-imagen" src="${rutaSobre(sobre.imagen || sobre.animacion)}" alt="" draggable="false">
             <div class="sobre-corte" aria-hidden="true"><span class="sobre-corte-progreso"></span></div>
             <div class="sobre-guia" aria-hidden="true">
               <span class="sobre-guia-estela"></span>
@@ -804,7 +806,7 @@ export function montarInterfazJuego(raiz, {
       gesto = null;
       zona.outerHTML = `
         <button type="button" class="sobre-abriendo" aria-label="Saltar animación">
-          <img src="${CARPETA_SOBRES}${encodeURIComponent(sobre.animacion || sobre.imagen)}" alt="">
+          <img src="${rutaSobre(sobre.animacion || sobre.imagen)}" alt="">
         </button>`;
       contenido.querySelector('.sobre-escena-ayuda').textContent = '¡Abriendo!';
       const animacion = contenido.querySelector('.sobre-abriendo');
@@ -875,7 +877,7 @@ export function montarInterfazJuego(raiz, {
       });
     });
     // Precarga las animaciones para que el GIF arranque al instante al comprar
-    catalogo?.sobres.tipos.forEach((s) => { if (s.animacion) new Image().src = `${CARPETA_SOBRES}${encodeURIComponent(s.animacion)}`; });
+    catalogo?.sobres.tipos.forEach((s) => { if (s.animacion) new Image().src = rutaSobre(s.animacion); });
     hoja.querySelectorAll('.tienda-comprar[data-sobre]').forEach((boton) => {
       boton.addEventListener('click', () => {
         const sobre = catalogo?.sobres.tipos.find((s) => s.id === boton.dataset.sobre);
@@ -1091,12 +1093,6 @@ export function montarInterfazJuego(raiz, {
         cerrarPanel();
         if (parcelaDestino !== null) alElegirArbol?.(arbol.codigoQR, parcelaDestino);
         else ponerModo('plantar', { codigoQR: arbol.codigoQR, nombre: arbol.nombre });
-      });
-    });
-    hoja.querySelectorAll('.lista-arbol-observar').forEach((boton) => {
-      boton.addEventListener('click', () => {
-        cerrarPanel();
-        alObservarArbol?.(boton.dataset.codigo);
       });
     });
   }

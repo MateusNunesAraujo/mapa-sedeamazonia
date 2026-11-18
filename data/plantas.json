@@ -427,7 +427,7 @@
         "El árbol es comúnmente utilizado como ornamental en varias regiones de América tropical, debido a su porte y valor estético. Su madera, considerada de alta calidad por su durabilidad y facilidad de trabajo, se emplea en una amplia gama de productos como chapas decorativas, contrachapados, muebles finos, ebanistería, puertas, ventanas, tallados, revestimientos interiores, canoas e instrumentos musicales (INIA-OIMT, 1996). También posee importantes usos medicinales. La infusión de hojas y raíces se usa tradicionalmente para aliviar dolores dentales. Además, es común su uso en tratamientos para reducir la fiebre, calmar la diarrea, aliviar el dolor de estómago, combatir parásitos intestinales y síntomas de paludismo mediante cocimientos elaborados con raíz, corteza y hojas. En casos de infecciones externas, se aplica la raíz macerada como cataplasma en la zona afectada (López et al., 2006; Montero González et al., 2016)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "cedrela-odorata.glb",
     "codigoQR": "PLANTA_208_CEDRO",
     "bloqueado": false,
     "info_juego": {
@@ -775,7 +775,7 @@
         "Entre los pueblos indígenas del medio Caquetá, el arilo fresco de la semilla se consume como alimento, apreciado por su sabor refrescante y por calmar el apetito. El cogollo, al ser masticado, tiñe los dientes de negro y se cree que previene la caries dental. La comunidad Muinane del resguardo indígena de Villazul, en el Amazonas colombiano, utiliza la decocción de hojas en agua como remedio para aliviar el malestar estomacal (Castaño Betancur, 2023). Las hojas tienen múltiples usos: se emplean para envolver y conservar productos como la masa de yuca brava y el almidón, y también se utilizan como protección improvisada contra la lluvia, actuando como sombrilla. Además, las semillas tostadas son comestibles (Martínez y Galeano, 1994). En Bolivia, los indígenas Chácobo utiliza las hojas grandes de esta especie como material de cobertura para los techos de sus viviendas. En algunos casos, los techos están hechos exclusivamente con estas hojas, aunque lo más común es que se combinen con las de distintas especies de palmas. Tradicionalmente, las hojas jóvenes también se usaban como taparrabos femeninos (Boom, 1996)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "phenakospermum-guyannense.glb",
     "codigoQR": "PLANTA_291_PLATANILLO",
     "bloqueado": false,
     "info_juego": {
@@ -1272,7 +1272,7 @@
         "Las semillas se tuestan y muelen para producir cocoa y chocolate, ampliamente utilizados en dulces, helados, bebidas y otros productos alimenticios. De la semilla se extrae el aceite o manteca de cacao, empleada en productos cosméticos, perfumería y de farmacia como emoliente en la elaboración de ungüentos y pomadas, así como en el tratamiento de la piel seca. En la Amazonía peruana se cocina la cáscara de la semilla hasta obtener una bebida espesa similar al chocolate para aliviar la tos seca (Mejía y Rengifo, 2000; Montero González et al., 2016). Las hojas en infusión se usan frecuentemente como tónico para tratar afecciones cardíacas. La teobromina, un compuesto derivado de la xantina, es ampliamente empleada por sus propiedades diuréticas (García Barriga, 1992)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "theobroma-cacao.glb",
     "codigoQR": "PLANTA_450_CACAO",
     "bloqueado": false,
     "info_juego": {

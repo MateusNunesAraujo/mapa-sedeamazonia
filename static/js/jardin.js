@@ -749,6 +749,7 @@ async function abrirJardin() {
       const cabeza = {
         ...engancheEn(copaNodo),
         punto: new THREE.Vector3(cCopa.x, copa.max.y, cCopa.z),
+        anchoCopa: Math.max(copa.max.x - copa.min.x, copa.max.z - copa.min.z),
         alturaEn(radio) {
           // Un ala muy ancha se apoyaría en los costados de la copa y el sombrero quedaría hundido:
           // como mucho se apoya a la mitad del radio de la copa
@@ -808,6 +809,21 @@ async function abrirJardin() {
       return { cabeza, rostro, cuello };
     }
 
+    // Proporciones del árbol para el que están pensados los accesorios (1 de alto), medidas en los
+    // árboles actuales: copa de ~0,95 de ancho y cara de ~0,21
+    const ANCHO_COPA_REF = 0.95;
+    const ANCHO_CARA_REF = 0.21;
+
+    /**
+     * Escala de un accesorio según el ancho real de la zona frente al de referencia. Se limita a
+     * entre la mitad y 1,6 veces la escala por altura, para que una copa o cara extrema no deje la
+     * pieza diminuta o gigante.
+     */
+    function escalaPorAncho(ancho, anchoRef, alturaModelo) {
+      if (!(ancho > 0)) return alturaModelo;
+      return THREE.MathUtils.clamp(ancho / anchoRef, alturaModelo * 0.5, alturaModelo * 1.6);
+    }
+
     /** Radio interior de un anillo (collar): el vértice más cercano a su eje vertical */
     function radioInterior(pieza) {
       let radio = Infinity;
@@ -859,7 +875,12 @@ async function abrirJardin() {
             if (!(interior > tamPieza.x * 0.1)) interior = tamPieza.x * 0.42; // sin hueco claro: se estima
             escalaPieza = (ancla.radioTronco * 0.97) / interior;
           } else if (zona === 'cabeza') {
+            // Proporcional al ancho de la copa (no a la altura del árbol)
+            escalaPieza = escalaPorAncho(ancla.anchoCopa, ANCHO_COPA_REF, alturaModelo);
             punto.y = ancla.alturaEn((Math.max(tamPieza.x, tamPieza.z) / 2) * escalaPieza);
+          } else if (zona === 'rostro') {
+            // Proporcional al ancho de la cara
+            escalaPieza = escalaPorAncho(ancla.anchoCara, ANCHO_CARA_REF, alturaModelo);
           }
           pieza.traverse((o) => { if (o.isMesh) o.castShadow = true; });
         } else if (def.pintura) {
@@ -1640,7 +1661,7 @@ async function abrirJardin() {
       if (modo === 'regadera') { usarRegadera(indice); return; }
       if (codigo) {
         const especie = planta?.especie || planta?.nombre_cientifico || '';
-        mostrarTarjeta(planta.nombre, `${especie} · ${titulo}`);
+        mostrarTarjeta(planta.nombre, `${especie} · ${titulo}`, { texto: 'Observar', fn: () => observarArbol(indice) });
         // Botones de copa, rostro y cuello sobre el árbol para ponerle o quitarle accesorios
         const posiciones = posicionesZonas(indice);
         if (posiciones) ui.mostrarZonas({ codigoQR: codigo, nombre: planta.nombre, posiciones });

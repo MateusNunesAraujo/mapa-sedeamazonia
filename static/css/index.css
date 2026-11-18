@@ -4161,19 +4161,6 @@
 }
 .lista-arbol-plantar:hover:not(:disabled) { background: var(--verde-selva); }
 .lista-arbol-plantar:disabled { background: #e3e7e4; color: #7d8a80; cursor: not-allowed; }
-.lista-arbol-observar {
-  flex-shrink: 0;
-  padding: 6px 12px;
-  border: 1px solid var(--verde-institucional);
-  border-radius: 999px;
-  background: transparent;
-  color: var(--verde-institucional);
-  font: inherit;
-  font-size: 12.5px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.lista-arbol-observar:hover { background: rgba(2, 89, 40, 0.08); }
 .lista-vacia { padding: 24px 8px; text-align: center; color: var(--gris-medio); font-size: 14px; }
 
 /* Observar un árbol de cerca */
@@ -4230,7 +4217,8 @@
 .jardin.observando .jardin-info,
 .jardin.observando .jardin-ayuda,
 .jardin.observando .jardin-modo,
-.jardin.observando .jardin-zonas { display: none; }
+.jardin.observando .jardin-zonas,
+.jardin.observando .jardin-salir { display: none; }
 @media (max-width: 420px) {
   .jardin-titulo { font-size: 19px; }
   .jardin-moneda-chip { min-width: 0; font-size: 13px; }
