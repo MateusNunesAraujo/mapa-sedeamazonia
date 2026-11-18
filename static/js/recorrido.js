@@ -19,7 +19,7 @@
 
 const ALTURA_OJOS = 1.6;      // metros sobre el piso
 const VELOCIDAD = 1.8;        // metros por segundo (caminando)
-const VELOCIDAD_CORRER = 3.8; // metros por segundo (corriendo)
+const VELOCIDAD_CORRER = 8.0; // metros por segundo (corriendo)
 const IMPULSO_SALTO = 4.2;    // velocidad hacia arriba al saltar (≈ 70 cm de alto)
 const GRAVEDAD = 12;          // un poco más fuerte que la real para que el salto se sienta ágil
 const RADIO = 0.3;            // distancia mínima a paredes y objetos
@@ -28,7 +28,7 @@ const ALTURAS_CHOQUE = [0.45, 1.0, 1.5];  // alturas (sobre los pies) donde se r
 
 // Mundo con todos los edificios en su sitio (scripts/modelos/gen_recorrido.py)
 // ?v=: súbelo cada vez que regeneres el mundo, para que el navegador no use una copia vieja
-const MUNDO = '/static/modelos/recorrido.glb?v=14';
+const MUNDO = '/static/modelos/recorrido.glb?v=15';
 
 let THREE = null;
 let GLTFLoader = null;

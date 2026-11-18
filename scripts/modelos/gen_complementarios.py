@@ -430,14 +430,59 @@ def casa_hija(esc):
     esc.colocar((x0 + x1) / 2, (z0 + z1) / 2, math.pi / 4)
     h, a, muro_alto, pend = lado / 2, 0.5, 3.0, 1.45
     m = h - a                                                 # medio lado de los muros
-    for z_a, z_b, x_a, x_b, eje, patron in ((m - G, m, -m, m, "x", "--D--"), (-m, -m + G, -m, m, "x", "-"),
-                                            (-m + G, m - G, -m, -m + G, "z", "-"),
-                                            (-m + G, m - G, m - G, m, "z", "-")):
+    y_top, zoc = Y0 + muro_alto, Y0 + 0.25
+
+    def caja(eje, mat, a0, a1, y0, y1, c0, c1):
         if eje == "x":
-            muro(esc, "x", x_a, x_b, z_a, z_b, Y0 + muro_alto, "madera_osc", patron)
+            esc.caja(mat, a0, a1, y0, y1, c0, c1)
         else:
-            muro(esc, "z", z_a, z_b, x_a, x_b, Y0 + muro_alto, "madera_osc", patron)
+            esc.caja(mat, c0, c1, y0, y1, a0, a1)
+
+    def tablas(eje, a0, a1, c0, c1, y0, y1):
+        """Tablas verticales de ~28 cm con rendijas, tonos alternos y algunas salidas."""
+        n = max(1, round((a1 - a0) / 0.28))
+        w = (a1 - a0) / n
+        for i in range(n):
+            mat = "madera_osc" if i % 3 == 0 else "madera"
+            s = 0.0 if i % 2 else 0.03
+            caja(eje, mat, a0 + i * w + 0.015, a0 + (i + 1) * w - 0.015, y0, y1, c0 - s, c1 + s)
+
+    puerta = 1.25                                             # media luz de la puerta doble
+    for eje, c0, c1, frente in (("x", m - G, m, True), ("x", -m, -m + G, False),
+                                ("z", -m, -m + G, False), ("z", m - G, m, False)):
+        esc.caja("concreto", *((-m, m, 0.0, zoc, c0 - 0.05, c1 + 0.05) if eje == "x"
+                               else (c0 - 0.05, c1 + 0.05, 0.0, zoc, -m, m)))   # zócalo bajo
+        caja(eje, "madera_osc", -m, m, y_top - 0.12, y_top, c0 - 0.06, c1 + 0.06)  # solera alta
+        if frente:
+            tablas(eje, -m, -puerta, c0, c1, zoc, y_top - 0.12)
+            tablas(eje, puerta, m, c0, c1, zoc, y_top - 0.12)
+            tablas(eje, -puerta, puerta, c0, c1, Y0 + 2.5, y_top - 0.12)
+            # Puerta doble de listones verticales separados, con travesaños
+            caja(eje, "madera_osc", -puerta, puerta, Y0 + 2.4, Y0 + 2.5, c0 - 0.05, c1 + 0.05)
+            for x in (-puerta, -0.04, puerta - 0.08):
+                caja(eje, "madera_osc", x, x + 0.08, Y0, Y0 + 2.4, c0 - 0.05, c1 + 0.05)
+            x = -puerta + 0.12
+            while x < puerta - 0.12:
+                caja(eje, "madera", x, x + 0.07, Y0, Y0 + 2.4, c0, c1)
+                x += 0.17
+            for y in (Y0 + 0.3, Y0 + 1.25, Y0 + 2.2):
+                caja(eje, "madera_osc", -puerta, puerta, y, y + 0.08, c1, c1 + 0.04)
+        else:
+            tablas(eje, -m, m, c0, c1, zoc, y_top - 0.12)
+        # Calados (rombos, lunas) en las tablas: marcas oscuras a la altura de los ojos
+        for x in (-m * 0.75, -m * 0.4, m * 0.4, m * 0.75):
+            if frente and abs(x) < puerta + 0.3:
+                continue
+            caja(eje, "madera_osc", x - 0.06, x + 0.06, Y0 + 1.55, Y0 + 1.7, c0 - 0.05, c1 + 0.05)
+    for sx in (-1, 1):                                        # postes de esquina
+        for sz in (-1, 1):
+            px, pz = sx * (m - 0.08), sz * (m - 0.08)
+            esc.caja("madera_osc", px - 0.12, px + 0.12, 0.0, y_top, pz - 0.12, pz + 0.12)
     esc.caja("tierra", -m + G, m - G, 0.0, Y0 + 0.01, -m + G, m - G)
+    # Sendero de tablas de madera hacia la puerta
+    for i in range(6):
+        z = m + 0.6 + i * 0.9
+        esc.caja("madera", -0.35, 0.35, 0.0, 0.05, z, z + 0.75)
     y_alero = 2.6
     cima = y_alero + pend * h
     faldones(esc, "paja", "madera_osc", (-h, h, -h, h), y_alero, (0.0, 0.0, 0.0, 0.0), cima, T=0.35)
