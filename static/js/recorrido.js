@@ -53,13 +53,21 @@ function crearInterfaz(nombre) {
     </div>
     <div class="recorrido-cargando">Cargando recorrido…</div>
     <div class="recorrido-etiquetas"></div>
+    <div class="recorrido-lengua-tarjeta" role="dialog" aria-label="Palabras en lenguas amazónicas" hidden>
+      <div class="recorrido-lengua-cabeza">
+        <strong class="recorrido-lengua-lugar"></strong>
+        <button type="button" class="recorrido-lengua-cerrar" aria-label="Cerrar">✕</button>
+      </div>
+      <ul class="lenguas-lista recorrido-lengua-lista"></ul>
+      <button type="button" class="recorrido-lengua-entrar">🚶 Entrar caminando</button>
+    </div>
     <div class="recorrido-ayuda solo-caminar">
       <span class="solo-tactil">Flechas para caminar · Arrastra a la derecha para mirar</span>
       <span class="solo-pc">W A S D caminar · Shift correr · Espacio saltar · Arrastra para mirar</span>
     </div>
     <div class="recorrido-ayuda solo-aereo">
-      <span class="solo-tactil">Arrastra para girar · Pellizca para acercar · Dos dedos para mover · Toca un nombre para entrar</span>
-      <span class="solo-pc">Arrastra para girar · Rueda para acercar · Clic derecho o W A S D para mover · Clic en un nombre para entrar</span>
+      <span class="solo-tactil">Arrastra para girar · Pellizca para acercar · Dos dedos para mover · Toca un nombre para ver sus palabras en lengua y entrar</span>
+      <span class="solo-pc">Arrastra para girar · Rueda para acercar · Clic derecho o W A S D para mover · Clic en un nombre para ver sus palabras en lengua y entrar</span>
     </div>
     <div class="recorrido-joystick"><div class="recorrido-palanca"></div></div>
     <div class="recorrido-flechas" aria-label="Caminar">
@@ -354,6 +362,25 @@ function controlesAereos(raiz, estado) {
   }, { passive: false });
 }
 
+// Palabras en lenguas amazónicas por lugar (data/lenguas.json, el mismo de la ficha del mapa)
+let lenguasRecorrido = null;
+async function cargarLenguas() {
+  if (!lenguasRecorrido) {
+    try {
+      lenguasRecorrido = await (await fetch('/data/lenguas.json')).json();
+    } catch (err) {
+      console.warn('Sin palabras en lengua para el 3D:', err);
+      return null;
+    }
+  }
+  return lenguasRecorrido;
+}
+
+function fuenteDeLengua(e) {
+  if (e.fuente === 'ilv2016') return `${e.lengua} · Diccionario ticuna–castellano (ILV, 2016), p. ${e.pagina}`;
+  return `${e.lengua} · Ecoruta Conectada, ficha ${e.ficha}${e.atribucion ? ' · ' + e.atribucion : ''}`;
+}
+
 async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } = {}) {
   const raiz = crearInterfaz(nombre);
   const cargando = raiz.querySelector('.recorrido-cargando');
@@ -458,22 +485,77 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
     marcador.rotation.x = Math.PI;   // punta hacia abajo
     scene.add(marcador);
 
-    // Etiquetas con el nombre de cada edificio (nodos "centro_<nombre>" del .glb)
+    // Tarjeta con las palabras en lengua de un lugar (se abre al tocar su etiqueta)
+    const lenguas = await cargarLenguas();
+    const palabrasDe = (lugar) => (lenguas && lenguas.lugares[lugar]) || [];
+    const tarjeta = raiz.querySelector('.recorrido-lengua-tarjeta');
+    let lugarTarjeta = null;
+    function abrirTarjeta(lugar) {
+      lugarTarjeta = lugar;
+      tarjeta.querySelector('.recorrido-lengua-lugar').textContent = lugar;
+      const lista = tarjeta.querySelector('.recorrido-lengua-lista');
+      lista.replaceChildren();
+      for (const e of palabrasDe(lugar)) {          // textContent: el texto no se interpreta como HTML
+        const li = document.createElement('li');
+        const t = document.createElement('span');
+        t.className = 'texto-lengua';
+        if (e.lengua === 'Tikuna') t.lang = 'tca';
+        t.textContent = e.texto;
+        const sig = document.createElement('span');
+        sig.className = 'lengua-significado';
+        sig.textContent = e.significado;
+        const f = document.createElement('small');
+        f.className = 'lengua-fuente';
+        f.textContent = fuenteDeLengua(e);
+        li.append(t, sig, f);
+        lista.appendChild(li);
+      }
+      // Desde la vista aérea se puede bajar a caminar; caminando ya se está ahí
+      tarjeta.querySelector('.recorrido-lengua-entrar').hidden = estado.modo !== 'aereo';
+      tarjeta.hidden = false;
+    }
+    tarjeta.querySelector('.recorrido-lengua-cerrar').addEventListener('click', () => { tarjeta.hidden = true; });
+    tarjeta.querySelector('.recorrido-lengua-entrar').addEventListener('click', () => {
+      tarjeta.hidden = true;
+      irAInicio(lugarTarjeta);
+      cambiarModo('caminar');
+    });
+
+    // Etiquetas de cada edificio (nodos "centro_<nombre>" del .glb): en la vista aérea, el
+    // nombre y su primera palabra en lengua; caminando, solo la palabra, sobre los edificios
+    // cercanos. Al tocarlas se abre la tarjeta con la traducción (si el lugar no tiene
+    // palabras, en la vista aérea se entra caminando como antes).
     const capaEtiquetas = raiz.querySelector('.recorrido-etiquetas');
     const etiquetas = [];
     gltf.scene.traverse((o) => {
       if (!o.name.startsWith('centro_')) return;
       const lugar = o.userData.nombre || o.name.slice(7).replace(/_/g, ' ');
+      const palabras = palabrasDe(lugar);
       const el = document.createElement('button');
       el.type = 'button';
       el.className = 'recorrido-etiqueta';
       const texto = document.createElement('span');   // se recorta con "…" si es muy largo
+      texto.className = 'recorrido-etiqueta-nombre';
       texto.textContent = lugar;
       el.appendChild(texto);
-      el.title = `Entrar caminando a ${lugar}`;
-      el.addEventListener('click', () => { irAInicio(lugar); cambiarModo('caminar'); });
+      if (palabras.length) {
+        const w = document.createElement('span');
+        w.className = 'texto-lengua recorrido-etiqueta-lengua';
+        if (palabras[0].lengua === 'Tikuna') w.lang = 'tca';
+        w.textContent = palabras[0].texto;
+        el.appendChild(w);
+        el.title = `${lugar}: ${palabras[0].texto} (${palabras[0].significado}, ${palabras[0].lengua}). Toca para ver la traducción`;
+        el.addEventListener('click', () => abrirTarjeta(lugar));
+      } else {
+        el.title = `Entrar caminando a ${lugar}`;
+        el.addEventListener('click', () => {
+          if (estado.modo !== 'aereo') return;
+          irAInicio(lugar);
+          cambiarModo('caminar');
+        });
+      }
       capaEtiquetas.appendChild(el);
-      etiquetas.push({ el, pos: o.getWorldPosition(new THREE.Vector3()) });
+      etiquetas.push({ el, pos: o.getWorldPosition(new THREE.Vector3()), conLengua: palabras.length > 0 });
     });
 
     const botonModo = raiz.querySelector('.recorrido-modo');
@@ -489,6 +571,8 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
       if (nuevo === 'caminar') camera.near = 0.05;
       camera.updateProjectionMatrix();
       marcador.visible = nuevo === 'aereo';
+      for (const e of etiquetas) e.ancho = 0;   // cambia lo que muestran: medir de nuevo
+      tarjeta.hidden = true;
       // Mostrar unos segundos la ayuda del modo al que se cambió
       raiz.querySelectorAll('.recorrido-ayuda').forEach((a) => a.classList.remove('oculta'));
       clearTimeout(estado.ocultarAyuda);
@@ -576,17 +660,23 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
       marcador.position.set(pies.x, pies.y + 2.2 + Math.sin(performance.now() / 300) * 0.3, pies.z);
       renderer.render(scene, camera);
 
-      // Etiquetas sin amontonarse: primero las más cercanas a la cámara; una etiqueta que se
-      // encimaría con otra ya puesta, o que está muy lejos, se oculta hasta que haya espacio.
+      ponerEtiquetas(o.dist * 2.2, false);
+    }
+
+    // Etiquetas sin amontonarse: primero las más cercanas a la cámara; una etiqueta que se
+    // encimaría con otra ya puesta, o que está muy lejos, se oculta hasta que haya espacio.
+    // soloLengua: caminando solo se muestran las que tienen palabras en lengua.
+    function ponerEtiquetas(lejos, soloLengua) {
       const W = window.innerWidth, H = window.innerHeight;
-      const lejos = o.dist * 2.2;
       for (const e of etiquetas) e.d = e.pos.distanceTo(camera.position);
       etiquetas.sort((a, b) => a.d - b.d);
       const puestas = [];
       for (const e of etiquetas) {
         proy.copy(e.pos).project(camera);
-        let visible = proy.z < 1 && Math.abs(proy.x) < 1.1 && Math.abs(proy.y) < 1.1 && e.d < lejos;
-        const px = (proy.x + 1) / 2 * W, py = (1 - proy.y) / 2 * H;
+        let visible = proy.z < 1 && Math.abs(proy.x) < 1.1 && Math.abs(proy.y) < 1.1 && e.d < lejos
+          && (!soloLengua || e.conLengua);
+        // Caminando, el cartel de un edificio cercano no sube más allá de la barra de arriba
+        const px = (proy.x + 1) / 2 * W, py = Math.max((1 - proy.y) / 2 * H, soloLengua ? 110 : 0);
         if (visible) {
           if (!e.ancho) {                       // tamaño medido una sola vez
             e.el.style.display = '';
@@ -650,6 +740,7 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
       scene.fog.near = 25;
       scene.fog.far = 90;
       renderer.render(scene, camera);
+      ponerEtiquetas(35, true);
     }
 
     cargando.remove();

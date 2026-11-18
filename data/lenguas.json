@@ -1,0 +1,921 @@
+{
+  "fuentes": {
+    "ilv2016": "Diccionario ticuna–castellano. Serie Lingüística Peruana 57. Instituto Lingüístico de Verano, Lima, 2016. Ortografía ticuna del Perú.",
+    "ecoruta": "Ecoruta Conectada, fichas culturales verificadas con hablantes (uso educativo con atribución)."
+  },
+  "bienvenida": [
+    {
+      "lengua": "Tikuna",
+      "texto": "ü",
+      "significado": "Hola",
+      "fuente": "ecoruta",
+      "ficha": "FIC-01",
+      "atribucion": "Sergió Ramos del Águila"
+    },
+    {
+      "lengua": "Tikuna",
+      "texto": "Nümae",
+      "significado": "Buenos días",
+      "fuente": "ecoruta",
+      "ficha": "FIC-02",
+      "atribucion": "Sergió Ramos del Águila"
+    },
+    {
+      "lengua": "Bora",
+      "texto": "tehdújuco u tsaánee",
+      "significado": "Bienvenido",
+      "fuente": "ecoruta",
+      "ficha": "FIC-18",
+      "atribucion": "Hablante nativo"
+    },
+    {
+      "lengua": "Huitoto / Murui",
+      "texto": "Ñue omoɨbiga",
+      "significado": "Bienvenido",
+      "fuente": "ecoruta",
+      "ficha": "FIC-33",
+      "atribucion": "Albaro Echeverri"
+    },
+    {
+      "lengua": "Miraña",
+      "texto": "imi'i me tsá",
+      "significado": "Bienvenido",
+      "fuente": "ecoruta",
+      "ficha": "FIC-50",
+      "atribucion": "Luz Leidy Miraña Miraña"
+    }
+  ],
+  "lugares": {
+    "Biblioteca": [
+      {
+        "lengua": "Tikuna",
+        "texto": "libru, orepane, popera",
+        "significado": "libro",
+        "fuente": "ilv2016",
+        "pagina": 297
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nüxü̃ nadaumatü",
+        "significado": "leer",
+        "fuente": "ilv2016",
+        "pagina": 297
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "popera",
+        "significado": "papel",
+        "fuente": "ilv2016",
+        "pagina": 309
+      }
+    ],
+    "Auditorio": [
+      {
+        "lengua": "Tikuna",
+        "texto": "ngutaque̱xe",
+        "significado": "reunión",
+        "fuente": "ilv2016",
+        "pagina": 320
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "inaxĩnü",
+        "significado": "escuchar",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nidexa",
+        "significado": "hablar",
+        "fuente": "ilv2016",
+        "pagina": 290
+      }
+    ],
+    "Sala de sistemas 1": [
+      {
+        "lengua": "Tikuna",
+        "texto": "iscuera, ngúepataü̃, ngúexü̃güchica",
+        "significado": "escuela",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "Sala de sistemas 2": [
+      {
+        "lengua": "Tikuna",
+        "texto": "iscuera, ngúepataü̃, ngúexü̃güchica",
+        "significado": "escuela",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "Aula tic 2": [
+      {
+        "lengua": "Tikuna",
+        "texto": "iscuera, ngúepataü̃, ngúexü̃güchica",
+        "significado": "escuela",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "Sala de posgrado": [
+      {
+        "lengua": "Tikuna",
+        "texto": "iscuera, ngúepataü̃, ngúexü̃güchica",
+        "significado": "escuela",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "Salones 3A,B y C": [
+      {
+        "lengua": "Tikuna",
+        "texto": "iscuera, ngúepataü̃, ngúexü̃güchica",
+        "significado": "escuela",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "Salones 4A, B y C": [
+      {
+        "lengua": "Tikuna",
+        "texto": "iscuera, ngúepataü̃, ngúexü̃güchica",
+        "significado": "escuela",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "Salones 5A, B y C": [
+      {
+        "lengua": "Tikuna",
+        "texto": "iscuera, ngúepataü̃, ngúexü̃güchica",
+        "significado": "escuela",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "Bloque 13": [
+      {
+        "lengua": "Tikuna",
+        "texto": "iscuera, ngúepataü̃, ngúexü̃güchica",
+        "significado": "escuela",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "Sala de profesores": [
+      {
+        "lengua": "Tikuna",
+        "texto": "nanangúexẽẽ, nanangu̱xẽẽ",
+        "significado": "enseñar",
+        "fuente": "ilv2016",
+        "pagina": 280
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "napuracü",
+        "significado": "trabajar",
+        "fuente": "ilv2016",
+        "pagina": 330
+      }
+    ],
+    "Arawana": [
+      {
+        "lengua": "Tikuna",
+        "texto": "orawana",
+        "significado": "arahuana (especie de pez)",
+        "fuente": "ilv2016",
+        "pagina": 251
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "APAPORIS": [
+      {
+        "lengua": "Tikuna",
+        "texto": "Tatü",
+        "significado": "Río",
+        "fuente": "ecoruta",
+        "ficha": "FIC-05",
+        "atribucion": "Sergió Ramos del Águila"
+      },
+      {
+        "lengua": "Bora",
+        "texto": "tééhí",
+        "significado": "Río",
+        "fuente": "ecoruta",
+        "ficha": "FIC-21",
+        "atribucion": "Hablante nativo"
+      },
+      {
+        "lengua": "Miraña",
+        "texto": "mooa",
+        "significado": "Río",
+        "fuente": "ecoruta",
+        "ficha": "FIC-54",
+        "atribucion": "Luz Leidy Miraña Miraña"
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "natü",
+        "significado": "río",
+        "fuente": "ilv2016",
+        "pagina": 320
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nangu̱x",
+        "significado": "estudiar",
+        "fuente": "ilv2016",
+        "pagina": 283
+      }
+    ],
+    "IMANI": [
+      {
+        "lengua": "Huitoto / Murui",
+        "texto": "imani",
+        "significado": "Rio grande",
+        "fuente": "ecoruta",
+        "ficha": "FIC-37",
+        "atribucion": "Albaro Echeverri"
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "taxtü",
+        "significado": "río grande",
+        "fuente": "ilv2016",
+        "pagina": 320
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "cua̱x",
+        "significado": "conocimiento",
+        "fuente": "ilv2016",
+        "pagina": 266
+      }
+    ],
+    "Dirección": [
+      {
+        "lengua": "Tikuna",
+        "texto": "puracü",
+        "significado": "trabajo",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "napuracü",
+        "significado": "trabajar",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanawü̃́",
+        "significado": "escribir",
+        "fuente": "ilv2016",
+        "pagina": 282
+      }
+    ],
+    "UGÍ - Unidad de Gestión e Integral": [
+      {
+        "lengua": "Tikuna",
+        "texto": "puracü",
+        "significado": "trabajo",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "napuracü",
+        "significado": "trabajar",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanawü̃́",
+        "significado": "escribir",
+        "fuente": "ilv2016",
+        "pagina": 282
+      }
+    ],
+    "Oficina 3": [
+      {
+        "lengua": "Tikuna",
+        "texto": "puracü",
+        "significado": "trabajo",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "napuracü",
+        "significado": "trabajar",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanawü̃́",
+        "significado": "escribir",
+        "fuente": "ilv2016",
+        "pagina": 282
+      }
+    ],
+    "Adquisición de Bienes y Servicios": [
+      {
+        "lengua": "Tikuna",
+        "texto": "puracü",
+        "significado": "trabajo",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "napuracü",
+        "significado": "trabajar",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanawü̃́",
+        "significado": "escribir",
+        "fuente": "ilv2016",
+        "pagina": 282
+      }
+    ],
+    "Gestión de Bienes": [
+      {
+        "lengua": "Tikuna",
+        "texto": "puracü",
+        "significado": "trabajo",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "napuracü",
+        "significado": "trabajar",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanawü̃́",
+        "significado": "escribir",
+        "fuente": "ilv2016",
+        "pagina": 282
+      }
+    ],
+    "Oficina de Asesoría y Orientación Tecnológica": [
+      {
+        "lengua": "Tikuna",
+        "texto": "puracü",
+        "significado": "trabajo",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "napuracü",
+        "significado": "trabajar",
+        "fuente": "ilv2016",
+        "pagina": 330
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanawü̃́",
+        "significado": "escribir",
+        "fuente": "ilv2016",
+        "pagina": 282
+      }
+    ],
+    "Admisión y Matrícula": [
+      {
+        "lengua": "Tikuna",
+        "texto": "ngúexü̃",
+        "significado": "estudiante",
+        "fuente": "ilv2016",
+        "pagina": 283
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanawü̃́",
+        "significado": "escribir",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "popera",
+        "significado": "papel",
+        "fuente": "ilv2016",
+        "pagina": 309
+      }
+    ],
+    "Secretaría de Sede": [
+      {
+        "lengua": "Tikuna",
+        "texto": "poperachixü̃",
+        "significado": "archivador (para papeles)",
+        "fuente": "ilv2016",
+        "pagina": 251
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "popera",
+        "significado": "papel",
+        "fuente": "ilv2016",
+        "pagina": 309
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanawü̃́",
+        "significado": "escribir",
+        "fuente": "ilv2016",
+        "pagina": 282
+      }
+    ],
+    "Sala 2 Videoconferencia": [
+      {
+        "lengua": "Tikuna",
+        "texto": "nidexa",
+        "significado": "conversar",
+        "fuente": "ilv2016",
+        "pagina": 267
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nüxü̃ nadau",
+        "significado": "ver",
+        "fuente": "ilv2016",
+        "pagina": 333
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "inaxĩnü",
+        "significado": "escuchar",
+        "fuente": "ilv2016",
+        "pagina": 282
+      }
+    ],
+    "Laboratorio - Innovación y Sostenibilidad": [
+      {
+        "lengua": "Tikuna",
+        "texto": "cua̱x",
+        "significado": "conocimiento",
+        "fuente": "ilv2016",
+        "pagina": 266
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nagu narüxĩnü",
+        "significado": "pensar",
+        "fuente": "ilv2016",
+        "pagina": 311
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "napuracü",
+        "significado": "trabajar",
+        "fuente": "ilv2016",
+        "pagina": 330
+      }
+    ],
+    "Laboratorio - Ecología y Conservación de Flora y Fauna Silvestre": [
+      {
+        "lengua": "Tikuna",
+        "texto": "Nainekü",
+        "significado": "Selva",
+        "fuente": "ecoruta",
+        "ficha": "FIC-06",
+        "atribucion": "Sergió Ramos del Águila"
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "naeü̃",
+        "significado": "animal",
+        "fuente": "ilv2016",
+        "pagina": 249
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanetü",
+        "significado": "planta",
+        "fuente": "ilv2016",
+        "pagina": 313
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "weri",
+        "significado": "ave",
+        "fuente": "ilv2016",
+        "pagina": 253
+      }
+    ],
+    "Laboratorio - Manejo y gestión de humedales": [
+      {
+        "lengua": "Tikuna",
+        "texto": "naxtaxa",
+        "significado": "lago",
+        "fuente": "ilv2016",
+        "pagina": 296
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "dexá",
+        "significado": "agua",
+        "fuente": "ilv2016",
+        "pagina": 246
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nanetü",
+        "significado": "planta",
+        "fuente": "ilv2016",
+        "pagina": 313
+      }
+    ],
+    "MediaLab - Laboratorio de Medios Audiovisuales": [
+      {
+        "lengua": "Tikuna",
+        "texto": "nüxü̃ nadau",
+        "significado": "ver",
+        "fuente": "ilv2016",
+        "pagina": 333
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "inaxĩnü",
+        "significado": "escuchar",
+        "fuente": "ilv2016",
+        "pagina": 282
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "paxeta",
+        "significado": "música",
+        "fuente": "ilv2016",
+        "pagina": 304
+      }
+    ],
+    "Maloca": [
+      {
+        "lengua": "Tikuna",
+        "texto": "ĩ́pata̰ boṵ̈́ne",
+        "significado": "Maloca",
+        "fuente": "ecoruta",
+        "ficha": "FIC-09",
+        "atribucion": "Sergió Ramos del Águila"
+      },
+      {
+        "lengua": "Bora",
+        "texto": "Bááeja",
+        "significado": "Maloca",
+        "fuente": "ecoruta",
+        "ficha": "FIC-26",
+        "atribucion": "Hablante nativo"
+      },
+      {
+        "lengua": "Huitoto / Murui",
+        "texto": "ananeko, aigoko",
+        "significado": "Maloca",
+        "fuente": "ecoruta",
+        "ficha": "FIC-41",
+        "atribucion": "Albaro Echeverri"
+      },
+      {
+        "lengua": "Miraña",
+        "texto": "baejá",
+        "significado": "Maloca",
+        "fuente": "ecoruta",
+        "ficha": "FIC-58",
+        "atribucion": "Luz Leidy Miraña Miraña"
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "ĩ, ĩpata, nachiü̃",
+        "significado": "casa",
+        "fuente": "ilv2016",
+        "pagina": 260
+      }
+    ],
+    "Casa hija": [
+      {
+        "lengua": "Tikuna",
+        "texto": "ĩ, ĩpata, nachiü̃",
+        "significado": "casa",
+        "fuente": "ilv2016",
+        "pagina": 260
+      }
+    ],
+    "Cocina": [
+      {
+        "lengua": "Tikuna",
+        "texto": "nanamuxra, naxüwemü",
+        "significado": "cocinar",
+        "fuente": "ilv2016",
+        "pagina": 264
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "chibü",
+        "significado": "comida",
+        "fuente": "ilv2016",
+        "pagina": 265
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "dexá",
+        "significado": "agua",
+        "fuente": "ilv2016",
+        "pagina": 246
+      }
+    ],
+    "Cafetería": [
+      {
+        "lengua": "Tikuna",
+        "texto": "chibü",
+        "significado": "comida",
+        "fuente": "ilv2016",
+        "pagina": 265
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nachibü",
+        "significado": "comer",
+        "fuente": "ilv2016",
+        "pagina": 265
+      }
+    ],
+    "Baños para hombres": [
+      {
+        "lengua": "Tikuna",
+        "texto": "aiyachica",
+        "significado": "ducha",
+        "fuente": "ilv2016",
+        "pagina": 277
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "naxaiya",
+        "significado": "bañarse",
+        "fuente": "ilv2016",
+        "pagina": 254
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "dexá",
+        "significado": "agua",
+        "fuente": "ilv2016",
+        "pagina": 246
+      }
+    ],
+    "Baño para mujeres": [
+      {
+        "lengua": "Tikuna",
+        "texto": "aiyachica",
+        "significado": "ducha",
+        "fuente": "ilv2016",
+        "pagina": 277
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "naxaiya",
+        "significado": "bañarse",
+        "fuente": "ilv2016",
+        "pagina": 254
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "dexá",
+        "significado": "agua",
+        "fuente": "ilv2016",
+        "pagina": 246
+      }
+    ],
+    "Baños 2": [
+      {
+        "lengua": "Tikuna",
+        "texto": "aiyachica",
+        "significado": "ducha",
+        "fuente": "ilv2016",
+        "pagina": 277
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "naxaiya",
+        "significado": "bañarse",
+        "fuente": "ilv2016",
+        "pagina": 254
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "dexá",
+        "significado": "agua",
+        "fuente": "ilv2016",
+        "pagina": 246
+      }
+    ],
+    "Bloque para tienda": [
+      {
+        "lengua": "Tikuna",
+        "texto": "taxechica",
+        "significado": "tienda",
+        "fuente": "ilv2016",
+        "pagina": 329
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "naxca̱x nataxe",
+        "significado": "comprar",
+        "fuente": "ilv2016",
+        "pagina": 265
+      }
+    ],
+    "Piscina": [
+      {
+        "lengua": "Tikuna",
+        "texto": "niwẽẽ",
+        "significado": "nadar",
+        "fuente": "ilv2016",
+        "pagina": 304
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "dexá",
+        "significado": "agua",
+        "fuente": "ilv2016",
+        "pagina": 246
+      }
+    ],
+    "Alojamientos": [
+      {
+        "lengua": "Tikuna",
+        "texto": "ngugüpata",
+        "significado": "casa de huéspedes",
+        "fuente": "ilv2016",
+        "pagina": 260
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "pechica, ucapu",
+        "significado": "dormitorio",
+        "fuente": "ilv2016",
+        "pagina": 277
+      }
+    ],
+    "Cancha": [
+      {
+        "lengua": "Tikuna",
+        "texto": "peruta",
+        "significado": "pelota",
+        "fuente": "ilv2016",
+        "pagina": 311
+      },
+      {
+        "lengua": "Tikuna",
+        "texto": "nacuxgütae",
+        "significado": "jugar fútbol",
+        "fuente": "ilv2016",
+        "pagina": 295
+      }
+    ],
+    "Parqueadero": [
+      {
+        "lengua": "Tikuna",
+        "texto": "autu, caru",
+        "significado": "carro",
+        "fuente": "ilv2016",
+        "pagina": 260
+      }
+    ]
+  }
+}

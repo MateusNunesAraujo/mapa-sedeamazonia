@@ -14,6 +14,7 @@ HTML/CSS/JS sin framework ni empaquetador, Leaflet 1.9.4 (`L.CRS.Simple`), Geoma
 - `templates/index.html`: página única. Se copia tal cual a la APK, así que no puede usar sintaxis Jinja.
 - `static/`: JS, CSS, modelos `.glb` y copias manuales de las librerías (la app no usa las de `node_modules`). Las fotos están en `fotos-edificios/` (campo `foto` de `edifcios.json`) y `fotos-arboles/` (campo `foto_defecto` de `plantas.json`); los JSON guardan solo el nombre del archivo.
 - `docs/planos/`: planos y fichas de la universidad (fuente de medidas de los modelos 3D; no van a la APK). El `Anexo 1 - Arquitectura (1).pdf` (67 MB) está en `.gitignore`.
+- `docs/lenguas/`: diccionario ticuna–castellano (ILV 2016) y `Ecoruta_datos.xlsx` (fichas culturales verificadas). `scripts/gen_lenguas.py` arma con ellos `data/lenguas.json` (palabras por lugar, que se muestran en la ficha del edificio y en el saludo del mapa). Solo se copian palabras verificadas contra la página del PDF o fichas en estado VERIFICADA; no se componen frases. La fuente `static/fonts/NotoSans-lenguas.woff2` dibuja sus diacríticos.
 - `scripts/modelos/`: generadores Python (solo biblioteca estándar) de los `.glb`.
 - `www/` y `android/`: generadas y fuera de Git. Nunca editar `www/` a mano.
 

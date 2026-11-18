@@ -84,6 +84,8 @@ const detailDescription = document.getElementById("detailDescription");
 const detailSchedule = document.getElementById("detailSchedule");
 const detailRules = document.getElementById("detailRules");
 const detailNews = document.getElementById("detailNews");
+const sectionLenguas = document.getElementById("sectionLenguas");
+const detailLenguas = document.getElementById("detailLenguas");
 const sectionStory = document.getElementById("sectionStory");
 const detailStory = document.getElementById("detailStory");
 const storyLinkWrapper = document.getElementById("storyLinkWrapper");
@@ -196,6 +198,7 @@ function mostrarDetalle(lugar) {
     }
   }
   detailNews.textContent = lugar.novedades || "Sin novedades recientes.";
+  mostrarLenguas(lugar.nombre);
 
   // Renderizado del apartado de Historias y Relatos
   if (sectionStory) {
@@ -437,6 +440,91 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// ---------- Lenguas amazónicas (data/lenguas.json) ----------
+// Palabras copiadas de las fuentes (diccionario ticuna del ILV y fichas verificadas de
+// Ecoruta). Se arman con textContent para no interpretar el texto como HTML.
+let lenguas = null;
+
+function fuenteLengua(e) {
+  if (e.fuente === "ilv2016") {
+    return `${e.lengua} · Diccionario ticuna–castellano (ILV, 2016), p. ${e.pagina}`;
+  }
+  const quien = e.atribucion ? ` · ${e.atribucion}` : "";
+  return `${e.lengua} · Ecoruta Conectada, ficha ${e.ficha}${quien}`;
+}
+
+function mostrarLenguas(nombre) {
+  if (!sectionLenguas || !detailLenguas) return;
+  const entradas = (lenguas && lenguas.lugares[nombre]) || [];
+  detailLenguas.replaceChildren();
+  entradas.forEach((e) => {
+    const li = document.createElement("li");
+    const texto = document.createElement("span");
+    texto.className = "texto-lengua";
+    if (e.lengua === "Tikuna") texto.lang = "tca";     // código ISO 639-3 del tikuna
+    texto.textContent = e.texto;
+    const significado = document.createElement("span");
+    significado.className = "lengua-significado";
+    significado.textContent = e.significado;
+    const fuente = document.createElement("small");
+    fuente.className = "lengua-fuente";
+    fuente.textContent = fuenteLengua(e);
+    li.append(texto, significado, fuente);
+    detailLenguas.appendChild(li);
+  });
+  sectionLenguas.hidden = entradas.length === 0;
+}
+
+// Etiqueta al pasar el cursor por un edificio: nombre y su primera palabra en lengua
+function etiquetaLugar(lugar) {
+  const caja = document.createElement("div");
+  caja.textContent = lugar.nombre;
+  const e = lenguas && (lenguas.lugares[lugar.nombre] || [])[0];
+  if (e) {
+    const t = document.createElement("span");
+    t.className = "texto-lengua";
+    t.textContent = `${e.texto} — ${e.significado} (${e.lengua})`;
+    caja.appendChild(t);
+  }
+  return caja;
+}
+
+// Saludo en el mapa: recorre las fichas de bienvenida, una lengua cada 4 s
+function iniciarBienvenida(saludos) {
+  const caja = document.getElementById("bienvenidaLenguas");
+  const texto = document.getElementById("bienvenidaTexto");
+  const detalle = document.getElementById("bienvenidaDetalle");
+  const cerrar = document.getElementById("bienvenidaCerrar");
+  if (!caja || !saludos.length) return;
+  try {
+    if (localStorage.getItem("bienvenidaLenguasCerrada") === "1") return;
+  } catch (e) { /* sin almacenamiento: se muestra igual */ }
+  let i = 0;
+  const pintar = () => {
+    const s = saludos[i % saludos.length];
+    texto.textContent = s.texto;
+    detalle.textContent = `${s.significado} · ${s.lengua}`;
+    caja.title = fuenteLengua(s);
+    i++;
+  };
+  pintar();
+  caja.hidden = false;
+  const reloj = setInterval(pintar, 4000);
+  cerrar.addEventListener("click", () => {
+    clearInterval(reloj);
+    caja.hidden = true;
+    try { localStorage.setItem("bienvenidaLenguasCerrada", "1"); } catch (e) { /* nada */ }
+  });
+}
+
+fetch("/data/lenguas.json")
+  .then((res) => res.json())
+  .then((datos) => {
+    lenguas = datos;
+    iniciarBienvenida(datos.bienvenida || []);
+  })
+  .catch((err) => console.warn("No se pudieron cargar las lenguas:", err));
+
 // Lleva el mapa a un lugar por su nombre y abre su tarjeta (lo usa el visor 3D)
 window.irALugar = function (nombre) {
   const lugar = lugares.find((l) => l.nombre.toLowerCase() === nombre.toLowerCase());
@@ -460,6 +548,7 @@ fetch("/data/edifcios.json")
       );
       // Lo guardamos usando el nombre como llave
       poligonos[lugar.nombre.toLowerCase()] = polygon;
+      polygon.bindTooltip(() => etiquetaLugar(lugar), { sticky: true });
 
       polygon.on("click", () => {
         mostrarDetalle(lugar);

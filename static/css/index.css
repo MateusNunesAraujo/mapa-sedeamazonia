@@ -3239,7 +3239,7 @@
 .recorrido.modo-aereo .recorrido-joystick { display: none; }
 .recorrido.modo-aereo .solo-aereo { display: block; }
 .recorrido-etiquetas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-.recorrido:not(.modo-aereo) .recorrido-etiquetas { display: none; }
+.recorrido:not(.modo-aereo) .recorrido-etiqueta-nombre { display: none; }
 .recorrido-etiqueta {
   position: absolute;
   left: 0;
@@ -3262,6 +3262,79 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* Primera palabra en lengua del lugar, debajo del nombre (data/lenguas.json) */
+.recorrido-etiqueta .recorrido-etiqueta-lengua {
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b4a12;
+  line-height: 1.45;
+}
+/* Caminando, la etiqueta es solo la palabra: un cartel más grande sobre el edificio */
+.recorrido:not(.modo-aereo) .recorrido-etiqueta {
+  padding: 5px 12px;
+  border-radius: 16px;
+  background: rgba(255, 252, 240, 0.95);
+}
+.recorrido:not(.modo-aereo) .recorrido-etiqueta .recorrido-etiqueta-lengua {
+  font-size: 16px;
+  max-width: 220px;
+}
+.recorrido:not(.modo-aereo) .recorrido-etiqueta::after {
+  border-top-color: rgba(255, 252, 240, 0.95);
+}
+
+/* Tarjeta con la traducción al tocar una etiqueta */
+.recorrido-lengua-tarjeta {
+  position: absolute;
+  left: 50%;
+  top: 64px;
+  transform: translateX(-50%);
+  z-index: 6;
+  width: min(360px, calc(100vw - 32px));
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 12px 16px 14px;
+  background: var(--blanco);
+  border-radius: 14px;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
+}
+.recorrido-lengua-tarjeta[hidden],
+.recorrido-lengua-entrar[hidden] {
+  display: none;
+}
+.recorrido-lengua-cabeza {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.recorrido-lengua-cabeza strong {
+  font-size: 15px;
+  color: var(--gris-oscuro);
+}
+.recorrido-lengua-cerrar {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 50%;
+  background: var(--gris-claro);
+  color: var(--gris-medio);
+  cursor: pointer;
+}
+.recorrido-lengua-entrar {
+  margin-top: 12px;
+  width: 100%;
+  padding: 9px;
+  border: none;
+  border-radius: 10px;
+  background: var(--verde-institucional);
+  color: var(--blanco);
+  font-weight: 600;
+  cursor: pointer;
+}
 .recorrido-etiqueta::after {   /* piquito que apunta al edificio */
   content: "";
   position: absolute;
@@ -3272,3 +3345,122 @@
   border-bottom: 0;
   border-top-color: rgba(255, 255, 255, 0.95);
 }
+
+  /* ---------- Lenguas amazónicas (data/lenguas.json) ----------
+     Noto Sans recortada (static/fonts, licencia OFL): trae los diacríticos combinantes del
+     tikuna (ü̃, a̱, a̰) y las vocales ɨ, ʉ del murui y el miraña, que las fuentes del
+     sistema no siempre dibujan bien. */
+  @font-face {
+      font-family: "Noto Sans Lenguas";
+      src: url("/static/fonts/NotoSans-lenguas.woff2") format("woff2");
+      font-weight: 400 700;
+      font-display: swap;
+  }
+
+  /* display:flex de .info-section anula el atributo hidden */
+  .info-section[hidden] {
+      display: none;
+  }
+
+  .texto-lengua {
+      font-family: "Noto Sans Lenguas", "Noto Sans", "Segoe UI", Roboto, sans-serif;
+  }
+
+  .lenguas-lista {
+      list-style: none;
+      margin: 4px 0 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+  }
+
+  .lenguas-lista li {
+      border-left: 3px solid var(--verde-hoja);
+      padding: 2px 0 2px 10px;
+  }
+
+  .lenguas-lista .texto-lengua {
+      display: block;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--verde-institucional);
+      line-height: 1.5;
+  }
+
+  .lenguas-lista .lengua-significado {
+      display: block;
+      font-size: 13px;
+      color: var(--gris-oscuro);
+  }
+
+  .lenguas-lista .lengua-significado::first-letter {
+      text-transform: uppercase;
+  }
+
+  .lenguas-lista .lengua-fuente,
+  .lenguas-nota {
+      display: block;
+      font-size: 11.5px;
+      color: var(--gris-medio);
+      line-height: 1.35;
+  }
+
+  .lenguas-nota {
+      margin-top: 10px;
+  }
+
+  /* Saludo en el mapa: una lengua a la vez, se cierra con la X */
+  .bienvenida-lenguas {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      max-width: calc(100vw - 32px);
+      box-sizing: border-box;
+      padding: 8px 8px 8px 16px;
+      background: var(--blanco);
+      border-radius: 999px;
+      box-shadow: var(--sombra-moderna);
+  }
+
+  .bienvenida-lenguas[hidden] {
+      display: none;
+  }
+
+  .bienvenida-lenguas .texto-lengua {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--verde-institucional);
+      white-space: nowrap;
+  }
+
+  .bienvenida-lenguas .bienvenida-detalle {
+      font-size: 12px;
+      color: var(--gris-medio);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  }
+
+  .bienvenida-lenguas button {
+      flex: none;
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 50%;
+      background: var(--gris-claro);
+      color: var(--gris-medio);
+      font-size: 14px;
+      cursor: pointer;
+  }
+
+  .leaflet-tooltip .texto-lengua {
+      display: block;
+      color: var(--verde-institucional);
+      font-weight: 600;
+  }

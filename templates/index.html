@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=23" />
+  <link rel="stylesheet" href="/static/css/index.css?v=25" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -22,6 +22,13 @@
 
   <!-- Mapa Principal -->
   <div id="map"></div>
+
+  <!-- Saludo en lenguas amazónicas (fichas verificadas de data/lenguas.json) -->
+  <div class="bienvenida-lenguas" id="bienvenidaLenguas" role="status" hidden>
+    <span class="texto-lengua" id="bienvenidaTexto"></span>
+    <span class="bienvenida-detalle" id="bienvenidaDetalle"></span>
+    <button type="button" id="bienvenidaCerrar" aria-label="Cerrar saludo">✕</button>
+  </div>
 
   <!-- Modal para escanear QR -->
   <div id="qrScannerModal" class="modal" style="display: none">
@@ -499,6 +506,16 @@
           </div>
         </div>
 
+        <!-- Palabras en lenguas amazónicas (data/lenguas.json); se oculta si el lugar no tiene -->
+        <div class="info-section" id="sectionLenguas" hidden>
+          <div class="info-section-icon">🗣️</div>
+          <div class="info-section-text">
+            <strong>En lenguas amazónicas</strong>
+            <ul id="detailLenguas" class="lenguas-lista"></ul>
+            <small class="lenguas-nota">Palabras copiadas de las fuentes, sin traducir ni inventar. Las del tikuna del diccionario siguen la ortografía del Perú.</small>
+          </div>
+        </div>
+
         <!-- Sección de Historias y Relatos (Estructuras) -->
         <!-- <div class="info-section story-section" id="sectionStory">
           <div class="story-card">
@@ -613,11 +630,11 @@
   <!-- Álbum de Árboles Recolectados -->
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
-  <script src="/static/js/index.js?v=17"></script>
+  <script src="/static/js/index.js?v=18"></script>
   <!-- PRUEBA glosario AR (paso 1) -->
   <script src="/static/js/ar-prueba.js?v=6"></script>
   <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
-  <script src="/static/js/recorrido.js?v=13" type="module"></script>
+  <script src="/static/js/recorrido.js?v=14" type="module"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">
