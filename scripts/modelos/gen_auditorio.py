@@ -19,7 +19,8 @@ acomoda a esas medidas.
 import math
 import sys
 
-from comun import GIROS, PISO, Bloque, Escena, G, Y0, YT, distribucion
+from comun import (ALERO_ATRAS, ALERO_FRENTE, ALERO_LADO, GIROS, LAT0, PISO, PLAZOLETA_LNG, Bloque, Escena,
+                   G, Y0, YT, a_metros, distribucion)
 from gen_biblioteca import techo_vista
 from gen_complementarios import rect
 from muebles import cilindro, rejilla, silla
@@ -305,9 +306,10 @@ def banca(esc, x0, x1, z0, z1, y=Y0):
             esc.caja("pc", a0, a1, y + 0.38, y + 0.42, z0, z1)
 
 
-def ancho_plazoleta(b, cx):
-    """Distancia entre el alero este del Auditorio y el techo de Admisión (frente al norte)."""
-    return rect("Admisión y Matrícula")[0] - (cx - b.RX0)
+def ancho_plazoleta(b, cx, lng=PLAZOLETA_LNG[1]):
+    """Distancia (frente al norte) entre el alero este del Auditorio y la longitud `lng` del
+    mapa: por defecto, donde empieza el alero normal de Admisión."""
+    return a_metros(LAT0, lng)[0] - (cx - b.RX0)
 
 
 def plazoleta(esc, b, cx, cz, frente, ancho):
@@ -315,10 +317,23 @@ def plazoleta(esc, b, cx, cz, frente, ancho):
     sigue el techo a dos aguas de la hilera con tablas de madera a la vista y vigas, sobre
     columnas redondas de madera; piso de baldosa con franjas de gravilla; bancas, mesas y
     sillas de aluminio cerca de Admisión y un televisor en su muro verde. No está en el mapa
-    como lugar propio, así que no tiene etiqueta ni punto de partida."""
+    como lugar propio, así que no tiene etiqueta ni punto de partida.
+    Techos según el plano del Anexo 1 (pág. 2): el del Auditorio (bloque 11) cubre la plazoleta
+    hasta PLAZOLETA_LNG[0]; de ahí en adelante la cubre el de Admisión (bloque 13), más angosto,
+    que vuela sobre cuatro columnas (planta de la pág. 80) y se dibuja en gen_complementarios."""
     p = Bloque(ancho + 0.3, b.RZ1 - b.RZ0, alero_izq=0.0, alero_der=0.0)
     xc = b.RX0 - ancho / 2 + 0.15                          # se mete 0.3 m bajo el alero del Auditorio
     g = GIROS[frente]
+    ancho_aud = ancho_plazoleta(b, cx, PLAZOLETA_LNG[0])     # tramo bajo el techo del Auditorio
+    x_corte = p.RX1 - 0.3 - ancho_aud                      # (X local de p; -X es el este)
+
+    # Techo del Auditorio prolongado sobre la plazoleta, con la estructura a la vista
+    q = Bloque(ancho_aud + 0.3, b.RZ1 - b.RZ0, alero_izq=0.0, alero_der=0.0)
+    xq = b.RX0 - ancho_aud / 2 + 0.15
+    esc.colocar(cx + xq * math.cos(g), cz - xq * math.sin(g), frente)
+    q.cubierta(esc, hastiales=False)
+    techo_vista(esc, q)
+
     esc.colocar(cx + xc * math.cos(g), cz - xc * math.sin(g), frente)
     caja = esc.caja
 
@@ -337,23 +352,33 @@ def plazoleta(esc, b, cx, cz, frente, ancho):
                     z = z_ini + j * M + 0.08 + c * (T + J)
                     esc.poligono("baldosa_rosa", [[x, yb, z], [x, yb, z + T], [x + T, yb, z + T], [x + T, yb, z]])
 
-    # Techo, estructura a la vista y columnas redondas sobre las dos líneas de vigas
-    p.cubierta(esc, hastiales=False)
-    techo_vista(esc, p)
+    # Columnas redondas sobre las dos líneas de vigas del tramo del Auditorio
     for z in (p.Z0 + 0.15, p.Z1 - 0.15):
-        for x in rejilla(p.RX0, p.RX1 - 0.3, 3.6):
+        for x in rejilla(x_corte + 0.3, p.RX1 - 0.3, 3.6):
             cilindro(esc, "madera", x, z, 0.17, PISO, YT - 0.05, n=12)
             caja("pc", x - 0.12, x + 0.12, YT - 0.32, YT - 0.25, z - 0.2, z + 0.2)   # herraje
-    for x in rejilla(p.RX0, p.RX1, 6.0):                                          # reflectores
+    for x in rejilla(x_corte + 0.5, p.RX1, 6.0):                                  # reflectores
         for z in (p.ZC - 2.5, p.ZC + 2.5):
             y = p.alto_cielo(z) - 0.15
             caja("metal", x - 0.15, x + 0.15, y - 0.08, y, z - 0.05, z + 0.05)
             caja("lampara", x - 0.13, x + 0.13, y - 0.09, y - 0.08, z - 0.04, z + 0.04)
 
-    # Bancas junto a los bordes norte y sur
-    for x in rejilla(p.RX0 + 3.0, p.RX1 - 3.0, 3.2):
+    # Columnas del vuelo del techo de Admisión: en la línea de sus muros, dos por lado
+    # (planta del bloque 13). Con el frente al norte, Z local = z del Auditorio - z del mundo
+    # (se usa su z real para que valga también en el modelo suelto, armado en el origen).
+    ra = rect("Admisión y Matrícula")
+    cz_aud = distribucion()["Auditorio"][2]
+    x_muro = p.RX0 - ALERO_LADO                            # muro oeste de Admisión
+    for zm in (ra[2] + ALERO_FRENTE, ra[3] - ALERO_ATRAS):
+        z = cz_aud - zm
+        z += -0.15 if z > p.ZC else 0.15
+        for x in (x_corte - 0.5, (x_corte + x_muro) / 2):
+            cilindro(esc, "madera", x, z, 0.17, PISO, YT - 0.05, n=12)
+
+    # Bancas junto a los bordes norte y sur, bajo el techo del Auditorio
+    for x in rejilla(x_corte + 2.0, p.RX1 - 3.0, 3.2):
         banca(esc, x - 0.7, x + 0.7, p.Z1 - 0.9, p.Z1 - 0.55, y=PISO)
-    for x in rejilla(p.RX0 + 6.0, p.RX1 - 2.0, 3.6):
+    for x in rejilla(x_corte + 2.0, p.RX1 - 2.0, 3.6):
         banca(esc, x - 0.7, x + 0.7, p.Z0 + 0.55, p.Z0 + 0.9, y=PISO)
 
     # Mesas de aluminio con sillas cerca de Admisión (este, -X)

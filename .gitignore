@@ -29,3 +29,6 @@ www/
 # Capacitor
 android/
 ios/
+
+# Planos pesados (más de 50 MB): se guardan fuera de Git
+docs/planos/Anexo 1 - Arquitectura (1).pdf

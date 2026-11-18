@@ -18,10 +18,13 @@ RAIZ = Path(__file__).resolve().parents[2]
 # ---------------- Mapa -> metros ----------------
 # La imagen del mapa (2017 x 2799 px) está estirada a un cuadro de 1000 x 1000 unidades,
 # por eso una unidad no mide lo mismo en vertical (lat) que en horizontal (lng).
-# Escala sacada de la cancha de baloncesto del plano (28 x 15 m): ~5,68 px por metro.
-PX_POR_M = 5.68
-M_POR_LAT = 2799 / 1000 / PX_POR_M   # ~0,49 m por unidad vertical
-M_POR_LNG = 2017 / 1000 / PX_POR_M   # ~0,36 m por unidad horizontal
+# Escala calibrada con el plano vectorial de edificios existentes (docs/planos/
+# "Anexo 1 - Arquitectura (1).pdf", pág. 2): ahí las cubiertas de 100 m² de las fichas miden
+# exactamente 10 x 10 m (9,08 pt por metro). Ajustando 18 bloques del plano a sus polígonos
+# del mapa, el error queda por debajo de 0,5 m y no hay giro. La escala anterior (5,68 px/m,
+# sacada de la cancha) agrandaba todo el mundo un 7-8 %.
+M_POR_LAT = 0.4558   # m por unidad vertical
+M_POR_LNG = 0.3325   # m por unidad horizontal
 # Origen del mundo: centro del Auditorio en el mapa (para que los números queden pequeños)
 LAT0, LNG0 = 147.8, 668.2
 
@@ -31,8 +34,73 @@ def a_metros(lat, lng):
     return (lng - LNG0) * M_POR_LNG, -(lat - LAT0) * M_POR_LAT
 
 
+# Cubiertas medidas en el plano vectorial (mismo PDF), pasadas a coordenadas del mapa:
+# (lat_min, lat_max, lng_min, lng_max). Mandan sobre el polígono del mapa, que se dibujó a
+# mano y suele quedar ~1 m más grande. El comentario dice el número de bloque del Plan
+# Maestro 2021 (fichas del Anexo 4) y la medida real del techo.
+# En las filas de varios lugares bajo un techo (bloques 12, 13 y 14) el plano da el borde
+# exterior y el ancho; los cortes entre lugares siguen el polígono del mapa.
+# Sin medida aquí (siguen el polígono): Biblioteca (ya coincide con el plano a 0,3 m), Sala de
+# sistemas 2, Auditorio y Dirección (techos compartidos, ver distribucion()), 36 (Laboratorio de
+# Ecología, coincide a 0,5 m) y los 40A-C, que el plano dibuja fuera de su sitio real (dentro
+# del círculo punteado).
+HUELLAS_PLANO = {
+    # 12: un solo techo de 9,86 x 38,28 m sobre Dirección y UGÍ, con un paso cubierto entre
+    # los dos (gen_complementarios.ugi()); el ancho sigue la hilera de la Dirección.
+    "UGÍ - Unidad de Gestión e Integral": (104.6, 127.1, 716.0, 759.6),
+    # 13: 9,71 x 25,47 m (de 712,9 a 789,6; el tramo oeste cubre parte de la plazoleta del
+    # Auditorio, ver PLAZOLETA_LNG) más el Archivo, un cuerpo angosto al este
+    # (gen_complementarios.fila_admision()).
+    "Admisión y Matrícula": (137.1, 158.3, 712.9, 775.2),
+    "Secretaría de Sede": (137.1, 158.3, 775.2, 789.6),
+    # 14: 9,56 x 45,15 m, cuatro aguas en los dos extremos
+    "Oficina 3": (105.0, 125.8, 766.3, 811.3),
+    "Sala 2 Videoconferencia": (105.0, 125.8, 811.3, 834.7),
+    "Laboratorio - Innovación y Sostenibilidad": (105.0, 125.8, 834.7, 866.3),
+    "Adquisición de Bienes y Servicios": (105.0, 125.8, 866.3, 887.4),
+    "Baños 2": (105.0, 125.8, 887.4, 902.1),
+    # 15: 9,73 x 13,69 m, cuatro aguas, con cobertizos de zinc a los dos lados
+    "Gestión de Bienes": (136.9, 158.2, 860.4, 901.7),
+    # 34: 7,43 x 29,39 m, dos pisos, cubierta a una sola agua sin aleros
+    "Cafetería": (391.5, 407.7, 617.4, 705.8),
+    "Oficina de Asesoría y Orientación Tecnológica": (168.3, 190.2, 712.6, 742.7),  # 21: 10,00 x 10,00 m
+    "Sala de sistemas 1": (202.4, 224.3, 712.6, 742.8),                             # 23: 10,00 x 10,00 m
+    "Sala de posgrado": (219.4, 241.4, 743.2, 773.3),                               # 24: 10,00 x 10,00 m
+    "IMANI": (236.6, 258.5, 712.7, 742.8),                                          # 25: 10,00 x 10,00 m
+    "APAPORIS": (253.5, 275.5, 743.3, 773.4),                                       # 26: 10,00 x 10,00 m
+    "Arawana": (236.7, 258.6, 594.2, 624.3),                                        # 28: 10,01 x 10,00 m
+    "Maloca": (232.5, 263.9, 647.8, 692.7),                                         # 27: 14,34 x 14,91 m
+    "Bloque 13": (176.4, 198.2, 758.4, 788.2),                                      # 22: 9,91 x 9,88 m
+    "Sala de profesores": (168.7, 224.1, 594.5, 623.8),                             # 20: 25,27 x 9,69 m
+    "Bloque para tienda": (270.2, 283.8, 660.5, 679.2),                             # M1: 6,20 x 6,20 m
+    "Baño para mujeres": (270.3, 283.9, 637.0, 655.7),                              # M2: 6,20 x 6,20 m
+    "Baños para hombres": (270.1, 284.4, 602.4, 621.1),                             # M3: 6,51 x 6,19 m
+    "Aula tic 2": (293.3, 321.8, 642.3, 686.4),                                     # 30: 12,99 x 14,65 m
+    "Salones 3A,B y C": (289.0, 328.5, 587.4, 621.8),                               # 31: 18,00 x 11,44 m
+    "Salones 4A, B y C": (335.4, 374.6, 601.3, 618.5),                              # 32: 17,86 x 5,70 m
+    "Salones 5A, B y C": (324.3, 370.4, 557.7, 583.3),                              # 33: 21,05 x 8,50 m
+    "MediaLab - Laboratorio de Medios Audiovisuales": (355.8, 371.1, 714.1, 748.5), # 35: 7,00 x 11,42 m
+    "Laboratorio - Manejo y gestión de humedales": (285.0, 311.3, 712.4, 758.6),    # 37: 12,01 x 15,35 m
+    "Cocina": (350.6, 360.0, 671.2, 684.1),                                         # M5: 4,29 x 4,29 m (torre del tanque)
+}
+
+# Plazoleta entre el Auditorio y Admisión (lng). El plano la cubre con dos techos: el del
+# Auditorio (bloque 11, 12,62 x 29,54 m) llega hasta 713,0, y desde ahí sigue el de Admisión
+# (bloque 13, más angosto). 743,1 es donde empieza el alero normal de Admisión (su muro oeste
+# queda ALERO_LADO más adentro); entre 712,9 y 743,1 el techo de Admisión vuela sobre columnas.
+PLAZOLETA_LNG = (713.0, 743.1)
+
+# Marquesina (sin polígono en el mapa): techo en anillo alrededor de la plaza del tanque M5.
+# Borde exterior 25,62 m y borde interior 16,41 m, medidos en el mismo plano.
+MARQUESINA_EXT = (327.6, 383.8, 628.6, 705.7)
+MARQUESINA_INT = (337.7, 373.7, 642.5, 691.9)
+
+
 def huella(nombre):
-    """Rectángulo (lat_min, lat_max, lng_min, lng_max) del polígono de un lugar."""
+    """Rectángulo (lat_min, lat_max, lng_min, lng_max) del techo de un lugar: la medida del
+    plano si está en HUELLAS_PLANO y, si no, la caja del polígono del mapa."""
+    if nombre in HUELLAS_PLANO:
+        return HUELLAS_PLANO[nombre]
     with open(RAIZ / "data" / "edifcios.json", encoding="utf-8") as f:
         lugar = next(l for l in json.load(f) if l["nombre"] == nombre)
     lats = [p[0] for p in lugar["puntos"]]

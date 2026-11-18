@@ -21,8 +21,8 @@ import math
 import sys
 from pathlib import Path
 
-from comun import (CUMBRERA, G, PISO, RAIZ, Y0, YT, Bloque, Escena, a_metros, faldones, huella,
-                   nombre_centro, nombre_inicio, techo_caseta)
+from comun import (ALERO_LADO, CUMBRERA, G, M_POR_LNG, PLAZOLETA_LNG, MARQUESINA_EXT, MARQUESINA_INT, PISO, RAIZ, Y0, YT, Bloque, Escena,
+                   a_metros, distribucion, faldones, huella, nombre_centro, nombre_inicio, techo_caseta)
 
 # ---------------- Vanos (letras de los patrones de fachada) ----------------
 #   P puerta de madera   D puerta doble     V ventana con vidrio   L persiana de madera
@@ -174,12 +174,16 @@ def edificio(esc, b, pared, frente, atras="", izq="", der="", techo="dos_aguas",
 
 
 # ---------------- Ubicación según el mapa ----------------
-def rect(nombre):
-    """Rectángulo (x0, x1, z0, z1) en metros que encierra el polígono de un lugar."""
-    lat0, lat1, lng0, lng1 = huella(nombre)
+def rect_mapa(lat0, lat1, lng0, lng1):
+    """Rectángulo del mapa (lat_min, lat_max, lng_min, lng_max) -> (x0, x1, z0, z1) en metros."""
     x0, z1 = a_metros(lat0, lng0)
     x1, z0 = a_metros(lat1, lng1)
     return x0, x1, z0, z1
+
+
+def rect(nombre):
+    """Rectángulo (x0, x1, z0, z1) en metros del techo de un lugar (ver huella())."""
+    return rect_mapa(*huella(nombre))
 
 
 def bloque_en(x0, x1, z0, z1, frente, **kw):
@@ -256,32 +260,82 @@ def suelo(esc, mat, pts, y):
 
 # ---------------- Estructuras ----------------
 def fila_admision(esc):
-    """Admisión y Secretaría, seguidas al este del Auditorio (hilera norte), frente al norte.
-    Foto sarita.png: muros verdes, teja asfáltica gris y alero sobre postes de madera."""
+    """Bloque 13 del Plan Maestro: Admisión y Secretaría, seguidas al este del Auditorio
+    (hilera norte), frente al norte. Foto sarita.png: muros verdes, teja asfáltica gris y alero
+    sobre postes de madera. Al este va el CUERPO B, el Archivo (ficha 13 y planta de la pág. 80
+    del Anexo 1): más angosto, con teja sándwich sobre estructura metálica y una salida de
+    emergencia en la punta. Ventanas del Archivo: pendientes de verificar."""
+    # El techo sigue hacia el oeste sobre la plazoleta hasta donde acaba el del Auditorio
+    # (PLAZOLETA_LNG); las columnas de ese tramo van en gen_auditorio.plazoleta().
+    vuelo = ALERO_LADO + (PLAZOLETA_LNG[1] - huella("Admisión y Matrícula")[2]) * M_POR_LNG
     fila(esc, ["Admisión y Matrícula", "Secretaría de Sede"], "norte", ["VPV", "VPVV"],
-         pared="verde_claro", mat_techo="teja_gris", atras="LL-LL-LL-LL", izq="L", der="L",
-         columnas="madera_osc")
+         bk=dict(alero_izq=0.3, alero_der=vuelo), pared="verde_claro", mat_techo="teja_gris",
+         atras="LL-LL-LL-LL", izq="L", der="L", columnas="madera_osc")
+    # Archivo: 5,65 x 8,81 m en el plano; arranca contra el muro este de la Secretaría
+    b, cx, cz = bloque_en(*rect_mapa(141.4, 153.8, 788.7, 816.1), "norte",
+                          alero_izq=0.3, alero_der=0.0, alero_frente=0.3, alero_atras=0.3)
+    esc.colocar(cx, cz, "norte")
+    edificio(esc, b, "verde_claro", "L-L", atras="L-L", izq="P", der="-", techo="plano", alto=3.2,
+             grosor_techo=0.15, mat_techo="metal")
 
 
 def gestion_bienes(esc):
     """Al final de la hilera norte. Foto bloque_7.png: muros mostaza, ventanas con reja de
     madera y lámina verde. El polígono tiene en L: un anexo bajo al sureste."""
-    # Rectángulo principal y anexo, sacados de los puntos del polígono de "Gestión de Bienes"
-    b, cx, cz = bloque_en(67.05, 82.2, -5.9, 5.65, "norte")
+    # Bloque 15 del plano: 9,73 x 13,69 m a cuatro aguas. La ficha dice teja de asbesto
+    # cemento, pero la foto (más reciente) muestra lámina verde: se deja la de la foto.
+    b, cx, cz = bloque_en(*rect("Gestión de Bienes"), "norte", cuatro_aguas_izq=True,
+                          cuatro_aguas_der=True, **aleros(0.9))
     esc.colocar(cx, cz, "norte")
     y = edificio(esc, b, "amarillo_muro", "VPV-", atras="V-V", izq="L", der="-", mat_techo="lamina_verde")
     puntos(esc, "Gestión de Bienes", 0.0, b.RZ1 + 3.0, y + 1.5, etiqueta=(0.0, 0.0))
+    y_borde = CUMBRERA - b.pend * (b.RZ1 - b.ZC)                # alto del borde del alero
     esc.colocar(0.0, 0.0, "sur")
-    esc.caja("concreto", 82.2, 85.2, 0.0, PISO, 2.0, 5.6)
-    esc.caja("amarillo_muro", 82.4, 85.0, PISO, 3.0, 2.2, 5.4)
-    esc.caja("metal", 82.2, 85.2, 3.0, 3.08, 2.0, 5.6)
+    # Cobertizos de zinc sobre estructura de madera a los dos lados largos (ficha 15: "las áreas
+    # exteriores se han ido poblando con cubiertas de zinc"); medidas del plano.
+    for la0, la1, lado in ((158.2, 169.1, "norte"), (125.9, 136.9, "sur")):
+        x0, x1, z0, z1 = rect_mapa(la0, la1, 864.0, 898.2)
+        y_hi, y_lo = y_borde - 0.12, Y0 + 2.3
+        z_hi, z_lo = (z1, z0) if lado == "norte" else (z0, z1)    # alto contra el edificio
+        cara = [[x0, y_lo, z_lo], [x1, y_lo, z_lo], [x1, y_hi, z_hi], [x0, y_hi, z_hi]]
+        esc.poligono("metal", cara)
+        esc.poligono("metal", cara[::-1])
+        esc.caja("concreto", x0, x1, 0.0, PISO, z0, z1)
+        zp = z_lo + (0.15 if z_lo < z_hi else -0.15)            # postes en el borde bajo
+        n = max(1, round((x1 - x0) / 3.0))
+        for i in range(n + 1):
+            x = x0 + 0.15 + (x1 - x0 - 0.3) * i / n
+            esc.caja("madera", x - 0.08, x + 0.08, PISO, y_lo, zp - 0.08, zp + 0.08)
+        esc.caja("madera_osc", x0, x1, y_lo - 0.15, y_lo, zp - 0.07, zp + 0.07)
+    # Anexo bajo del polígono del mapa (no sale en el plano; se deja por la foto), al este del techo
+    x0, x1, z0, z1 = rect_mapa(136.5, 143.75, 901.7, 908.25)
+    esc.caja("concreto", x0, x1, 0.0, PISO, z0, z1)
+    esc.caja("amarillo_muro", x0 + 0.2, x1 - 0.2, PISO, 3.0, z0 + 0.2, z1 - 0.2)
+    esc.caja("metal", x0, x1, 3.0, 3.08, z0, z1)
 
 
 def ugi(esc):
     """Primera de la hilera sur al este de la Dirección. Foto oficinas.png: muro salmón,
-    persianas de madera y teja asfáltica oscura."""
-    fila(esc, ["UGÍ - Unidad de Gestión e Integral"], "norte", ["LLPLL"], pared="salmon",
-         atras="LLLL", izq="L", der="L")
+    persianas de madera y teja asfáltica oscura.
+    Bloque 12 del Plan Maestro: la Dirección y la UGÍ son dos cuerpos bajo un solo techo
+    (ficha 12), con un paso cubierto sobre columnas entre los dos (planta de la pág. 80 del
+    Anexo 1); el techo termina a cuatro aguas en la punta este."""
+    fila(esc, ["UGÍ - Unidad de Gestión e Integral"], "norte", ["LLPLL"],
+         bk=dict(alero_der=0.0, cuatro_aguas_izq=True), pared="salmon", atras="LLLL", izq="L", der="L")
+    # Paso cubierto: del alero este de la Dirección al muro oeste de la UGÍ, con el mismo fondo
+    # (y por tanto la misma pendiente y cumbrera) que la hilera de la Dirección.
+    bd, cxd, czd, _ = distribucion()["Dirección"]
+    x_dir = cxd + (bd.RX1 - bd.RX0) / 2                       # borde este del techo de la Dirección
+    x_ugi = rect("UGÍ - Unidad de Gestión e Integral")[0]
+    b = Bloque(x_ugi - x_dir, bd.RZ1 - bd.RZ0, alero_izq=0.0, alero_der=0.0)
+    esc.colocar((x_dir + x_ugi) / 2, czd, "norte")
+    b.anden(esc, terreno=False)
+    b.cubierta(esc, hastiales=False)
+    for z in (b.Z0 + 0.15, b.Z1 - 0.15):                      # cuatro columnas en la línea de los muros
+        for x in (b.X0 + (b.X1 - b.X0) * 0.25, b.X0 + (b.X1 - b.X0) * 0.75):
+            esc.caja("concreto", x - 0.15, x + 0.15, PISO, YT, z - 0.15, z + 0.15)
+    esc.caja("madera_osc", b.X0, b.X1, YT - 0.25, YT, b.Z0 + 0.05, b.Z0 + 0.25)
+    esc.caja("madera_osc", b.X0, b.X1, YT - 0.25, YT, b.Z1 - 0.25, b.Z1 - 0.05)
 
 
 def fila_oficinas(esc):
@@ -289,8 +343,8 @@ def fila_oficinas(esc):
     sala2_videoconferencia.jpeg: muros rojos, puertas y persianas de madera, lámina verde."""
     fila(esc, ["Oficina 3", "Sala 2 Videoconferencia", "Laboratorio - Innovación y Sostenibilidad",
                "Adquisición de Bienes y Servicios", "Baños 2"], "norte",
-         ["LPLL", "LP", "LPL", "PL", "AP"], pared="rojo_muro", mat_techo="lamina_verde",
-         atras="L-" * 9, izq="L", der="A")
+         ["LPLL", "LP", "LPL", "PL", "AP"], bk=dict(cuatro_aguas_izq=True, cuatro_aguas_der=True),
+         pared="rojo_muro", mat_techo="lamina_verde", atras="L-" * 9, izq="L", der="A")
 
 
 def bloque13(esc):
@@ -335,8 +389,32 @@ def salones4(esc):
 
 
 def cafeteria(esc):
-    """Sin foto (pendiente): bloque largo de muros claros con teja oscura, como sus vecinos."""
-    fila(esc, ["Cafetería"], "sur", ["VVGGDGGVV"], pared="pared", atras="L-L-P-L-L", izq="VP", der="V")
+    """Bloque 34 del Plan Maestro (ficha y plano del Anexo 1): dos pisos, la mayor parte a doble
+    altura, muros de fibrocemento pintado, carpintería de madera y cubierta de teja sándwich a
+    una sola agua sobre estructura metálica, sin aleros. Sin foto: el color, los vanos y hacia
+    qué lado baja el agua están por verificar. La ficha lo describe con vestíbulo, salón
+    (gimnasio) y oficinas; el uso de "Cafetería" viene del mapa de la app.
+    Faltan el volumen de la escalera y el de los baños (losa plana), que la ficha menciona."""
+    alto = 6.4                                                # dos pisos
+    b = fila(esc, ["Cafetería"], "sur", ["VVGGDGGVV"], bk=aleros(0.0), pared="pared", techo="plano",
+             alto=alto, grosor_techo=0.12, mat_techo="metal", atras="L-L-P-L-L", izq="VP", der="V")
+    y = Y0 + alto + 0.12
+    caida = 0.08 * (b.RZ1 - b.RZ0)                            # agua del 8 % hacia el frente
+    techo = [[b.RX0, y, b.RZ1], [b.RX1, y, b.RZ1], [b.RX1, y + caida, b.RZ0], [b.RX0, y + caida, b.RZ0]]
+    esc.poligono("metal", techo)
+    esc.poligono("metal", techo[::-1])
+    for x in (b.RX0, b.RX1):                                  # remate triangular de los muros
+        tri = [[x, y, b.RZ1], [x, y, b.RZ0], [x, y + caida, b.RZ0]]
+        esc.poligono("pared", tri)
+        esc.poligono("pared", tri[::-1])
+    for z in (b.RZ1, b.RZ0):                                  # línea del entrepiso
+        esc.caja("pared_int", b.RX0, b.RX1, Y0 + 3.2, Y0 + 3.35, z - 0.02, z + 0.02)
+    n = max(1, round((b.RX1 - b.RX0) / 3.0))                  # ventanas del segundo piso
+    for i in range(n):
+        xm = b.RX0 + (b.RX1 - b.RX0) * (i + 0.5) / n
+        for z in (b.RZ1 + 0.02, b.RZ0 - 0.02):
+            esc.caja("madera", xm - 0.8, xm + 0.8, Y0 + 4.05, Y0 + 5.45, z - 0.03, z + 0.03)
+            esc.caja("vidrio", xm - 0.72, xm + 0.72, Y0 + 4.13, Y0 + 5.37, z - 0.04, z + 0.04)
 
 
 def medialab(esc):
@@ -379,22 +457,23 @@ def edificio_apartado1(esc):
 def alojamientos(esc):
     """Foto piscina.png: alas bajas de madera con paneles mostaza alrededor de la piscina,
     techo de lámina sobre vigas. Las alas siguen los tramos del polígono de "Alojamientos"
-    (en metros), con las puertas hacia el patio."""
-    alas = (  # x0, x1, z0, z1, frente (hacia la piscina)
-        (-192.3, -182.7, -138.2, -102.4, "este"),
-        (-182.7, -155.4, -138.2, -130.3, "sur"),
-        (-164.3, -155.4, -130.3, -119.5, "oeste"),
-        (-182.7, -172.2, -111.0, -102.4, "norte"),
+    (en coordenadas del mapa), con las puertas hacia el patio."""
+    alas = (  # lat_min, lat_max, lng_min, lng_max, frente (hacia la piscina)
+        (355.6, 428.25, 126.67, 153.71, "este"),
+        (412.22, 428.25, 153.71, 230.58, "sur"),
+        (390.3, 412.22, 205.52, 230.58, "oeste"),
+        (355.6, 373.05, 153.71, 183.27, "norte"),
     )
-    for x0, x1, z0, z1, frente in alas:
-        b, cx, cz = bloque_en(x0, x1, z0, z1, frente, alero_frente=1.2, alero_atras=0.6,
+    for la0, la1, lg0, lg1, frente in alas:
+        b, cx, cz = bloque_en(*rect_mapa(la0, la1, lg0, lg1), frente, alero_frente=1.2, alero_atras=0.6,
                               alero_izq=0.4, alero_der=0.4)
         esc.colocar(cx, cz, frente)
         n = max(1, round((b.X1 - b.X0) / 3.2))
         edificio(esc, b, "madera_osc", "PM" * n, atras="A-" * n, techo="plano", alto=2.8,
                  grosor_techo=0.1, mat_techo="metal", vigas=True, piso="piso_claro")
     esc.colocar(0.0, 0.0, "sur")
-    puntos(esc, "Alojamientos", -169.0, -115.0, 4.5, giro=math.pi / 2, etiqueta=(-186.0, -120.0))
+    puntos(esc, "Alojamientos", *a_metros(381.17, 192.29), 4.5, giro=math.pi / 2,
+           etiqueta=a_metros(391.32, 144.41))
 
 
 def piscina(esc):
@@ -489,6 +568,47 @@ def casa_hija(esc):
     puntos(esc, "Casa hija", 0.0, h + 4.0, cima + 1.5, etiqueta=(0.0, 0.0))
 
 
+def marquesina(esc):
+    """Marquesina alrededor de la plaza del tanque (bloque M5, la "Cocina" de la app).
+    Plano del Anexo 1 (pág. 2): techo en anillo a cuatro aguas por fuera y por dentro, borde
+    exterior de 25,62 m y patio abierto de 16,41 m, con la torre M5 dentro del patio. La foto
+    cocina.png deja ver un tramo: lámina metálica sobre vigas y postes de madera.
+    No tiene polígono ni ficha propia en el mapa, por eso no lleva etiqueta ni partida.
+    Pendiente de verificar en el campus: alturas, separación de los postes y el piso de la plaza."""
+    esc.colocar(0.0, 0.0, "sur")
+    ex = rect_mapa(*MARQUESINA_EXT)
+    ix = rect_mapa(*MARQUESINA_INT)
+    y_alero, pend = Y0 + 2.6, 0.25
+    m = ((ix[0] - ex[0]) + (ex[1] - ix[1]) + (ix[2] - ex[2]) + (ex[3] - ix[3])) / 8   # media anchura del anillo
+    cum = (ex[0] + m, ex[1] - m, ex[2] + m, ex[3] - m)        # cumbrera en la mitad del anillo
+    y_cum = y_alero + pend * m
+    esc.caja("concreto", ex[0], ex[1], 0.0, PISO, ex[2], ex[3])      # plaza
+    faldones(esc, "metal", "metal", ex, y_alero, cum, y_cum, T=0.06)  # agua hacia afuera
+    faldones(esc, "metal", "metal", cum, y_cum, ix, y_alero, T=0.06)  # agua hacia el patio
+    # Postes y vigas de madera en dos anillos, 0,5 m adentro de cada alero
+    for d in (0.5, -0.5):
+        r = (ex[0] + d, ex[1] - d, ex[2] + d, ex[3] - d) if d > 0 else (ix[0] + d, ix[1] - d, ix[2] + d, ix[3] - d)
+        y_p = y_alero + pend * 0.5                            # bajo la lámina
+        x0, x1, z0, z1 = r
+        for a0, a1, fijo, eje in ((x0, x1, z0, "x"), (x0, x1, z1, "x"), (z0, z1, x0, "z"), (z0, z1, x1, "z")):
+            n = max(1, round((a1 - a0) / 3.0))
+            for i in range(n + 1):
+                a = a0 + (a1 - a0) * i / n
+                px, pz = (a, fijo) if eje == "x" else (fijo, a)
+                esc.caja("madera", px - 0.1, px + 0.1, PISO, y_p, pz - 0.1, pz + 0.1)
+            if eje == "x":
+                esc.caja("madera_osc", a0 - 0.1, a1 + 0.1, y_p - 0.2, y_p, fijo - 0.08, fijo + 0.08)
+            else:
+                esc.caja("madera_osc", fijo - 0.08, fijo + 0.08, y_p - 0.2, y_p, a0 - 0.1, a1 + 0.1)
+    # Vigas que cruzan el anillo de poste a poste, bajo la lámina
+    for a in [ex[0] + 0.5 + k * 3.0 for k in range(int((ex[1] - ex[0] - 1.0) / 3.0) + 1)]:
+        for z_a, z_b in ((ex[2] + 0.5, ix[2] - 0.5), (ix[3] + 0.5, ex[3] - 0.5)):
+            esc.caja("madera_osc", a - 0.06, a + 0.06, y_alero - 0.05, y_alero + 0.1, z_a, z_b)
+    for a in [ex[2] + 0.5 + k * 3.0 for k in range(int((ex[3] - ex[2] - 1.0) / 3.0) + 1)]:
+        for x_a, x_b in ((ex[0] + 0.5, ix[0] - 0.5), (ix[1] + 0.5, ex[1] - 0.5)):
+            esc.caja("madera_osc", x_a, x_b, y_alero - 0.05, y_alero + 0.1, a - 0.06, a + 0.06)
+
+
 def cancha(esc):
     """Sin foto: cancha de baloncesto como en el plano (placa gris con líneas y dos tableros)."""
     x0, x1, z0, z1 = rect("Cancha")
@@ -526,9 +646,9 @@ def cancha(esc):
 
 def parqueadero(esc):
     """Sin foto: zona en L de asfalto con puestos marcados, como en el plano. Los dos
-    rectángulos salen de los puntos del polígono de "Parqueadero" (en metros)."""
+    rectángulos salen de los puntos del polígono de "Parqueadero" (en coordenadas del mapa)."""
     esc.colocar(0.0, 0.0, "sur")
-    zonas = ((27.2, 54.1, 24.7, 40.5), (13.6, 27.2, 24.2, 28.9))
+    zonas = (rect_mapa(65.61, 97.68, 744.8, 820.55), rect_mapa(89.15, 98.69, 706.5, 744.8))
     for x0, x1, z0, z1 in zonas:
         esc.caja("asfalto", x0, x1, 0.0, 0.05, z0, z1)
     x0, x1, z0, z1 = zonas[0]
@@ -537,7 +657,8 @@ def parqueadero(esc):
         x = x0 + 0.5 + i * 2.5
         esc.caja("linea", x - 0.05, x + 0.05, 0.05, 0.06, z0 + 0.3, z0 + 5.3)
         esc.caja("linea", x - 0.05, x + 0.05, 0.05, 0.06, z1 - 5.3, z1 - 0.3)
-    puntos(esc, "Parqueadero", 40.0, 22.5, 3.0, giro=math.pi, etiqueta=(40.0, 32.5))
+    xp, zp = a_metros(102.14, 780.84)
+    puntos(esc, "Parqueadero", xp, zp, 3.0, giro=math.pi, etiqueta=a_metros(81.85, 780.84))
 
 
 # archivo, lugares que lo usan como modelo3d, función que los dibuja en el mundo
@@ -579,6 +700,7 @@ def colocar_todos(esc):
     """Dibuja todas las estructuras en el mundo del recorrido."""
     for _, _, dibujar in ESTRUCTURAS:
         dibujar(esc)
+    marquesina(esc)
 
 
 if __name__ == "__main__":
