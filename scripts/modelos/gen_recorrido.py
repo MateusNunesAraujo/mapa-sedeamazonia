@@ -12,6 +12,8 @@ y añádelo abajo.
 """
 import sys
 
+import comun
+
 import gen_apaporis
 import gen_arawana
 import gen_aula_tic2
@@ -30,6 +32,10 @@ import gen_sala_sistemas1
 import gen_sala_sistemas2
 import gen_tienda
 from comun import CUMBRERA, HUMEDALES, OFICINA_TEC, Escena, distribucion, nombre_centro, nombre_inicio
+
+# Sin muebles por dentro, para que el recorrido no se ponga lento. Solo el Auditorio y la
+# Biblioteca (con su sala de computadores), hechos con fotos del interior, quedan amoblados.
+comun.SIN_MUEBLES = True
 
 esc = Escena()
 dist = distribucion()
@@ -52,13 +58,15 @@ for nombre, construir in (("Sala de sistemas 2", gen_sala_sistemas2.construir),)
     construir(esc, b, inicio=nombre_inicio(nombre), terreno=False)
     esc.punto(nombre_centro(nombre), 0.0, b.ZC, y=CUMBRERA + 1.5, extras={"nombre": nombre})
 
-# Auditorio con la plazoleta cubierta delante de su entrada (punta este)
+# Auditorio con la plazoleta cubierta delante de su entrada (punta este), amoblado
+comun.SIN_MUEBLES = False
 b = gen_auditorio.colocar(esc, dist, inicio=nombre_inicio("Auditorio"), terreno=False)
 esc.punto(nombre_centro("Auditorio"), 0.0, b.ZC, y=CUMBRERA + 1.5, extras={"nombre": "Auditorio"})
 
 # Edificios que se ubican solos (la biblioteca tiene varias partes)
-gen_direccion.colocar(esc, dist, inicio=nombre_inicio("Dirección"), terreno=False)
 gen_biblioteca.colocar(esc, dist, inicio=nombre_inicio("Biblioteca"), terreno=False)
+comun.SIN_MUEBLES = True
+gen_direccion.colocar(esc, dist, inicio=nombre_inicio("Dirección"), terreno=False)
 gen_sala_profesores.colocar(esc, dist, inicio=nombre_inicio("Sala de profesores"), terreno=False)
 gen_arawana.colocar(esc, dist, inicio=nombre_inicio("Arawana"), terreno=False)
 gen_maloca.colocar(esc, dist, inicio=nombre_inicio("Maloca"), terreno=False)

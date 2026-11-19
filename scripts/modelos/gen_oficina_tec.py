@@ -28,10 +28,10 @@ En el sistema local: +Z = frente (oeste), +X = sur, -X = norte, -Z = este (fondo
 import math
 import sys
 
-from comun import (G, OFICINA_TEC, YT, Y0, Escena, cabios, distribucion, nombre_centro,
+from comun import (G, OFICINA_TEC, mueble, YT, Y0, Escena, cabios, distribucion, nombre_centro,
                    techo_quiebre)
 from muebles import (archivador, cilindro, computador, frente_madera, mesa, panel_luz, planta,
-                     rejilla, silla)
+                     pieza, rejilla, silla, torre)
 
 MURO = "vino"
 YP = Y0 + 0.02
@@ -175,6 +175,7 @@ def lampara_solar(esc, x, z):
 
 
 # ---------------- Muebles de la oficina ----------------
+@mueble
 def portatil(esc, x, z, y, mira=1, abierto=True):
     """Portátil con la pantalla hacia +Z (mira=1) o -Z (mira=-1)."""
     caja = esc.caja
@@ -189,6 +190,7 @@ def portatil(esc, x, z, y, mira=1, abierto=True):
         caja("pantalla_pc", x - 0.15, x + 0.15, y + 0.04, y + 0.24, zs, zs + 0.001, rot_x=ang, pivote=(0, y + 0.02, zb))
 
 
+@mueble
 def pc_abierto(esc, x, z, y):
     """Torre sin la tapa lateral: chasis, tarjeta madre, memorias, disipador y fuente."""
     caja = esc.caja
@@ -205,6 +207,7 @@ def pc_abierto(esc, x, z, y):
     caja("rojo", x + 0.03, x + 0.06, y + 0.12, y + 0.14, z - 0.15, z + 0.1)                # tarjeta de video
 
 
+@mueble
 def banco_reparacion(esc, x0, x1, z0, z1, y):
     """Banco de soporte técnico con tapete antiestático, equipos y herramientas."""
     caja = esc.caja
@@ -236,6 +239,7 @@ def banco_reparacion(esc, x0, x1, z0, z1, y):
              z1 - 0.4, z1 - 0.1)
 
 
+@mueble
 def rack(esc, x0, x1, z0, z1, y, alto=2.0):
     """Gabinete de red con puerta de rejilla, patch panels y luces (frente hacia +X)."""
     caja = esc.caja
@@ -252,6 +256,7 @@ def rack(esc, x0, x1, z0, z1, y, alto=2.0):
     caja("metal", x0 + 0.05, x1 - 0.05, y + alto, y + alto + 0.05, z0 + 0.1, z1 - 0.1)    # bandeja de cables
 
 
+@mueble
 def estanteria_equipos(esc, x0, x1, z0, z1, y, alto=2.0, niveles=5):
     """Estantería de metal con portátiles apilados, cajas de cartón y carretes de cable."""
     caja = esc.caja
@@ -289,6 +294,7 @@ def reloj(esc, x, y, z, r=0.17):
     esc.caja("pc", x, x + 0.08, y - 0.008, y + 0.008, z + 0.03, z + 0.035)                 # horario
 
 
+@mueble
 def dispensador(esc, x, z, y):
     esc.caja("blanco", x - 0.16, x + 0.16, y, y + 1.0, z - 0.16, z + 0.16)
     esc.caja("pc", x + 0.16, x + 0.17, y + 0.6, y + 0.8, z - 0.1, z + 0.1)
@@ -298,6 +304,7 @@ def dispensador(esc, x, z, y):
     cilindro(esc, "libro_azul", x, z, 0.05, y + 1.42, y + 1.47, n=8)
 
 
+@mueble
 def caneca(esc, x, z, y):
     cilindro(esc, "pc", x, z, 0.14, y, y + 0.35, n=10)
 
@@ -374,7 +381,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
     mesa(esc, XI0 + 0.05, XI0 + 0.55, 3.3, 3.8, YP, alto=0.5)
     planta(esc, XI0 + 0.3, 3.55, YP + 0.5)
     for k in range(3):                                                                     # revistas
-        caja(("mural_azul", "rojo", "libro_crema")[k], XI0 + 0.1, XI0 + 0.4, YP + 0.5 + k * 0.01,
+        pieza(esc, ("mural_azul", "rojo", "libro_crema")[k], XI0 + 0.1, XI0 + 0.4, YP + 0.5 + k * 0.01,
              YP + 0.505 + k * 0.01, 3.32 + k * 0.03, 3.5 + k * 0.03)
     dispensador(esc, XI0 + 0.25, 0.75, YP)
 
@@ -385,8 +392,8 @@ def construir(esc, b, inicio="inicio", terreno=True):
     caja("madera", rx1 - 0.15, rx1, YP, YP + 1.05, 0.9, 1.6)
     mesa(esc, rx0, rx1, 0.95, 1.55, YP)
     computador(esc, -1.6, 1.3, YP + 0.74, (0, -1))
-    caja("pc", -0.95, -0.75, YP + 0.74, YP + 0.8, 1.15, 1.35)                              # teléfono
-    caja("pc", -0.95, -0.75, YP + 0.8, YP + 0.84, 1.17, 1.22)
+    pieza(esc, "pc", -0.95, -0.75, YP + 0.74, YP + 0.8, 1.15, 1.35)                              # teléfono
+    pieza(esc, "pc", -0.95, -0.75, YP + 0.8, YP + 0.84, 1.17, 1.22)
     for k in range(4):                                                                     # papeles
         caja("tablero", -2.1, -1.9, YP + 1.1 + k * 0.01, YP + 1.105 + k * 0.01, 1.62, 1.8)
     cilindro(esc, "pc", -0.7, 1.7, 0.04, YP + 1.1, YP + 1.2, n=8)                          # lapicero
@@ -398,7 +405,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
         mesa(esc, XI1 - 0.75, XI1, z0, z0 + 1.3, YP)
         for dz in (0.38, 0.92):
             computador(esc, XI1 - 0.35, z0 + dz, YP + 0.74, (-1, 0))
-        caja("pc", XI1 - 0.6, XI1 - 0.4, YP, YP + 0.42, z0 + 0.1, z0 + 0.5)
+        torre(esc, XI1 - 0.6, XI1 - 0.4, YP, YP + 0.42, z0 + 0.1, z0 + 0.5)
         archivador(esc, XI1 - 0.6, XI1 - 0.1, z0 + 0.85, z0 + 1.25, YP, alto=0.6)
         silla(esc, XI1 - 1.15, z0 + 0.65, YP, (1, 0))
         caneca(esc, XI1 - 0.3, z0 + 1.45, YP)

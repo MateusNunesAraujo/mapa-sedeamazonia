@@ -8,12 +8,29 @@
 Ejes del mundo (como three.js): X = este, Y = arriba, Z = sur.
 Cada edificio se arma en su sistema local con el frente hacia +Z y luego se gira.
 """
+import functools
 import json
 import math
 import struct
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[2]
+
+# ---------------- Muebles ----------------
+# gen_recorrido.py lo activa para aligerar el mundo del recorrido: las piezas marcadas con
+# @mueble (sillas, mesas, computadores, estantes...) no se dibujan. Los .glb sueltos de cada
+# edificio siguen saliendo amoblados.
+SIN_MUEBLES = False
+
+
+def mueble(f):
+    """Marca una pieza de amoblado: no dibuja nada mientras SIN_MUEBLES esté activo."""
+    @functools.wraps(f)
+    def envuelta(*args, **kwargs):
+        if SIN_MUEBLES:
+            return None
+        return f(*args, **kwargs)
+    return envuelta
 
 # ---------------- Mapa -> metros ----------------
 # La imagen del mapa (2017 x 2799 px) está estirada a un cuadro de 1000 x 1000 unidades,

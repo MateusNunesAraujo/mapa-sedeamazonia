@@ -5,7 +5,7 @@
 """
 import math
 
-from comun import Y0, YT
+from comun import Y0, YT, mueble
 
 LIBROS = ("libro_rojo", "libro_azul", "libro_verde", "libro_crema")
 
@@ -45,6 +45,7 @@ def muro_puerta(esc, mat, a0, a1, c0, c1, centro, ancho, eje="x", alto=2.4):
     caja("madera_osc", p0 - 0.08, p1 + 0.08, Y0 + alto, Y0 + alto + 0.08, c0 - 0.03, c1 + 0.03)
 
 
+@mueble
 def mesa(esc, x0, x1, z0, z1, y, mat="mesa", alto=0.74):
     esc.caja(mat, x0, x1, y + alto - 0.04, y + alto, z0, z1)
     for x in (x0 + 0.05, x1 - 0.09):
@@ -52,6 +53,7 @@ def mesa(esc, x0, x1, z0, z1, y, mat="mesa", alto=0.74):
             esc.caja("metal", x, x + 0.04, y, y + alto - 0.04, z, z + 0.04)
 
 
+@mueble
 def silla(esc, x, z, y, mira, mat="silla_negra"):
     """Silla con espaldar del lado contrario a `mira`."""
     dx, dz = mira
@@ -67,6 +69,7 @@ def silla(esc, x, z, y, mira, mat="silla_negra"):
     esc.caja("metal", x - 0.03, x + 0.03, y, y + 0.06, z - 0.24, z + 0.24)
 
 
+@mueble
 def computador(esc, x, z, y, mira):
     """Monitor (con la pantalla hacia `mira`), teclado y mouse sobre una mesa a la altura y."""
     dx, dz = mira
@@ -87,6 +90,7 @@ def computador(esc, x, z, y, mira):
     esc.caja("pc", x - 0.02, x + 0.02, y + 0.02, y + 0.1, z - 0.02, z + 0.02)       # cuello
 
 
+@mueble
 def estante(esc, x0, x1, z0, z1, y, alto=2.0, niveles=5, tramo=0.9):
     """Estantería de madera llena de libros (los libros asoman por todas las caras largas)."""
     esc.caja("madera", x0, x1, y, y + alto, z0, z1)
@@ -106,6 +110,7 @@ def estante(esc, x0, x1, z0, z1, y, alto=2.0, niveles=5, tramo=0.9):
                 esc.caja(mat, x0 - 0.015, x1 + 0.015, yb, yb + h * 0.75, aa, ab)
 
 
+@mueble
 def archivador(esc, x0, x1, z0, z1, y, alto=1.3):
     esc.caja("archivador", x0, x1, y, y + alto, z0, z1)
     for k in range(1, 4):
@@ -113,10 +118,23 @@ def archivador(esc, x0, x1, z0, z1, y, alto=1.3):
         esc.caja("metal", x0 - 0.01, x1 + 0.01, yk - 0.01, yk + 0.01, z0 - 0.01, z1 + 0.01)
 
 
+@mueble
 def planta(esc, x, z, y):
     esc.caja("relieve", x - 0.2, x + 0.2, y, y + 0.4, z - 0.2, z + 0.2)             # matera de barro
     esc.caja("planta", x - 0.35, x + 0.35, y + 0.4, y + 1.1, z - 0.35, z + 0.35)
     esc.caja("planta", x - 0.2, x + 0.2, y + 1.1, y + 1.45, z - 0.2, z + 0.2)
+
+
+@mueble
+def torre(esc, x0, x1, y0, y1, z0, z1):
+    """Torre de computador en el piso, debajo de la mesa."""
+    esc.caja("pc", x0, x1, y0, y1, z0, z1)
+
+
+@mueble
+def pieza(esc, mat, x0, x1, y0, y1, z0, z1):
+    """Caja suelta que va sobre un mueble (teléfono, micrófono, revistas): sale y entra con él."""
+    esc.caja(mat, x0, x1, y0, y1, z0, z1)
 
 
 def panel_luz(esc, x, z, y_techo):

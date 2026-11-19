@@ -14,7 +14,7 @@ En el sistema local: -X = norte, +X = sur, +Z = frente (oeste), -Z = atrás (est
 """
 import sys
 
-from comun import YT, Y0, G, Escena, distribucion, faldones, nombre_centro
+from comun import YT, Y0, G, Escena, distribucion, faldones, mueble, nombre_centro
 from muebles import computador, estante, mesa, planta, rejilla, silla
 
 ZOCALO = "pared_roja"
@@ -110,6 +110,7 @@ def techo(esc, b):
              (cx, cx, cz, cz), y1 - 0.2 + P_ALTA * c)
 
 
+@mueble
 def mesa_dibujo(esc, x, z, y, mira=(-1, 0)):
     """Mesa de dibujo (larga en Z) con el tablero inclinado: más alto del lado hacia donde se mira (-X)."""
     x0, x1, z0, z1 = x - 0.4, x + 0.4, z - 0.6, z + 0.6

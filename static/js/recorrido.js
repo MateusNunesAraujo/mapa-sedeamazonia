@@ -28,7 +28,7 @@ const ALTURAS_CHOQUE = [0.45, 1.0, 1.5];  // alturas (sobre los pies) donde se r
 
 // Mundo con todos los edificios en su sitio (scripts/modelos/gen_recorrido.py)
 // ?v=: súbelo cada vez que regeneres el mundo, para que el navegador no use una copia vieja
-const MUNDO = '/static/modelos/recorrido.glb?v=18';
+const MUNDO = '/static/modelos/recorrido.glb?v=19';
 
 let THREE = null;
 let GLTFLoader = null;
@@ -83,6 +83,52 @@ function crearInterfaz(nombre) {
   raiz.querySelector('.recorrido-titulo').textContent = nombre || 'Recorrido';
   document.body.appendChild(raiz);
   return raiz;
+}
+
+// Choques por zonas. El mundo es un puñado de mallas enormes (una por material) y cada
+// rayo revisaba todos sus triángulos (más de 100 mil), hasta 7 veces por cuadro: por eso
+// el recorrido se ponía lento al caminar. Aquí los triángulos se reparten en celdas de
+// CELDA_CHOQUE metros (copias solo para los rayos, no se dibujan) y cada rayo revisa solo
+// las celdas que hay alrededor de los pies. Devuelve Map "i,j" -> [mallas de esa celda].
+const CELDA_CHOQUE = 8;
+function rejillaChoques(mallas) {
+  const grupos = new Map();   // "i,j" -> Map(material -> coordenadas de sus triángulos)
+  const a = new THREE.Vector3(), b = new THREE.Vector3(), c = new THREE.Vector3();
+  for (const o of mallas) {
+    o.updateWorldMatrix(true, false);
+    const pos = o.geometry.attributes.position, idx = o.geometry.index;
+    const n = idx ? idx.count : pos.count;
+    const vertice = (v, k) => v.fromBufferAttribute(pos, idx ? idx.getX(k) : k).applyMatrix4(o.matrixWorld);
+    for (let k = 0; k < n; k += 3) {
+      vertice(a, k); vertice(b, k + 1); vertice(c, k + 2);
+      const i0 = Math.floor(Math.min(a.x, b.x, c.x) / CELDA_CHOQUE), i1 = Math.floor(Math.max(a.x, b.x, c.x) / CELDA_CHOQUE);
+      const j0 = Math.floor(Math.min(a.z, b.z, c.z) / CELDA_CHOQUE), j1 = Math.floor(Math.max(a.z, b.z, c.z) / CELDA_CHOQUE);
+      for (let i = i0; i <= i1; i++) {
+        for (let j = j0; j <= j1; j++) {
+          const clave = i + ',' + j;
+          let porMaterial = grupos.get(clave);
+          if (!porMaterial) grupos.set(clave, porMaterial = new Map());
+          let lista = porMaterial.get(o.material);
+          if (!lista) porMaterial.set(o.material, lista = []);
+          lista.push(a.x, a.y, a.z, b.x, b.y, b.z, c.x, c.y, c.z);
+        }
+      }
+    }
+  }
+  const celdas = new Map();
+  for (const [clave, porMaterial] of grupos) {
+    const mallasCelda = [];
+    // Se conserva el material: los rayos respetan su lado (cara de adelante o ambas)
+    for (const [material, lista] of porMaterial) {
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(lista, 3));
+      const malla = new THREE.Mesh(geo, material);
+      malla.updateMatrixWorld(true);
+      mallasCelda.push(malla);
+    }
+    celdas.set(clave, mallasCelda);
+  }
+  return celdas;
 }
 
 // Árboles sencillos para que se sienta el campus. Van en el pasto, lejos de edificios,
@@ -444,6 +490,23 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
     const partidas = [];
     gltf.scene.traverse((o) => { if (o.name.startsWith('inicio')) partidas.push(o.getWorldPosition(new THREE.Vector3())); });
     crearEntorno(scene, gltf.scene, caja, obstaculos, partidas);
+    // El modelo va a la rejilla de choques; los troncos (instancias) se revisan siempre
+    const celdasChoque = rejillaChoques(obstaculos.filter((o) => !o.isInstancedMesh));
+    const siempre = obstaculos.filter((o) => o.isInstancedMesh);
+    const cerca = [];
+    // Lo que hay a menos de r metros de (x, z): se llama una vez por cuadro, antes de moverse
+    function buscarCerca(x, z, r) {
+      cerca.length = 0;
+      const i0 = Math.floor((x - r) / CELDA_CHOQUE), i1 = Math.floor((x + r) / CELDA_CHOQUE);
+      const j0 = Math.floor((z - r) / CELDA_CHOQUE), j1 = Math.floor((z + r) / CELDA_CHOQUE);
+      for (let i = i0; i <= i1; i++) {
+        for (let j = j0; j <= j1; j++) {
+          const celda = celdasChoque.get(i + ',' + j);
+          if (celda) cerca.push(...celda);
+        }
+      }
+      cerca.push(...siempre);
+    }
 
     // Punto de partida: frente al edificio pedido ("inicio_<nombre>", misma regla que
     // scripts/modelos/comun.py) o el "inicio" por defecto
@@ -603,7 +666,7 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
         origen.set(pies.x, pies.y + h, pies.z);
         rayo.set(origen, dir);
         rayo.far = distancia + RADIO;
-        if (rayo.intersectObjects(obstaculos, false).length) return true;
+        if (rayo.intersectObjects(cerca, false).length) return true;
       }
       return false;
     }
@@ -613,7 +676,7 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
       origen.set(pies.x, pies.y + ESCALON_MAX + 0.05, pies.z);
       rayo.set(origen, abajo);
       rayo.far = 50;
-      const hit = rayo.intersectObjects(obstaculos, false)[0];
+      const hit = rayo.intersectObjects(cerca, false)[0];
       return hit ? hit.point.y : -0.06;
     }
 
@@ -719,6 +782,8 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
         camera.updateProjectionMatrix();
       }
 
+      // Paso máximo por cuadro: 8 m/s x 0,05 s = 0,4 m, más el RADIO; 1,5 m sobra
+      buscarCerca(pies.x, pies.z, 1.5);
       if (fuerza > 0.05) {
         const sin = Math.sin(estado.yaw), cos = Math.cos(estado.yaw);
         const velocidad = corriendo ? VELOCIDAD_CORRER : VELOCIDAD;

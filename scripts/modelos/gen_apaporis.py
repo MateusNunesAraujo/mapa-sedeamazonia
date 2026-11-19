@@ -18,7 +18,7 @@ import sys
 
 from comun import G, M_POR_LAT, YT, Y0, Escena, distribucion, huella, nombre_centro, techo_quiebre
 from gen_imani import ANDEN
-from muebles import archivador, mesa, muro_ventanas, planta, silla
+from muebles import archivador, mesa, muro_ventanas, pieza, planta, silla
 
 MURO = "verde_teal"
 YP = Y0 + 0.02
@@ -128,7 +128,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
     silla(esc, xm, z1m + 0.4, YP, (0, -1), mat="silla")
     for k in range(3):                                                                    # micrófonos
         z = z0m + 0.8 + k * (z1m - z0m - 1.6) / 2
-        caja("pc", xm - 0.05, xm + 0.05, YP + 0.74, YP + 0.78, z - 0.08, z + 0.08)
+        pieza(esc, "pc", xm - 0.05, xm + 0.05, YP + 0.74, YP + 0.78, z - 0.08, z + 0.08)
 
     # Pantalla y cámara de videoconferencia en el muro del fondo (este), sobre un mueble bajo
     caja("madera", xm - 1.0, xm + 1.0, YP, YP + 0.6, ZI0, ZI0 + 0.45)

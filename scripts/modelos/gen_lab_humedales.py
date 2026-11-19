@@ -18,7 +18,7 @@ En el sistema local: +Z = frente (oeste), +X = sur, -X = norte, -Z = este.
 """
 import sys
 
-from comun import G, HUMEDALES, M_POR_LAT, M_POR_LNG, YT, Y0, Escena, distribucion, huella, nombre_centro
+from comun import G, HUMEDALES, mueble, M_POR_LAT, M_POR_LNG, YT, Y0, Escena, distribucion, huella, nombre_centro
 from muebles import _caja_eje, cilindro, computador, estante, mesa, planta, silla
 
 MURO = "pared_mostaza"
@@ -143,6 +143,7 @@ def ventanal(esc, a0, a1, c0, c1, eje="x", puerta=None, adentro=1, macizo=False)
 
 
 # ---------------- Muebles del laboratorio ----------------
+@mueble
 def microscopio(esc, x, z, y):
     caja = esc.caja
     caja("blanco", x - 0.12, x + 0.12, y, y + 0.04, z - 0.15, z + 0.15)
@@ -152,12 +153,14 @@ def microscopio(esc, x, z, y):
     caja("pc", x - 0.02, x + 0.02, y + 0.38, y + 0.46, z - 0.12, z - 0.04)               # ocular
 
 
+@mueble
 def taburete(esc, x, z, y):
     esc.caja("metal", x - 0.03, x + 0.03, y, y + 0.62, z - 0.03, z + 0.03)
     esc.caja("metal", x - 0.2, x + 0.2, y, y + 0.03, z - 0.2, z + 0.2)
     cilindro(esc, "silla_negra", x, z, 0.18, y + 0.62, y + 0.68, n=8)
 
 
+@mueble
 def meson(esc, x0, x1, z0, z1, y, lavaplatos=()):
     """Mesón de laboratorio: gabinete de madera, cubierta clara y lavaplatos (posición, eje)."""
     caja = esc.caja
@@ -168,6 +171,7 @@ def meson(esc, x0, x1, z0, z1, y, lavaplatos=()):
         caja("metal", x - 0.02, x + 0.02, y + 0.9, y + 1.2, z - 0.02, z + 0.02)          # grifo
 
 
+@mueble
 def estante_frascos(esc, x0, x1, z0, z1, y, alto=2.0, niveles=5):
     """Estante abierto de metal con frascos de colección (algas, semillas, muestras en alcohol)."""
     caja = esc.caja
@@ -193,6 +197,7 @@ def estante_frascos(esc, x0, x1, z0, z1, y, alto=2.0, niveles=5):
                 caja(mat, (x0 + x1) / 2 - 0.06, (x0 + x1) / 2 + 0.06, yb, yb + h, a, a + 0.12)
 
 
+@mueble
 def acuario(esc, x0, x1, z0, z1, y):
     esc.caja("metal", x0, x1, y, y + 0.8, z0, z1)
     esc.caja("agua", x0 + 0.03, x1 - 0.03, y + 0.82, y + 1.22, z0 + 0.03, z1 - 0.03)

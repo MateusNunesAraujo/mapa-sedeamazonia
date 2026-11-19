@@ -14,7 +14,7 @@ En el sistema local: -X = sur, +X = norte, +Z = frente (este), -Z = atrás (oest
 """
 import sys
 
-from comun import CUMBRERA, G, Y0, YT, Escena, distribucion, nombre_centro
+from comun import CUMBRERA, G, Y0, YT, Escena, distribucion, mueble, nombre_centro
 from muebles import (archivador, computador, estante, mesa, muro_ventanas, panel_luz, planta,
                      rejilla, silla)
 
@@ -69,6 +69,7 @@ def fachada(esc, X0, X1, Z1, xd, ancho_puerta=1.8):
     caja("madera", xa, xb, Y_ANTE - 0.04, Y_ANTE, Z1 - 0.3, Z1 + 0.05)               # alféizar
 
 
+@mueble
 def sofa(esc, x0, x1, z0, z1, y):
     """Sofá con el espaldar en el lado z1 (contra la pared)."""
     esc.caja("madera_osc", x0, x1, y, y + 0.2, z0, z1)

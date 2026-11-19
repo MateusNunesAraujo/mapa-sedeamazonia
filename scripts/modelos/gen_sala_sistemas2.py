@@ -10,7 +10,8 @@ Las medidas salen del polígono del mapa (ver comun.distribucion).
 """
 import sys
 
-from comun import Escena, G, Y0, YT, distribucion
+from comun import Escena, G, Y0, YT, distribucion, mueble
+from muebles import torre
 
 
 def construir(esc, b, inicio="inicio", terreno=True):
@@ -102,6 +103,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
     caja("aire", XI1 - 0.25, XI1, 2.55, 2.9, ZC - 0.5, ZC + 0.5)
     caja("metal", XI1 - 0.26, XI1 - 0.25, 2.58, 2.62, ZC - 0.45, ZC + 0.45)
 
+    @mueble
     def computador(x, z, y, mirando=-1):
         """Monitor, teclado y mouse sobre una mesa; mirando=-1 es hacia el tablero (-X)."""
         s = mirando
@@ -113,6 +115,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
         caja("pc", kx - 0.08, kx + 0.08, y, y + 0.02, z - 0.22, z + 0.22)
         caja("pc", kx - 0.05, kx + 0.05, y, y + 0.02, z + 0.3, z + 0.36)
 
+    @mueble
     def silla(x, z, y=YP, mirando=-1):
         """Silla de oficina; mirando=-1 es hacia el tablero (-X)."""
         e = -mirando                                      # lado del espaldar
@@ -122,6 +125,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
         caja("metal", x - 0.25, x + 0.25, y + 0.03, y + 0.07, z - 0.03, z + 0.03)
         caja("metal", x - 0.03, x + 0.03, y + 0.03, y + 0.07, z - 0.25, z + 0.25)
 
+    @mueble
     def mesa(x0, x1, z0, z1, y=YP):
         caja("mesa", x0, x1, y + 0.72, y + 0.76, z0, z1)
         for zx in (z0 + 0.05, z1 - 0.05):
@@ -132,7 +136,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
     zp0, zp1 = ZC + 1.0, ZC + 2.5
     mesa(XP - 0.4, XP + 0.4, zp0, zp1)
     computador(XP, (zp0 + zp1) / 2, YP + 0.76, mirando=1)
-    caja("pc", XP - 0.35, XP - 0.15, YP, YP + 0.45, zp1 - 0.4, zp1 - 0.2)
+    torre(esc, XP - 0.35, XP - 0.15, YP, YP + 0.45, zp1 - 0.4, zp1 - 0.2)
     silla(XP - 0.7, (zp0 + zp1) / 2, mirando=1)
 
     # Filas de mesas con computadores; pasillo central y un pasillo adelante para entrar
@@ -146,7 +150,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
             for k in range(n):
                 z = z0 + p * (k + 0.5)
                 computador(xm + 0.2, z, YP + 0.76)
-                caja("pc", xm + 0.05, xm + 0.25, YP, YP + 0.45, z + 0.25, z + 0.43)   # torre
+                torre(esc, xm + 0.05, xm + 0.25, YP, YP + 0.45, z + 0.25, z + 0.43)
                 silla(xm + 1.05, z)
         xm += 1.6
 

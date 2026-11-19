@@ -17,7 +17,7 @@ En el sistema local: +Z = frente (oeste), +X = sur.
 import sys
 
 from comun import G, YT, Y0, Escena, cabios, distribucion, nombre_centro, techo_quiebre
-from muebles import archivador, computador, frente_madera, mesa, muro_ventanas, planta, rejilla, silla
+from muebles import archivador, computador, frente_madera, mesa, muro_ventanas, planta, rejilla, silla, torre
 
 NOMBRE = "Sala de posgrado"
 MURO = "vino"
@@ -66,7 +66,7 @@ def construir(esc, b, inicio="inicio", terreno=True):
         mesa(esc, x0, x1, -2.6, 2.6, YP)
         for z in rejilla(-2.6, 2.6, 1.05):
             computador(esc, xm + s * 0.3, z, YP + 0.74, (s, 0))
-            caja("pc", xm + s * 0.1 - 0.1, xm + s * 0.1 + 0.1, YP, YP + 0.42, z + 0.25, z + 0.45)
+            torre(esc, xm + s * 0.1 - 0.1, xm + s * 0.1 + 0.1, YP, YP + 0.42, z + 0.25, z + 0.45)
             silla(esc, xm + s * 1.15, z, YP, (-s, 0))
 
     # Mesa de trabajo en el centro
