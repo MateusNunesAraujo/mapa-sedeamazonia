@@ -90,7 +90,7 @@ esc.colocar(0.0, 0.0, "sur")
 # Sendero ecológico con sus 14 estaciones (mismo trazado que en el mapa 2D)
 gen_sendero.colocar(esc)
 
-# Vía de afuera y calle interna (calcadas de la imagen del mapa)
+# Vía de afuera, la principal (calcada de la imagen del mapa)
 gen_calles.colocar(esc)
 
 # Partida por defecto: la del auditorio

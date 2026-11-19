@@ -7,8 +7,8 @@ tiene un letrero de madera a un lado del camino, un punto de partida
 "centro_..." para su etiqueta en la vista aérea.
 
 Del sendero real solo se tiene el trazado del mapa: el ancho, el piso de tierra y la forma
-de los letreros son supuestos (pendiente de fotos del sendero). Donde el sendero va por la
-calle interna (estaciones 1 a 4), el letrero queda por fuera de la calle.
+de los letreros son supuestos (pendiente de fotos del sendero). Si el sendero pasa por una
+calle de gen_calles.py, el letrero de la estación queda por fuera de ella.
 
 Lo llama gen_recorrido.py; no genera un .glb suelto.
 """
@@ -72,8 +72,7 @@ def distancia(p, linea):
 
 def junto_al_camino(en, sx, sz, calles):
     """Punto para el letrero al lado del camino: a 0,9 m del borde del sendero, o, si el
-    sendero va por una calle (las estaciones 1 a 4 están sobre la calle interna), por fuera
-    del borde de la calle. Prueba los dos lados y se queda con el más cercano.
+    sendero va por una calle, por fuera del borde de la calle. Prueba los dos lados y se queda con el más cercano.
     Devuelve (x, z, sx, sz) con el lado elegido."""
     margen = gen_calles.ANCHO / 2 + 0.9
     for paso in range(60):

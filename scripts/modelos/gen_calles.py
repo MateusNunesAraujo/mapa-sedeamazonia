@@ -1,4 +1,4 @@
-"""Calles del mundo del recorrido: la vía de afuera y la calle interna de la sede.
+"""Calles del mundo del recorrido: por ahora solo la vía de afuera (la principal).
 
 No están en ningún JSON: se calcaron de la imagen del mapa (static/Mapa U.png), en
 coordenadas del mapa [lat, lng]:
@@ -6,15 +6,11 @@ coordenadas del mapa [lat, lng]:
   midió por el color del asfalto cada 25 unidades de lng (de lng 25 a 790); es una recta
   que en el mapa va de [288,6, 0] a [0, 809,8]. Aquí se alarga un poco más allá del borde
   del mapa para que no se corte de golpe.
-- Calle interna: empieza al sur del parqueadero, bordea la cancha por el sur, sube por el costado este en diagonal y termina junto a los bloques
-  del norte (lat ~531), donde empieza el andén rayado que sigue hacia el norte (en el mapa
-  parece una rampa peatonal, no calle). Puntos tomados sobre la imagen y comprobados
-  dibujándolos encima. La entrada en U que el mapa dibuja dentro del parqueadero (desde la vía
-  de afuera) no se hace: todavía no existe, es un proyecto a futuro.
+- La calle interna que el mapa dibuja alrededor de la sede (con su entrada en U por el
+  parqueadero) no se hace: todavía no existe, es un proyecto a futuro.
 
-Ancho: ~5 m en el mapa para las dos (medido sobre el dibujo). Asfalto con línea central
-discontinua en la vía de afuera. Por verificar con fotos: el ancho real, el material y las
-líneas pintadas; la calle interna podría ser de concreto.
+Ancho: ~5 m en el mapa (medido sobre el dibujo). Asfalto con línea central discontinua.
+Por verificar con fotos: el ancho real y las líneas pintadas.
 
 Lo llama gen_recorrido.py; no genera un .glb suelto.
 """
@@ -28,14 +24,7 @@ Y = 0.05            # misma altura que el asfalto del parqueadero (y el sendero,
 # Recta de la vía de afuera, alargada: lat = 288,6 - 0,3564 * lng
 VIA_AFUERA = [[306.4, -50.0], [-30.0, 894.0]]
 
-CALLE_INTERNA = [
-    [48, 748], [40, 770], [33, 795], [26, 820], [21, 842], [18, 857], [20, 872],
-    [28, 885], [40, 898], [52, 907], [80, 930], [108, 952], [130, 964], [157, 982], [171, 984],
-    [185, 972], [235, 892], [285, 818], [317, 781], [339, 768], [375, 769], [403, 776],
-    [430, 786], [453, 806], [477, 830], [500, 847], [518, 855], [526, 863], [531, 874],
-]
-
-TODAS = [VIA_AFUERA, CALLE_INTERNA]
+TODAS = [VIA_AFUERA]
 
 
 def extension():
