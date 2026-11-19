@@ -15,6 +15,10 @@
         "PUBLIC_STORAGE",
         "PUBLIC_DOCUMENTS"
       ]
+    },
+    "LocalNotifications": {
+      "smallIcon": "ic_notificacion_jardin",
+      "iconColor": "#025928"
     }
   }
 }

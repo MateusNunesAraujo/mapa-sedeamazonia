@@ -1,0 +1,31 @@
+{
+  "nota": "Caja sorpresa del jardín. Aparece la primera vez que se entra y luego cada `intervalo_horas`. Cada caja entrega UN premio al azar según su `peso` (más peso = más probable). tipo: 'monedas' (objeto: 'plata' u 'oro'), 'accesorio' (objeto: id de tienda-jardin.json) o 'arbol' (objeto: codigoQR de arboles_exclusivos). Un árbol exclusivo que el usuario ya tiene no vuelve a salir. `primera_caja`: id del premio garantizado en la primera caja (null para sortearla también). `activo`: false para sacar un premio sin borrarlo.",
+  "intervalo_horas": 24,
+  "primera_caja": "arbol-guardian-victoria-regia",
+  "arboles_exclusivos": [
+    {
+      "codigoQR": "EXCLUSIVO_GUARDIAN_VICTORIA_REGIA",
+      "nombre": "Guardián de la Victoria Regia",
+      "especie": "Exclusiva del juego",
+      "modelo3d": "guardian-victoria-regia.glb"
+    },
+     {
+      "codigoQR": "EXCLUSIVO_EXPLORADOR_DEL_RIO",
+      "nombre": "Explorador Del Rio",
+      "especie": "Exclusiva del juego",
+      "modelo3d": "explorador-del-rio.glb"
+    }
+  ],
+  "premios": [
+    { "id": "plata-3",  "tipo": "monedas", "objeto": "plata", "cantidad": 3, "peso": 30, "rareza": "comun",      "activo": true },
+    { "id": "plata-6",  "tipo": "monedas", "objeto": "plata", "cantidad": 6, "peso": 18, "rareza": "comun",      "activo": true },
+    { "id": "oro-1",    "tipo": "monedas", "objeto": "oro",   "cantidad": 1, "peso": 15, "rareza": "rara",       "activo": true },
+    { "id": "oro-3",    "tipo": "monedas", "objeto": "oro",   "cantidad": 3, "peso": 6,  "rareza": "epica",      "activo": true },
+    { "id": "accesorio-collar-huayruro",    "tipo": "accesorio", "objeto": "collar-huayruro",    "cantidad": 1, "peso": 6, "rareza": "rara",  "activo": true },
+    { "id": "accesorio-sombrero-palma",     "tipo": "accesorio", "objeto": "sombrero-tejido-palma", "cantidad": 1, "peso": 6, "rareza": "rara",  "activo": true },
+    { "id": "accesorio-ramillete-heliconia","tipo": "accesorio", "objeto": "ramillete-heliconia", "cantidad": 1, "peso": 5, "rareza": "rara",  "activo": true },
+    { "id": "accesorio-corona-plumas",      "tipo": "accesorio", "objeto": "corona-plumas",      "cantidad": 1, "peso": 3, "rareza": "epica", "activo": true },
+    { "id": "arbol-guardian-victoria-regia","tipo": "arbol", "objeto": "EXCLUSIVO_GUARDIAN_VICTORIA_REGIA","cantidad": 1, "peso": 3, "rareza": "legendaria", "activo": true },
+    { "id": "arbol-explorador-del-rio","tipo": "arbol", "objeto": "EXCLUSIVO_EXPLORADOR_DEL_RIO","cantidad": 1, "peso": 3, "rareza": "legendaria", "activo": true }
+  ]
+}

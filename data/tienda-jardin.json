@@ -1,0 +1,273 @@
+{
+  "nota": "Catálogo de la tienda del jardín. Los accesorios ya no se compran: salen en los sobres (o con su código QR). rareza: comun, rara, epica, legendaria o exclusiva. Formato en static/img/accesorios/README.md",
+  "monedas_iniciales": { "plata": 10, "oro": 5 },
+  "parcela": {
+    "precio": { "moneda": "oro", "valor": 5 }
+  },
+  "regadera": {
+    "precio": { "moneda": "plata", "valor": 3 }
+  },
+  "sobres": {
+    "nota": "Cada sobre entrega UN premio. Primero, con `arbol.probabilidad` sale un árbol: casi siempre una copia más de uno que ya tienes (se puede plantar otra vez) y solo con `arbol.nuevo` uno bloqueado del campus, nunca dos veces en menos de `arboles.enfriamiento_sobres` sobres abiertos. Si no sale árbol, se sortea la rareza según `probabilidades` (pesos relativos; las rarezas sin accesorios se ignoran) y luego un accesorio de esa rareza. Imágenes en static/iconos/sobres/.",
+    "duracion_animacion_ms": 2600,
+    "arboles": {
+      "enfriamiento_sobres": 25
+    },
+    "tipos": [
+      {
+        "id": "comun",
+        "nombre": "Sobre común",
+        "imagen": "sobre-comun.png",
+        "animacion": "sobre-comun-abriendo.gif",
+        "precio": { "moneda": "plata", "valor": 5 },
+        "probabilidades": {
+          "comun": 60,
+          "rara": 25,
+          "epica": 10,
+          "legendaria": 4,
+          "exclusiva": 1
+        },
+        "arbol": {
+          "probabilidad": 0.1,
+          "nuevo": 0.03
+        }
+      },
+      {
+        "id": "epico",
+        "nombre": "Sobre épico",
+        "imagen": "sobre-epico.png",
+        "animacion": "sobre-epico-abriendo.gif",
+        "precio": { "moneda": "plata", "valor": 15 },
+        "probabilidades": {
+          "comun": 35,
+          "rara": 35,
+          "epica": 22,
+          "legendaria": 6,
+          "exclusiva": 2
+        },
+        "arbol": {
+          "probabilidad": 0.12,
+          "nuevo": 0.05
+        }
+      },
+      {
+        "id": "legendario",
+        "nombre": "Sobre legendario",
+        "imagen": "sobre-legendario.png",
+        "animacion": "sobre-legendario-abriendo.gif",
+        "precio": { "moneda": "oro", "valor": 5 },
+        "probabilidades": {
+          "comun": 20,
+          "rara": 25,
+          "epica": 30,
+          "legendaria": 20,
+          "exclusiva": 5
+        },
+        "arbol": {
+          "probabilidad": 0.15,
+          "nuevo": 0.08
+        }
+      }
+    ]
+  },
+  "accesorios": [
+    {
+      "id": "sombrero-copa-negro",
+      "nombre": "Sombrero elegante",
+      "rareza": "comun",
+      "imagen": "sombrero-copa-negro.png",
+      "zona": "cabeza",
+      "modelo": "sombrero-copa-negro.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "collar-chambira",
+      "nombre": "Collar de chambira",
+      "rareza": "comun",
+      "imagen": "collar-chambira.png",
+      "zona": "cuello",
+      "modelo": "collar-chambira.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "pintura-achiote",
+      "nombre": "Pintura de achiote",
+      "rareza": "rara",
+      "imagen": "pintura-achiote.png",
+      "zona": "rostro",
+      "pintura": "pintura-achiote.png",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "pintura-huito",
+      "nombre": "Pintura de huito",
+      "rareza": "rara",
+      "imagen": "pintura-huito.png",
+      "zona": "rostro",
+      "pintura": "pintura-huito.png",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "corona-plumas",
+      "nombre": "Coran de plumas",
+      "rareza": "epica",
+      "imagen": "corona-plumas.png",
+      "zona": "cabeza",
+      "modelo": "corona-plumas.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "bigote-musgo",
+      "nombre": "Bigote de musgo",
+      "rareza": "comun",
+      "imagen": "bigote-musgo-icono.png",
+      "zona": "rostro",
+      "modelo": "bigote-musgo.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "bufanda-lianas-orquidea",
+      "nombre": "Bufanda de orquidea",
+      "rareza": "comun",
+      "imagen": "bufanda-lianas-orquidea-icono.png",
+      "zona": "cuello",
+      "modelo": "bufanda-lianas-orquidea.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "collar-dientes-escamas",
+      "nombre": "Collar dientes de escamas",
+      "rareza": "comun",
+      "imagen": "collar-dientes-escamas-icono.png",
+      "zona": "cuello",
+      "modelo": "collar-dientes-escamas.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "collar-huayruro",
+      "nombre": "Collar huayruro",
+      "rareza": "rara",
+      "imagen": "collar-huayruro.png",
+      "zona": "cuello",
+      "modelo": "collar-huayruro.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "nariguera-oro",
+      "nombre": "Nariguera de oro",
+      "rareza": "epica",
+      "imagen": "nariguera-oro-icono.png",
+      "zona": "rostro",
+      "modelo": "nariguera-oro.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "sombrero-tejido-palma",
+      "nombre": "Sombrero de tejido de palma",
+      "rareza": "rara",
+      "imagen": "sombrero-tejido-palma-icono.png",
+      "zona": "cabeza",
+      "modelo": "sombrero-tejido-palma.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "tocado-victoria-regia",
+      "nombre": "Tocado de victoria regia",
+      "rareza": "epica",
+      "imagen": "tocado-victoria-regia-icono.png",
+      "zona": "cabeza",
+      "modelo": "tocado-victoria-regia.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "mini-maloca-techo",
+      "nombre": "Mini maloca techo",
+      "rareza": "comun",
+      "imagen": "mini-maloca-techo-icono.png",
+      "zona": "cabeza",
+      "modelo": "mini-maloca-techo.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "faja-tikuna-cocama",
+      "nombre": "Faja tikuna cocama",
+      "rareza": "rara",
+      "imagen": "faja-tikuna-cocama-icono.png",
+      "zona": "cuello",
+      "modelo": "faja-tikuna-cocama.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "mascara-tikuna",
+      "nombre": "Mascara tikuna",
+      "rareza": "rara",
+      "imagen": "mascara-ticuna-icono.png",
+      "zona": "rostro",
+      "modelo": "mascara-ticuna.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "vestido-falda-amazonica",
+      "nombre": "Vestido falda amazónica",
+      "rareza": "rara",
+      "imagen": "vestido-falda-amazonica-icono.png",
+      "zona": "cuello",
+      "modelo": "vestido-falda-amazónica.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "ramillete-heliconia",
+      "nombre": "Ramillete heliconia",
+      "rareza": "rara",
+      "imagen": "ramillete-heliconia-icono.png",
+      "zona": "cabeza",
+      "modelo": "ramillete-heliconia.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "birrete-academico-unal",
+      "nombre": "Birrete ácademico unal",
+      "rareza": "exclusiva",
+      "imagen": "birrete-academico-unal-icono.png",
+      "zona": "cabeza",
+      "modelo": "birrete-academico-unal.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "medallon-copa-unal",
+      "nombre": "Medallón copa unal",
+      "rareza": "legendaria",
+      "imagen": "medallon-copa-unal-icono.png",
+      "zona": "cabeza",
+      "modelo": "medallon-copa-unal.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "maloca-mirador-botanico",
+      "nombre": "Maloca mirador botánico",
+      "rareza": "legendaria",
+      "imagen": "maloca-mirador-botanico-icono.png",
+      "zona": "cabeza",
+      "modelo": "maloca-mirador-botanico.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "gorro-navidad",
+      "nombre": "Gorro navidad",
+      "rareza": "exclusiva",
+      "imagen": "gorro-navidad-icono.png",
+      "zona": "cabeza",
+      "modelo": "gorro-navidad.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "capibara-sentada",
+      "nombre": "Capibara sentada",
+      "rareza": "epica",
+      "imagen": "capibara-sentada-icono.png",
+      "zona": "cabeza",
+      "modelo": "capibara-sentada.glb",
+      "desbloqueo_qr": true
+    }
+  ]
+}

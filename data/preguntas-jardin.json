@@ -1,0 +1,45 @@
+{
+  "nota": "Preguntas del jardín (botón '?' que aparece al azar). Formato: id único, pregunta, 4 opciones, respuesta = índice (0-3) de la opción correcta, explicacion que se muestra al responder y codigoQR del árbol relacionado (opcional). Datos tomados de plantas.json.",
+  "preguntas": [
+    {
+      "id": "caucho-latex",
+      "pregunta": "¿Cuál de estos árboles del campus produce el látex blanco del que se obtiene el caucho?",
+      "opciones": ["Siringa (Hevea brasiliensis)", "Cedro (Cedrela odorata)", "Aguacate (Persea americana)", "Pomarroso (Syzygium malaccense)"],
+      "respuesta": 0,
+      "explicacion": "La siringa o árbol del caucho tiene corteza gris clara con látex blanco, la materia prima del caucho natural.",
+      "codigoQR": "PLANTA_092_CAUCHO"
+    },
+    {
+      "id": "borojo-jugo",
+      "pregunta": "¿De qué fruto se prepara una pulpa para jugos y helados a la que se le atribuyen propiedades afrodisíacas?",
+      "opciones": ["Mamoncillo", "Borojó", "Guama", "Carambolo"],
+      "respuesta": 1,
+      "explicacion": "La pulpa del borojó maduro se usa en jugos, sorbetes, mermeladas y vinos, y en el Chocó se le atribuyen propiedades afrodisíacas.",
+      "codigoQR": "PLANTA_074_ALIBERTIA"
+    },
+    {
+      "id": "guayacan-amarillo",
+      "pregunta": "¿Qué árbol es conocido como \"guayacán amarillo\" y se planta en parques y separadores viales por su llamativa floración?",
+      "opciones": ["Canalete (Jacaranda copaia)", "Laurel (Nectandra membranacea)", "Palo de arco (Handroanthus chrysanthus)", "Campanillo (Abarema jupunba)"],
+      "respuesta": 2,
+      "explicacion": "El palo de arco o guayacán amarillo se reconoce a larga distancia por el intenso color amarillo de sus flores.",
+      "codigoQR": "PLANTA_137_GUAYACAN"
+    },
+    {
+      "id": "asai-palma",
+      "pregunta": "¿Cuál de estas especies es una palma sostenida por un cono de raíces rojizas?",
+      "opciones": ["Copoazú (Theobroma grandiflorum)", "Cacao (Theobroma cacao)", "Madroño (Garcinia madruno)", "Asaí (Euterpe precatoria)"],
+      "respuesta": 3,
+      "explicacion": "El asaí es una palma de hasta 20 m de alto sostenida por un cono de raíces rojizas; de sus frutos se prepara una bebida tradicional.",
+      "codigoQR": "PLANTA_267_ASAI"
+    },
+    {
+      "id": "sangre-de-grado",
+      "pregunta": "¿Qué árbol tiene una resina rojiza de uso medicinal, tan parecida a la sangre que le da su nombre?",
+      "opciones": ["Sangre de grado (Croton lechleri)", "Lacre (Vismia tomentosa)", "Andiroba (Carapa guianensis)", "Copal (Protium sp.)"],
+      "respuesta": 0,
+      "explicacion": "La sangre de grado tiene corteza grisáceo-blanquecina y una resina rojiza muy usada en la medicina tradicional.",
+      "codigoQR": "PLANTA_566_SANGRE_DE_GRADO"
+    }
+  ]
+}

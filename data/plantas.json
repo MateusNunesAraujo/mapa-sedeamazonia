@@ -29,8 +29,13 @@
         "La especie fue introducida en Colombia principalmente como planta ornamental. Se utiliza para formar cercos vivos defensivos, barreras contra el viento y para delimitar linderos en residencias, fincas, fábricas y centros educativos. Es altamente valorada para la conformación de setos, ya que desarrolla numerosas ramas desde la base del tallo, generando estructuras densas y difíciles de atravesar, además de poseer espinas en su tallo que refuerzan su función protectora (Pérez Arbeláez, 1990; Rodríguez-Mora et al., 2019)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_045_SWINGLEA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Guardaespaldas oficial del campus: con sus espinas nadie se cuela sin permiso. Si estrujas una hoja, ¡huele a limonada!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "BOROJÓ",
@@ -64,8 +69,13 @@
         "La pulpa del fruto maduro se utiliza en la preparación de bebidas refrescantes, a las que se suele añadir azúcar, así como en jugos que a menudo se mezclan con leche. También se emplea en la elaboración de sorbetes, helados, compotas, mermeladas, dulces y vino. En el Chocó, esta bebida es apreciada por sus supuestas propiedades afrodisíacas y se le atribuyen usos medicinales para tratar afecciones renales (García Barriga, 1992; Persson y Delprete, 2017)."
       ]
     },
+    "modelo3d": "alibertia-patinoi.glb",
     "codigoQR": "PLANTA_074_ALIBERTIA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su fruto parece un balón de fútbol café y tiene fama de dar energía para todo el día. ¡Batido de campeones!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "CARAMBOLO",
@@ -99,8 +109,13 @@
         "En la región amazónica, la carambola se comercializa principalmente como fruta fresca, consumida al natural por su sabor acidulado o preparada en jugos, almíbar para la elaboración de encurtidos. Sin embargo, el fruto también posee un alto potencial para la producción de pulpas, mermeladas, néctares y productos osmodeshidratados. Además, se utiliza con fines ornamentales en espacios públicos como parques, antejardines y avenidas. En la medicina tradicional, se le atribuyen propiedades febrífugas (Cárdenas López et al., 2004; Hernández et al., 2004; Pérez Arbeláez, 1990)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_076_CARAMBOLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Corta su fruto en rodajas y obtendrás estrellitas comestibles. Es el árbol más astronómico del jardín.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "UMARÍ",
@@ -133,8 +148,13 @@
         "Se cultiva por sus frutos comestibles, vendidos en el mercado de Leticia y consumidos frescos o en bebidas preparadas con su pulpa. La madera, pesada y resistente, se aprovecha para chapas decorativas, durmientes, edificaciones robustas, carretería, pisos industriales y tornería (Acero Duarte, 1979)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_091_UMARI",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su fruto tiene una pulpa cremosa y aromática que se come con fariña. Un snack amazónico de toda la vida.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "SIRINGA",
@@ -168,8 +188,13 @@
         "Esta especie se cultiva para la extracción del látex, una sustancia natural, repelente al agua y de alta resistencia eléctrica, que sirve como materia prima para la producción de neumáticos, correas, mangueras, calzado, piezas moldeadas, montajes, casquillos, sellos y tapetes. El látex en mayor concentración se emplea en la fabricación de espuma, condones, guantes, hilos de látex y adhesivos. Las semillas, por su parte, se utilizan en artesanías como collares y aretes (Montero González et al., 2016; Nair, 2010)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_092_CAUCHO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Si le haces un cortecito, llora leche blanca... ¡que se convierte en caucho! Culpable de llantas, pelotas y de una fiebre histórica en la Amazonía.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "PALO DE ARCO",
@@ -204,8 +229,13 @@
         "La madera se utiliza en tornería, construcción de casas, embarcaciones, muebles, cercas, carrocerías, pisos industriales, durmientes, artesanías finas, ensambladuras y mangos para herramientas. Es una especie muy valorada como ornamental y se ha plantado en separadores viales y parques. Además, se emplea en sistemas silvopastoriles o como cercas vivas (Cordero y Boshier, 2003)."
       ]
     },
+    "modelo3d": "handroanthus-chrysanthus.glb",
     "codigoQR": "PLANTA_137_GUAYACAN",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Pasa el año tranquilo y de repente, ¡pum!, se viste todo de amarillo sin una sola hoja. Todo un influencer de las flores.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "CHIMINANGO",
@@ -240,8 +270,13 @@
         "El tejido que recubre la semilla es apto para el consumo humano, y sus frutos son fuente de alimento para diversas aves. La madera, de tonalidad pardo-rojiza, es dura, pesada, quebradiza y de difícil manejo, por lo que se utiliza principalmente en postes para cercas, carpintería rústica y como leña. Tras la poda, sus ramas son comestibles y poseen un buen valor nutritivo para el ganado bovino. También se planta como cerca viva y con fines ornamentales, brindando sombra en parques, avenidas, calles y antejardines. Gracias a su alta tolerancia a la sequía, es adecuada para el control de la erosión. Además, sus hojas tienen propiedades medicinales. Es una especie melífera y fijadora de nitrógeno (Cárdenas López et al., 2004; Molina Franco y SAO, 2021; Varón y Morales, 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_151_CHIMUCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus vainas se enroscan como rizos y guardan una pulpa dulce que enloquece a pájaros y niños.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "MATAPALO",
@@ -273,8 +308,13 @@
         "Coussapoa orthoneura es un árbol hospedador habitual de escarabajos del género Hyboptera, invertebrados del dosel amazónico. Al ofrecer hojas persistentes, enredos de lianas y abundante materia orgánica suspendida, Coussapoa orthoneura crea microhábitats donde los insectos hallan alimento, refugio y sustratos para el desarrollo larval, contribuyendo así a la alta diversidad y al flujo de energía en los bosques de tierra firme y várzea. Esta relación planta–insecto subraya la importancia de conservar las especies arbóreas estructuralmente complejas, salvaguardando simultáneamente una red de organismos asociados se mantiene la funcionalidad ecológica del dosel amazónico (Erwin y Henry, 2017)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_168_COUSSAPOA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Empieza como semillita en lo alto de otro árbol y baja sus raíces hasta el suelo. Un abrazo... un poquito demasiado apretado.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "YANCHAMA OJÉ",
@@ -307,8 +347,13 @@
         "De la corteza se extrae una fibra blanca, delgada y flexible, utilizada en la elaboración de máscaras, ruedas y diversas artesanías. El látex, aunque altamente tóxico si no se administra adecuadamente, ha sido empleado tradicionalmente como purgante. Comunidades indígenas como los Tikunas lo mezclan con aguardiente con este fin, mientras que los Quechuas del Ecuador y pueblos amazónicos del Perú lo consideran un vermífugo eficaz. Además, se aplica fresco sobre mordeduras de serpiente, picaduras de hormiga y raya, e incluso para tratar la leishmaniasis (López et al., 2006). La madera se valora en carpintería, ebanistería y tornería, y se emplea en chapas decorativas, contrachapados, molduras, cajonería, obras interiores y embalajes (INIA-OIMT, 1996; WWF, 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_181_HIGUERON",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su corteza se golpea hasta volverla tela: con ella se hacen máscaras y trajes de baile. ¡Árbol diseñador de moda!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "JUANSOCO",
@@ -343,8 +388,13 @@
         "La madera de esta especie es valorada en la construcción, especialmente para vigas, viguetas, pisos y escaleras. También se emplea en la fabricación de muebles, chapas, contrachapados, empaques livianos, artesanías, tableros aglomerados y enlistonados, molduras y juguetes. La tablilla, en particular, tiene alta demanda por su similitud con la madera de pino (Arévalo y Londoño, 2005; INIA-OIMT, 1996)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_199_JUANSOCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su látex dulce se masticaba como chicle y sus frutos saben a gloria. Una golosina con raíces.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "CEDRO",
@@ -377,8 +427,13 @@
         "El árbol es comúnmente utilizado como ornamental en varias regiones de América tropical, debido a su porte y valor estético. Su madera, considerada de alta calidad por su durabilidad y facilidad de trabajo, se emplea en una amplia gama de productos como chapas decorativas, contrachapados, muebles finos, ebanistería, puertas, ventanas, tallados, revestimientos interiores, canoas e instrumentos musicales (INIA-OIMT, 1996). También posee importantes usos medicinales. La infusión de hojas y raíces se usa tradicionalmente para aliviar dolores dentales. Además, es común su uso en tratamientos para reducir la fiebre, calmar la diarrea, aliviar el dolor de estómago, combatir parásitos intestinales y síntomas de paludismo mediante cocimientos elaborados con raíz, corteza y hojas. En casos de infecciones externas, se aplica la raíz macerada como cataplasma en la zona afectada (López et al., 2006; Montero González et al., 2016)."
       ]
     },
+    "modelo3d": "cedrela-odorata.glb",
     "codigoQR": "PLANTA_208_CEDRO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su madera es tan perfumada que espanta a las polillas. Todos los carpinteros de la selva lo tienen en su lista de deseos.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "BARBASCO",
@@ -414,8 +469,13 @@
         "En cuanto a Caryocar microcarpum, sus semillas también se consumen, aunque en menor medida que las de otras especies del género. El pericarpio del fruto se utiliza como veneno para pesca en la región alta del río Negro, así como en Colombia y Venezuela. Por otro lado, las hojas se machacan y son usadas como sustituto del jabón por pobladores de Surinam, Guayana Francesa y algunas zonas del norte de Brasil (Prance y Freitas da Silva, 1973)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_225_ALMENDRO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su nombre suena a pócima de chamán y sus semillas esconden una almendra. Misterioso y con sorpresa adentro.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "CAPINURÍ",
@@ -450,8 +510,13 @@
         "La madera se emplea en construcciones civiles pesadas, puentes, puntales, envases pesados, pilotes y trabajos de carpintería; también se utiliza como leña y carbón. Los frutos son consumidos frescos tanto por humanos como por la fauna (INIA-OIMT, 1996; Peñuela y Jiménez, 2010)."
       ]
     },
+    "modelo3d": "maquira-coriacea.glb",
     "codigoQR": "PLANTA_229_GUAIMARO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Si lo raspas suelta leche, por eso le dicen «lecheperra». Sus frutitos son el buffet favorito de murciélagos y monos.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "UCUUBA",
@@ -466,8 +531,13 @@
     ],
     "descripcion": "",
     "usos": {},
+    "modelo3d": null,
     "codigoQR": "PLANTA_234_UCUUBA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus semillas tienen tanta grasa que con ellas se hacían velas. ¡Un árbol que literalmente ilumina!",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "LAUREL",
@@ -500,8 +570,13 @@
         "La madera es considerada relativamente blanda, aunque durable, y se emplea en construcción, carpintería y fabricación de muebles. Los frutos son alimento para la avifauna como tucanes, loros y tiránidos (Rohwer, 1993)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_240_LAUREL",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le encanta tener los pies mojados: vive feliz donde el río se desborda en las crecientes. Nadador experto.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "LACRE",
@@ -537,8 +612,13 @@
         "La madera de esta especie se emplea en la elaboración de estacones y diversas construcciones rurales, además de ser una fuente común de leña para uso doméstico. Sus frutos son parte de la dieta de numerosas especies de aves. La resina que exuda el árbol se utiliza como tinte natural en el teñido de fibras, aprovechada especialmente en prácticas artesanales (información tomada del documento compartido por la UNAL-Amazonia)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_244_LACRE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Raspa su corteza y sale un líquido naranja de película de terror. Tranquilo: es inofensivo y muy bueno para la piel.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "LLORÓN",
@@ -572,8 +652,13 @@
         "La madera, aunque no muy resistente, se emplea en la construcción de cabañas. Las aves se alimentan de sus frutos (información tomada del documento compartido por la UNAL-Amazonia)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_256_CAMASEY",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "No está triste, solo tiene ramas dramáticas que cuelgan. Sus bayas moradas son el postre favorito de las aves.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "ASAÍ",
@@ -609,8 +694,13 @@
         "Su fruto es ampliamente consumido. La pulpa se extrae amasando los frutos en agua caliente y se utiliza en jugos, helados, paletas y diversas recetas, destacándose por su alto contenido de antioxidantes. También se consume el palmito, fresco o envasado. En la construcción, sus tallos se emplean para cerramientos y, ocasionalmente, sus hojas para techado. A nivel artesanal, las hojas se tejen para elaborar morrales de selva (capillejos) y cernidores de yuca, mientras que las semillas, fácilmente teñibles, se usan en collares, pulseras, cinturones y carteras. Esta palma también posee valor cultural, entre los tikuna se celebra la fiesta del asaí, con bailes, ofrendas y preparación comunitaria de jugo y palmito (Bernal y Galeano, 2013); entre los emberas, las hojas tienen usos en la medicina tradicional y las vainas foliares sirven como soporte de totumas ceremoniales (Galeano y Bernal, 2010)."
       ]
     },
+    "modelo3d": "euterpe-oleracea.glb",
     "codigoQR": "PLANTA_267_ASAI",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "La palmera de las superfrutas: sus bolitas moradas se vuelven el famoso açaí. Delgada, elegante y llena de energía.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "CARGUERO",
@@ -645,8 +735,13 @@
         "Los frutos de esta especie sirven de alimento para primates y aves. Además, se prepara una bebida tradicionalmente utilizada en el tratamiento del paludismo. En la región del Bajo Magdalena, los frutos se emplean como tónicos uterinos para aliviar dismenorreas y tratar afecciones del aparato digestivo. En Cundinamarca, la decocción de hojas y frutos se usa como remedio contra los cólicos. La corteza se destina a la elaboración de amarres, mientras que la madera, apreciada por su alta resistencia, se utiliza en construcciones y trabajos de ebanistería. Asimismo, la especie presenta potencial ornamental. (Ariza-Cortés et al., 2013; Blair, 1991; García Barriga, 1992; Molina Franco y SAO, 2021)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_271_CARGUERO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su corteza es tan fibrosa que sirve de cuerda para cargar cosas. El árbol que siempre te ayuda con la mudanza.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PLATANILLO",
@@ -680,8 +775,13 @@
         "Entre los pueblos indígenas del medio Caquetá, el arilo fresco de la semilla se consume como alimento, apreciado por su sabor refrescante y por calmar el apetito. El cogollo, al ser masticado, tiñe los dientes de negro y se cree que previene la caries dental. La comunidad Muinane del resguardo indígena de Villazul, en el Amazonas colombiano, utiliza la decocción de hojas en agua como remedio para aliviar el malestar estomacal (Castaño Betancur, 2023). Las hojas tienen múltiples usos: se emplean para envolver y conservar productos como la masa de yuca brava y el almidón, y también se utilizan como protección improvisada contra la lluvia, actuando como sombrilla. Además, las semillas tostadas son comestibles (Martínez y Galeano, 1994). En Bolivia, los indígenas Chácobo utiliza las hojas grandes de esta especie como material de cobertura para los techos de sus viviendas. En algunos casos, los techos están hechos exclusivamente con estas hojas, aunque lo más común es que se combinen con las de distintas especies de palmas. Tradicionalmente, las hojas jóvenes también se usaban como taparrabos femeninos (Boom, 1996)."
       ]
     },
+    "modelo3d": "phenakospermum-guyannense.glb",
     "codigoQR": "PLANTA_291_PLATANILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Parece primo del plátano, pero sus flores son picos de colores que vuelven locos a los colibríes.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "UVILLA",
@@ -716,8 +816,13 @@
         "Los frutos se consumen frescos tanto por humanos, aves y mamíferos, también se preparan mermeladas y vinos. De la cascara del fruto se extrae tinte morado. Las hojas ásperas se utilizan como lija o para lavar platos. La madera se emplea como leña, y las ramas huecas se aprovechan para fabricar instrumentos musicales, boyas de pesca y salvavidas (Ariza-Cortés et al., 2013; Peñuela y Jiménez, 2010)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_298_UVILLA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Da racimos que parecen uvas de selva. Monos, aves y personas hacen fila para probarlas.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "ALGODONCILLO",
@@ -751,8 +856,13 @@
         "La madera se utiliza ampliamente en interiores para revestimientos, fabricación de tablas, entablados, frentes de casas, cielorrasos y cajas. También se emplea en la elaboración de objetos utilitarios como zuecos, muletas, palillos de dientes y fósforos. Sin embargo, no es adecuada para construcciones exteriores, ya que es liviana, posee baja resistencia mecánica y es altamente susceptible al ataque de termitas. Por otro lado, sus frutos representan una fuente de alimento para diversas especies de aves frugívoras, entre ellas loros del grupo Coerebidae, como Cyanerpes caeruleus, que los consumen como parte de su dieta en hábitats tropicales (Murillo Aldana y Franco Rosselli, 1995; Smith y Klein, 1988)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_313_ALGODONCILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Cuando sus frutos revientan sueltan pelusitas que vuelan como copos de algodón. ¡Nieve en plena Amazonía!",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "CAFETILLO",
@@ -787,8 +897,13 @@
         "Sus frutos son parte de la dieta de diversas aves. La planta presenta potencial ornamental debido al atractivo de su follaje y la coloración de sus flores. Además, es empleada por sabedores de la comunidad Cubeo como tratamiento facial para el acné (información tomada del documento compartido por la UNAL-Amazonia)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_327_CAFETILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus frutos parecen granos de café, pero no intentes hacer tinto con ellos. Un impostor muy simpático.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "CHILCO",
@@ -821,8 +936,13 @@
         "En las zonas rurales de Satipo, los habitantes hacen uso tradicional de la corteza de Gordonia fruticosa como insumo natural en el proceso de curtido de cueros. Además, la madera de esta especie es un recurso importante para la construcción de viviendas, estructuras rurales y la elaboración de diversos tipos de muebles como mesas, sillas, armarios y otros elementos de mobiliario tanto para uso doméstico como comercial (INIA-OIMT, 1996)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_333_CHILCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le dicen «mata de borugo» porque a ese roedor le encanta merodear cerca. El vecino más popular del sendero.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "LAUREL",
@@ -854,8 +974,13 @@
         "La madera de esta especie es durable y resistente al ataque de insectos. Se considera de buena calidad y se emplea tanto en ebanistería como en la fabricación de cajones. Además, es utilizada en la construcción y se encuentra entre las maderas más usadas en Antioquia. Los frutos son alimento para la avifauna como tucanes, loros y tiránidos (Pérez Arbeláez, 1990; Rohwer, 1993)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_349_LAUREL",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Primo lejano del aguacate: sus frutitos son una fiesta para tucanes y pavas.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "COPOAZÚ",
@@ -887,8 +1012,13 @@
         "Los principales usos del copoazú se enfocan en el aprovechamiento de su fruto. La pulpa, de sabor ácido intenso y agradable, puede consumirse fresca o transformarse en dulces, cremas, yogures, compotas, sorbetes y licores. Por su parte, las semillas, con un buen contenido de proteínas, se utilizan en la elaboración de chocolate (Zapata et al., 1996)."
       ]
     },
+    "modelo3d": "theobroma-grandiflorum.glb",
     "codigoQR": "PLANTA_363_COPOAZU",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Primo del cacao con un fruto gigante que perfuma toda la cocina. Su pulpa se vuelve jugos, helados y dulces.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "CHICLE",
@@ -921,8 +1051,13 @@
         "El fruto, de sabor dulce con un toque ácido, se consume principalmente como alimento fresco. En Tarapacá, los habitantes suelen chupar la semilla del fruto maduro, cuyo sabor les recuerda al chicle. Dado que el árbol se suele encontrar de baja altura, los frutos se recolectan manualmente al treparlo o al sacudirlo y recogerlos del suelo, obteniéndose habitualmente medio bulto por cosecha, la cual es anual. Además, su látex se utiliza para fabricar chicle, mezclado con el de la quinilla (López Camacho et al., 2006)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_382_CHICLE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su látex fue chicle mucho antes de que existieran los de sabores. Masticar historia, literalmente.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "MOROCHILLO",
@@ -956,8 +1091,13 @@
         "Esta especie se utiliza en el Meta principalmente con fines ornamentales en entornos urbanos, debido a la vistosa fructificación de color amarillo que presenta. Además, sus frutos son aprovechados por diversas especies de aves, y la madera se emplea en construcciones (Ariza-Cortés et al., 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_387_MOROCHILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le dicen «dormidero» porque sus hojas se cierran al anochecer. Hasta los árboles necesitan su siesta.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "FLOR AMARILLO",
@@ -990,8 +1130,13 @@
         "Senna silvestris es plantada como ornamental para sombra y por sus llamativa floración amarilla. Por otra parte, la madera se emplea para elaborar postes para cercar (Ariza-Cortés et al., 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_389_FLOR_AMARILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus flores brillan tanto que le dicen «yema de huevo». Desayuno visual garantizado.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "AGUACATE",
@@ -1027,8 +1172,13 @@
         "Las semillas presentan una notable diversidad de usos medicinales. En la Amazonía peruana, se secan y pulverizan para tratar el flujo vaginal, combinándolas con una decocción de hojas de llantén. También se preparan en infusión o cocción junto con pan y azúcar quemados para combatir la disentería o la diarrea amebiana, y su cocimiento se emplea para lavar heridas por mordeduras de serpiente. A estas semillas también se les atribuye un efecto anticonceptivo cuando se consumen molidas mezcladas con los alimentos. En otras regiones, se usan tostadas o en ceniza para tratar diarrea, en polvo para eliminar la caspa, y colocadas directamente en cavidades dentales para aliviar el dolor de muela. Su aceite se aplica sobre erupciones cutáneas. Los Shuar del Ecuador preparan una mezcla de semillas trituradas en aguardiente como remedio para mordeduras de serpiente, y los Quechuas, también en Ecuador, afirman que el consumo de semilla molida puede provocar la suspensión de la menstruación por varios meses. Por último, la corteza también tiene aplicaciones importantes en la medicina tradicional. En la Amazonía peruana, se hierve en infusión para tratar infecciones urinarias, y se utiliza en enjuagues bucales para aliviar el dolor dental. Además, la cáscara del fruto se considera un agente antibiótico, vermífugo y eficaz contra la disentería en diversas tradiciones (Cordero y Boshier, 2003; Mejía y Rengifo, 2000)."
       ]
     },
+    "modelo3d": "persea-americana.glb",
     "codigoQR": "PLANTA_413_AGUACATE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sí, el del guacamole. Pero este vive en la selva y comparte sus frutos con las dantas.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "CAMPANILLO",
@@ -1061,8 +1211,13 @@
         "La madera se utiliza en construcción; así como en ebanistería, carpintería, revestimientos, pisos, acabados de interiores y fabricación de gabinetes. Y las semillas se aprovechan en la elaboración de artesanías, especialmente en bisutería (Ariza-Cortés et al., 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_429_CAMPANILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus flores cuelgan como campanitas. Cuando sopla el viento, imagina el concierto.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "ELAEIS GUINEENSIS",
@@ -1077,8 +1232,13 @@
     ],
     "descripcion": "",
     "usos": {},
+    "modelo3d": null,
     "codigoQR": "PLANTA_442_ELAEIS_GUINEENSIS",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Viajera de África que llegó para quedarse. De sus frutos naranjas sale aceite para medio supermercado.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "CACAO",
@@ -1112,8 +1272,13 @@
         "Las semillas se tuestan y muelen para producir cocoa y chocolate, ampliamente utilizados en dulces, helados, bebidas y otros productos alimenticios. De la semilla se extrae el aceite o manteca de cacao, empleada en productos cosméticos, perfumería y de farmacia como emoliente en la elaboración de ungüentos y pomadas, así como en el tratamiento de la piel seca. En la Amazonía peruana se cocina la cáscara de la semilla hasta obtener una bebida espesa similar al chocolate para aliviar la tos seca (Mejía y Rengifo, 2000; Montero González et al., 2016). Las hojas en infusión se usan frecuentemente como tónico para tratar afecciones cardíacas. La teobromina, un compuesto derivado de la xantina, es ampliamente empleada por sus propiedades diuréticas (García Barriga, 1992)."
       ]
     },
+    "modelo3d": "theobroma-cacao.glb",
     "codigoQR": "PLANTA_450_CACAO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "El responsable del chocolate. Sus mazorcas salen directo del tronco, como por arte de magia.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "CANALETE",
@@ -1147,8 +1312,13 @@
         "La corteza y las hojas tienen usos medicinales; las hojas se emplean para purificar la sangre y son reconocidas como antisifilítico. Tanto la decocción de las hojas como la de la corteza se aplica en baños calientes sobre las zonas afectadas o se administra por vía oral para tratar úlceras y flemones. Además, el polvo seco de las hojas, al aplicarse sobre las úlceras, actúa como un potente desinfectante, con efectos similares al yodoformo o a las sulfas (García Barriga, 1992). Es un excelente tutor vivo para cultivos como la pimienta y la vainilla. En los potreros, los campesinos suelen conservar por su crecimiento rápido y facilidad de comercialización. La corteza y la madera contienen taninos. La madera, suave y fácil de trabajar, se emplea en postes, construcciones ligeras, ataúdes, embalajes, encofrados temporales, carpintería, muebles comunes, acabados interiores, cajas de fósforos, palillos, tableros aglomerados, instrumentos musicales y para la producción de pulpa y papel. También se utiliza como leña, y los frutos sirven de alimento para animales (INIA-OIMT, 1996; López Camacho et al., 2014; Peñuela y Jiménez, 2010)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_478_CANALETE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Crece rapidísimo hacia el cielo y se corona de flores moradas. El velocista del bosque.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "COPAL",
@@ -1184,8 +1354,13 @@
         "El exudado de los tallos de P. unifoliolatum se utiliza en el tratamiento de infecciones graves, favoreciendo su curación. P. heptaphyllum produce en sus frutos una resina líquida, amarilla y aceitosa, conocida como “aceite de sasafrás”, que se emplea para tratar la sífilis, úlceras, granos, hinchazones y dolores de cabeza (Boom, 1996; Delgado Sumar, 1985). Por su parte, el látex de P. nodulosum es empleado por los pueblos indígenas Shuar del Ecuador en el tratamiento de resfriados, y en Tarapacá se solidifica para usarse como incienso en sahumerios. En este contexto, su humo se considera útil para sacar maleficios, malas energías y los zancudos, y también tiene un papel en algunos rituales mágicos. El exudado de P. guianense se utiliza como plastificante (López Camacho et al., 2006; Peñuela y Jiménez, 2010; Pérez Arbeláez, 1990). Las semillas de P. amazonicum, P. guianense y P. nodulosum también son empleadas en la elaboración de artesanías. Y los frutos de P. nodulosum, P. unifoliolatum y P. glabrescens son consumidos como alimento por algunas comunidades (Boom, 1996; Delgado Sumar, 1985; Peñuela y Jiménez, 2010)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_504_COPAL",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Suelta una resina perfumada que se quema como incienso. El árbol que huele a ceremonia.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PARKIA CF. VAUPESIANA",
@@ -1200,8 +1375,13 @@
     ],
     "descripcion": "",
     "usos": {},
+    "modelo3d": null,
     "codigoQR": "PLANTA_505_PARKIA_CF_VAUPESIANA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus flores son pompones que cuelgan de largos hilos y de noche reciben a los murciélagos. ¡Discoteca nocturna!",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "ALMENDRO",
@@ -1236,8 +1416,13 @@
         "La madera de esta especie es dura y altamente durable, especialmente en contacto con el suelo, por lo que se utiliza en estructuras de viviendas, pisos y trabajos de ebanistería. Además, es apta para programas de reforestación y, en la costa atlántica, se emplea como árbol de sombra y cerca viva. Por su copa llamativa, el brillo y el contraste entre el follaje verde claro y oscuro, también se cultiva con fines ornamentales en patios, jardines y parques, donde proporciona sombra, actúa como cortavientos y destaca por sus flores atractivas. Tanto las semillas como la corteza contienen andirina, un alcaloide con propiedades laxantes, vermífugas y narcóticas, utilizadas tradicionalmente en decocciones. Sin embargo, deben emplearse con precaución, ya que son activamente tóxicos. En los Llanos Orientales, se aprovecha su efecto vermífugo mediante una maceración en frío de la corteza, que se consume en ayunas durante varios días (Ariza-Cortés et al., 2013; García Barriga, 1992; Varón y Morales, 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_518_ALMENDRO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Un gigante de madera durísima: le dicen «almanegra» por su corazón oscuro. Respeto total.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "GUAMO BLANCO",
@@ -1271,8 +1456,13 @@
         "En países como Guyana, Guayana Francesa y Surinam, esta especie tiene una relevancia adicional en la medicina tradicional. Su corteza se mastica o se hierve en decocción para tratar disentería, y se aplica machacada sobre úlceras. La corteza rallada y exprimida se utiliza como remedio para aliviar llagas bucales en bebés y el dolor causado por picaduras de hormigas. La corteza en infusión se utiliza para lavar úlceras; la corteza interna se pone sobre los abscesos para facilitar la expulsión del pus. Otros usos medicinales de la corteza incluyen el tratamiento de la esterilidad femenina, inflamaciones, llagas, heridas y cortes (Van Beusekom et al., 1987)."
       ]
     },
+    "modelo3d": "inga-pezizifera.glb",
     "codigoQR": "PLANTA_550_GUAMO_BLANCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus vainas largas guardan una pulpa blanca y dulce como algodón de azúcar. Postre natural de la selva.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "SANGRE DE GRADO",
@@ -1304,8 +1494,13 @@
         "Esta especie es utilizada en la medicina tradicional. La resina se emplea en forma de compresas para aliviar odontalgias y también se usa como cicatrizante, tanto de uso externo como interno. Entre los pueblos indígenas Shuar del Ecuador, su uso es común como cicatrizante y vigorizante (Delgado Sumar, 1985; SINCHI, 2016; Vásquez et al., 1997). En la Amazonía peruana se usa la resina para aliviar úlceras de la garganta y casos de amigdalitis, se recomienda hacer gárgaras con cuatro gotas de resina diluidas en medio vaso de agua tibia, repitiendo el procedimiento por las noches durante siete días. En caso de hemorragias, la resina se aplica directamente sobre la herida, actuando como hemostático natural. Además, se emplea como antiséptico vaginal mediante lavados con 40 gotas de resina diluidas en agua tibia, preferiblemente aplicados en horas de la noche (Mejía y Rengifo, 2000)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_566_SANGRE_DE_GRADO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Si se hiere su corteza, sangra una savia roja que ayuda a curar heridas. Un árbol con superpoderes de enfermería.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PALO DE GALLINAZO",
@@ -1338,8 +1533,13 @@
         "La madera aserrada de esta especie se utiliza en la fabricación de durmientes, muebles, trabajos de ebanistería y construcciones pesadas en general. Sin embargo, al ser cortada, desprende un olor fuerte y desagradable que en ocasiones genera rechazo entre los compradores (información tomada del documento compartido por la UNAL-Amazonia)."
       ]
     },
+    "modelo3d": "hymenolobium-pulcherrimum.glb",
     "codigoQR": "PLANTA_589_PALO_DE_GALLINAZO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Esconde semillas rojas y negras que se usan en collares de buena suerte. El talismán de la selva profunda.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PALO BREO",
@@ -1375,8 +1575,13 @@
         "La madera tiene aplicaciones diversas en construcción general (incluyendo puentes, embarcaciones no sumergidas y durmientes), carpintería, elaboración de muebles, pisos, divisiones, paneles contrachapados, chapas decorativas, artículos deportivos, herramientas agrícolas, e incluso en la producción de pulpa y papel, así como postes de cerca. En cuanto a los frutos, son consumidos por diversos animales silvestres, especialmente primates. Entre los Yukunas, el látex cocido se utiliza para confeccionar máscaras rituales del baile de tori. Además, la especie ha sido empleada como fuente de leña, y su savia se usa para impregnar cuerdas y mechas de antorchas, facilitando una combustión limpia, sin humo ni olores (Cordero y Boshier, 2003; López Camacho et al., 2006)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_606_PALO_BREO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su resina pegajosa sellaba las canoas para que no les entrara agua. Ingeniero naval desde siempre.",
+      "rareza": "epica"
+    }
   },
   {
     "nombre": "PAN DE ÁRBOL",
@@ -1411,8 +1616,13 @@
         "El fruto de esta especie tiene múltiples usos culinarios. Puede añadirse a sopas, prepararse en puré o hervirse como sustituto de la papa, yuca, ñame o plátano. Cuando está maduro, puede consumirse como pan, y se puede hornear o en tajadas fritas. También se emplea en la elaboración de dulces y pasteles. Sus semillas son comestibles y pueden ingerirse fritas, asadas o cocidas. Además, el fruto ha sido aprovechado como alimento para animales domésticos, especialmente cerdos y aves. En la Amazonía peruana, la raíz de esta especie se emplea en forma de cocimiento para realizar enjuagues bucales en el tratamiento de dolores dentales y el látex se usa para aliviar hernias, aplicándola directamente sobre la zona afectada mediante un algodón empapado, durante un periodo mínimo de 15 días (Mejía y Rengifo, 2000). En el noroeste de Guyana, el exudado del tallo se aplica en el tratamiento de abscesos, hematomas y esguinces. Las hojas, en decocción, se consumen para aliviar la tensión arterial. Asimismo, se elaboran preparados medicinales contra la hipertensión y la diabetes mediante la cocción conjunta de hojas de esta especie con Persea americana, Carica papaya y Annona muricata. También se emplean para tratar afecciones del tracto urinario. La madera es utilizada en la construcción de viviendas, canoas y artesanías. Por su parte, el látex, al ser calentado actúa como un adhesivo (García, 1992; Van Beusekom et al., 1987; Bendaña García, 2017)."
       ]
     },
+    "modelo3d": "artocarpus-altilis.glb",
     "codigoQR": "PLANTA_719_PAN_DE_ARBOL",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su fruto cocinado sabe a pan recién horneado. ¡Una panadería que crece en las ramas!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "ÁRBOL BENJAMÍN",
@@ -1445,8 +1655,13 @@
         "Se cultiva con fines ornamentales en fincas y zonas urbanas, especialmente en jardines, parques, avenidas y plazas de cabeceras municipales. También se utiliza en cercas vivas, como árbol de sombra y barrera contra el viento. Su látex puede provocar reacciones alérgicas. Esta especie es reconocida como el árbol nacional de Tailandia (Rodríguez-Mora et al., 2019; Varón y Morales, 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_819_ARBOL_BENJAMIN",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Famoso en oficinas y salas, pero aquí afuera muestra su verdadero tamaño. Raíces aventureras incluidas.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "MADROÑO",
@@ -1480,8 +1695,13 @@
         "El fruto del maduro, de sabor agridulce, se consume fresco tanto por personas como por primates. Su pulpa se utiliza para preparar jugos y jaleas. En Tarapacá, es una fruta valorada localmente, y en el noroeste de América es semicultivada. La infusión de la corteza se emplea tradicionalmente para tratar la fiebre. Además, por su porte y atractivo estético, también se cultiva como planta ornamental (López Camacho et al., 2006)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_895_MADRONO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus frutos amarillos son tan ácidos y dulces que te hacen fruncir la cara... y pedir otro.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "GUAMA",
@@ -1516,8 +1736,13 @@
         "Los frutos de esta especie, comestibles y apreciados tanto por humanos como por la fauna silvestre, se comercializan y consumen frescos, especialmente por su arilo dulce que rodea la semilla. Es comúnmente empleada como árbol de sombra en cafetales y otros sistemas agroforestales. Su madera, de peso medio, se aprovecha en construcciones y trabajos de ebanistería. Gracias a su rápido crecimiento y abundante producción de hojarasca, se considera una especie clave en la recuperación de suelos degradados, ya que favorece la regeneración natural. Además, se cultiva como ornamental en zonas urbanas, siendo adecuada para parques, avenidas amplias y áreas de protección de quebradas (Molina Franco y SAO, 2021; Varón y Morales, 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_915_GUAMA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Abres la vaina y aparecen nubecitas blancas y dulces. La merienda oficial de los recreos amazónicos.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "BACABA",
@@ -1552,8 +1777,13 @@
         "Los frutos se emplean para extraer aceite y preparar una bebida llamada “leche”. Las fibras del ráquis sirven para tejer canastos. Los jaibanás emberá usan las hojas que aún no han abierto en ceremonias de curación. Los tallos y hojas aportan materiales de construcción, y los fustes pueden funcionar como pilotes resistentes durante 7–10 años (Galeano y Bernal, 2010)."
       ]
     },
+    "modelo3d": "oenocarpus-minor.glb",
     "codigoQR": "PLANTA_929_BACABA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Palmera de racimos morados que se vuelven una bebida espesa y deliciosa. La prima golosa del asaí.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "PALETO",
@@ -1585,8 +1815,13 @@
         "Se han documentado usos maderables para Pterocarpus amazonum y Pterocarpus rohrii, especialmente en construcciones rurales. En el caso de P. rohrii, aunque su madera es semidura, de calidad intermedia y baja durabilidad, se emplea localmente. Además, su corteza interna, que se desprende en tiras largas, es apreciada por su utilidad como material de amarre (Reynel et al., 1990; SINCHI, 2016)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_933_PALETO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le dicen «tangarana» y en su tronco viven hormigas guardianas que no perdonan. ¡Mejor míralo y no lo toques!",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "MAMONCILLO",
@@ -1621,8 +1856,13 @@
         "El fruto es comestible, se consume fresco o procesado en jugos, dulces y conservas. Tiene algunos usos en medicina tradicional; la decocción de hojas con sal se emplea para tratar fiebres y trastornos nerviosos, mientras que el jugo macerado se usa en gárgaras contra dolores e infecciones de garganta. Con semillas tostadas y molidas se prepara un té o jarabe útil para aliviar la diarrea. La madera, aunque poco durable, es aprovechada en construcción, carpintería y ebanistería interior. Además, este árbol se cultiva por sus frutos, como sombra en jardines y solares, y por su valor ornamental, gracias a su altura, copa frondosa y el brillante verdor de sus hojas, lo que lo hace ideal para parques y caminos (Cordero y Boshier, 2003; Rodríguez-Mora et al., 2019)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_939_MAMONCILLO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Le quitas la cáscara verde y chupas la pulpa como un caramelo. Imposible comerse solo uno.",
+      "rareza": "comun"
+    }
   },
   {
     "nombre": "CHONTADURO",
@@ -1658,8 +1898,13 @@
         "Su principal aprovechamiento son los frutos comestibles, considerados uno de los alimentos más completos de América por su alto contenido de proteínas, grasas y vitaminas; su consumo impulsó el desarrollo de muchas culturas amerindias. Se ingieren cocidos o procesados en harina, jugos, dulces y bebidas fermentadas. En las zonas bajas y húmedas de Colombia constituyen un alimento básico para indígenas y campesinos, y por ello se cultivan en chagras y parcelas. También existen plantaciones comerciales para obtener palmito, muy apreciado por su sabor. Los tallos se emplean en construcciones y en la fabricación de herramientas, dardos y flechas; entre los Emberas sirven para tallar el bastón de los jaibanás. Las hojas tiernas, por su parte, se usan en la Amazonia como tinte verde para tejidos (Galeano y Bernal, 2010)."
       ]
     },
+    "modelo3d": "bactris-gasipaes.glb",
     "codigoQR": "PLANTA_968_CHONTADURO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Palmera con espinas y racimos naranjas. Con sal y miel, el snack más amado de la región.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "UBO",
@@ -1693,8 +1938,13 @@
         "La corteza tiene múltiples usos medicinales. Se emplea contra el paludismo, las úlceras intestinales, la leishmaniasis (en forma de ceniza obtenida al tostar la corteza molida) y como cicatrizante, uso reportado también en Tarapacá. Entre los Tikuna de Colombia, la decocción de la corteza se usa como calmante y hemostático en casos de diarrea, metrorragia y polimenorrea. Además, se considera anticonceptiva, aunque con el riesgo de inducir esterilidad si se consume de forma prolongada. En la Amazonía peruana, la resina de la corteza fresca se aplica directamente sobre heridas, mientras que la corteza seca se muele y se espolvorea sobre la piel limpia. También se cocina junto con cortezas de cedro, casho y guayaba para realizar lavados vaginales antisépticos. En caso de mordedura de serpiente, la corteza hervida se coloca caliente sobre la herida, y si se presentan llagas, se aplica rallada directamente sobre la piel. La decocción de la raíz se utiliza en baños vaginales para tratar infecciones y hemorroides, y bebida para combatir la diarrea. Por último, la madera se aprovecha en la fabricación de chapas, triplex, encofrados, aeromodelismo y maquetas (INIA-OIMT, 1996; López Camacho et al., 2006; Mejía y Rengifo, 2000)."
       ]
     },
+    "modelo3d": "mangifera-indica.glb",
     "codigoQR": "PLANTA_978_UBO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Sus frutas amarillas caen al suelo y atraen a todo el vecindario animal. Fiesta garantizada bajo su sombra.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "ALMENDRO",
@@ -1729,8 +1979,13 @@
         "El fruto se consume directamente, de manera similar a una almendra, y su aceite se aprovecha en la preparación de emulsiones con fines pectorales. Tanto las hojas como la corteza, ricas en tanoides, se utilizan en decocciones para tratar fiebres gástricas y biliosas, así como diarreas y disenterías. Además, la corteza y las almendras son empleadas tradicionalmente en el tratamiento del asma. Este árbol se cultiva con fines ornamentales en parques y avenidas de zonas cálidas, donde se valora por su copa en forma de sombrilla que proporciona sombra y frescura en espacios públicos, y por su follaje de color rojo intenso previo a su caída (García Barriga, 1992; Pérez Arbeláez, 1990; Stace, 2010). En la Amazonia peruana se usa la corteza en infusión para aliviar odontalgias, mientras que las hojas se usan para tratar el reumatismo y como hipotensor para ayudar a reducir la presión arterial (Mejía y Rengifo, 2000). Su madera, de dureza moderada y tonalidades entre amarillo y marrón, se utiliza en ebanistería y para construcciones livianas (Varón y Morales, 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_985_ALMENDRO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Los roedores esconden sus semillas para después... y se les olvida dónde. Así, sin querer, plantan nuevos árboles.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "LIVISTONA SP. 1",
@@ -1745,8 +2000,13 @@
     ],
     "descripcion": "",
     "usos": {},
+    "modelo3d": null,
     "codigoQR": "PLANTA_995_LIVISTONA_SP_1",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Palmera de hojas en abanico gigante. Si hace calor, ella ya está lista para echarte aire.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "ANDIROBA",
@@ -1780,8 +2040,13 @@
         "Esta especie es empleada en la medicina tradicional. La corteza contiene un alcaloide llamado carapina, empleado para tratar disentería, diarrea y reumatismo. Asimismo, las decocciones de corteza y semillas se utilizan para aliviar la tos, picaduras de insectos, malaria, quemaduras e inflamaciones, además de actuar como cicatrizante y desinfectante. En Brasil, las hojas y la corteza se preparan en infusión para el tratamiento de enfermedades crónicas de la piel, fiebre y parásitos intestinales. De las semillas se extrae un aceite usado para iluminación doméstica y en la elaboración de jabón. En cuanto a su aprovechamiento maderable, la madera es altamente valorada en carpintería y ebanistería, destacándose en la fabricación de muebles, revestimientos interiores, construcciones livianas, carretería, embarcaciones, pisos tipo parquet y gabinetes. También se emplea en la producción de vigas, mástiles, chapas, molduras, crucetas, postes, pulpa e incluso instrumentos musicales (López et al., 2006; Woods of Colombia [WWF], 2013)."
       ]
     },
+    "modelo3d": null,
     "codigoQR": "PLANTA_999_ANDIROBA",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "De sus semillas sale un aceite que espanta mosquitos y suaviza la piel. El repelente natural de la casa.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "PALO DE ARCO",
@@ -1816,8 +2081,13 @@
         "La madera se utiliza en tornería, construcción de casas, embarcaciones, muebles, cercas, carrocerías, pisos industriales, durmientes, artesanías finas, ensambladuras y mangos para herramientas. Es una especie muy valorada como ornamental y se ha plantado en separadores viales y parques. Además, se emplea en sistemas silvopastoriles o como cercas vivas (Cordero y Boshier, 2003)."
       ]
     },
+    "modelo3d": "handroanthus-chrysanthus.glb",
     "codigoQR": "PLANTA_1004_PALO_DE_ARCO",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Cuando florece pinta de amarillo todo a su alrededor. Brilla más que el sol de mediodía.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "NAIDÍ",
@@ -1852,8 +2122,13 @@
         "La especie conocida como naidí cumple múltiples funciones dentro de las comunidades del Pacífico colombiano. Sus frutos se utilizan para preparar bebidas conocidas como el pepiao y el cernido de naidí. Además, se consume el palmito o corazón de palma, extraído del cogollo o parte más tierna del tallo. En cuanto a su uso en la construcción, los tallos del naidí se emplean en la edificación de puentes, paredes, corrales y azoteas; también se utilizan como leña o en la fabricación de trampas para capturar camarones de río. Las hojas, aunque de manera ocasional, se usan para techar viviendas (Bernal y Galeano, 2013)."
       ]
     },
+    "modelo3d": "euterpe-oleracea.glb",
     "codigoQR": "PLANTA_1006_NAIDI",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Palmera que crece en familia, con varios tallos juntitos. Sus frutos morados también dan un jugo lleno de energía.",
+      "rareza": "rara"
+    }
   },
   {
     "nombre": "POMARROSO",
@@ -1887,7 +2162,12 @@
       ]
     },
     "foto_defecto": "pomarosa.jpeg",
+    "modelo3d": "syzygium-malaccense.glb",
     "codigoQR": "PLANTA_1027_MYRTACEAE",
-    "bloqueado": false
+    "bloqueado": false,
+    "info_juego": {
+      "descripcion": "Su fruta huele y sabe a rosas. Comerla es como darle un mordisco a un perfume.",
+      "rareza": "rara"
+    }
   }
 ]

@@ -95,6 +95,28 @@ class QRScannerHandler {
         }
       });
     } else {
+      // No es una planta: puede ser el id de un accesorio del jardín con "desbloqueo_qr" (jardin-ui.js)
+      const accesorio = typeof window.desbloquearAccesorioQR === 'function'
+        ? await window.desbloquearAccesorioQR(qrCode)
+        : null;
+      if (accesorio) {
+        await this.stopScanner();
+        this.closeModal();
+        Swal.fire({
+          title: accesorio.nuevo ? '¡Accesorio desbloqueado!' : 'Ya lo tenías',
+          text: accesorio.nuevo
+            ? `${accesorio.nombre} ya está en tu inventario. Póntelo a un árbol en "Mi jardín".`
+            : `${accesorio.nombre} ya se había canjeado con este código.`,
+          icon: accesorio.nuevo ? 'success' : 'info',
+          confirmButtonText: 'Ir al jardín',
+          showCancelButton: true,
+          cancelButtonText: 'Cerrar',
+          confirmButtonColor: '#027333'
+        }).then((r) => {
+          if (r.isConfirmed && typeof window.abrirJardin === 'function') window.abrirJardin();
+        });
+        return;
+      }
       this.showErrorMessage(resultData.message);
       // Pausar scanner después de detectar un error
       await this.stopScanner();
