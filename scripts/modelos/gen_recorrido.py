@@ -20,6 +20,7 @@ import gen_aula_tic2
 import gen_auditorio
 import gen_banos
 import gen_biblioteca
+import gen_calles
 import gen_complementarios
 import gen_direccion
 import gen_imani
@@ -30,6 +31,7 @@ import gen_sala_posgrado
 import gen_sala_profesores
 import gen_sala_sistemas1
 import gen_sala_sistemas2
+import gen_sendero
 import gen_tienda
 from comun import CUMBRERA, HUMEDALES, OFICINA_TEC, Escena, distribucion, nombre_centro, nombre_inicio
 
@@ -46,7 +48,7 @@ for b, cx, cz, _ in dist.values():
     r = max(b.RX1 - b.RX0, b.RZ1 - b.RZ0) / 2
     xs += [cx - r, cx + r]
     zs += [cz - r, cz + r]
-for x0, x1, z0, z1 in gen_complementarios.extensiones():
+for x0, x1, z0, z1 in gen_complementarios.extensiones() + [gen_sendero.extension(), gen_calles.extension()]:
     xs += [x0, x1]
     zs += [z0, z1]
 esc.caja("pasto", min(xs) - 10, max(xs) + 10, -0.05, 0.0, min(zs) - 12, max(zs) + 12)
@@ -84,6 +86,12 @@ gen_oficina_tec.colocar(esc, dist, inicio=nombre_inicio(OFICINA_TEC), terreno=Fa
 # Estructuras más sencillas (solo exterior), ver gen_complementarios.py
 gen_complementarios.colocar_todos(esc)
 esc.colocar(0.0, 0.0, "sur")
+
+# Sendero ecológico con sus 14 estaciones (mismo trazado que en el mapa 2D)
+gen_sendero.colocar(esc)
+
+# Vía de afuera y calle interna (calcadas de la imagen del mapa)
+gen_calles.colocar(esc)
 
 # Partida por defecto: la del auditorio
 inicio_def = dict(next(n for n in esc.nodos if n["name"] == nombre_inicio("Auditorio")))

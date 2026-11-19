@@ -28,7 +28,7 @@ const ALTURAS_CHOQUE = [0.45, 1.0, 1.5];  // alturas (sobre los pies) donde se r
 
 // Mundo con todos los edificios en su sitio (scripts/modelos/gen_recorrido.py)
 // ?v=: súbelo cada vez que regeneres el mundo, para que el navegador no use una copia vieja
-const MUNDO = '/static/modelos/recorrido.glb?v=19';
+const MUNDO = '/static/modelos/recorrido.glb?v=22';
 
 let THREE = null;
 let GLTFLoader = null;
@@ -188,7 +188,7 @@ function crearEntorno(scene, modelo, caja, obstaculos, evitar) {
   };
 
   // Árboles en instancias (pocas llamadas de dibujo aunque sean muchos)
-  const MAX = 160;
+  const MAX = 450;   // el sendero agranda el mundo a ~300 x 430 m: más árboles para llenarlo
   const matCopas = [0x2f6b26, 0x3d7d2c, 0x285c22].map((c) => new THREE.MeshLambertMaterial({ color: c, flatShading: true }));
   const troncos = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.18, 0.28, 3.2, 7),
     new THREE.MeshLambertMaterial({ color: 0x5a3a1f }), MAX);
@@ -197,7 +197,7 @@ function crearEntorno(scene, modelo, caja, obstaculos, evitar) {
   const mat = new THREE.Matrix4(), q = new THREE.Quaternion(), esc = new THREE.Vector3(), eje = new THREE.Vector3(0, 1, 0);
   let semilla = 7, puestos = 0;
   const azar = () => ((semilla = (semilla * 9301 + 49297) % 233280) / 233280);
-  for (let intento = 0; intento < 2000 && puestos < MAX; intento++) {
+  for (let intento = 0; intento < 8000 && puestos < MAX; intento++) {
     const x = x0 + azar() * nx * CEL, z = z0 + azar() * nz * CEL;
     const escala = 0.8 + azar() * 0.7;
     if (!libre(x, z)) continue;
@@ -346,7 +346,7 @@ function controlesAereos(raiz, estado) {
     o.objetivo.x += (-dx * c - dy * s) * k;
     o.objetivo.z += (dx * s - dy * c) * k;
   };
-  const acercar = (factor) => { o.dist = Math.max(8, Math.min(160, o.dist * factor)); };
+  const acercar = (factor) => { o.dist = Math.max(8, Math.min(320, o.dist * factor)); };   // 320: cabe todo el sendero
 
   // Táctil
   let toques = new Map(), previo = null;
@@ -480,7 +480,7 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
     sol.position.set(20, 30, 15);
     scene.add(sol);
 
-    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.05, 300);
+    const camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.05, 900);
     scene.add(gltf.scene);
 
     // Todo lo que tiene el modelo cuenta como obstáculo y como piso

@@ -51,6 +51,30 @@ def a_metros(lat, lng):
     return (lng - LNG0) * M_POR_LNG, -(lat - LAT0) * M_POR_LAT
 
 
+def camino(esc, puntos, mat, ancho, y, trozo=2.0, lados=8):
+    """Franja plana de `ancho` m a la altura y por una línea de puntos (x, z) del mundo, con
+    un disco en cada quiebre para que las curvas no queden con muescas. Va partida en
+    pedazos de `trozo` m o menos: así los árboles del recorrido (que se apartan de lo
+    construido según la caja de cada triángulo) y su rejilla de choques no ven cajas
+    enormes en los tramos largos en diagonal. La escena debe estar en su sistema base."""
+    m = ancho / 2
+    for a, b in zip(puntos, puntos[1:]):
+        dx, dz = b[0] - a[0], b[1] - a[1]
+        largo = math.hypot(dx, dz)
+        if largo < 1e-6:
+            continue
+        nx, nz = -dz / largo * m, dx / largo * m          # medio ancho, de lado
+        n = max(1, math.ceil(largo / trozo))
+        for i in range(n):
+            p = (a[0] + dx * i / n, a[1] + dz * i / n)
+            q = (a[0] + dx * (i + 1) / n, a[1] + dz * (i + 1) / n)
+            esc.poligono(mat, [[p[0] + nx, y, p[1] + nz], [q[0] + nx, y, q[1] + nz],
+                               [q[0] - nx, y, q[1] - nz], [p[0] - nx, y, p[1] - nz]])
+    for c in puntos:
+        esc.poligono(mat, [[c[0] + m * math.cos(2 * math.pi * k / lados), y,
+                            c[1] - m * math.sin(2 * math.pi * k / lados)] for k in range(lados)])
+
+
 # Cubiertas medidas en el plano vectorial (mismo PDF), pasadas a coordenadas del mapa:
 # (lat_min, lat_max, lng_min, lng_max). Mandan sobre el polígono del mapa, que se dibujó a
 # mano y suele quedar ~1 m más grande. El comentario dice el número de bloque del Plan
@@ -197,6 +221,7 @@ MATERIALES = {
     "verde_teal": ((0.0, 0.24, 0.12), 0.0, 0.85),
     "lona_cruda": ((0.52, 0.40, 0.24), 0.0, 0.9),
     "tierra":     ((0.20, 0.12, 0.06), 0.0, 1.0),
+    "sendero":    ((0.34, 0.22, 0.11), 0.0, 1.0),   # tierra apisonada del sendero ecológico
     # Sala de posgrado (foto sala_sistemas_posgrado.png): muros vinotinto
     "vino":       ((0.25, 0.015, 0.03), 0.0, 0.85),
     # Oficina de Asesoría y Orientación Tecnológica: cajas de cartón y luces de los equipos
