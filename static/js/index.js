@@ -151,6 +151,7 @@ searchBox.addEventListener("click", (e) => {
 
 // Función para mostrar detalles del edificio seleccionado
 function mostrarDetalle(lugar) {
+  if (mascota) mascota.lugar(lugar.nombre);   // el mono enseña las palabras de este lugar
   const fotoUrl = lugar.foto ? `/static/fotos-edificios/${lugar.foto}` : null;
 
   detailPhoto.innerHTML = fotoUrl
@@ -389,12 +390,14 @@ function filtrarLugares() {
   if (term === "") {
     searchResults.classList.remove("active");
     searchResults.innerHTML = "";
+    if (mascota) mascota.buscando("", []);
     return;
   }
 
   const filtrados = lugares.filter((lugar) =>
     lugar.nombre.toLowerCase().includes(term),
   );
+  if (mascota) mascota.buscando(searchBox.value.trim(), filtrados);
 
   searchResults.innerHTML = "";
 
@@ -489,39 +492,187 @@ function etiquetaLugar(lugar) {
   return caja;
 }
 
-// Saludo en el mapa: recorre las fichas de bienvenida, una lengua cada 4 s
-function iniciarBienvenida(saludos) {
-  const caja = document.getElementById("bienvenidaLenguas");
-  const texto = document.getElementById("bienvenidaTexto");
-  const detalle = document.getElementById("bienvenidaDetalle");
-  const cerrar = document.getElementById("bienvenidaCerrar");
-  if (!caja || !saludos.length) return;
-  try {
-    if (localStorage.getItem("bienvenidaLenguasCerrada") === "1") return;
-  } catch (e) { /* sin almacenamiento: se muestra igual */ }
+// Mono ayudante: cuelga de cabeza junto al buscador y hace de "mini IA" para quien entra.
+// - Al abrir la app se presenta, y el saludo se queda hasta el primer clic o toque en la
+//   página; desde ahí enseña palabras: los saludos y después las palabras de los lugares del
+//   campus, en orden al azar (cada MASCOTA_CADA ms).
+// - Al escribir en el buscador "piensa" y dice cuántos lugares encontró, con una palabra del
+//   primero; al abrir un lugar enseña sus palabras.
+// - Tocar al mono: pone el cursor en el buscador. Tocar el globo: otra palabra.
+// - La X lo oculta hasta la próxima vez que se abra la app; sin uso, el globo se esconde a
+//   los MASCOTA_GLOBO_HASTA ms y el mono se queda colgado.
+// Solo muestra palabras de data/lenguas.json tal cual: no compone frases en las lenguas.
+const MASCOTA_CADA = 7000;
+const MASCOTA_GLOBO_HASTA = 45000;
+let mascota = null;   // { buscando(term, filtrados), lugar(nombre) } cuando ya cargó
+
+function iniciarMascota(datos) {
+  const raiz = document.getElementById("mascota");
+  if (!raiz) return;
+  const globo = document.getElementById("mascotaGlobo");
+  const mensaje = document.getElementById("mascotaMensaje");
+  const lugar = document.getElementById("mascotaLugar");
+  const texto = document.getElementById("mascotaTexto");
+  const detalle = document.getElementById("mascotaDetalle");
+  const figura = document.getElementById("mascotaFigura");
+  const img = document.getElementById("mascotaImg");
+  const cerrar = document.getElementById("mascotaCerrar");
+  const delLugar = datos.lugares || {};
+
+  // Saludos primero; luego las palabras de cada lugar, mezcladas
+  const delCampus = [];
+  Object.entries(delLugar).forEach(([nombre, entradas]) =>
+    entradas.forEach((e) => delCampus.push({ e, lugar: nombre })));
+  for (let i = delCampus.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [delCampus[i], delCampus[j]] = [delCampus[j], delCampus[i]];
+  }
+  const general = (datos.bienvenida || []).map((e) => ({ e, lugar: "" })).concat(delCampus);
+  let lista = general;     // lo que va enseñando ahora (todo, o las palabras de un lugar)
   let i = 0;
-  const pintar = () => {
-    const s = saludos[i % saludos.length];
-    texto.textContent = s.texto;
-    detalle.textContent = `${s.significado} · ${s.lengua}`;
-    caja.title = fuenteLengua(s);
+
+  // Por si falta la imagen (pudo fallar antes de que corriera este código)
+  const sinImagen = () => {
+    if (!img.isConnected) return;
+    const emoji = document.createElement("span");
+    emoji.className = "mascota-emoji";
+    emoji.setAttribute("aria-hidden", "true");
+    emoji.textContent = "🐒";
+    img.replaceWith(emoji);
+  };
+  if (img.complete && !img.naturalWidth) sinImagen();
+  else img.addEventListener("error", sinImagen);
+
+  // Pinta el globo: un mensaje (opcional) y una palabra (opcional)
+  const decir = ({ msg = "", palabra = null, pensando = false } = {}) => {
+    mensaje.textContent = msg;
+    mensaje.classList.toggle("mascota-pensando", pensando);
+    lugar.textContent = palabra ? palabra.lugar : "";
+    texto.textContent = palabra ? palabra.e.texto : "";
+    texto.lang = palabra && palabra.e.lengua === "Tikuna" ? "tca" : "";
+    detalle.textContent = palabra ? `${palabra.e.significado} · ${palabra.e.lengua}` : "";
+    globo.title = palabra ? fuenteLengua(palabra.e) : "";
+    globo.classList.remove("cambia");
+    void globo.offsetWidth;            // reinicia la animación del cambio
+    globo.classList.add("cambia");
+  };
+  const siguiente = (msg = "") => {
+    if (!lista.length) return;
+    decir({ msg, palabra: lista[i % lista.length] });
     i++;
   };
-  pintar();
-  caja.hidden = false;
-  const reloj = setInterval(pintar, 4000);
+
+  let reloj = null;
+  let esconder = null;
+  let pausa = null;
+  // Abre el globo y (re)arranca el cambio de palabras; `tras` = ms antes de la primera
+  const abrirGlobo = (tras = MASCOTA_CADA) => {
+    if (raiz.hidden) return;
+    globo.classList.remove("oculto");
+    clearInterval(reloj);
+    clearTimeout(pausa);
+    pausa = setTimeout(() => {
+      siguiente();
+      reloj = setInterval(() => siguiente(), MASCOTA_CADA);
+    }, tras);
+    clearTimeout(esconder);
+    esconder = setTimeout(() => {
+      globo.classList.add("oculto");
+      clearInterval(reloj);
+      clearTimeout(pausa);
+    }, MASCOTA_GLOBO_HASTA);
+  };
+  const saltar = () => {
+    figura.classList.remove("salta");
+    void figura.offsetWidth;
+    figura.classList.add("salta");
+  };
+
+  figura.addEventListener("click", () => {
+    saltar();
+    decir({ msg: "¿Qué lugar del campus buscas? Escríbelo en el buscador y te ayudo." });
+    abrirGlobo();
+    searchBox.focus();
+  });
+  figura.addEventListener("animationend", (ev) => {
+    if (ev.animationName === "mascota-salta") figura.classList.remove("salta");
+  });
+  globo.addEventListener("click", (ev) => {
+    if (ev.target === cerrar) return;
+    siguiente();
+    abrirGlobo();
+  });
   cerrar.addEventListener("click", () => {
     clearInterval(reloj);
-    caja.hidden = true;
-    try { localStorage.setItem("bienvenidaLenguasCerrada", "1"); } catch (e) { /* nada */ }
+    clearTimeout(esconder);
+    clearTimeout(pausa);
+    raiz.hidden = true;
   });
+
+  // Ganchos para el buscador y las tarjetas de lugar
+  let respuesta = null;
+  mascota = {
+    buscando(term, filtrados) {
+      if (raiz.hidden) return;
+      clearTimeout(respuesta);
+      if (!term) {                      // borró la búsqueda: vuelve a enseñar de todo
+        lista = general;
+        abrirGlobo(1500);
+        return;
+      }
+      decir({ msg: "Buscando", pensando: true });
+      clearInterval(reloj);
+      clearTimeout(pausa);
+      respuesta = setTimeout(() => {
+        if (!filtrados.length) {
+          decir({ msg: `No encontré «${term}». Prueba con otro nombre, como «biblioteca» o «maloca».` });
+        } else {
+          const n = filtrados.length;
+          const primero = filtrados.find((l) => (delLugar[l.nombre] || []).length) || null;
+          const e = primero && delLugar[primero.nombre][0];
+          decir({
+            msg: n === 1 ? `Encontré 1 lugar: ${filtrados[0].nombre}. Tócalo en la lista.`
+              : `Encontré ${n} lugares. Toca uno en la lista.`,
+            palabra: e ? { e, lugar: primero.nombre } : null,
+          });
+        }
+        abrirGlobo(MASCOTA_CADA * 2);
+      }, 600);
+    },
+    lugar(nombre) {
+      if (raiz.hidden) return;
+      clearTimeout(respuesta);
+      const entradas = delLugar[nombre] || [];
+      if (!entradas.length) {
+        lista = general;
+        decir({ msg: `Abriste ${nombre}. Todavía no tengo palabras en lengua para este lugar.` });
+        abrirGlobo();
+        return;
+      }
+      lista = entradas.map((e) => ({ e, lugar: nombre }));
+      i = 0;
+      siguiente(`Palabras para ${nombre}:`);
+      abrirGlobo();
+    },
+  };
+
+  // Presentación: se queda quieta hasta el primer clic o toque en cualquier parte (o hasta
+  // que se use el buscador, que ya cambia el globo); entonces empiezan las palabras
+  decir({ msg: "¡Hola! Te ayudo a encontrar lugares del campus y te enseño palabras en lenguas amazónicas." });
+  raiz.hidden = false;
+  const primerClic = (ev) => {
+    if (raiz.contains(ev.target) || ev.target === searchBox) return;  // esos ya responden solos
+    document.removeEventListener("pointerdown", primerClic, true);
+    abrirGlobo();
+  };
+  document.addEventListener("pointerdown", primerClic, true);
 }
 
 fetch("/data/lenguas.json")
   .then((res) => res.json())
   .then((datos) => {
     lenguas = datos;
-    iniciarBienvenida(datos.bienvenida || []);
+    iniciarMascota(datos);
   })
   .catch((err) => console.warn("No se pudieron cargar las lenguas:", err));
 

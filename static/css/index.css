@@ -398,6 +398,12 @@
       .search-container .search-results-dropdown {
           width: calc(100% - 66px);
       }
+
+      /* Buscador al centro, junto con el mono que cuelga a su derecha: el conjunto
+         (buscador 420 + mono y su globo ~350 px) queda centrado en la pantalla */
+      .search-container {
+          left: max(20px, calc(50% - 386px));
+      }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -4560,53 +4566,234 @@
       margin-top: 10px;
   }
 
-  /* Saludo en el mapa: una lengua a la vez, se cierra con la X */
-  .bienvenida-lenguas {
-      position: fixed;
-      left: 50%;
-      bottom: 18px;
-      transform: translateX(-50%);
-      z-index: 1000;
+  /* Mono ayudante, colgado de cabeza junto al buscador (va dentro de .search-container).
+     PC: cuelga del borde de arriba de la pantalla, a la derecha del botón del QR, y su globo
+     sale a la derecha. Celular: cuelga debajo del botón del menú y el globo sale a la izquierda.
+     z-index -1: queda detrás de los botones y de la lista de resultados del buscador. */
+  .mascota {
+      --mono-ancho: 86px;
+      --mono-alto: 110px;
+      position: absolute;
+      top: -20px;                      /* el buscador está a 20 px del borde de arriba */
+      left: calc(100% + 12px);
+      z-index: -1;
       display: flex;
-      align-items: center;
-      gap: 10px;
-      max-width: calc(100vw - 32px);
-      box-sizing: border-box;
-      padding: 8px 8px 8px 16px;
-      background: var(--blanco);
-      border-radius: 999px;
-      box-shadow: var(--sombra-moderna);
+      align-items: flex-start;         /* el mono cuelga desde arriba; el globo, a la altura de su cara */
+      gap: 4px;
+      width: max-content;
+      max-width: calc(100vw - 100% - 44px);
+      pointer-events: none;            /* solo el globo y el mono reciben toques */
+      animation: mascota-baja 0.9s cubic-bezier(0.2, 1.4, 0.4, 1) both;
   }
 
-  .bienvenida-lenguas[hidden] {
+  .mascota[hidden] {
       display: none;
   }
 
-  .bienvenida-lenguas .texto-lengua {
-      font-size: 17px;
+  .mascota-figura {
+      flex: none;
+      width: var(--mono-ancho);
+      height: var(--mono-alto);
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      pointer-events: auto;
+      transform-origin: 50% 0;         /* se mece desde donde está agarrado */
+      animation: mascota-mece 3.4s ease-in-out infinite;
+      -webkit-tap-highlight-color: transparent;
+  }
+
+  .mascota-figura img,
+  .mascota-figura .mascota-emoji {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: 50% 0;
+      filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.25));
+      user-select: none;
+  }
+
+  /* Por si falta la imagen */
+  .mascota-figura .mascota-emoji {
+      font-size: 62px;
+      line-height: var(--mono-alto);
+      text-align: center;
+  }
+
+  .mascota-figura.salta {
+      animation: mascota-salta 0.5s ease;
+  }
+
+  .mascota-figura:focus-visible {
+      outline: 3px solid var(--verde-institucional);
+      outline-offset: 2px;
+      border-radius: 12px;
+  }
+
+  .mascota-globo {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+      max-width: 250px;
+      margin-top: 36px;
+      padding: 10px 34px 10px 14px;
+      background: var(--blanco);
+      border-radius: 16px;
+      box-shadow: var(--sombra-moderna);
+      cursor: pointer;
+      pointer-events: auto;
+      transition: opacity 0.25s, transform 0.25s;
+  }
+
+  /* Colita del globo, hacia la cara del mono */
+  .mascota-globo::after {
+      content: "";
+      position: absolute;
+      left: -7px;
+      top: 26px;
+      border: 8px solid transparent;
+      border-right-color: var(--blanco);
+      border-left: 0;
+  }
+
+  .mascota-globo.oculto {
+      opacity: 0;
+      transform: translateX(-10px) scale(0.9);
+      pointer-events: none;
+  }
+
+  .mascota-globo.cambia {
+      animation: mascota-palabra 0.35s ease;
+  }
+
+  .mascota-mensaje {
+      font-size: 13px;
+      line-height: 1.35;
+      color: var(--gris-oscuro, #333);
+  }
+
+  .mascota-lugar {
+      margin-top: 2px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gris-medio);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+  }
+
+  .mascota-globo .texto-lengua {
+      font-size: 18px;
       font-weight: 700;
       color: var(--verde-institucional);
-      white-space: nowrap;
+      overflow-wrap: anywhere;
   }
 
-  .bienvenida-lenguas .bienvenida-detalle {
+  .mascota-detalle {
       font-size: 12px;
       color: var(--gris-medio);
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
   }
 
-  .bienvenida-lenguas button {
-      flex: none;
-      width: 28px;
-      height: 28px;
+  .mascota-mensaje:empty,
+  .mascota-lugar:empty,
+  .mascota-globo .texto-lengua:empty,
+  .mascota-detalle:empty {
+      display: none;
+  }
+
+  /* "Pensando": tres puntos mientras busca */
+  .mascota-pensando::after {
+      content: "";
+      display: inline-block;
+      width: 1.2em;
+      text-align: left;
+      animation: mascota-puntos 0.9s steps(4) infinite;
+  }
+
+  .mascota-cerrar {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
       border: none;
       border-radius: 50%;
       background: var(--gris-claro);
       color: var(--gris-medio);
-      font-size: 14px;
+      font-size: 12px;
+      line-height: 1;
       cursor: pointer;
+  }
+
+  /* Celular: debajo del botón del menú, el globo a la izquierda */
+  @media (max-width: 767px) {
+      .mascota {
+          --mono-ancho: 62px;
+          --mono-alto: 80px;
+          top: calc(100% - 14px);      /* agarrado de la parte de abajo del botón del menú */
+          left: auto;
+          right: -7px;
+          flex-direction: row-reverse;
+          max-width: calc(100vw - 24px);
+      }
+
+      .mascota-globo {
+          max-width: min(250px, calc(100vw - 90px));
+          margin-top: 22px;
+      }
+
+      .mascota-globo::after {
+          left: auto;
+          right: -7px;
+          border-right-color: transparent;
+          border-left: 8px solid var(--blanco);
+          border-right: 0;
+      }
+
+      .mascota-globo.oculto {
+          transform: translateX(10px) scale(0.9);
+      }
+  }
+
+  @keyframes mascota-baja {
+      from { transform: translateY(-120%); }
+      to   { transform: none; }
+  }
+
+  @keyframes mascota-mece {
+      0%, 100% { transform: rotate(-5deg); }
+      50%      { transform: rotate(5deg); }
+  }
+
+  @keyframes mascota-salta {
+      0%, 100% { transform: none; }
+      30%      { transform: translateY(14px) rotate(-8deg); }
+      60%      { transform: translateY(-4px) rotate(6deg); }
+  }
+
+  @keyframes mascota-palabra {
+      from { opacity: 0.2; transform: translateY(4px); }
+      to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes mascota-puntos {
+      0%   { content: ""; }
+      25%  { content: "."; }
+      50%  { content: ".."; }
+      75%  { content: "..."; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+      .mascota,
+      .mascota-figura,
+      .mascota-figura.salta,
+      .mascota-globo.cambia,
+      .mascota-pensando::after {
+          animation: none;
+      }
   }
 
   .leaflet-tooltip .texto-lengua {
