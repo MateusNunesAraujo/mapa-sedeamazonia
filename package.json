@@ -11,7 +11,8 @@
     "sync-app": "node build.js sync-app",
     "sync": "npx cap sync",
     "build": "npx cap build android",
-    "update": "npx cap update"
+    "update": "npx cap update",
+    "build-web": "node build.js build-web"
   },
   "dependencies": {
     "@capacitor/local-notifications": "^5.0.8",

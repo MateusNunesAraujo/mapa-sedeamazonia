@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
 /**
- * Script para inicializar y compilar la aplicación para mobile
+ * Script para inicializar y compilar la aplicación para mobile y web
  * Uso: node build.js [comando]
- * Comandos: init, build, sync, serve
+ * Comandos: init, add-android, sync, sync-app, build-web, build, serve, dev
  */
 
 const fs = require('fs');
@@ -19,6 +19,33 @@ function run(command) {
       else resolve(stdout + stderr);
     });
   });
+}
+
+// Copia una carpeta completa (con subcarpetas) de src a dest
+function copyDir(src, dest) {
+  if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  for (const entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    entry.isDirectory() ? copyDir(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
+  }
+}
+
+// Arma www/ desde cero con lo necesario para la app (lo usan la web en Netlify y la APK)
+function prepararWww() {
+  // www/ se regenera completa: así no quedan archivos que ya se borraron o movieron en el código
+  // (por ejemplo la antigua static/fotos/), que de otro modo terminarían también en la APK
+  const wwwDir = path.join(__dirname, 'www');
+  console.log('🧹 Limpiando www/...');
+  fs.rmSync(wwwDir, { recursive: true, force: true });
+  fs.mkdirSync(wwwDir, { recursive: true });
+
+  fs.copyFileSync(path.join(__dirname, 'templates', 'index.html'), path.join(wwwDir, 'index.html'));
+  console.log('📂 Copiando static...');
+  copyDir(path.join(__dirname, 'static'), path.join(wwwDir, 'static'));
+  console.log('📂 Copiando data...');
+  copyDir(path.join(__dirname, 'data'), path.join(wwwDir, 'data'));
 }
 
 async function main() {
@@ -42,30 +69,16 @@ async function main() {
         console.log('✅ Archivos sincronizados');
         break;
 
+      case 'build-web':
+        // Solo arma www/, sin Capacitor. Es el comando que usa Netlify.
+        console.log('🌐 Preparando www/ para la web...');
+        prepararWww();
+        console.log('✅ www/ lista para publicar');
+        break;
+
       case 'sync-app':
         console.log('📦 Preparando archivos de desarrollo para móvil...');
-        const copyDir = (src, dest) => {
-          if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
-          let entries = fs.readdirSync(src, { withFileTypes: true });
-          for (let entry of entries) {
-            let srcPath = path.join(src, entry.name);
-            let destPath = path.join(dest, entry.name);
-            entry.isDirectory() ? copyDir(srcPath, destPath) : fs.copyFileSync(srcPath, destPath);
-          }
-        };
-        
-        // www/ se regenera completa: así no quedan archivos que ya se borraron o movieron en el código
-        // (por ejemplo la antigua static/fotos/), que de otro modo terminarían también en la APK
-        const wwwDir = path.join(__dirname, 'www');
-        console.log('🧹 Limpiando www/...');
-        fs.rmSync(wwwDir, { recursive: true, force: true });
-        fs.mkdirSync(wwwDir, { recursive: true });
-        fs.copyFileSync(path.join(__dirname, 'templates', 'index.html'), path.join(__dirname, 'www', 'index.html'));
-        console.log('📂 Copiando static...');
-        copyDir(path.join(__dirname, 'static'), path.join(__dirname, 'www', 'static'));
-        console.log('📂 Copiando data...');
-        copyDir(path.join(__dirname, 'data'), path.join(__dirname, 'www', 'data'));
-        
+        prepararWww();
         console.log('🔄 Sincronizando con Capacitor...');
         await run('npx cap sync');
         console.log('✅ ¡Listo! Puedes probar en Android Studio');
@@ -93,12 +106,14 @@ Comandos disponibles:
 
   init          - Inicializar Capacitor
   add-android   - Agregar soporte Android
-  sync          - Sincronizar archivos con mobile
+  sync          - Sincronizar archivos con mobile (solo cap sync)
+  sync-app      - Regenerar www/ y sincronizar con Capacitor (APK)
+  build-web     - Regenerar www/ solamente (web / Netlify)
   build         - Compilar APK para Android
   serve         - Iniciar servidor local
   dev           - Iniciar en modo desarrollo
 
-Ejemplo: npm run build
+Ejemplo: npm run build-web
         `);
     }
   } catch (error) {
