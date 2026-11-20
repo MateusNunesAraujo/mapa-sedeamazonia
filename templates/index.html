@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=44" />
+  <link rel="stylesheet" href="/static/css/index.css?v=50" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -22,13 +22,6 @@
 
   <!-- Mapa Principal -->
   <div id="map"></div>
-
-  <!-- Saludo en lenguas amazónicas (fichas verificadas de data/lenguas.json) -->
-  <div class="bienvenida-lenguas" id="bienvenidaLenguas" role="status" hidden>
-    <span class="texto-lengua" id="bienvenidaTexto"></span>
-    <span class="bienvenida-detalle" id="bienvenidaDetalle"></span>
-    <button type="button" id="bienvenidaCerrar" aria-label="Cerrar saludo">✕</button>
-  </div>
 
   <!-- Modal para escanear QR -->
   <div id="qrScannerModal" class="modal" style="display: none">
@@ -89,6 +82,20 @@
       </button>
     </div>
     <div class="search-results-dropdown" id="searchResults"></div>
+    <!-- Mono ayudante, colgado de cabeza junto al buscador: ayuda a buscar lugares y enseña
+         palabras en lenguas amazónicas (solo las verificadas de data/lenguas.json). -->
+    <div class="mascota" id="mascota" hidden>
+      <button type="button" class="mascota-figura" id="mascotaFigura" aria-label="Pedirle ayuda al mono para buscar un lugar">
+        <img src="/static/iconos/mascota/mono.png" alt="" id="mascotaImg" draggable="false">
+      </button>
+      <div class="mascota-globo" id="mascotaGlobo" role="status" aria-live="polite">
+        <button type="button" class="mascota-cerrar" id="mascotaCerrar" aria-label="Ocultar al mono">✕</button>
+        <span class="mascota-mensaje" id="mascotaMensaje"></span>
+        <span class="mascota-lugar" id="mascotaLugar"></span>
+        <span class="texto-lengua" id="mascotaTexto"></span>
+        <span class="mascota-detalle" id="mascotaDetalle"></span>
+      </div>
+    </div>
   </div>
 
   <!-- Menú lateral: se despliega desde el borde derecho hacia la izquierda -->
@@ -630,7 +637,7 @@
   <!-- Álbum de Árboles Recolectados -->
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
-  <script src="/static/js/index.js?v=18"></script>
+  <script src="/static/js/index.js?v=22"></script>
   <!-- PRUEBA glosario AR (paso 1) -->
   <script src="/static/js/ar-prueba.js?v=6"></script>
   <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
