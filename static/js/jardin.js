@@ -16,6 +16,7 @@
  */
 import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=23';
 import { pedirPermisoAvisos, cancelarAvisoSed, programarAvisoSed, alTocarAviso } from './jardin-notificaciones.js?v=1';
+import { transicionJardin } from './transicion-jardin.js?v=2';
 import {
   cargarEstado, arbolEn, plantar, parcelaDe, parcelasLibres, quitarDesconocidos,
   moverArbol, regar, estadoRegadera, estaMojado, tieneSed, asegurarSed, accesoriosDe, tocaLlover, llover, tocaPregunta, PREGUNTA,
@@ -84,6 +85,9 @@ const COLOR = {
 const CARPETA_ACCESORIOS = '/static/img/accesorios/';
 // Rareza de los árboles (plantas.json → info_juego.rareza)
 const RAREZA_ARBOL = { comun: 'Común', rara: 'Raro', epica: 'Épico', legendaria: 'Legendario', exclusiva: 'Exclusivo' };
+
+// Máximo que la entrada espera a los modelos de los árboles plantados antes de mostrar el jardín
+const ESPERA_MAX_ARBOLES = 15000;
 
 let THREE = null;
 let GLTFLoader = null;
@@ -373,8 +377,13 @@ function crearBrote() {
   return grupo;
 }
 
-async function abrirJardin() {
+/**
+ * @param {function} [progreso] recibe la fracción cargada (0 a 1); la usa la barra de la transición.
+ *   Reparto: three.js 35 %, árboles del usuario 10 %, catálogo 5 %, modelos de los árboles 45 %.
+ */
+async function abrirJardin(progreso = () => {}) {
   if (document.querySelector('.jardin')) return;
+  const informar = (fraccion) => { try { progreso(fraccion); } catch { /* la barra no debe romper el jardín */ } };
   const raiz = crearInterfaz();
   const cargando = raiz.querySelector('.jardin-cargando');
   const info = raiz.querySelector('.jardin-info');
@@ -426,8 +435,10 @@ async function abrirJardin() {
 
   try {
     await cargarThree();
+    informar(0.35);
     // Árboles del usuario (desbloqueados) para saber qué hay plantado y qué está guardado
     const arboles = await arbolesDelUsuario();
+    informar(0.45);
     if (cerrado) return; // se salió mientras cargaba
 
     let catalogoAccesorios = new Map();
@@ -439,6 +450,7 @@ async function abrirJardin() {
     } catch (err) {
       console.warn('No se pudo cargar el catálogo de accesorios para el jardín:', err);
     }
+    informar(0.5);
     if (cerrado) return;
 
     const plantasPorCodigo = new Map(arboles.map((p) => [p.codigoQR, p]));
@@ -1147,7 +1159,15 @@ async function abrirJardin() {
       });
     }
 
-    for (let i = 0; i < totalParcelas; i++) if (arbolEn(estado, i)) ponerArbol(i);
+    // Árboles ya plantados: se cargan en paralelo y la entrada espera a que estén todos
+    // (cada uno informa su parte de la barra al terminar, aunque su modelo falle)
+    const arbolesIniciales = [];
+    for (let i = 0; i < totalParcelas; i++) if (arbolEn(estado, i)) arbolesIniciales.push(i);
+    let arbolesListos = 0;
+    const cargaArboles = Promise.allSettled(arbolesIniciales.map((i) => ponerArbol(i).finally(() => {
+      arbolesListos++;
+      informar(0.5 + 0.45 * (arbolesListos / arbolesIniciales.length));
+    })));
 
     // --- Lluvia: a veces, al entrar, llueve sobre todo el jardín y cada árbol puede dar moneda ---
     let lloviendo = false;
@@ -1763,6 +1783,10 @@ async function abrirJardin() {
     const temporizador = setInterval(() => { refrescarRegadera(); actualizarHumedad(); }, 30 * 1000);
     quitarEventos.push(() => clearInterval(temporizador));
 
+    // Tope de espera: si un modelo se queda colgado, el jardín se abre igual y ese árbol aparece después
+    await Promise.race([cargaArboles, new Promise((listo) => setTimeout(listo, ESPERA_MAX_ARBOLES))]);
+    if (cerrado) return;
+    informar(0.95);
     cargando.remove();
     dibujar();
     // La ayuda se esconde sola después de unos segundos
@@ -1846,9 +1870,30 @@ async function abrirJardin() {
   }
 }
 
-window.abrirJardin = abrirJardin;
+/**
+ * Entrada al jardín con la intro del logo de Forgames (transicion-jardin.js): el jardín se arma
+ * por debajo mientras corre la animación. Si ya está abierto, o la transición está en curso,
+ * no hace nada.
+ */
+let entrando = false;
+async function entrarJardin() {
+  if (entrando || document.querySelector('.jardin')) return;
+  entrando = true;
+  try {
+    await transicionJardin({ cargar: abrirJardin });
+  } catch (err) {
+    // Si la animación falla, se abre el jardín sin ella
+    console.error('Error en la transición del jardín:', err);
+    document.querySelector('.tj-capa')?.remove();
+    if (!document.querySelector('.jardin')) abrirJardin();
+  } finally {
+    entrando = false;
+  }
+}
+
+window.abrirJardin = entrarJardin;
 // Tocar la notificación de sed abre el jardín directamente
-alTocarAviso(() => abrirJardin());
+alTocarAviso(() => entrarJardin());
 
 // Opción "Mi jardín" del menú lateral
-document.getElementById('menuJardinBtn')?.addEventListener('click', () => abrirJardin());
+document.getElementById('menuJardinBtn')?.addEventListener('click', () => entrarJardin());
