@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Mapa Sede Amazonia</string>
+    <string name="title_activity_main">Mapa Sede Amazonia</string>
+    <string name="package_name">com.universidadnacional.mapasedeamazonia2</string>
+    <string name="custom_url_scheme">com.universidadnacional.mapasedeamazonia2</string>
+</resources>

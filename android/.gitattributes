@@ -1,0 +1,4 @@
+# gradlew es un script de shell: debe quedar con saltos de línea LF para funcionar en Linux y Mac
+gradlew text eol=lf
+*.bat text eol=crlf
+*.jar binary

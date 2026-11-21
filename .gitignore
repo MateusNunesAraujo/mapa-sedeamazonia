@@ -27,7 +27,9 @@ www/
 .env.local
 
 # Capacitor
-android/
+# android/ sí va en Git (manifiesto, Gradle, íconos); sus compilaciones y la copia de www/
+# las excluye android/.gitignore. Firebase se guarda aparte por si el repo es público.
+android/app/google-services.json
 ios/
 
 # Planos pesados (más de 50 MB): se guardan fuera de Git

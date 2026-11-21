@@ -16,7 +16,8 @@ HTML/CSS/JS sin framework ni empaquetador, Leaflet 1.9.4 (`L.CRS.Simple`), Geoma
 - `docs/planos/`: planos y fichas de la universidad (fuente de medidas de los modelos 3D; no van a la APK). El `Anexo 1 - Arquitectura (1).pdf` (67 MB) está en `.gitignore`.
 - `docs/lenguas/`: diccionario ticuna–castellano (ILV 2016) y `Ecoruta_datos.xlsx` (fichas culturales verificadas). `scripts/gen_lenguas.py` arma con ellos `data/lenguas.json` (palabras por lugar, que se muestran en la ficha del edificio y en el saludo del mapa). Solo se copian palabras verificadas contra la página del PDF o fichas en estado VERIFICADA; no se componen frases. La fuente `static/fonts/NotoSans-lenguas.woff2` dibuja sus diacríticos.
 - `scripts/modelos/`: generadores Python (solo biblioteca estándar) de los `.glb`.
-- `www/` y `android/`: generadas y fuera de Git. Nunca editar `www/` a mano.
+- `www/`: generada por `build.js` y fuera de Git; nunca editarla a mano.
+- `android/`: proyecto nativo creado una vez con `npx cap add android` y versionado en Git. `cap sync` solo reemplaza la copia de `www/` (`app/src/main/assets/public/`) y la lista de plugins; el manifiesto, Gradle y `res/` se editan a mano y se guardan en Git. `android/app/google-services.json` (Firebase) queda fuera de Git: hay que copiarlo a mano en cada equipo o las notificaciones push no funcionan.
 
 ## Comandos
 
