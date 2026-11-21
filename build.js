@@ -48,6 +48,44 @@ function prepararWww() {
   copyDir(path.join(__dirname, 'data'), path.join(wwwDir, 'data'));
 }
 
+// Copia el ícono de static/iconos/icono_app/android a los recursos del proyecto Android.
+// Se repite en cada sync-app por si android/ se vuelve a crear con `npx cap add android`.
+function instalarIconoAndroid() {
+  const origen = path.join(__dirname, 'static', 'iconos', 'icono_app', 'android');
+  const res = path.join(__dirname, 'android', 'app', 'src', 'main', 'res');
+  if (!fs.existsSync(origen) || !fs.existsSync(res)) {
+    console.log('⚠️  No se encontró el ícono o android/; se omite el ícono de la app');
+    return;
+  }
+  console.log('🎨 Instalando ícono de la app...');
+
+  // Se borran los íconos viejos de todas las densidades (incluida ldpi, que no trae el ícono nuevo):
+  // si quedaran, Android los preferiría sobre los nuevos en esas pantallas
+  for (const dir of fs.readdirSync(res)) {
+    if (!dir.startsWith('mipmap-')) continue;
+    for (const nombre of ['ic_launcher.png', 'ic_launcher_round.png',
+                          'ic_launcher_foreground.png', 'ic_launcher_background.png']) {
+      fs.rmSync(path.join(res, dir, nombre), { force: true });
+    }
+  }
+
+  // Íconos clásicos por densidad (Android 7 y anteriores)
+  for (const dir of fs.readdirSync(origen)) {
+    if (dir.startsWith('mipmap-')) copyDir(path.join(origen, dir), path.join(res, dir));
+  }
+
+  // Ícono adaptable (Android 8+): capas de 432 px = 108 dp en xxxhdpi; las demás densidades las escala Android
+  const xxxhdpi = path.join(res, 'mipmap-xxxhdpi');
+  for (const capa of ['ic_launcher_foreground.png', 'ic_launcher_background.png']) {
+    fs.copyFileSync(path.join(origen, 'adaptive', capa), path.join(xxxhdpi, capa));
+  }
+  const anydpi = path.join(res, 'mipmap-anydpi-v26');
+  fs.mkdirSync(anydpi, { recursive: true });
+  const xml = fs.readFileSync(path.join(origen, 'adaptive', 'ic_launcher.xml'));
+  fs.writeFileSync(path.join(anydpi, 'ic_launcher.xml'), xml);
+  fs.writeFileSync(path.join(anydpi, 'ic_launcher_round.xml'), xml);
+}
+
 async function main() {
   try {
     switch (commands) {
@@ -79,6 +117,7 @@ async function main() {
       case 'sync-app':
         console.log('📦 Preparando archivos de desarrollo para móvil...');
         prepararWww();
+        instalarIconoAndroid();
         console.log('🔄 Sincronizando con Capacitor...');
         await run('npx cap sync');
         console.log('✅ ¡Listo! Puedes probar en Android Studio');
