@@ -5013,3 +5013,569 @@
       color: var(--verde-institucional);
       font-weight: 600;
   }
+
+/* ==========================================================================
+   Cuenta de usuario (cuenta.js): bienvenida, registro, inicio de sesión y perfil
+   Queda debajo del splash (99999) y del aviso push (100000), encima de todo lo demás.
+   ========================================================================== */
+.cuenta-pantalla {
+    position: fixed;
+    inset: 0;
+    z-index: 99990;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px));
+    overflow-y: auto;
+    background: linear-gradient(160deg, var(--verde-hover) 0%, var(--verde-institucional) 55%, var(--verde-selva) 100%);
+}
+
+.cuenta-pantalla[hidden],
+.cuenta-pantalla [hidden] {
+    display: none !important;
+}
+
+.cuenta-logo {
+    width: min(200px, 55vw);
+    margin: 8px auto 20px;
+    flex-shrink: 0;
+}
+
+.cuenta-tarjeta {
+    position: relative;
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto auto;
+    padding: 28px 22px 22px;
+    box-sizing: border-box;
+    background: var(--blanco);
+    border-radius: 24px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.cuenta-cerrar {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: var(--gris-claro);
+    color: var(--gris-medio);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.cuenta-titulo {
+    margin: 0 40px 14px 0;
+    font-size: 22px;
+    color: var(--verde-institucional);
+}
+
+.cuenta-texto {
+    margin: 0 0 18px;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: var(--gris-oscuro);
+}
+
+.cuenta-texto--suave {
+    margin: 16px 0 12px;
+    font-size: 13px;
+    color: var(--gris-medio);
+    text-align: center;
+}
+
+.cuenta-sin-red {
+    margin: 0 0 16px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: #fff4e5;
+    color: #7a4a00;
+    font-size: 13.5px;
+    line-height: 1.4;
+}
+
+.cuenta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    min-height: 48px;
+    margin: 0 0 10px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, var(--verde-hoja) 0%, var(--verde-institucional) 100%);
+    color: var(--blanco);
+    font: inherit;
+    font-size: 15.5px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(2, 89, 40, 0.25);
+    transition: transform 0.15s ease, opacity 0.2s ease;
+}
+
+.cuenta-btn:active { transform: scale(0.98); }
+
+.cuenta-btn:disabled,
+.cuenta-enlace:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.cuenta-btn--google {
+    background: var(--blanco);
+    color: var(--gris-oscuro);
+    border: 1.5px solid #dadce0;
+    box-shadow: none;
+}
+
+.cuenta-btn--google svg {
+    width: 20px;
+    height: 20px;
+}
+
+.cuenta-btn--borde {
+    background: var(--blanco);
+    color: var(--verde-institucional);
+    border: 1.5px solid var(--verde-institucional);
+    box-shadow: none;
+}
+
+.cuenta-enlace {
+    display: block;
+    width: 100%;
+    margin: 4px 0;
+    padding: 10px 4px;
+    border: none;
+    background: none;
+    color: var(--verde-institucional);
+    font: inherit;
+    font-size: 14.5px;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+}
+
+.cuenta-enlace--suave {
+    color: var(--gris-medio);
+    font-weight: 500;
+}
+
+.cuenta-enlace--peligro { color: #c62828; }
+
+.cuenta-enlace--derecha {
+    width: auto;
+    margin: -4px 0 10px auto;
+    padding: 4px;
+    font-size: 13.5px;
+    text-align: right;
+}
+
+.cuenta-enlace--linea {
+    display: inline;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+    text-decoration: underline;
+}
+
+.cuenta-separador {
+    height: 1px;
+    margin: 10px 0 6px;
+    background: rgba(2, 89, 40, 0.12);
+}
+
+.cuenta-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.cuenta-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--gris-oscuro);
+}
+
+.cuenta-campo input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1.5px solid #d3e2d8;
+    border-radius: 12px;
+    background: #f8fbf9;
+    font: inherit;
+    font-size: 16px; /* 16 px evita que el celular haga zoom al escribir */
+    font-weight: 400;
+    color: var(--gris-oscuro);
+}
+
+.cuenta-campo input:focus {
+    outline: none;
+    border-color: var(--verde-hoja);
+    background: var(--blanco);
+    box-shadow: 0 0 0 3px rgba(3, 166, 90, 0.15);
+}
+
+.cuenta-campo--error input { border-color: #d32f2f; }
+
+.cuenta-arroba,
+.cuenta-clave {
+    position: relative;
+    display: block;
+}
+
+.cuenta-arroba::before {
+    content: "@";
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gris-medio);
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.cuenta-arroba input { padding-left: 32px; }
+.cuenta-clave input { padding-right: 50px; }
+
+.cuenta-ojo {
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 10px;
+    background: none;
+    font-size: 18px;
+    cursor: pointer;
+    opacity: 0.55;
+}
+
+.cuenta-ojo[aria-pressed="true"] { opacity: 1; }
+
+.cuenta-ayuda {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--gris-medio);
+}
+
+.cuenta-campo-error {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #c62828;
+}
+
+.cuenta-campo-error:empty { display: none; }
+
+.cuenta-casilla {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 2px 0 6px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    color: var(--gris-oscuro);
+}
+
+.cuenta-casilla input {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin: 1px 0 0;
+    accent-color: var(--verde-institucional);
+}
+
+.cuenta-form > .cuenta-campo-error { margin-bottom: 8px; }
+
+.cuenta-error,
+.cuenta-aviso,
+.cuenta-verificar {
+    margin: 6px 0 12px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    font-size: 13.5px;
+    line-height: 1.45;
+}
+
+.cuenta-error { background: #fdecea; color: #b71c1c; }
+.cuenta-aviso { background: #eaf6ee; color: var(--verde-institucional); }
+.cuenta-verificar { background: #fff4e5; color: #7a4a00; text-align: center; }
+
+/* Perfil */
+.cuenta-perfil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.cuenta-perfil strong {
+    margin-top: 8px;
+    font-size: 18px;
+    color: var(--gris-oscuro);
+    overflow-wrap: anywhere;
+}
+
+.cuenta-perfil-usuario {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--verde-hoja);
+}
+
+.cuenta-perfil-correo {
+    font-size: 13.5px;
+    color: var(--gris-medio);
+    overflow-wrap: anywhere;
+}
+
+/* Avatar: foto o inicial (también en el ícono de "Mi cuenta" del menú) */
+.cuenta-avatar {
+    overflow: hidden;
+}
+
+.cuenta-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.cuenta-inicial {
+    color: var(--blanco);
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.cuenta-avatar--grande {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--verde-hoja) 0%, var(--verde-selva) 100%);
+    box-shadow: 0 6px 16px rgba(3, 166, 90, 0.3);
+}
+
+.cuenta-avatar--grande .cuenta-inicial { font-size: 36px; }
+
+/* "Mi cuenta" en el menú: el texto largo se corta con … */
+.menu-item--cuenta .menu-item-texto strong,
+.menu-item--cuenta .menu-item-texto small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Política de privacidad */
+.cuenta-privacidad {
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--gris-oscuro);
+}
+
+.cuenta-privacidad p { margin: 0 0 10px; }
+
+/* Cargando: capa sobre la tarjeta mientras se habla con Firebase */
+.cuenta-cargando {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--verde-institucional);
+    font-weight: 600;
+    z-index: 2;
+}
+
+.cuenta-spinner {
+    width: 36px;
+    height: 36px;
+    border: 4px solid rgba(2, 89, 40, 0.15);
+    border-top-color: var(--verde-institucional);
+    border-radius: 50%;
+    animation: cuenta-girar 0.8s linear infinite;
+}
+
+@keyframes cuenta-girar { to { transform: rotate(360deg); } }
+
+/* SweetAlert de la cuenta (confirmar cerrar sesión o eliminar) por encima de la pantalla */
+.swal2-container.cuenta-swal { z-index: 99995; }
+
+@media (prefers-reduced-motion: reduce) {
+    .cuenta-spinner { animation-duration: 2.4s; }
+}
+
+/* Perfil: "Miembro desde", estadísticas y logros */
+.cuenta-perfil-desde {
+    margin-top: 6px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #eaf6ee;
+    color: var(--verde-institucional);
+    font-size: 12.5px;
+    font-weight: 600;
+}
+
+.cuenta-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 14px 0 12px;
+}
+
+.cuenta-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 14px 8px 12px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #f2faf4 0%, #e5f4e9 100%);
+    border: 1px solid rgba(2, 89, 40, 0.08);
+    text-align: center;
+}
+
+.cuenta-stat-icono {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 2px;
+}
+
+.cuenta-stat-numero {
+    font-size: 26px;
+    line-height: 1.1;
+    color: var(--verde-institucional);
+}
+
+.cuenta-stat-texto {
+    font-size: 12.5px;
+    line-height: 1.3;
+    color: var(--gris-medio);
+}
+
+.cuenta-logros {
+    margin: 0 0 6px;
+    padding: 14px;
+    border-radius: 18px;
+    background: linear-gradient(180deg, #fffaf0 0%, #fff3dc 100%);
+    border: 1px solid rgba(201, 146, 20, 0.18);
+}
+
+.cuenta-logros-cabecera {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.cuenta-logros-titulo {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: #7a5200;
+}
+
+.cuenta-logros-contador {
+    min-width: 28px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: #f5b301;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.cuenta-logros-lista {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.cuenta-logro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+}
+
+.cuenta-logro img,
+.cuenta-logro-sin-imagen {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(122, 82, 0, 0.18);
+}
+
+.cuenta-logro-sin-imagen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.cuenta-logro-nombre {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--gris-oscuro);
+    overflow-wrap: anywhere;
+}
+
+.cuenta-logros-vacio {
+    text-align: center;
+}
+
+.cuenta-logros-huecos {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.cuenta-logros-huecos span {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    border: 2px dashed rgba(201, 146, 20, 0.45);
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.cuenta-logros-vacio p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: #7a5200;
+}
+
+.cuenta-stat-numero small {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gris-medio);
+}

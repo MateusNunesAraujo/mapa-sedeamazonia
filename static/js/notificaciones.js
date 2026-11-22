@@ -180,6 +180,8 @@
     if (receive === 'prompt' || receive === 'prompt-with-rationale') {
       if (leer(CLAVE_RECHAZO) === '1') return;
       await new Promise((ok) => setTimeout(ok, ESPERA_PREGUNTA_MS));
+      // Si está abierta la pantalla de cuenta (cuenta.js), se pregunta cuando se cierre
+      try { await window.cuenta?.esperarCierre?.(); } catch { /* sin cuentas: se sigue */ }
       const acepta = await preguntarAntes();
       if (acepta === null) return;
       if (!acepta) { guardar(CLAVE_RECHAZO, '1'); return; }

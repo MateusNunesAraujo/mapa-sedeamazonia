@@ -19,6 +19,13 @@
     "LocalNotifications": {
       "smallIcon": "ic_notificacion_jardin",
       "iconColor": "#025928"
+    },
+    "FirebaseAuthentication": {
+      "skipNativeAuth": false,
+      "providers": [
+        "google.com",
+        "password"
+      ]
     }
   }
 }

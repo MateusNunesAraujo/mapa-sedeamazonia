@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=55" />
+  <link rel="stylesheet" href="/static/css/index.css?v=57" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -110,6 +110,19 @@
     </div>
 
     <div class="menu-lateral-lista">
+      <!-- Mi cuenta (cuenta.js): sin sesión invita a entrar; con sesión muestra foto o inicial, nombre y @username -->
+      <button type="button" class="menu-item menu-item--cuenta" id="menuCuentaBtn">
+        <span class="menu-item-icono cuenta-avatar" id="menuCuentaAvatar" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" /></svg>
+        </span>
+        <span class="menu-item-texto">
+          <strong id="menuCuentaTitulo">Mi cuenta</strong>
+          <small id="menuCuentaSub">Iniciar sesión o crear cuenta</small>
+        </span>
+      </button>
+
+      <div class="menu-separador" role="separator"></div>
+
       <!-- Árboles Recolectados (Herbario): lo maneja album-handler.js -->
       <button type="button" class="menu-item" id="albumBtn">
         <span class="menu-item-icono" aria-hidden="true">
@@ -574,6 +587,224 @@
     </div>
   </div>
 
+  <!-- Cuenta de usuario (cuenta.js). La cuenta es opcional: sin internet o sin cuenta la app funciona igual.
+       Cada <section data-vista> es una pantalla; cuenta.js muestra una a la vez. -->
+  <div id="cuentaPantalla" class="cuenta-pantalla" role="dialog" aria-modal="true" aria-labelledby="cuentaTitulo" hidden>
+    <img src="/static/img/amazonia_blanco_02.png" alt="" class="cuenta-logo">
+    <div class="cuenta-tarjeta">
+      <button type="button" class="cuenta-cerrar" id="cuentaCerrar" aria-label="Cerrar">&times;</button>
+      <h2 class="cuenta-titulo" id="cuentaTitulo">Mi cuenta</h2>
+
+      <!-- Sin conexión: se muestra en las vistas que necesitan internet -->
+      <p class="cuenta-sin-red" id="cuentaSinRed" hidden>📡 Necesitas internet para iniciar sesión. Puedes seguir sin cuenta y entrar más tarde desde el menú.</p>
+
+      <!-- 1. Bienvenida -->
+      <section class="cuenta-vista" data-vista="bienvenida" data-titulo="Bienvenido a AVIAMAZ" hidden>
+        <p class="cuenta-texto">Crea una cuenta para tener tu perfil en el aula viva. Es opcional: la app funciona igual sin ella.</p>
+        <button type="button" class="cuenta-btn cuenta-btn--google" data-accion="google" data-necesita-red>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.6 5.4 2.6 13.3l7.8 6C12.3 13.6 17.6 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v8.5h12.4c-.5 2.9-2.2 5.3-4.6 6.9l7.5 5.8c4.4-4 6.8-10 6.8-16.7z"/><path fill="#FBBC05" d="M10.4 28.7c-.5-1.4-.8-3-.8-4.7s.3-3.3.8-4.7l-7.8-6C1 16.6 0 20.2 0 24s.9 7.4 2.6 10.7l7.8-6z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.4 0-11.7-4.1-13.6-9.8l-7.8 6C6.6 42.6 14.6 48 24 48z"/></svg>
+          <span>Continuar con Google</span>
+        </button>
+        <button type="button" class="cuenta-btn" data-accion="ir-registro" data-necesita-red>Crear cuenta</button>
+        <button type="button" class="cuenta-enlace" data-accion="ir-ingreso" data-necesita-red>Ya tengo cuenta</button>
+        <p class="cuenta-error" role="alert" hidden></p>
+        <div class="cuenta-separador"></div>
+        <button type="button" class="cuenta-enlace cuenta-enlace--suave" data-accion="sin-cuenta">Continuar sin cuenta</button>
+      </section>
+
+      <!-- 2. Registro con correo -->
+      <section class="cuenta-vista" data-vista="registro" data-titulo="Crear cuenta" hidden>
+        <form class="cuenta-form" id="cuentaFormRegistro" novalidate>
+          <label class="cuenta-campo">
+            <span>Nombre completo</span>
+            <input type="text" name="nombre" autocomplete="name" maxlength="60" required>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <label class="cuenta-campo">
+            <span>Nombre de usuario</span>
+            <span class="cuenta-arroba"><input type="text" name="username" autocomplete="username" maxlength="20"
+              autocapitalize="none" autocorrect="off" spellcheck="false" required></span>
+            <small class="cuenta-ayuda">De 3 a 20: letras minúsculas, números, _ y .</small>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <label class="cuenta-campo">
+            <span>Correo</span>
+            <input type="email" name="correo" autocomplete="email" inputmode="email" autocapitalize="none" required>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <label class="cuenta-campo">
+            <span>Contraseña</span>
+            <span class="cuenta-clave"><input type="password" name="clave" autocomplete="new-password" minlength="8" required>
+              <button type="button" class="cuenta-ojo" data-accion="ver-clave" aria-label="Mostrar contraseña" aria-pressed="false">👁</button></span>
+            <small class="cuenta-ayuda">Mínimo 8 caracteres.</small>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <label class="cuenta-campo">
+            <span>Confirmar contraseña</span>
+            <input type="password" name="clave2" autocomplete="new-password" required>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <label class="cuenta-casilla">
+            <input type="checkbox" name="acepto" required>
+            <span>Acepto el tratamiento de mis datos personales según la
+              <button type="button" class="cuenta-enlace cuenta-enlace--linea" data-accion="ver-privacidad">política de privacidad</button>
+              (Ley 1581 de 2012).</span>
+          </label>
+          <small class="cuenta-campo-error" data-error="acepto"></small>
+          <p class="cuenta-error" role="alert" hidden></p>
+          <button type="submit" class="cuenta-btn" data-necesita-red>Crear cuenta</button>
+        </form>
+        <button type="button" class="cuenta-enlace" data-accion="ir-ingreso">Ya tengo cuenta</button>
+        <button type="button" class="cuenta-enlace cuenta-enlace--suave" data-accion="volver">← Volver</button>
+      </section>
+
+      <!-- 3. Inicio de sesión con correo -->
+      <section class="cuenta-vista" data-vista="ingreso" data-titulo="Iniciar sesión" hidden>
+        <form class="cuenta-form" id="cuentaFormIngreso" novalidate>
+          <label class="cuenta-campo">
+            <span>Correo</span>
+            <input type="email" name="correo" autocomplete="email" inputmode="email" autocapitalize="none" required>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <label class="cuenta-campo">
+            <span>Contraseña</span>
+            <span class="cuenta-clave"><input type="password" name="clave" autocomplete="current-password" required>
+              <button type="button" class="cuenta-ojo" data-accion="ver-clave" aria-label="Mostrar contraseña" aria-pressed="false">👁</button></span>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <button type="button" class="cuenta-enlace cuenta-enlace--derecha" data-accion="olvide" data-necesita-red>¿Olvidaste tu contraseña?</button>
+          <p class="cuenta-aviso" role="status" hidden></p>
+          <p class="cuenta-error" role="alert" hidden></p>
+          <button type="submit" class="cuenta-btn" data-necesita-red>Iniciar sesión</button>
+        </form>
+        <button type="button" class="cuenta-enlace" data-accion="ir-registro">Crear una cuenta</button>
+        <button type="button" class="cuenta-enlace cuenta-enlace--suave" data-accion="volver">← Volver</button>
+      </section>
+
+      <!-- 4. Completar perfil (primera vez con Google, o si falló la reserva del username al registrarse) -->
+      <section class="cuenta-vista" data-vista="completar" data-titulo="Completa tu perfil" hidden>
+        <p class="cuenta-texto">Elige cómo te verán en AVIAMAZ. Solo falta este paso.</p>
+        <form class="cuenta-form" id="cuentaFormCompletar" novalidate>
+          <label class="cuenta-campo">
+            <span>Nombre completo</span>
+            <input type="text" name="nombre" autocomplete="name" maxlength="60" required>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <label class="cuenta-campo">
+            <span>Nombre de usuario</span>
+            <span class="cuenta-arroba"><input type="text" name="username" autocomplete="username" maxlength="20"
+              autocapitalize="none" autocorrect="off" spellcheck="false" required></span>
+            <small class="cuenta-ayuda">De 3 a 20: letras minúsculas, números, _ y .</small>
+            <small class="cuenta-campo-error"></small>
+          </label>
+          <label class="cuenta-casilla">
+            <input type="checkbox" name="acepto" required>
+            <span>Acepto el tratamiento de mis datos personales según la
+              <button type="button" class="cuenta-enlace cuenta-enlace--linea" data-accion="ver-privacidad">política de privacidad</button>
+              (Ley 1581 de 2012).</span>
+          </label>
+          <small class="cuenta-campo-error" data-error="acepto"></small>
+          <p class="cuenta-error" role="alert" hidden></p>
+          <button type="submit" class="cuenta-btn" data-necesita-red>Guardar perfil</button>
+        </form>
+        <button type="button" class="cuenta-enlace cuenta-enlace--suave" data-accion="cancelar-completar">Cancelar y cerrar sesión</button>
+      </section>
+
+      <!-- 5. Perfil (con sesión) -->
+      <section class="cuenta-vista" data-vista="perfil" data-titulo="Mi cuenta" hidden>
+        <div class="cuenta-perfil">
+          <span class="cuenta-avatar cuenta-avatar--grande" id="cuentaPerfilAvatar" aria-hidden="true"></span>
+          <strong id="cuentaPerfilNombre"></strong>
+          <span class="cuenta-perfil-usuario" id="cuentaPerfilUsuario"></span>
+          <span class="cuenta-perfil-correo" id="cuentaPerfilCorreo"></span>
+          <span class="cuenta-perfil-desde" id="cuentaPerfilDesde" hidden></span>
+        </div>
+
+        <!-- Estadísticas (cuenta.js las lee del celular: jardinEstado y los desbloqueos del álbum) -->
+        <div class="cuenta-stats">
+          <div class="cuenta-stat">
+            <!-- Árbol con cara tierna -->
+            <svg class="cuenta-stat-icono" viewBox="0 0 64 64" aria-hidden="true">
+              <rect x="28" y="40" width="8" height="16" rx="3" fill="#8B5A2B" />
+              <path d="M22 56h20" stroke="#6b4420" stroke-width="3" stroke-linecap="round" />
+              <circle cx="32" cy="27" r="19" fill="#5ABA63" />
+              <circle cx="22" cy="20" r="8" fill="#91CF96" opacity=".7" />
+              <circle cx="25.5" cy="28" r="2.6" fill="#1f3b22" />
+              <circle cx="38.5" cy="28" r="2.6" fill="#1f3b22" />
+              <circle cx="26.3" cy="27.1" r=".9" fill="#fff" />
+              <circle cx="39.3" cy="27.1" r=".9" fill="#fff" />
+              <ellipse cx="21" cy="33" rx="3.2" ry="2" fill="#ff8fa3" opacity=".75" />
+              <ellipse cx="43" cy="33" rx="3.2" ry="2" fill="#ff8fa3" opacity=".75" />
+              <path d="M28.5 33.5q3.5 3.5 7 0" fill="none" stroke="#1f3b22" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <strong class="cuenta-stat-numero" id="cuentaStatJardin">0</strong>
+            <span class="cuenta-stat-texto">Árboles en tu jardín</span>
+          </div>
+          <div class="cuenta-stat">
+            <!-- Libro abierto con un árbol en la hoja -->
+            <svg class="cuenta-stat-icono" viewBox="0 0 64 64" aria-hidden="true">
+              <path d="M32 16c-6-4-15-5-24-4v38c9-1 18 0 24 4z" fill="#e8f3ea" stroke="#025928" stroke-width="2.5" stroke-linejoin="round" />
+              <path d="M32 16c6-4 15-5 24-4v38c-9-1-18 0-24 4z" fill="#ffffff" stroke="#025928" stroke-width="2.5" stroke-linejoin="round" />
+              <path d="M32 16v38" stroke="#025928" stroke-width="2.5" />
+              <path d="M13 22h12M13 28h12M13 34h9" stroke="#9cc5a6" stroke-width="2" stroke-linecap="round" />
+              <rect x="42.5" y="34" width="3" height="9" rx="1" fill="#8B5A2B" />
+              <circle cx="44" cy="29" r="7.5" fill="#5ABA63" />
+              <circle cx="41.5" cy="26.5" r="3" fill="#91CF96" />
+            </svg>
+            <strong class="cuenta-stat-numero" id="cuentaStatAlbum">0</strong>
+            <span class="cuenta-stat-texto" id="cuentaStatAlbumTexto">Árboles en tu álbum</span>
+          </div>
+        </div>
+
+        <!-- Logros: preparado para cuando exista el sistema de logros (ver window.logros en cuenta.js) -->
+        <div class="cuenta-logros">
+          <div class="cuenta-logros-cabecera">
+            <span class="cuenta-logros-titulo">🏆 Logros</span>
+            <span class="cuenta-logros-contador" id="cuentaLogrosContador">0</span>
+          </div>
+          <ul class="cuenta-logros-lista" id="cuentaLogrosLista"></ul>
+          <div class="cuenta-logros-vacio" id="cuentaLogrosVacio">
+            <div class="cuenta-logros-huecos" aria-hidden="true"><span></span><span></span><span></span></div>
+            <p>Muy pronto podrás desbloquear logros. Aquí verás la imagen y el nombre de cada uno.</p>
+          </div>
+        </div>
+        <p class="cuenta-verificar" id="cuentaVerificar" hidden>
+          Tu correo aún no está verificado.
+          <button type="button" class="cuenta-enlace cuenta-enlace--linea" data-accion="reenviar-verificacion" data-necesita-red>Reenviar correo</button>
+        </p>
+        <p class="cuenta-aviso" role="status" hidden></p>
+        <p class="cuenta-error" role="alert" hidden></p>
+        <p class="cuenta-texto cuenta-texto--suave">Tus árboles y tu jardín se guardan en este celular.</p>
+        <button type="button" class="cuenta-btn cuenta-btn--borde" data-accion="cerrar-sesion">Cerrar sesión</button>
+        <button type="button" class="cuenta-enlace cuenta-enlace--peligro" data-accion="eliminar-cuenta">Eliminar cuenta</button>
+      </section>
+
+      <!-- 6. Mensaje final (cuenta creada) -->
+      <section class="cuenta-vista" data-vista="listo" data-titulo="¡Cuenta creada!" hidden>
+        <p class="cuenta-texto" id="cuentaListoTexto"></p>
+        <button type="button" class="cuenta-btn" data-accion="cerrar">Empezar</button>
+      </section>
+
+      <!-- 7. Política de privacidad -->
+      <section class="cuenta-vista" data-vista="privacidad" data-titulo="Política de privacidad" hidden>
+        <div class="cuenta-privacidad">
+          <!-- TODO (usuario): reemplazar este texto provisional por la política de tratamiento de datos
+               personales definitiva (Ley 1581 de 2012 y Decreto 1377 de 2013), revisada por la universidad. -->
+          <p><strong>Texto provisional, pendiente de completar.</strong></p>
+          <p>Responsable del tratamiento: <em>[pendiente]</em>.</p>
+          <p>Datos que se recogen al crear una cuenta: nombre completo, nombre de usuario, correo y, si entras con Google, la foto de tu cuenta.</p>
+          <p>Finalidad: <em>[pendiente]</em>.</p>
+          <p>Derechos del titular (conocer, actualizar, rectificar y suprimir sus datos) y canal de atención: <em>[pendiente]</em>.</p>
+          <p>Puedes eliminar tu cuenta y tu perfil en cualquier momento desde Menú → Mi cuenta → Eliminar cuenta.</p>
+        </div>
+        <button type="button" class="cuenta-btn cuenta-btn--borde" data-accion="volver">← Volver</button>
+      </section>
+
+      <!-- Cargando (mientras se habla con Firebase) -->
+      <div class="cuenta-cargando" id="cuentaCargando" hidden><span class="cuenta-spinner"></span><span>Un momento…</span></div>
+    </div>
+  </div>
+
   <!-- PRUEBA glosario AR (paso 1) -->
   <div id="arTestModal" class="ar-test-modal" role="dialog" aria-labelledby="arTestTitle" aria-modal="true"
     style="display: none">
@@ -621,10 +852,12 @@
   <script src="/static/js/recorrido.js?v=19" type="module"></script>
   <!-- Mi jardín (three.js se carga solo al abrirlo) -->
   <script src="/static/js/jardin.js?v=44" type="module"></script>
+  <!-- Cuentas de usuario con Firebase Authentication y Firestore (plugins nativos; opcional y sin bloquear) -->
+  <script src="/static/js/cuenta.js?v=4"></script>
   <!-- Notificaciones push de Firebase (solo en la app Android; arranca en 'load' sin bloquear) -->
   <!-- Panel "Novedades del Campus" (avisos push guardados en el celular) -->
   <script src="/static/js/novedades.js?v=4"></script>
-  <script src="/static/js/notificaciones.js?v=3"></script>
+  <script src="/static/js/notificaciones.js?v=4"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">
