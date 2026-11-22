@@ -14,7 +14,7 @@
  * animados; con "reducir movimiento" activado en el sistema, los árboles quedan quietos.
  * three.js se carga únicamente al abrir el jardín.
  */
-import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=23';
+import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=24';
 import { pedirPermisoAvisos, cancelarAvisoSed, programarAvisoSed, alTocarAviso } from './jardin-notificaciones.js?v=1';
 import { transicionJardin } from './transicion-jardin.js?v=2';
 import {
@@ -460,6 +460,17 @@ async function abrirJardin(progreso = () => {}) {
     // Jugador nuevo: recibe una sola vez las monedas iniciales (tienda-jardin.json → monedas_iniciales).
     // Si el catálogo no cargó, se intenta en la próxima visita
     if (monedasIniciales) darMonedasIniciales(estado, monedasIniciales);
+    // Monedas de los logros (logros.js): las pendientes se cobran al entrar y las nuevas, en cuanto se ganan
+    const cobrarLogros = () => {
+      const m = window.logros?.cobrarMonedas?.();
+      if (!m || (!m.plata && !m.oro)) return;
+      estado.monedas.plata += m.plata;
+      estado.monedas.oro += m.oro;
+      guardarEstado(estado);
+      ui?.actualizarMonedas(m.oro ? 'oro' : 'plata');
+    };
+    cobrarLogros();
+    escuchar(document, 'logroDesbloqueado', cobrarLogros);
     // Mientras se está en el jardín no hace falta el aviso; se vuelve a programar al salir
     cancelarAvisoSed(estado).then((cambio) => { if (cambio) guardarEstado(estado); });
     if (Object.keys(estado.plantados).length) pedirPermisoAvisos();
@@ -1438,6 +1449,7 @@ async function abrirJardin(progreso = () => {}) {
       marcarParcela(indice);
       const planta = plantasPorCodigo.get(codigo);
       mostrarTarjeta(`¡Plantaste ${planta ? planta.nombre : 'un árbol'}!`, `Parcela ${indice + 1}`);
+      document.dispatchEvent(new CustomEvent('arbolPlantado', { detail: { codigoQR: codigo, indice } })); // logros.js
     }
 
     // --- Observar un árbol de cerca: cámara que orbita alrededor de él ---

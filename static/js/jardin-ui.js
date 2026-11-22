@@ -963,7 +963,12 @@ export function montarInterfazJuego(raiz, {
       raiz.querySelector('.jardin-caja-boton').addEventListener('click', () => mostrarCaja(caja));
     }
     return new Promise((resolver) => {
-      abrirPanel(htmlCaja(), 'jardinCajaTitulo', resolver);
+      let ganado = null;
+      // Al cerrar el panel se avisa del premio (logros.js), para que el logro no tape la revelación
+      abrirPanel(htmlCaja(), 'jardinCajaTitulo', () => {
+        if (ganado) document.dispatchEvent(new CustomEvent('cajaPremio', { detail: { id: ganado.id, tipo: ganado.tipo, rareza: ganado.rareza } }));
+        resolver();
+      });
       const boton = hoja.querySelector('.caja-sorpresa');
       boton.addEventListener('click', () => {
         if (boton.classList.contains('abriendo')) return;
@@ -973,6 +978,7 @@ export function montarInterfazJuego(raiz, {
           const premio = abrirCaja(estado, caja.premios, { idPrimera: caja.idPrimera });
           quitarBotonCaja();
           if (!premio) { cerrarPanel(); return; }
+          ganado = premio;
           hoja.innerHTML = htmlCaja(premio); // mismo panel: el aviso de cierre (resolver) se mantiene
           hoja.querySelector('.jardin-hoja-cerrar').addEventListener('click', cerrarPanel);
           hoja.querySelector('.caja-aceptar').addEventListener('click', cerrarPanel);

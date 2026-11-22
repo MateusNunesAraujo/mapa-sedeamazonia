@@ -5540,6 +5540,17 @@
     font-size: 30px;
 }
 
+/* Las insignias de logros.js traen su marco, cinta y monedas: se muestran enteras, sin recorte redondo */
+.cuenta-logro img {
+    width: 72px;
+    height: 89px;
+    border-radius: 0;
+    object-fit: contain;
+    background: none;
+    box-shadow: none;
+    filter: drop-shadow(0 3px 5px rgba(122, 82, 0, 0.2));
+}
+
 .cuenta-logro-nombre {
     font-size: 12px;
     font-weight: 600;
@@ -5578,4 +5589,137 @@
     font-size: 15px;
     font-weight: 600;
     color: var(--gris-medio);
+}
+
+/* ===== Ventana "¡Logro desbloqueado!" (logros.js) =====
+   El brillo y el borde cambian con la rareza del logro (data/logros.json → rareza) */
+.logro-capa {
+  --logro-brillo: rgba(255, 255, 255, 0.75);
+  --logro-borde: #cfd5da;
+  --logro-texto: #4c5a50;
+  --logro-fondo-rareza: #eef2ef;
+  position: fixed;
+  inset: 0;
+  z-index: 100000; /* por encima del jardín, el 3D y SweetAlert */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: radial-gradient(circle at 50% 45%, rgba(20, 30, 24, 0.55), rgba(5, 10, 8, 0.88));
+  overflow: hidden;
+  animation: logroEntrar 0.3s ease-out;
+}
+.logro-capa--rara { --logro-brillo: rgba(96, 165, 250, 0.8); --logro-borde: #93c5fd; --logro-texto: #1e4fa3; --logro-fondo-rareza: #dbeafe; }
+.logro-capa--epica { --logro-brillo: rgba(192, 132, 252, 0.85); --logro-borde: #c4a1f5; --logro-texto: #6b2fa8; --logro-fondo-rareza: #ede0fb; }
+.logro-capa--legendaria { --logro-brillo: rgba(251, 191, 36, 0.9); --logro-borde: #f5c84a; --logro-texto: #7a4b00; --logro-fondo-rareza: #ffe8a3; }
+.logro-capa--saliendo { animation: logroSalir 0.25s ease-in forwards; }
+
+/* Rayos de luz girando detrás de la tarjeta, del color de la rareza */
+.logro-rayos {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 170vmax;
+  height: 170vmax;
+  margin: -85vmax 0 0 -85vmax;
+  background:
+    radial-gradient(circle, var(--logro-brillo) 0%, transparent 32%),
+    repeating-conic-gradient(from 0deg, var(--logro-brillo) 0deg 7deg, transparent 7deg 22deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0%, transparent 45%);
+  mask-image: radial-gradient(circle, #000 0%, transparent 45%);
+  opacity: 0.75;
+  animation: logroGirar 18s linear infinite;
+  pointer-events: none;
+}
+.logro-capa--legendaria .logro-rayos { opacity: 1; animation-duration: 12s; }
+
+.logro-capa *, .logro-capa *::before, .logro-capa *::after { box-sizing: border-box; }
+.logro-tarjeta {
+  position: relative;
+  width: min(340px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  padding: 22px 20px 20px;
+  border-radius: 24px;
+  border: 3px solid var(--logro-borde);
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12), 0 0 48px 8px var(--logro-brillo), 0 18px 40px rgba(0, 0, 0, 0.35);
+  animation: logroSaltar 0.55s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+.logro-capa--legendaria .logro-tarjeta,
+.logro-capa--epica .logro-tarjeta { animation: logroSaltar 0.55s cubic-bezier(0.2, 1.4, 0.4, 1) both, logroLatir 2.2s ease-in-out 0.6s infinite; }
+
+.logro-encabezado {
+  margin: 0 0 6px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--logro-texto);
+}
+.logro-insignia {
+  display: flex;
+  justify-content: center;
+  margin: 4px auto 8px;
+}
+.logro-insignia img {
+  width: 190px;
+  max-width: 70%;
+  height: auto;
+  aspect-ratio: 600 / 740;
+  filter: drop-shadow(0 0 18px var(--logro-brillo));
+  animation: logroInsignia 0.8s cubic-bezier(0.2, 1.5, 0.4, 1) 0.15s both;
+}
+.logro-sin-imagen { font-size: 96px; line-height: 1.2; }
+.logro-rareza {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--logro-fondo-rareza);
+  color: var(--logro-texto);
+}
+.logro-nombre { margin: 8px 0 4px; font-size: 22px; line-height: 1.2; color: #1f2a22; }
+.logro-desc { margin: 0 0 12px; font-size: 14px; color: #4c5a50; }
+.logro-premio { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.logro-premio-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #f4f6f4;
+  font-size: 14px;
+  color: #33413a;
+}
+.logro-premio-chip strong { font-size: 16px; }
+.logro-moneda { width: 22px; height: 22px; }
+.logro-nota { margin: 8px 0 0; font-size: 12px; color: #6b776f; }
+.logro-aceptar {
+  margin-top: 16px;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #03a65a, #025928);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.logro-aceptar:focus-visible { outline: 3px solid var(--logro-borde); outline-offset: 2px; }
+
+@keyframes logroEntrar { from { opacity: 0; } to { opacity: 1; } }
+@keyframes logroSalir { to { opacity: 0; } }
+@keyframes logroGirar { to { transform: rotate(360deg); } }
+@keyframes logroSaltar { from { opacity: 0; transform: scale(0.6) translateY(30px); } to { opacity: 1; transform: none; } }
+@keyframes logroInsignia { from { opacity: 0; transform: scale(0.3) rotate(-12deg); } to { opacity: 1; transform: none; } }
+@keyframes logroLatir {
+  0%, 100% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12), 0 0 40px 6px var(--logro-brillo), 0 18px 40px rgba(0, 0, 0, 0.35); }
+  50% { box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.12), 0 0 70px 18px var(--logro-brillo), 0 18px 40px rgba(0, 0, 0, 0.35); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .logro-capa, .logro-rayos, .logro-tarjeta, .logro-insignia img { animation: none !important; }
 }

@@ -1,0 +1,72 @@
+{
+  "nota": "Logros de la app (static/js/logros.js). `id`: clave fija que se guarda en el celular (no cambiarla o el usuario pierde ese logro). `imagen`: nombre del archivo en `carpeta_imagenes` (PNG: los SVG usan la fuente Inter Display, que no está en Android). `rareza` (comun, rara, epica, legendaria): color del brillo al ganarlo. `recompensa`: monedas { plata, oro } para el jardín. `evento`: qué lo desbloquea: 'arbol_escaneado' (primer QR de árbol), 'arbol_plantado' (plantar en el jardín), 'recorrido_3d' (entrar al apartado 3D) o 'caja_premio' (premio de la caja sorpresa). `condicion`: filtro opcional sobre el evento, p. ej. { \"rareza\": \"epica\" } para la caja. `activo`: false para ocultarlo sin borrarlo.",
+  "carpeta_imagenes": "/static/iconos/logros/",
+  "logros": [
+    {
+      "id": "primer-arbol-escaneado",
+      "nombre": "Primer árbol escaneado",
+      "descripcion": "Escaneaste el código QR de tu primer árbol.",
+      "imagen": "logro-01-primer-arbol-escaneado.png",
+      "rareza": "comun",
+      "recompensa": { "plata": 3, "oro": 0 },
+      "evento": "arbol_escaneado",
+      "condicion": null,
+      "activo": true
+    },
+    {
+      "id": "primer-arbol-jardin",
+      "nombre": "Primer árbol en el jardín",
+      "descripcion": "Plantaste tu primer árbol en tu jardín.",
+      "imagen": "logro-02-primer-arbol-jardin.png",
+      "rareza": "comun",
+      "recompensa": { "plata": 3, "oro": 0 },
+      "evento": "arbol_plantado",
+      "condicion": null,
+      "activo": true
+    },
+    {
+      "id": "conociendo-la-uni",
+      "nombre": "Conociendo la uni",
+      "descripcion": "Entraste por primera vez al apartado 3D del campus.",
+      "imagen": "logro-03-conociendo-la-uni.png",
+      "rareza": "rara",
+      "recompensa": { "plata": 5, "oro": 0 },
+      "evento": "recorrido_3d",
+      "condicion": null,
+      "activo": true
+    },
+    {
+      "id": "suertudo",
+      "nombre": "Suertudo",
+      "descripcion": "Ganaste tu primer premio en la caja sorpresa.",
+      "imagen": "logro-04-suertudo.png",
+      "rareza": "rara",
+      "recompensa": { "plata": 5, "oro": 0 },
+      "evento": "caja_premio",
+      "condicion": null,
+      "activo": true
+    },
+    {
+      "id": "suertudo-2",
+      "nombre": "Suertudo 2",
+      "descripcion": "Ganaste tu primer premio épico en la caja sorpresa.",
+      "imagen": "logro-05-suertudo-2.png",
+      "rareza": "epica",
+      "recompensa": { "plata": 0, "oro": 1 },
+      "evento": "caja_premio",
+      "condicion": { "rareza": "epica" },
+      "activo": true
+    },
+    {
+      "id": "suertudo-supremo",
+      "nombre": "Suertudo supremo",
+      "descripcion": "Ganaste tu primer premio legendario en la caja sorpresa.",
+      "imagen": "logro-06-suertudo-supremo.png",
+      "rareza": "legendaria",
+      "recompensa": { "plata": 0, "oro": 3 },
+      "evento": "caja_premio",
+      "condicion": { "rareza": "legendaria" },
+      "activo": true
+    }
+  ]
+}

@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=57" />
+  <link rel="stylesheet" href="/static/css/index.css?v=58" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -756,7 +756,7 @@
           </div>
         </div>
 
-        <!-- Logros: preparado para cuando exista el sistema de logros (ver window.logros en cuenta.js) -->
+        <!-- Logros ganados (logros.js → window.logros.desbloqueados, que pinta cuenta.js) -->
         <div class="cuenta-logros">
           <div class="cuenta-logros-cabecera">
             <span class="cuenta-logros-titulo">🏆 Logros</span>
@@ -765,7 +765,7 @@
           <ul class="cuenta-logros-lista" id="cuentaLogrosLista"></ul>
           <div class="cuenta-logros-vacio" id="cuentaLogrosVacio">
             <div class="cuenta-logros-huecos" aria-hidden="true"><span></span><span></span><span></span></div>
-            <p>Muy pronto podrás desbloquear logros. Aquí verás la imagen y el nombre de cada uno.</p>
+            <p>Aún no tienes logros. Escanea tu primer árbol, planta en tu jardín o visita el campus en 3D para ganarlos.</p>
           </div>
         </div>
         <p class="cuenta-verificar" id="cuentaVerificar" hidden>
@@ -834,6 +834,8 @@
   <script src="/static/js/unlock-system.js?v=6"></script>
   <!-- SweetAlert2 (offline) -->
   <script src="/static/js/sweetalert2.min.js"></script>
+  <!-- Logros (data/logros.json): ventana de logro ganado y window.logros para el perfil y el jardín -->
+  <script src="/static/js/logros.js?v=1"></script>
   <!-- Almacenamiento y captura de fotos de árboles -->
   <script src="/static/js/photo-storage.js?v=3"></script>
   <!-- Árboles favoritos -->
@@ -849,9 +851,9 @@
   <!-- PRUEBA glosario AR (paso 1) -->
   <script src="/static/js/ar-prueba.js?v=6"></script>
   <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
-  <script src="/static/js/recorrido.js?v=19" type="module"></script>
+  <script src="/static/js/recorrido.js?v=20" type="module"></script>
   <!-- Mi jardín (three.js se carga solo al abrirlo) -->
-  <script src="/static/js/jardin.js?v=44" type="module"></script>
+  <script src="/static/js/jardin.js?v=45" type="module"></script>
   <!-- Cuentas de usuario con Firebase Authentication y Firestore (plugins nativos; opcional y sin bloquear) -->
   <script src="/static/js/cuenta.js?v=4"></script>
   <!-- Notificaciones push de Firebase (solo en la app Android; arranca en 'load' sin bloquear) -->

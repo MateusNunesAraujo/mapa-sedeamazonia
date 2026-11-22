@@ -811,6 +811,7 @@ async function abrirRecorrido({ src = MUNDO, nombre, inicio, modo = 'caminar' } 
     cargando.remove();
     cambiarModo(estado.modo);
     cuadro();
+    document.dispatchEvent(new CustomEvent('recorridoAbierto', { detail: { nombre, modo: estado.modo } })); // logros.js
   } catch (err) {
     console.error(err);
     cargando.textContent = 'No se pudo cargar el recorrido: ' + err.message;
