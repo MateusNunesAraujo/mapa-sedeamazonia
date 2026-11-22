@@ -1449,7 +1449,8 @@ async function abrirJardin(progreso = () => {}) {
       marcarParcela(indice);
       const planta = plantasPorCodigo.get(codigo);
       mostrarTarjeta(`¡Plantaste ${planta ? planta.nombre : 'un árbol'}!`, `Parcela ${indice + 1}`);
-      document.dispatchEvent(new CustomEvent('arbolPlantado', { detail: { codigoQR: codigo, indice } })); // logros.js
+      // logros.js y actividad.js (el nombre sirve también para los árboles exclusivos, que no están en plantas.json)
+      document.dispatchEvent(new CustomEvent('arbolPlantado', { detail: { codigoQR: codigo, indice, nombre: planta?.nombre || '' } }));
     }
 
     // --- Observar un árbol de cerca: cámara que orbita alrededor de él ---

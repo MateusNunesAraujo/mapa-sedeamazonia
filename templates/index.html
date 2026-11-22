@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=59" />
+  <link rel="stylesheet" href="/static/css/index.css?v=60" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -571,7 +571,8 @@
         &times;
       </button>
     </div>
-    <!-- Filtro por grupo de novedad (novedades.js): "Social" = social, juego, arbol, logro; "General" = el resto -->
+    <!-- Filtro por grupo de novedad (novedades.js): "General" = avisos push del campus; "Social" = actividad
+         automática de la comunidad (actividad.js) + avisos push de tipo social, juego, arbol y logro -->
     <div class="notif-filtros" role="tablist" aria-label="Tipo de novedades">
       <button type="button" class="notif-filtro activo" data-filtro="general" role="tab" aria-selected="true">
         <img src="/static/iconos/iconos_notificaciones/fuente/general_color.svg" alt="">
@@ -580,6 +581,8 @@
       <button type="button" class="notif-filtro" data-filtro="social" role="tab" aria-selected="false">
         <img src="/static/iconos/iconos_notificaciones/fuente/social_color.svg" alt="">
         <span>Social</span>
+        <!-- Actividad de la comunidad aún no vista (actividad.js) -->
+        <span class="notif-filtro-contador" id="notifSocialContador" hidden></span>
       </button>
     </div>
     <div class="sidebar-content">
@@ -768,6 +771,15 @@
             <p>Aún no tienes logros. Escanea tu primer árbol, planta en tu jardín o visita el campus en 3D para ganarlos.</p>
           </div>
         </div>
+        <!-- Privacidad: users/{uid}.actividadPublica (cuenta.js). Apagado = no se publica nada en la pestaña Social -->
+        <label class="cuenta-interruptor">
+          <span class="cuenta-interruptor-texto">
+            <strong>Mostrar mi actividad en la comunidad</strong>
+            <small>Tu llegada, tus logros y algunos árboles que plantas aparecen en la pestaña Social con tu @usuario.</small>
+          </span>
+          <input type="checkbox" id="cuentaActividadPublica" role="switch" checked>
+          <span class="cuenta-interruptor-boton" aria-hidden="true"></span>
+        </label>
         <p class="cuenta-verificar" id="cuentaVerificar" hidden>
           Tu correo aún no está verificado.
           <button type="button" class="cuenta-enlace cuenta-enlace--linea" data-accion="reenviar-verificacion" data-necesita-red>Reenviar correo</button>
@@ -858,15 +870,17 @@
   <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
   <script src="/static/js/recorrido.js?v=20" type="module"></script>
   <!-- Mi jardín (three.js se carga solo al abrirlo) -->
-  <script src="/static/js/jardin.js?v=46" type="module"></script>
+  <script src="/static/js/jardin.js?v=47" type="module"></script>
   <!-- Cuentas de usuario con Firebase Authentication y Firestore (plugins nativos; opcional y sin bloquear) -->
   <!-- Respaldo del progreso en Firestore (progreso/{uid}); solo con sesión, sin bloquear -->
   <script src="/static/js/sincronizacion.js?v=1"></script>
-  <script src="/static/js/cuenta.js?v=5"></script>
+  <script src="/static/js/cuenta.js?v=6"></script>
+  <!-- Actividad de la comunidad (actividad/{id} en Firestore) y reacciones: pestaña Social; solo con cuenta -->
+  <script src="/static/js/actividad.js?v=3"></script>
   <!-- Notificaciones push de Firebase (solo en la app Android; arranca en 'load' sin bloquear) -->
   <!-- Panel "Novedades del Campus" (avisos push guardados en el celular) -->
-  <script src="/static/js/novedades.js?v=4"></script>
-  <script src="/static/js/notificaciones.js?v=4"></script>
+  <script src="/static/js/novedades.js?v=5"></script>
+  <script src="/static/js/notificaciones.js?v=5"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">

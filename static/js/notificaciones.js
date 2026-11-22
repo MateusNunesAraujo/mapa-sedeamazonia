@@ -16,6 +16,7 @@
   const CLAVE_TOKEN = 'aviamaz_fcmToken';
   const CLAVE_RECHAZO = 'aviamaz_pushRechazado';
   const ESPERA_PREGUNTA_MS = 4000; // deja que la app termine de abrir antes de preguntar
+  const ID_AVISO_JARDIN = 7101;    // notificación local "Tus árboles tienen sed" (jardin-notificaciones.js)
 
   function plugin() {
     const cap = window.Capacitor;
@@ -82,10 +83,19 @@
   function guardarNovedad(n, idAlterno) {
     try {
       const data = n?.data || {};
+      let titulo = n?.title || data.titulo;
+      const cuerpo = n?.body || data.cuerpo;
+      // Al tocar una notificación con la app cerrada o en segundo plano, Firebase no le pasa a la app el
+      // título ni el texto (solo los datos personalizados). Sin data.titulo / data.cuerpo se guarda igual,
+      // con un título genérico, para que el aviso no se pierda.
+      if (!titulo && !cuerpo && !data.logro) {
+        console.warn('Push: el aviso llegó sin titulo ni cuerpo en los datos personalizados; se guarda con un título genérico');
+        titulo = 'Nuevo aviso de AVIAMAZ';
+      }
       window.novedades?.agregar({
         id: n?.id || data['google.message_id'] || idAlterno,
-        titulo: n?.title || data.titulo,
-        cuerpo: n?.body || data.cuerpo,
+        titulo,
+        cuerpo,
         tipo: data.tipo,
         seccion: data.seccion,
         logro: data.logro,
@@ -98,16 +108,19 @@
 
   /**
    * Guarda los avisos que siguen en la barra del sistema (llegaron con la app cerrada o en
-   * segundo plano y no se tocaron). Solo los de FCM, cuya etiqueta empieza por "FCM-Notification";
-   * así no entra el aviso de sed del jardín (notificación local). Android no entrega aquí el id
-   * del mensaje ni sus datos (tipo, seccion), así que se usa la etiqueta como id.
+   * segundo plano y no se tocaron). Se salta el aviso de sed del jardín (notificación local con id
+   * ID_AVISO_JARDIN) y los resúmenes de grupo. No se exige que la etiqueta empiece por
+   * "FCM-Notification" porque en algunos celulares puede venir distinta. Android no entrega aquí el
+   * id del mensaje ni sus datos (tipo, seccion), así que se usa la etiqueta (o el id) como id.
    */
   async function revisarBandeja(push) {
     try {
       const { notifications = [] } = await push.getDeliveredNotifications();
+      if (notifications.length) console.info('Push: avisos en la barra', notifications.map((n) => ({ id: n.id, tag: n.tag, title: n.title })));
       for (const n of notifications) {
-        if (!String(n.tag || '').startsWith('FCM-Notification')) continue;
-        guardarNovedad({ title: n.title, body: n.body }, `bandeja:${n.tag}`);
+        if (Number(n.id) === ID_AVISO_JARDIN || n.groupSummary) continue;
+        if (!n.title && !n.body) continue;
+        guardarNovedad({ title: n.title, body: n.body }, `bandeja:${n.tag || n.id}`);
       }
     } catch (err) {
       console.warn('Push: no se pudo leer la barra de notificaciones', err);

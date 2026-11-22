@@ -7,7 +7,9 @@
  * con un máximo de MAX entradas. Si el almacenamiento falla, el panel abre vacío.
  *
  * Funciona también en el navegador (ahí no llegan avisos, así que queda vacío).
- * Expone window.novedades = { agregar, lista, abrirSeccion, alAbrirPanel, render }.
+ * La pestaña Social la arma actividad.js (actividad automática de la comunidad en Firestore, mezclada
+ * por fecha con los avisos push sociales); si actividad.js no está, se ven solo los avisos push.
+ * Expone window.novedades = { agregar, lista, abrirSeccion, alAbrirPanel, render, formatoFecha, socialVisible }.
  */
 (function () {
   const CLAVE = 'aviamaz_novedades';
@@ -37,7 +39,7 @@
   const grupo = (n) => (TIPOS[n.tipo] || TIPOS.general).grupo;
   const VACIO = {
     general: 'Aún no hay novedades. Aquí aparecerán los avisos del campus 🌿',
-    social: 'Aún no hay novedades sociales. Aquí aparecerán los logros, árboles y juegos de la comunidad 🌿',
+    social: 'Aún no hay actividad en la comunidad. Aquí aparecerán los nuevos exploradores, sus logros y sus árboles 🌿',
   };
 
   // Datos opcionales de texto (logro, persona): se recortan y limitan para que no rompan la tarjeta
@@ -147,9 +149,17 @@
 
   /** Contador de no leídas sobre la campanita del menú y punto del botón ☰ */
   function actualizarContador(datos) {
+    // Actividad de la comunidad aún no vista (actividad.js): contador propio en la pestaña Social
+    let social = 0;
+    try { social = Number(window.actividad?.noLeidas?.()) || 0; } catch { /* sin actividad */ }
+    const contSocial = document.getElementById('notifSocialContador');
+    if (contSocial) {
+      contSocial.textContent = social > 9 ? '9+' : String(social);
+      contSocial.hidden = !social;
+    }
     const badge = document.getElementById('notificationBadge');
     if (!badge) return;
-    const n = datos.filter((x) => !x.leida).length;
+    const n = datos.filter((x) => !x.leida).length + social;
     badge.textContent = n ? (n > 9 ? '9+' : String(n)) : '';
     badge.classList.toggle('con-numero', n > 0);
     badge.style.display = n ? 'flex' : 'none';
@@ -167,6 +177,11 @@
       cont.replaceChildren();
 
       const visibles = datos.filter((n) => grupo(n) === filtro);
+      // Pestaña Social: actividad de la comunidad (actividad.js) mezclada con los avisos push sociales
+      if (filtro === 'social' && window.actividad?.pintar) {
+        window.actividad.pintar(cont, visibles, crearAviso, formatoFecha, VACIO.social);
+        return;
+      }
       if (!visibles.length) {
         const vacio = document.createElement('p');
         vacio.className = 'notif-vacio';
@@ -175,92 +190,101 @@
         return;
       }
 
-      for (const n of visibles) {
-        const tipo = TIPOS[n.tipo] || TIPOS.general;
-        const item = document.createElement('div');
-        item.className = 'notif-item' + (tipo.importante ? ' important' : '');
-
-        // Ícono del tipo a la izquierda: imagen a color (general, social) o emoji en un recuadro
-        const icono = document.createElement('span');
-        icono.className = 'notif-icono' + (n.tipo === 'logro' ? ' logro' : '');
-        icono.setAttribute('aria-hidden', 'true');
-        if (tipo.imagen) {
-          const img = document.createElement('img');
-          img.src = tipo.imagen;
-          img.alt = '';
-          icono.appendChild(img);
-        } else {
-          icono.textContent = tipo.emoji;
-        }
-
-        const texto = document.createElement('p');
-        texto.className = 'notif-text';
-        // Un logro sin título se presenta con el nombre de quien lo ganó
-        const tituloTexto =
-          n.titulo ||
-          (n.tipo === 'logro' ? (n.persona ? `¡${n.persona} desbloqueó un logro!` : '¡Logro desbloqueado!') : '');
-        if (tituloTexto) {
-          const titulo = document.createElement('strong');
-          titulo.textContent = tituloTexto;
-          texto.appendChild(titulo);
-        }
-        if (n.cuerpo) {
-          const cuerpo = document.createElement('span');
-          cuerpo.className = 'notif-cuerpo';
-          cuerpo.textContent = n.cuerpo;
-          texto.appendChild(cuerpo);
-        }
-
-        const hora = document.createElement('span');
-        hora.className = 'notif-time';
-        hora.textContent = formatoFecha(n.fecha);
-
-        const contenido = document.createElement('div');
-        contenido.className = 'notif-contenido';
-        contenido.appendChild(texto);
-
-        // Insignia: el logro y quién lo ganó, o solo la persona en los demás avisos sociales
-        if (n.logro || n.persona) {
-          const insignia = document.createElement('span');
-          insignia.className = 'notif-insignia' + (n.logro ? ' logro' : '');
-          if (n.logro) {
-            // Si el título ya se armó con el nombre, la insignia no lo repite
-            const nombreEnTitulo = !n.titulo && n.persona;
-            insignia.textContent = `🏆 ${n.logro}` + (n.persona && !nombreEnTitulo ? ` · ${n.persona}` : '');
-          } else {
-            insignia.textContent = `👤 ${n.persona}`;
-          }
-          contenido.appendChild(insignia);
-        }
-        contenido.appendChild(hora);
-
-        item.append(icono, contenido);
-
-        if (n.seccion) {
-          item.classList.add('con-seccion');
-          item.setAttribute('role', 'button');
-          item.tabIndex = 0;
-          const ir = () => {
-            document.getElementById('notificationSidebar')?.classList.remove('active');
-            abrirSeccion(n.seccion);
-          };
-          item.addEventListener('click', ir);
-          item.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ir(); }
-          });
-        }
-        cont.appendChild(item);
-      }
+      for (const n of visibles) cont.appendChild(crearAviso(n));
     } catch (err) {
       console.warn('Novedades: no se pudo mostrar el panel', err);
     }
+  }
+
+  /** Tarjeta de un aviso push guardado */
+  function crearAviso(n) {
+    const tipo = TIPOS[n.tipo] || TIPOS.general;
+    const item = document.createElement('div');
+    item.className = 'notif-item' + (tipo.importante ? ' important' : '');
+
+    // Ícono del tipo a la izquierda: imagen a color (general, social) o emoji en un recuadro
+    const icono = document.createElement('span');
+    icono.className = 'notif-icono' + (n.tipo === 'logro' ? ' logro' : '');
+    icono.setAttribute('aria-hidden', 'true');
+    if (tipo.imagen) {
+      const img = document.createElement('img');
+      img.src = tipo.imagen;
+      img.alt = '';
+      icono.appendChild(img);
+    } else {
+      icono.textContent = tipo.emoji;
+    }
+
+    const texto = document.createElement('p');
+    texto.className = 'notif-text';
+    // Un logro sin título se presenta con el nombre de quien lo ganó
+    const tituloTexto =
+      n.titulo ||
+      (n.tipo === 'logro' ? (n.persona ? `¡${n.persona} desbloqueó un logro!` : '¡Logro desbloqueado!') : '');
+    if (tituloTexto) {
+      const titulo = document.createElement('strong');
+      titulo.textContent = tituloTexto;
+      texto.appendChild(titulo);
+    }
+    if (n.cuerpo) {
+      const cuerpo = document.createElement('span');
+      cuerpo.className = 'notif-cuerpo';
+      cuerpo.textContent = n.cuerpo;
+      texto.appendChild(cuerpo);
+    }
+
+    const hora = document.createElement('span');
+    hora.className = 'notif-time';
+    hora.textContent = formatoFecha(n.fecha);
+
+    const contenido = document.createElement('div');
+    contenido.className = 'notif-contenido';
+    contenido.appendChild(texto);
+
+    // Insignia: el logro y quién lo ganó, o solo la persona en los demás avisos sociales
+    if (n.logro || n.persona) {
+      const insignia = document.createElement('span');
+      insignia.className = 'notif-insignia' + (n.logro ? ' logro' : '');
+      if (n.logro) {
+        // Si el título ya se armó con el nombre, la insignia no lo repite
+        const nombreEnTitulo = !n.titulo && n.persona;
+        insignia.textContent = `🏆 ${n.logro}` + (n.persona && !nombreEnTitulo ? ` · ${n.persona}` : '');
+      } else {
+        insignia.textContent = `👤 ${n.persona}`;
+      }
+      contenido.appendChild(insignia);
+    }
+    contenido.appendChild(hora);
+
+    item.append(icono, contenido);
+
+    if (n.seccion) {
+      item.classList.add('con-seccion');
+      item.setAttribute('role', 'button');
+      item.tabIndex = 0;
+      const ir = () => {
+        document.getElementById('notificationSidebar')?.classList.remove('active');
+        abrirSeccion(n.seccion);
+      };
+      item.addEventListener('click', ir);
+      item.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ir(); }
+      });
+    }
+    return item;
   }
 
   /** Al abrir el panel: todas quedan leídas y se refrescan las horas ("Hace 10 min") */
   function alAbrirPanel() {
     const datos = lista();
     if (datos.some((n) => !n.leida)) escribir(datos.map((n) => ({ ...n, leida: true })));
+    if (filtro === 'social') abrirSocial();
     render();
+  }
+
+  /** La pestaña Social queda vista: se carga la actividad y se borra su contador (actividad.js) */
+  function abrirSocial() {
+    try { window.actividad?.alAbrirSocial?.(); } catch (err) { console.warn('Novedades: actividad', err); }
   }
 
   /** Pestañas General / Social */
@@ -274,12 +298,17 @@
           b.classList.toggle('activo', activo);
           b.setAttribute('aria-selected', String(activo));
         });
+        if (filtro === 'social') abrirSocial();
         render();
       });
     });
   }
 
-  window.novedades = { agregar, lista, abrirSeccion, alAbrirPanel, render };
+  window.novedades = {
+    agregar, lista, abrirSeccion, alAbrirPanel, render, formatoFecha,
+    /** ¿Se está viendo la pestaña Social? (actividad.js recarga al volver la conexión) */
+    socialVisible: () => panelAbierto() && filtro === 'social',
+  };
   try { iniciarFiltros(); } catch (err) { console.warn('Novedades: sin pestañas', err); }
   render();
 })();

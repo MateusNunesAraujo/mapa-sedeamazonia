@@ -11,11 +11,13 @@
  *    "Mi cuenta" avisa que las cuentas solo están en la app Android.
  *
  * Claves nuevas de localStorage (no se tocan las existentes):
- *  - aviamaz_perfil: { uid, nombreCompleto, username, email, fotoURL } — solo cuando el perfil está completo.
+ *  - aviamaz_perfil: { uid, nombreCompleto, username, email, fotoURL, actividadPublica, actividadPublicaSinSubir? }
+ *    — solo cuando el perfil está completo. actividadPublicaSinSubir: el interruptor se cambió sin conexión.
  *  - aviamaz_modoSinCuenta: 'true' si el usuario eligió "Continuar sin cuenta" (no se vuelve a mostrar la bienvenida).
  *
  * Firestore:
- *  - users/{uid}: { nombreCompleto, username, email, proveedor ('google' | 'password'), fotoURL?, creado }
+ *  - users/{uid}: { nombreCompleto, username, email, proveedor ('google' | 'password'), fotoURL?, creado,
+ *    actividadPublica (interruptor "Mostrar mi actividad en la comunidad"; sin el campo = true) }
  *  - usernames/{username}: { uid } — garantiza que el username sea único (ver firestore.rules).
  *  La versión 5.4.1 del plugin no trae writeBatch ni serverTimestamp (llegaron en la 6, que pide
  *  Capacitor 6). Por eso: primero se reserva usernames/{username} (si ya existe, las reglas rechazan la
@@ -45,6 +47,9 @@
   let primeraVez = false;           // la bienvenida salió sola al abrir la app
   let enviarVerificacion = false;   // cuenta de correo recién creada que aún no tiene perfil
   const esperandoCierre = [];       // promesas de esperarCierre()
+  // Se cumple cuando ya se sabe si hay sesión (actividad.js espera esto antes de publicar)
+  let avisarListo;
+  const listo = new Promise((ok) => { avisarListo = ok; });
 
   // ---------- Almacenamiento local (puede fallar; nunca debe romper la app) ----------
   function leer(clave) {
@@ -148,7 +153,7 @@
         throw esPermisoDenegado(e) ? errorUsername() : e; // otro lo tomó justo antes
       }
     }
-    const datos = { nombreCompleto, username, email: email || '', proveedor, creado: new Date().toISOString() };
+    const datos = { nombreCompleto, username, email: email || '', proveedor, creado: new Date().toISOString(), actividadPublica: true };
     if (fotoURL) datos.fotoURL = fotoURL;
     try {
       await conTiempo(Store.setDocument({ reference: `users/${uid}`, data: datos }));
@@ -159,16 +164,52 @@
   }
 
   function marcarPerfilListo(datos) {
+    // Si el interruptor "Mostrar mi actividad" se cambió sin conexión, manda el valor de este celular
+    const sinSubir = perfil?.uid === datos.uid && perfil.actividadPublicaSinSubir;
     perfil = {
       uid: datos.uid,
       nombreCompleto: datos.nombreCompleto,
       username: datos.username,
       email: datos.email || '',
       fotoURL: datos.fotoURL || null,
+      actividadPublica: sinSubir ? perfil.actividadPublica !== false : datos.actividadPublica !== false,
     };
+    if (sinSubir) perfil.actividadPublicaSinSubir = true;
     guardar(CLAVE_PERFIL, JSON.stringify(perfil));
     actualizarMenu();
     window.sincronizacion?.activar?.(perfil.uid); // respaldo del progreso en la nube (sincronizacion.js)
+    if (sinSubir) subirPreferencia();
+    document.dispatchEvent(new CustomEvent('sesionCambiada', { detail: { uid: perfil.uid } })); // actividad.js
+  }
+
+  /** Sube users/{uid}.actividadPublica si quedó cambiada solo en el celular. true si quedó guardada */
+  async function subirPreferencia() {
+    if (!perfil?.actividadPublicaSinSubir || !usuario || !hayInternet()) return false;
+    const uid = perfil.uid;
+    const valor = perfil.actividadPublica !== false;
+    try {
+      await conTiempo(Store.setDocument({ reference: `users/${uid}`, data: { actividadPublica: valor }, merge: true }));
+      if (perfil?.uid === uid && (perfil.actividadPublica !== false) === valor) {
+        delete perfil.actividadPublicaSinSubir;
+        guardar(CLAVE_PERFIL, JSON.stringify(perfil));
+      }
+      return true;
+    } catch (e) {
+      console.warn('Cuenta: no se pudo guardar actividadPublica', e);
+      return false;
+    }
+  }
+
+  /** Interruptor "Mostrar mi actividad en la comunidad" (Mi cuenta) */
+  async function cambiarActividadPublica(valor) {
+    if (!perfil) return;
+    perfil = { ...perfil, actividadPublica: valor, actividadPublicaSinSubir: true };
+    guardar(CLAVE_PERFIL, JSON.stringify(perfil));
+    if (!valor) window.actividad?.descartarPendientes?.(); // lo que no se alcanzó a publicar ya no sale
+    limpiarMensajes(vistas.perfil);
+    if (!(await subirPreferencia())) {
+      mensaje('perfil', 'Se guardó en este celular. Se guardará en tu cuenta cuando vuelva la conexión.', 'cuenta-aviso');
+    }
   }
 
   /** Tras iniciar sesión: si ya hay perfil en Firestore se marca listo; si no, se pide completarlo */
@@ -288,6 +329,7 @@
     pantalla.querySelectorAll('[data-necesita-red]').forEach((b) => { b.disabled = !conRed; });
   }
   window.addEventListener('online', actualizarRed);
+  window.addEventListener('online', () => { subirPreferencia(); });
   window.addEventListener('offline', actualizarRed);
 
   /** Avatar: la foto de Google si carga; si no (o sin internet), la inicial del nombre */
@@ -340,6 +382,8 @@
     $('cuentaPerfilUsuario').textContent = '@' + perfil.username;
     $('cuentaPerfilCorreo').textContent = perfil.email || usuario?.email || '';
     $('cuentaVerificar').hidden = !(usuario && proveedorDe(usuario) === 'password' && !usuario.emailVerified);
+    const interruptor = $('cuentaActividadPublica');
+    if (interruptor) interruptor.checked = perfil.actividadPublica !== false;
     pintarDesde();
     pintarEstadisticas();
     pintarLogros();
@@ -581,6 +625,7 @@
         return;
       }
       marcarPerfilListo({ uid: usuario.uid, nombreCompleto: nombre, username, email: correo });
+      window.actividad?.publicarUnion?.(); // "se unió a AVIAMAZ" (sin esperar a la red)
       // 5. Correo de verificación: se avisa, pero no se bloquea el uso de la app
       await terminarRegistro(correo);
     } catch (e) {
@@ -667,6 +712,7 @@
       };
       await guardarPerfilNube(datos);
       marcarPerfilListo(datos);
+      window.actividad?.publicarUnion?.(); // perfil creado por primera vez: "se unió a AVIAMAZ"
       if (enviarVerificacion) await terminarRegistro(datos.email);
       else { cerrar(); saludar(`¡Bienvenido, ${nombre.split(' ')[0]}!`); }
     } catch (e) {
@@ -739,6 +785,7 @@
     borrar(CLAVE_PERFIL);
     // El progreso local queda en blanco (está a salvo en la nube); las fotos no se tocan
     sync?.desactivar?.({ limpiar: true });
+    window.actividad?.alCerrarSesion?.(); // descarta la actividad que no alcanzó a publicarse
     actualizarMenu();
     cerrar();
     saludar('Sesión cerrada');
@@ -842,6 +889,10 @@
 
         alerta({ title: 'Eliminando cuenta…', allowOutsideClick: false, showConfirmButton: false, didOpen: () => Swal.showLoading() });
         if (sync) await sync.borrarNube(uid);
+        // Sus actividades y sus reacciones (si el borrado de la cuenta falla después, no se restauran)
+        if (intento === 0) {
+          try { await window.actividad?.borrarDeUsuario?.(uid); } catch (e) { console.warn('Cuenta: borrar actividad', e); }
+        }
         await conTiempo(Store.deleteDocument({ reference: `users/${uid}` }));
         if (username) await conTiempo(Store.deleteDocument({ reference: `usernames/${username}` }));
         // En la 5.4.1, deleteUser() responde "bien" aunque falle: se comprueba si la sesión sigue
@@ -869,6 +920,7 @@
       borrar(CLAVE_PERFIL);
       // El progreso del celular se conserva y pasa a ser de modo sin cuenta (se combina con la próxima cuenta)
       sync?.desactivar?.({ limpiar: false });
+      window.actividad?.alCerrarSesion?.();
       actualizarMenu();
       cerrar();
       await alerta({ icon: 'success', title: 'Cuenta eliminada', text: 'Tu cuenta y tu perfil se borraron. Puedes seguir usando la app sin cuenta.' });
@@ -954,11 +1006,12 @@
   forms.ingreso.addEventListener('submit', ingresar);
   forms.completar.addEventListener('submit', completarPerfil);
   $('menuCuentaBtn')?.addEventListener('click', alTocarMenu);
+  $('cuentaActividadPublica')?.addEventListener('change', (e) => cambiarActividadPublica(e.target.checked));
 
   // ---------- Arranque (sin bloquear la app) ----------
   async function iniciar() {
     actualizarMenu();
-    if (!disponible) return;
+    if (!disponible) { avisarListo(); return; }
 
     try { usuario = (await conTiempo(Auth.getCurrentUser(), 5000)).user || null; } catch { usuario = null; }
 
@@ -966,6 +1019,7 @@
       if (perfil && perfil.uid !== usuario.uid) { perfil = null; borrar(CLAVE_PERFIL); }
       actualizarMenu();
       if (perfil) window.sincronizacion?.activar?.(usuario.uid); // sin red solo queda lista para cuando vuelva
+      avisarListo();
       if (!hayInternet()) return; // sin red: se usa la copia local tal como está
       try {
         const datos = await leerDoc(`users/${usuario.uid}`);
@@ -978,6 +1032,7 @@
     }
 
     // Sin sesión: la copia local ya no sirve
+    avisarListo();
     if (perfil) { perfil = null; borrar(CLAVE_PERFIL); actualizarMenu(); }
     if (leer(CLAVE_SIN_CUENTA) === 'true') return;
     abrir('bienvenida', { primeraVez: true }); // queda debajo del splash y aparece cuando este se desvanece
@@ -987,11 +1042,15 @@
   window.cuenta = {
     /** Perfil local ({ uid, nombreCompleto, username, email, fotoURL }) o null */
     perfil: () => (usuario && perfil ? { ...perfil } : null),
+    /** Promesa: ya se sabe si hay sesión (no espera a leer el perfil de la nube) */
+    listo,
     pantallaAbierta: () => !pantalla.hidden,
     /** Promesa que se cumple cuando la pantalla de cuenta está cerrada (la usa notificaciones.js) */
     esperarCierre: () => (pantalla.hidden ? Promise.resolve() : new Promise((ok) => esperandoCierre.push(ok))),
     abrir: alTocarMenu,
   };
 
-  iniciar().catch((e) => console.warn('Cuenta: desactivada en este arranque', e));
+  iniciar()
+    .catch((e) => console.warn('Cuenta: desactivada en este arranque', e))
+    .finally(() => avisarListo());
 })();
