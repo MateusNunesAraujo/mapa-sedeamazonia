@@ -17,6 +17,7 @@
   const CLAVE_RECHAZO = 'aviamaz_pushRechazado';
   const ESPERA_PREGUNTA_MS = 4000; // deja que la app termine de abrir antes de preguntar
   const ID_AVISO_JARDIN = 7101;    // notificación local "Tus árboles tienen sed" (jardin-notificaciones.js)
+  const ID_AVISOS_LIKE = [7200, 7299]; // notificaciones locales de "me gusta" (jardin-publico.js)
 
   function plugin() {
     const cap = window.Capacitor;
@@ -119,6 +120,8 @@
       if (notifications.length) console.info('Push: avisos en la barra', notifications.map((n) => ({ id: n.id, tag: n.tag, title: n.title })));
       for (const n of notifications) {
         if (Number(n.id) === ID_AVISO_JARDIN || n.groupSummary) continue;
+        // Avisos locales de "me gusta" en tu jardín (jardin-publico.js): no van a Novedades ni a Social
+        if (Number(n.id) >= ID_AVISOS_LIKE[0] && Number(n.id) <= ID_AVISOS_LIKE[1]) continue;
         if (!n.title && !n.body) continue;
         guardarNovedad({ title: n.title, body: n.body }, `bandeja:${n.tag || n.id}`);
       }

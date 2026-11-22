@@ -14,13 +14,15 @@
  * animados; con "reducir movimiento" activado en el sistema, los árboles quedan quietos.
  * three.js se carga únicamente al abrir el jardín.
  */
-import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=25';
+import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=26';
 import { pedirPermisoAvisos, cancelarAvisoSed, programarAvisoSed, alTocarAviso } from './jardin-notificaciones.js?v=1';
-import { transicionJardin } from './transicion-jardin.js?v=2';
+import { transicionJardin } from './transicion-jardin.js?v=3';
+import { montarVisita } from './jardin-visita.js?v=1';
 import {
   cargarEstado, arbolEn, plantar, parcelaDe, parcelasLibres, quitarDesconocidos,
   moverArbol, regar, estadoRegadera, estaMojado, tieneSed, asegurarSed, accesoriosDe, tocaLlover, llover, tocaPregunta, PREGUNTA,
   celdasParaAmpliar, comprarParcela, CUADRICULA_INICIAL, guardarEstado, tocaCaja, codigoBase, darMonedasIniciales,
+  celdasIniciales, PARCELAS_MAX,
 } from './jardin-estado.js?v=17';
 
 // Distribución del jardín
@@ -97,28 +99,40 @@ async function cargarThree() {
   if (!GLTFLoader) ({ GLTFLoader } = await import('./three/addons/loaders/GLTFLoader.js'));
 }
 
-function crearInterfaz() {
+/** @param {object|null} visita jardín de otro jugador (modo visita) o null para el propio */
+function crearInterfaz(visita = null) {
   const raiz = document.createElement('div');
-  raiz.className = 'jardin';
+  raiz.className = visita ? 'jardin jardin--visita' : 'jardin';
   raiz.setAttribute('role', 'dialog');
   raiz.setAttribute('aria-modal', 'true');
-  raiz.setAttribute('aria-label', 'Mi jardín');
-  raiz.innerHTML = `
-    <div class="jardin-barra">
-      <div>
+  raiz.setAttribute('aria-label', visita ? `Jardín de @${visita.username}` : 'Mi jardín');
+  const barra = visita
+    ? `<div class="jardin-barra-izquierda">
+        <button type="button" class="jardin-volver" aria-label="Salir del jardín visitado">← Volver</button>
+        <div>
+          <span class="jardin-subtitulo">De visita</span>
+          <h2 class="jardin-titulo"></h2>
+        </div>
+      </div>
+      <div class="jardin-barra-derecha"></div>`
+    : `<div>
         <span class="jardin-subtitulo">Sede Amazonia</span>
         <h2 class="jardin-titulo">Mi jardín</h2>
       </div>
       <div class="jardin-barra-derecha">
         <button type="button" class="jardin-salir" aria-label="Salir del jardín">&times;</button>
-      </div>
-    </div>
-    <div class="jardin-cargando">Preparando el jardín…</div>
-    <div class="jardin-ayuda">
-      <span class="jardin-ayuda-aviso">Los árboles del jardín son versiones animadas, pensadas para entretener: no reproducen con exactitud a las especies reales.</span>
+      </div>`;
+  const ayuda = visita
+    ? `<span class="jardin-ayuda-aviso">Estás de visita: puedes mirar el jardín, pero no cambiar nada.</span>
+      <span class="solo-tactil">Arrastra para moverte · Pellizca para acercar · Toca un árbol</span>
+      <span class="solo-pc">Arrastra para moverte · Rueda para acercar · Clic en un árbol</span>`
+    : `<span class="jardin-ayuda-aviso">Los árboles del jardín son versiones animadas, pensadas para entretener: no reproducen con exactitud a las especies reales.</span>
       <span class="solo-tactil">Arrastra para moverte · Pellizca para acercar · Toca una parcela</span>
-      <span class="solo-pc">Arrastra para moverte · Rueda para acercar · Clic en una parcela</span>
-    </div>
+      <span class="solo-pc">Arrastra para moverte · Rueda para acercar · Clic en una parcela</span>`;
+  raiz.innerHTML = `
+    <div class="jardin-barra">${barra}</div>
+    <div class="jardin-cargando">Preparando el jardín…</div>
+    <div class="jardin-ayuda">${ayuda}</div>
     <div class="jardin-info" aria-live="polite" hidden>
       <div class="jardin-info-textos">
         <strong class="jardin-info-titulo"></strong>
@@ -136,8 +150,141 @@ function crearInterfaz() {
       </div>
       <button type="button" class="jardin-observar-volver">Volver al jardín</button>
     </div>`;
+  if (visita) raiz.querySelector('.jardin-titulo').textContent = `Jardín de @${visita.username}`;
   document.body.appendChild(raiz);
   return raiz;
+}
+
+/**
+ * Estado de solo lectura para dibujar un jardín visitado (jardines/{uid}.jardin). Tiene solo lo que usa
+ * el dibujo; nunca se guarda (no pasa por guardarEstado) y vive solo en memoria mientras dura la visita.
+ * Los datos vienen de otro usuario: se validan como en cargarEstado.
+ */
+function estadoDeVisita(jardin) {
+  const celdas = [];
+  const vistas = new Set();
+  for (const t of Array.isArray(jardin?.celdas) ? jardin.celdas : []) {
+    if (celdas.length >= PARCELAS_MAX) break;
+    const c = typeof t === 'string' ? t.split(',').map(Number) : t;
+    if (!Array.isArray(c) || c.length !== 2 || !c.every((n) => Number.isInteger(n) && Math.abs(n) <= 40)) continue;
+    const clave = `${c[0]},${c[1]}`;
+    if (vistas.has(clave)) continue;
+    vistas.add(clave);
+    celdas.push([c[0], c[1]]);
+  }
+  if (!celdas.length) celdas.push(...celdasIniciales());
+  const plantados = {};
+  const usados = new Set();
+  for (const [clave, codigo] of Object.entries(jardin?.plantados || {})) {
+    const i = Number(clave);
+    if (!Number.isInteger(i) || i < 0 || i >= celdas.length || typeof codigo !== 'string' || !codigo || usados.has(codigo)) continue;
+    plantados[i] = codigo.slice(0, 80);
+    usados.add(plantados[i]);
+  }
+  const accesorios = {};
+  for (const codigo of usados) {
+    const zonas = jardin?.accesorios?.[codigo];
+    if (!zonas || typeof zonas !== 'object') continue;
+    const limpio = {};
+    for (const zona of ['cabeza', 'rostro', 'cuello']) if (typeof zonas[zona] === 'string' && zonas[zona]) limpio[zona] = zonas[zona];
+    if (Object.keys(limpio).length) accesorios[codigo] = limpio;
+  }
+  return { celdas, parcelas: celdas.length, plantados, accesorios, riegos: {}, sed: {} };
+}
+
+/** Ruta del modelo de una planta de plantas.json sin mirar si el VISITANTE la desbloqueó (modo visita) */
+function rutaModeloDe(planta) {
+  const ruta = String(planta?.modelo3d || '').trim();
+  if (!ruta) return null;
+  return /^(\/|https?:)/i.test(ruta) ? ruta : `/static/modelos/3d-arboles/${encodeURIComponent(ruta)}`;
+}
+
+/** Datos de cada árbol plantado en un jardín visitado (también copias "#2" y exclusivos de la caja) */
+async function plantasDeVisita(estado) {
+  const ph = window.plantsHandler;
+  const plantas = ph?.plantas?.length ? ph.plantas : ((await ph?.loadPlants?.()) || []);
+  const porCodigo = new Map(plantas.map((p) => [p.codigoQR, p]));
+  let exclusivos = new Map();
+  try { exclusivos = (await cargarCaja()).exclusivos; } catch (err) { console.warn('Visita: sin árboles exclusivos', err); }
+  const mapa = new Map();
+  for (const codigo of Object.values(estado.plantados)) {
+    const base = codigoBase(codigo);
+    const planta = porCodigo.get(base);
+    if (planta) mapa.set(codigo, { ...planta, codigoQR: codigo, rutaModelo: rutaModeloDe(planta) });
+    else if (exclusivos.has(base)) mapa.set(codigo, { ...exclusivos.get(base), codigoQR: codigo });
+  }
+  return mapa;
+}
+
+/**
+ * ❤️ con los "me gusta" del jardín propio, junto a las monedas. Muestra el último número guardado
+ * (sirve sin conexión) y, con internet, lo mantiene al día EN TIEMPO REAL mientras el jardín está abierto
+ * (jardinPublico.escucharLikesPropios): cuando alguien da o quita un like, el número cambia con una
+ * animación. Sin cuenta no se muestra. Devuelve { pintar, detener }.
+ */
+function ponerContadorLikes(raiz) {
+  const jp = window.jardinPublico;
+  const monedas = raiz.querySelector('.jardin-barra-derecha .jardin-monedas');
+  if (!jp || !monedas || !window.cuenta?.perfil?.()) return { pintar: () => {}, detener: () => {} };
+  const chip = document.createElement('span');
+  chip.className = 'jardin-moneda-chip jardin-likes-chip';
+  chip.title = 'Me gusta que ha recibido tu jardín';
+  chip.setAttribute('role', 'status');
+  chip.innerHTML = '<span class="jardin-likes-icono" aria-hidden="true">❤️</span><strong></strong>';
+  let actual = jp.likesGuardados() ?? 0;
+  const pintar = (n) => {
+    actual = n;
+    chip.querySelector('strong').textContent = String(n);
+    chip.setAttribute('aria-label', `${n} me gusta en tu jardín`);
+  };
+  pintar(actual);
+  monedas.appendChild(chip);
+
+  const reducir = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  /** Salto del chip y burbuja "+1 ❤️ ¡Nuevo me gusta!" (o "−1 💔") que sale de él y se desvanece */
+  function animar(diferencia) {
+    if (!chip.isConnected) return;
+    const sube = diferencia > 0;
+    chip.classList.remove('like-sube', 'like-baja');
+    void chip.offsetWidth; // reinicia la animación si llegan dos seguidos
+    chip.classList.add(sube ? 'like-sube' : 'like-baja');
+    if (reducir) return;
+    const caja = chip.getBoundingClientRect();
+    const burbuja = document.createElement('span');
+    burbuja.className = `jardin-like-aviso ${sube ? 'sube' : 'baja'}`;
+    burbuja.setAttribute('aria-hidden', 'true');
+    const cuantos = Math.abs(diferencia);
+    burbuja.textContent = sube
+      ? `+${cuantos} ❤️ ${cuantos === 1 ? '¡Nuevo me gusta!' : '¡Nuevos me gusta!'}`
+      : `−${cuantos} 💔`;
+    burbuja.style.top = `${caja.bottom + 6}px`;
+    burbuja.style.right = `${Math.max(8, window.innerWidth - caja.right)}px`;
+    raiz.appendChild(burbuja);
+    burbuja.addEventListener('animationend', () => burbuja.remove());
+    if (!sube) return;
+    // Corazoncitos que suben desde el chip
+    for (let i = 0; i < 4; i++) {
+      const c = document.createElement('span');
+      c.className = 'jardin-like-chispa';
+      c.setAttribute('aria-hidden', 'true');
+      c.textContent = '❤️';
+      c.style.left = `${caja.left + caja.width * (0.2 + 0.2 * i)}px`;
+      c.style.top = `${caja.top}px`;
+      c.style.setProperty('--dx', `${(i - 1.5) * 14}px`);
+      c.style.animationDelay = `${i * 80}ms`;
+      raiz.appendChild(c);
+      c.addEventListener('animationend', () => c.remove());
+    }
+  }
+
+  const detener = jp.escucharLikesPropios((n, _uids, inicial) => {
+    if (!chip.isConnected) return;
+    const antes = actual;
+    pintar(n);
+    if (!inicial && n !== antes) animar(n - antes);
+  });
+  // El panel "Actividad" también lee los likes: actualiza el número (sin animación)
+  return { pintar, detener };
 }
 
 /** "3 h 20 min", "45 min" o "menos de un minuto" */
@@ -380,11 +527,14 @@ function crearBrote() {
 /**
  * @param {function} [progreso] recibe la fracción cargada (0 a 1); la usa la barra de la transición.
  *   Reparto: three.js 35 %, árboles del usuario 10 %, catálogo 5 %, modelos de los árboles 45 %.
+ * @param {object|null} visita jardín de otro jugador (jardinPublico.leerParaVisita → datos): modo visita,
+ *   solo lectura. No hay tienda, herramientas, monedas, lluvia, caja ni preguntas, no se riega ni se mueve
+ *   nada y NUNCA se llama a guardarEstado: el estado visitado vive solo en memoria.
  */
-async function abrirJardin(progreso = () => {}) {
+async function abrirJardin(progreso = () => {}, visita = null) {
   if (document.querySelector('.jardin')) return;
   const informar = (fraccion) => { try { progreso(fraccion); } catch { /* la barra no debe romper el jardín */ } };
-  const raiz = crearInterfaz();
+  const raiz = crearInterfaz(visita);
   const cargando = raiz.querySelector('.jardin-cargando');
   const info = raiz.querySelector('.jardin-info');
   const infoAccion = info.querySelector('.jardin-info-accion');
@@ -392,7 +542,8 @@ async function abrirJardin(progreso = () => {}) {
   let renderer = null;
   let scene = null;
   let ui = null; // interfaz 2D (jardin-ui.js): monedas, herramientas y paneles
-  let estadoAbierto = null; // progreso cargado; al salir se programa con él el aviso de sed
+  let uiVisita = null; // modo visita (jardin-visita.js): perfil y "me gusta"
+  let estadoAbierto = null; // progreso cargado; al salir se programa con él el aviso de sed (nunca en visita)
   const recursosSueltos = []; // geometrías y materiales que no siempre están en la escena
   const quitarEventos = [];
   const escuchar = (objetivo, tipo, fn, opciones) => {
@@ -422,13 +573,15 @@ async function abrirJardin(progreso = () => {}) {
       renderer.forceContextLoss();
     }
     raiz.remove();
+    visita?.alCerrar?.(); // visita abierta desde el panel "Actividad": se vuelve a Mi jardín
   };
-  raiz.querySelector('.jardin-salir').addEventListener('click', cerrar);
+  raiz.querySelector('.jardin-salir, .jardin-volver').addEventListener('click', cerrar);
   // Escape cierra primero el panel o la herramienta activa, y después el jardín
   let salirObservar = () => false; // se define al cargar la escena
   escuchar(window, 'keydown', (e) => {
     if (e.key !== 'Escape') return;
     if (ui && ui.cerrarCapa()) return;
+    if (uiVisita && uiVisita.cerrarCapa()) return;
     if (salirObservar()) return;
     cerrar();
   });
@@ -436,8 +589,9 @@ async function abrirJardin(progreso = () => {}) {
   try {
     await cargarThree();
     informar(0.35);
-    // Árboles del usuario (desbloqueados) para saber qué hay plantado y qué está guardado
-    const arboles = await arbolesDelUsuario();
+    // Árboles del usuario (desbloqueados) para saber qué hay plantado y qué está guardado.
+    // En visita no hace falta: no se planta nada y los árboles salen del jardín visitado
+    const arboles = visita ? [] : await arbolesDelUsuario();
     informar(0.45);
     if (cerrado) return; // se salió mientras cargaba
 
@@ -453,30 +607,33 @@ async function abrirJardin(progreso = () => {}) {
     informar(0.5);
     if (cerrado) return;
 
-    const plantasPorCodigo = new Map(arboles.map((p) => [p.codigoQR, p]));
-    const todasLasPlantas = window.plantsHandler?.plantas || [];
-    const estado = cargarEstado();
-    estadoAbierto = estado;
-    // Jugador nuevo: recibe una sola vez las monedas iniciales (tienda-jardin.json → monedas_iniciales).
-    // Si el catálogo no cargó, se intenta en la próxima visita
-    if (monedasIniciales) darMonedasIniciales(estado, monedasIniciales);
-    // Monedas de los logros (logros.js): las pendientes se cobran al entrar y las nuevas, en cuanto se ganan
-    const cobrarLogros = () => {
-      const m = window.logros?.cobrarMonedas?.();
-      if (!m || (!m.plata && !m.oro)) return;
-      estado.monedas.plata += m.plata;
-      estado.monedas.oro += m.oro;
-      guardarEstado(estado);
-      ui?.actualizarMonedas(m.oro ? 'oro' : 'plata');
-    };
-    cobrarLogros();
-    escuchar(document, 'logroDesbloqueado', cobrarLogros);
-    // Mientras se está en el jardín no hace falta el aviso; se vuelve a programar al salir
-    cancelarAvisoSed(estado).then((cambio) => { if (cambio) guardarEstado(estado); });
-    if (Object.keys(estado.plantados).length) pedirPermisoAvisos();
-    // Solo si plantas.json cargó: si falló, no se debe liberar ninguna parcela por error
-    // Los árboles exclusivos ganados en la caja no están en plantas.json: también son válidos
-    if (todasLasPlantas.length) quitarDesconocidos(estado, new Set([...todasLasPlantas.map((p) => p.codigoQR), ...estado.exclusivos]));
+    const estado = visita ? estadoDeVisita(visita.jardin) : cargarEstado();
+    const plantasPorCodigo = visita ? await plantasDeVisita(estado) : new Map(arboles.map((p) => [p.codigoQR, p]));
+    if (cerrado) return;
+    if (!visita) {
+      const todasLasPlantas = window.plantsHandler?.plantas || [];
+      estadoAbierto = estado;
+      // Jugador nuevo: recibe una sola vez las monedas iniciales (tienda-jardin.json → monedas_iniciales).
+      // Si el catálogo no cargó, se intenta en la próxima visita
+      if (monedasIniciales) darMonedasIniciales(estado, monedasIniciales);
+      // Monedas de los logros (logros.js): las pendientes se cobran al entrar y las nuevas, en cuanto se ganan
+      const cobrarLogros = () => {
+        const m = window.logros?.cobrarMonedas?.();
+        if (!m || (!m.plata && !m.oro)) return;
+        estado.monedas.plata += m.plata;
+        estado.monedas.oro += m.oro;
+        guardarEstado(estado);
+        ui?.actualizarMonedas(m.oro ? 'oro' : 'plata');
+      };
+      cobrarLogros();
+      escuchar(document, 'logroDesbloqueado', cobrarLogros);
+      // Mientras se está en el jardín no hace falta el aviso; se vuelve a programar al salir
+      cancelarAvisoSed(estado).then((cambio) => { if (cambio) guardarEstado(estado); });
+      if (Object.keys(estado.plantados).length) pedirPermisoAvisos();
+      // Solo si plantas.json cargó: si falló, no se debe liberar ninguna parcela por error
+      // Los árboles exclusivos ganados en la caja no están en plantas.json: también son válidos
+      if (todasLasPlantas.length) quitarDesconocidos(estado, new Set([...todasLasPlantas.map((p) => p.codigoQR), ...estado.exclusivos]));
+    }
 
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -694,7 +851,10 @@ async function abrirJardin(progreso = () => {}) {
      * Sin ruta (árbol bloqueado o sin modelo todavía) se usa el brote provisional.
      */
     async function crearArbol(codigo) {
-      const ruta = window.plantsHandler?.getModelUrl(codigoBase(codigo)) || plantasPorCodigo.get(codigo)?.rutaModelo || null;
+      // En visita se dibuja el modelo que ve su dueño, aunque el visitante no haya desbloqueado ese árbol
+      const ruta = visita
+        ? plantasPorCodigo.get(codigo)?.rutaModelo || null
+        : window.plantsHandler?.getModelUrl(codigoBase(codigo)) || plantasPorCodigo.get(codigo)?.rutaModelo || null;
       const gltf = ruta ? await cargarModelo(ruta) : null;
       const original = gltf?.scene || null;
       const modelo = original ? original.clone(true) : crearBrote();
@@ -1323,7 +1483,7 @@ async function abrirJardin(progreso = () => {}) {
       dibujar();
     }
 
-    const nombreDe = (codigo) => plantasPorCodigo.get(codigo)?.nombre || 'Árbol bloqueado';
+    const nombreDe = (codigo) => plantasPorCodigo.get(codigo)?.nombre || (visita ? 'Árbol' : 'Árbol bloqueado');
 
     // --- Pala: tocar un árbol para tomarlo y otra parcela para llevarlo (si tiene árbol, se intercambian) ---
     let origenPala = null;
@@ -1676,6 +1836,15 @@ async function abrirJardin(progreso = () => {}) {
       const modo = ui?.modo();
       const titulo = `Parcela ${indice + 1}`;
 
+      // De visita solo se mira: nombre del árbol y "Observar" (girar la cámara alrededor de él)
+      if (visita) {
+        if (!codigo) { mostrarTarjeta(titulo, 'Parcela vacía'); return; }
+        const especie = planta?.especie || planta?.nombre_cientifico || '';
+        mostrarTarjeta(nombreDe(codigo), especie ? `${especie} · ${titulo}` : titulo,
+          arbolesEnEscena.has(indice) ? { texto: 'Observar', fn: () => observarArbol(indice) } : null);
+        return;
+      }
+
       if (modo === 'plantar') {
         const pendienteDePlantar = ui.arbolPorPlantar();
         if (codigo) { mostrarTarjeta(titulo, 'Esta parcela ya tiene un árbol. Elige una vacía'); return; }
@@ -1755,6 +1924,19 @@ async function abrirJardin(progreso = () => {}) {
     }, { passive: false });
     escuchar(window, 'resize', () => { ajustarVista(); ubicarCamara(); reubicarZonas(); dibujar(); });
 
+    if (visita) {
+      // Modo visita: solo el perfil y el corazón; sin tienda, herramientas, monedas, riego, lluvia,
+      // caja ni preguntas
+      uiVisita = montarVisita(raiz, visita);
+      await Promise.race([cargaArboles, new Promise((listo) => setTimeout(listo, ESPERA_MAX_ARBOLES))]);
+      if (cerrado) return;
+      informar(0.95);
+      cargando.remove();
+      dibujar();
+      setTimeout(() => ocultarAyuda(), 6000);
+      return;
+    }
+
     ui = montarInterfazJuego(raiz, {
       estado,
       // Al tomar o soltar una herramienta se limpia la parcela elegida
@@ -1787,7 +1969,17 @@ async function abrirJardin(progreso = () => {}) {
         arboles.push(arbol);
         plantasPorCodigo.set(arbol.codigoQR, arbol);
       },
+      // Panel "Actividad": visitar el jardín de quien dio like o de un usuario buscado. Se sale del propio
+      // (se guarda como siempre al cerrar) y "← Volver" de la visita lo vuelve a abrir
+      alVisitarJardin: (uid) => {
+        cerrar();
+        visitarJardin({ uid, alVolver: () => abrirJardin() });
+      },
+      alLeerLikes: (n) => likes.pintar(n),
     });
+    // ❤️ likes recibidos en tiempo real (jardin-publico.js); el listener se quita al salir del jardín
+    const likes = ponerContadorLikes(raiz);
+    quitarEventos.push(likes.detener);
 
     // Riegos de la regadera, tierra mojada y burbujas de sed: se refrescan al abrir y cada 30 s mientras el jardín está abierto
     asegurarSed(estado); // los árboles sin hora de sed (guardados viejos) la reciben ahora
@@ -1904,7 +2096,64 @@ async function entrarJardin() {
   }
 }
 
+function avisoVisita(titulo, texto = '', icono = 'info') {
+  if (!window.Swal) return;
+  const toast = !texto;
+  window.Swal.fire({
+    title: titulo, text: texto || undefined, icon: icono, iconColor: '#03A65A',
+    toast, position: toast ? 'bottom' : 'center', showConfirmButton: !toast, timer: toast ? 2600 : undefined,
+    confirmButtonText: 'Entendido', confirmButtonColor: '#025928',
+    customClass: { container: 'cuenta-swal' }, // por encima de la pestaña Social
+  });
+}
+
+/**
+ * "Visitar jardín" (pestaña Social, actividad.js): lee jardines/{uid} (una lectura) mientras corre la
+ * misma intro de Mi jardín, completa, y abre ese jardín en modo visita. Si no se puede visitar, al
+ * terminar la intro se vuelve a la pestaña Social con un mensaje. El jardín propio no se toca.
+ */
+async function visitarJardin({ uid, alVolver = null } = {}) {
+  if (!uid || entrando || document.querySelector('.jardin')) return;
+  // alVolver: al salir de la visita (o si no se pudo entrar) se vuelve a Mi jardín (panel "Actividad")
+  const noEntrar = (mensaje) => { avisoVisita(mensaje); alVolver?.(); };
+  if (!window.cuenta?.perfil?.()) { noEntrar('Inicia sesión para visitar jardines'); return; }
+  if (navigator.onLine === false) { noEntrar('Necesitas conexión para visitar jardines'); return; }
+  if (window.jardinPublico?.esPrivado?.(uid)) { noEntrar('Este jardín es privado 🔒'); return; }
+  entrando = true;
+  let resultado = null;
+  try {
+    await transicionJardin({
+      saltable: false, // la intro se ve siempre completa
+      cargar: async (progreso) => {
+        resultado = (await window.jardinPublico?.leerParaVisita?.(uid)) || { estado: 'error' };
+        progreso(0.15);
+        if (resultado.estado === 'ok') {
+          await abrirJardin((f) => progreso(0.15 + 0.85 * f), { ...resultado.datos, alCerrar: alVolver });
+        }
+      },
+    });
+  } catch (err) {
+    console.error('Error en la transición de la visita:', err);
+    document.querySelector('.tj-capa')?.remove();
+    if (resultado?.estado === 'ok' && !document.querySelector('.jardin')) abrirJardin(undefined, { ...resultado.datos, alCerrar: alVolver });
+  } finally {
+    entrando = false;
+  }
+  const mensajes = {
+    privado: ['Este jardín es privado 🔒', 'Su dueño decidió no mostrarlo por ahora.'],
+    noExiste: ['Este jardín aún no está listo 🌱', 'Esta persona todavía no ha publicado su jardín. Inténtalo más tarde.'],
+    sinRed: ['Necesitas conexión para visitar jardines'],
+    sinCuenta: ['Inicia sesión para visitar jardines'],
+    error: ['No se pudo abrir el jardín', 'Inténtalo de nuevo en un momento.'],
+  };
+  if (resultado && resultado.estado !== 'ok') {
+    avisoVisita(...(mensajes[resultado.estado] || mensajes.error));
+    alVolver?.();
+  }
+}
+
 window.abrirJardin = entrarJardin;
+window.visitarJardin = visitarJardin;
 // Tocar la notificación de sed abre el jardín directamente
 alTocarAviso(() => entrarJardin());
 

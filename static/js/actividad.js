@@ -590,15 +590,22 @@
     }
     contenido.appendChild(frase);
 
-    // Visitar jardín: preparado para más adelante (el uid queda en el botón)
-    if (a.tipo === 'plantacion' && !propia) {
+    // Visitar jardín (jardin.js → visitarJardin): abre el jardín de esa persona en modo solo lectura.
+    // Si ya se sabe que es privado (jardin-publico.js lo recuerda tras intentar visitarlo), se indica
+    if (a.tipo === 'plantacion' && !propia && a.uid) {
+      const privado = !!window.jardinPublico?.esPrivado?.(a.uid);
       const visitar = document.createElement('button');
       visitar.type = 'button';
-      visitar.className = 'notif-visitar';
+      visitar.className = 'notif-visitar' + (privado ? ' privado' : '');
       visitar.dataset.uid = a.uid;
-      visitar.setAttribute('aria-disabled', 'true');
-      visitar.textContent = '🌳 Visitar jardín';
-      visitar.addEventListener('click', (ev) => { ev.stopPropagation(); avisar('Muy pronto podrás visitar jardines 🌿'); });
+      visitar.textContent = privado ? 'Este jardín es privado 🔒' : '🌳 Visitar jardín';
+      visitar.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        if (window.jardinPublico?.esPrivado?.(a.uid)) { avisar('Este jardín es privado 🔒'); return; }
+        if (!hayInternet()) { avisar('Necesitas conexión para visitar jardines'); return; }
+        if (!window.visitarJardin) { avisar('El jardín aún se está cargando. Inténtalo en un momento.'); return; }
+        window.visitarJardin({ uid: a.uid });
+      });
       contenido.appendChild(visitar);
     }
 

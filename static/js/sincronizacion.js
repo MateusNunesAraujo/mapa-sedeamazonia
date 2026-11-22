@@ -27,6 +27,9 @@
  *  - Cambiaron los dos → combinar(): unión de lo que se gana; lo demás, la versión más reciente;
  *    los accesorios colocados vuelven al inventario (decisión del usuario).
  *
+ * Al final de cada pasada se llama a jardinPublico.publicar() (jardin-publico.js): la copia pública
+ * jardines/{uid} se actualiza con el mismo debounce, solo si cambió algo de lo público.
+ *
  * Firestore no acepta listas dentro de listas: jardin.celdas ([[col, fila]]) se guarda como ["col,fila"].
  * El plugin 5.4.1 no trae serverTimestamp: `actualizado` es la fecha ISO del celular al subir.
  */
@@ -75,7 +78,8 @@
   const conTiempo = (p, ms = ESPERA_RED_MS) => Promise.race([p, new Promise((_, no) => setTimeout(() => no(new Error('timeout')), ms))]);
   const copia = (o) => JSON.parse(JSON.stringify(o));
   const union = (a, b) => [...new Set([...(a || []), ...(b || [])])];
-  const jardinAbierto = () => !!document.querySelector('.jardin');
+  // El jardín de otro jugador (modo visita) no usa el progreso local: no bloquea la sincronización
+  const jardinAbierto = () => !!document.querySelector('.jardin:not(.jardin--visita)');
 
   function avisarEstado(nuevo, error = '') {
     estadoActual = nuevo;
@@ -334,6 +338,8 @@
     }
     borrar(C.combinar);
     avisarEstado(pendiente() ? 'pendiente' : 'guardado');
+    // Copia pública del jardín (jardines/{uid}): mismo debounce; solo escribe si cambió algo de lo público
+    window.jardinPublico?.publicar?.();
   }
 
   /** Sincroniza ya (sin bloquear a nadie). Devuelve true si terminó sin errores */

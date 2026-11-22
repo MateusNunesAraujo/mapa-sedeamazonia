@@ -8,6 +8,8 @@
 // progreso/{uid}      respaldo privado del progreso del juego (un solo documento por usuario).
 // actividad/{id}      actividad pública de la comunidad (actividad.js): 'union', 'logro', 'plantacion',
 //                     con reacciones { uid: 'corazon' | 'planta' | 'asombro' | 'aplauso' }.
+// jardines/{uid}      copia pública del jardín (jardin-publico.js): jardin, stats, logros, publico y
+//                     likes { uid: true }. Sin monedas, inventario ni nada privado.
 rules_version = '2';
 service cloud.firestore {
   match /databases/{db}/documents {
@@ -73,6 +75,34 @@ service cloud.firestore {
                  in ['corazon', 'planta', 'asombro', 'aplauso']);
 
       allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+    // Copia pública del jardín (jardin-publico.js): se visita desde la pestaña Social y recibe "me gusta".
+    // El dueño nunca escribe `likes` (solo lo crea vacío); cada visitante solo pone o quita su propia clave.
+    match /jardines/{uid} {
+      // resource == null: leer uno que no existe responde "no existe" en vez de "sin permiso"
+      allow read: if request.auth != null
+        && (resource == null || request.auth.uid == uid || resource.data.publico == true);
+
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.likes == {}
+        && request.resource.data.publico is bool;
+
+      allow update: if request.auth != null && (
+        // El dueño actualiza su jardín, pero nunca los likes
+        (request.auth.uid == uid
+          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['likes'])
+          && (!('publico' in request.resource.data) || request.resource.data.publico is bool))
+        ||
+        // Otro usuario solo puede poner o quitar SU propio like en un jardín público
+        (request.auth.uid != uid
+          && resource.data.publico == true
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likes'])
+          && request.resource.data.likes.diff(resource.data.likes).affectedKeys().hasOnly([request.auth.uid])
+          && (!(request.auth.uid in request.resource.data.likes)
+              || request.resource.data.likes[request.auth.uid] == true))
+      );
+
+      allow delete: if request.auth != null && request.auth.uid == uid;
     }
   }
 }

@@ -226,6 +226,8 @@ const ICONOS = {
   caja: '<svg viewBox="0 0 24 24"><rect x="3.5" y="9" width="17" height="11.5" rx="1.5" /><path d="M2.5 6.5h19V9h-19z" /><path d="M12 6.5v14" /><path d="M12 6.5C10 3 7 3 7.2 5c.2 1.3 2.6 1.5 4.8 1.5zM12 6.5c2-3.5 5-3.5 4.8-1.5-.2 1.3-2.6 1.5-4.8 1.5z" /></svg>',
 };
 ICONOS.plantar = ICONOS.arboles;
+// Grupito de personas (panel "Actividad": likes recibidos y buscar jardines)
+ICONOS.actividad = '<svg viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3" /><path d="M6.5 19.5v-1a5.5 5.5 0 0 1 11 0v1" /><circle cx="5.2" cy="10" r="2.2" /><path d="M1.8 18.5v-.6a3.6 3.6 0 0 1 4.6-3.4" /><circle cx="18.8" cy="10" r="2.2" /><path d="M22.2 18.5v-.6a3.6 3.6 0 0 0-4.6-3.4" /></svg>';
 ICONOS.mano = '<svg viewBox="0 0 24 24"><path d="M9 11.5V5a1.5 1.5 0 0 1 3 0v5.5" /><path d="M12 10V8.5a1.5 1.5 0 0 1 3 0V11" /><path d="M15 10.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-.6a6 6 0 0 1-4.6-2.2l-2.6-3.3a1.6 1.6 0 0 1 2.3-2.2L9 15" /></svg>';
 ICONOS.candado ='<svg viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2" /><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3" /><path d="M12 14.5v2.5" /></svg>';
 
@@ -617,6 +619,7 @@ export async function arbolesDelUsuario() {
  */
 export function montarInterfazJuego(raiz, {
   estado, alCambiarModo, alElegirArbol, alCambiarAccesorios, alObservarArbol, alComprarParcela, alAmpliarRegadera, alGanarArbol,
+  alVisitarJardin, alLeerLikes,
 }) {
   monedas = estado.monedas;
 
@@ -639,6 +642,9 @@ export function montarInterfazJuego(raiz, {
         <span class="jardin-herramienta-icono">${ICONOS.regadera}
           <span class="jardin-herramienta-contador" aria-hidden="true"></span>
         </span><span>Regadera</span>
+      </button>
+      <button type="button" class="jardin-herramienta" data-accion="actividad">
+        <span class="jardin-herramienta-icono">${ICONOS.actividad}</span><span>Actividad</span>
       </button>
     </nav>
     <div class="jardin-zonas" hidden></div>
@@ -1103,12 +1109,165 @@ export function montarInterfazJuego(raiz, {
     });
   }
 
+  /**
+   * Panel "Actividad": quiénes le dieron like al jardín y buscador de jardines por @username
+   * (jardin-publico.js). Necesita cuenta e internet; desde cada fila se visita ese jardín.
+   */
+  function abrirActividad() {
+    const jp = window.jardinPublico;
+    const yo = window.cuenta?.perfil?.() || null;
+    abrirPanel(`
+      <header class="jardin-hoja-cabecera">
+        <div>
+          <span class="jardin-hoja-subtitulo">Mi jardín</span>
+          <h3 class="jardin-hoja-titulo" id="jardinActividadTitulo">Actividad</h3>
+        </div>
+        <button type="button" class="jardin-hoja-cerrar" aria-label="Cerrar actividad">&times;</button>
+      </header>
+      <div class="jardin-hoja-cuerpo actividad-cuerpo">
+        <label class="actividad-buscar">
+          <span class="actividad-buscar-icono" aria-hidden="true">🔍</span>
+          <input type="search" placeholder="Buscar por @usuario" aria-label="Buscar jardines por nombre de usuario"
+                 autocomplete="off" autocapitalize="none"
+                 spellcheck="false" maxlength="21" enterkeyhint="search">
+        </label>
+        <div class="actividad-resultados" hidden>
+          <h4 class="actividad-subtitulo">Resultados</h4>
+          <ul class="actividad-lista" data-lista="busqueda"></ul>
+        </div>
+        <h4 class="actividad-subtitulo">❤️ Les gustó tu jardín <span class="actividad-total"></span></h4>
+        <ul class="actividad-lista" data-lista="likes"></ul>
+      </div>`, 'jardinActividadTitulo');
+
+    const listaLikes = hoja.querySelector('[data-lista="likes"]');
+    const listaBusqueda = hoja.querySelector('[data-lista="busqueda"]');
+    const resultados = hoja.querySelector('.actividad-resultados');
+    const total = hoja.querySelector('.actividad-total');
+    const entrada = hoja.querySelector('.actividad-buscar input');
+    const abierto = () => !panel.hidden && hoja.contains(entrada);
+
+    const nota = (lista, texto) => {
+      lista.replaceChildren(Object.assign(document.createElement('li'), { className: 'lista-vacia', textContent: texto }));
+    };
+
+    /** Fila con avatar, @username y "Ver jardín" (la propia, sin botón) */
+    function fila(u) {
+      const li = document.createElement('li');
+      li.className = 'actividad-usuario';
+      const avatar = document.createElement('span');
+      avatar.className = 'actividad-avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      const inicial = () => { avatar.textContent = u.username.charAt(0).toUpperCase(); };
+      if (u.fotoURL) {
+        const img = document.createElement('img');
+        img.alt = '';
+        img.referrerPolicy = 'no-referrer';
+        img.onerror = () => { img.remove(); inicial(); };
+        img.src = u.fotoURL;
+        avatar.appendChild(img);
+      } else inicial();
+      const nombre = document.createElement('strong');
+      nombre.className = 'actividad-nombre';
+      nombre.textContent = '@' + u.username;
+      li.append(avatar, nombre);
+      if (u.uid === yo?.uid) {
+        li.appendChild(Object.assign(document.createElement('span'), { className: 'lista-arbol-estado lista-arbol-estado--plantado', textContent: 'Tú' }));
+      } else {
+        const ver = document.createElement('button');
+        ver.type = 'button';
+        ver.className = 'lista-arbol-plantar';
+        ver.textContent = 'Ver jardín';
+        ver.setAttribute('aria-label', `Ver el jardín de @${u.username}`);
+        ver.addEventListener('click', () => {
+          if (navigator.onLine === false) { nota(listaBusqueda, 'Necesitas conexión para visitar jardines'); resultados.hidden = false; return; }
+          cerrarPanel();
+          alVisitarJardin?.(u.uid);
+        });
+        li.appendChild(ver);
+      }
+      return li;
+    }
+
+    if (!yo || !jp) {
+      entrada.disabled = true;
+      nota(listaLikes, 'Crea una cuenta en "Mi cuenta" para ver quién le dio me gusta a tu jardín y visitar otros jardines.');
+      return;
+    }
+    if (navigator.onLine === false) {
+      entrada.disabled = true;
+      const n = jp.likesGuardados();
+      if (n !== null) total.textContent = `(${n})`;
+      nota(listaLikes, 'Necesitas conexión para ver la actividad y buscar jardines.');
+      return;
+    }
+
+    // --- Likes recibidos: 1 lectura del jardín y luego los perfiles de a 30 ---
+    const POR_PAGINA = 30;
+    let uids = [];
+    let mostrados = 0;
+    async function cargarMasLikes() {
+      const tramo = uids.slice(mostrados, mostrados + POR_PAGINA);
+      mostrados += tramo.length;
+      const usuarios = await jp.perfilesDe(tramo);
+      if (!abierto()) return;
+      listaLikes.querySelector('.actividad-ver-mas')?.remove();
+      if (listaLikes.querySelector('.lista-vacia')) listaLikes.replaceChildren();
+      usuarios.forEach((u) => listaLikes.appendChild(fila(u)));
+      if (!listaLikes.children.length) nota(listaLikes, 'No se pudieron cargar los perfiles. Inténtalo de nuevo.');
+      if (mostrados < uids.length) {
+        const li = document.createElement('li');
+        li.className = 'actividad-ver-mas';
+        const b = Object.assign(document.createElement('button'), { type: 'button', className: 'lista-ir-tienda', textContent: 'Ver más' });
+        b.addEventListener('click', () => { b.disabled = true; b.textContent = 'Cargando…'; cargarMasLikes(); });
+        li.appendChild(b);
+        listaLikes.appendChild(li);
+      }
+    }
+    nota(listaLikes, 'Cargando…');
+    jp.likesRecibidos().then((r) => {
+      if (!abierto()) return;
+      if (r.estado !== 'ok') {
+        nota(listaLikes, r.estado === 'sinRed' ? 'Necesitas conexión para ver la actividad.' : 'No se pudo cargar la actividad. Inténtalo de nuevo en un momento.');
+        return;
+      }
+      uids = r.uids;
+      total.textContent = `(${uids.length})`;
+      alLeerLikes?.(uids.length);
+      if (!uids.length) { nota(listaLikes, 'Aún nadie le ha dado me gusta a tu jardín. ¡Planta y decóralo para que lo visiten! 🌱'); return; }
+      cargarMasLikes();
+    });
+
+    // --- Buscador: espera a que se deje de escribir (cada búsqueda cobra lecturas) ---
+    let espera = null;
+    let ultima = '';
+    entrada.addEventListener('input', () => {
+      clearTimeout(espera);
+      const q = entrada.value.trim().toLowerCase().replace(/^@/, '');
+      if (q.length < 2) { resultados.hidden = true; ultima = ''; return; }
+      espera = setTimeout(async () => {
+        if (q === ultima) return;
+        ultima = q;
+        resultados.hidden = false;
+        if (!/^[a-z0-9_.]+$/.test(q)) { nota(listaBusqueda, 'Los nombres de usuario solo tienen letras, números, punto y guion bajo.'); return; }
+        nota(listaBusqueda, 'Buscando…');
+        const r = await jp.buscarUsuarios(q);
+        if (!abierto() || ultima !== q) return;
+        if (r.estado === 'sinRed') { nota(listaBusqueda, 'Necesitas conexión para buscar jardines.'); return; }
+        if (r.estado !== 'ok') { nota(listaBusqueda, 'No se pudo buscar. Inténtalo de nuevo.'); return; }
+        if (!r.usuarios.length) { nota(listaBusqueda, `No hay exploradores que empiecen por "@${q}".`); return; }
+        listaBusqueda.replaceChildren(...r.usuarios.map(fila));
+      }, 450);
+    });
+    entrada.addEventListener('keydown', (e) => { if (e.key === 'Enter') entrada.blur(); });
+  }
+
   panel.querySelector('.jardin-panel-fondo').addEventListener('click', cerrarPanel);
   raiz.querySelectorAll('.jardin-herramienta').forEach((boton) => {
     boton.addEventListener('click', () => {
       const accion = boton.dataset.accion;
       if (accion === 'tienda') abrirTienda();
       else if (accion === 'arboles') abrirArboles();
+      else if (accion === 'actividad') abrirActividad();
       else ponerModo(modoActual === accion ? null : accion);
     });
   });

@@ -120,9 +120,10 @@ function barridoPixeles(canvas, duracion, color) {
  *           Si nunca lo llama, la barra avanza sola hasta el 80 % y espera a que termine.
  *   sonido: true para los bips chiptune.
  *   carpeta: ruta de las capas PNG del logo.
+ *   saltable: false para que tocar la pantalla no adelante la animación (visitar jardines).
  * @returns {Promise<void>} se resuelve cuando la transición terminó y el jardín quedó a la vista.
  */
-export async function transicionJardin({ cargar = () => {}, sonido = true, carpeta = CARPETA_CAPAS, capas = null } = {}) {
+export async function transicionJardin({ cargar = () => {}, sonido = true, carpeta = CARPETA_CAPAS, capas = null, saltable = true } = {}) {
   const url = (nombre) => (capas && capas[nombre]) || `${carpeta}${nombre}.png`;
 
   // Movimiento reducido: un fundido corto y listo
@@ -170,7 +171,7 @@ export async function transicionJardin({ cargar = () => {}, sonido = true, carpe
   let saltar = false;
   const animaciones = [];
   const anim = (el, frames, opts) => { const a = el.animate(frames, { fill: 'both', ...opts }); animaciones.push(a); return a; };
-  capa.addEventListener('pointerdown', () => { saltar = true; animaciones.forEach((a) => a.finish()); });
+  if (saltable) capa.addEventListener('pointerdown', () => { saltar = true; animaciones.forEach((a) => a.finish()); });
 
   // 1. Barrido de píxeles
   sfx.barrido(140, 520, 0.35, 'square', 0.04);
@@ -249,7 +250,7 @@ export async function transicionJardin({ cargar = () => {}, sonido = true, carpe
   const tBarra = performance.now();
   const total = segmentos.length;
   let encendidos = 0;
-  setTimeout(() => { capa.querySelector('.tj-saltar').style.opacity = 0.55; }, 2500);
+  if (saltable) setTimeout(() => { capa.querySelector('.tj-saltar').style.opacity = 0.55; }, 2500);
   while (encendidos < total) {
     // Cuánto marca la carga real; el último segmento se reserva para cuando `cargar` termina.
     // Sin informes de progreso, avanza sola hasta el 80 %.

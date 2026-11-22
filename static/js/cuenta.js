@@ -11,7 +11,8 @@
  *    "Mi cuenta" avisa que las cuentas solo están en la app Android.
  *
  * Claves nuevas de localStorage (no se tocan las existentes):
- *  - aviamaz_perfil: { uid, nombreCompleto, username, email, fotoURL, actividadPublica, actividadPublicaSinSubir? }
+ *  - aviamaz_perfil: { uid, nombreCompleto, username, email, fotoURL, actividadPublica, actividadPublicaSinSubir?, creado? }
+ *    (creado = users/{uid}.creado; lo usa jardin-publico.js como fecha de unión)
  *    — solo cuando el perfil está completo. actividadPublicaSinSubir: el interruptor se cambió sin conexión.
  *  - aviamaz_modoSinCuenta: 'true' si el usuario eligió "Continuar sin cuenta" (no se vuelve a mostrar la bienvenida).
  *
@@ -161,11 +162,14 @@
       if (reservadoAhora) Store.deleteDocument({ reference: refNombre }).catch(() => {});
       throw e;
     }
+    return datos.creado; // lo usa el perfil público del jardín (jardines/{uid}.unido)
   }
 
   function marcarPerfilListo(datos) {
     // Si el interruptor "Mostrar mi actividad" se cambió sin conexión, manda el valor de este celular
     const sinSubir = perfil?.uid === datos.uid && perfil.actividadPublicaSinSubir;
+    // Fecha de creación de la cuenta (users/{uid}.creado): la muestra el perfil público del jardín
+    const creado = typeof datos.creado === 'string' ? datos.creado : (perfil?.uid === datos.uid ? perfil?.creado : null);
     perfil = {
       uid: datos.uid,
       nombreCompleto: datos.nombreCompleto,
@@ -174,6 +178,7 @@
       fotoURL: datos.fotoURL || null,
       actividadPublica: sinSubir ? perfil.actividadPublica !== false : datos.actividadPublica !== false,
     };
+    if (creado) perfil.creado = creado;
     if (sinSubir) perfil.actividadPublicaSinSubir = true;
     guardar(CLAVE_PERFIL, JSON.stringify(perfil));
     actualizarMenu();
@@ -208,6 +213,15 @@
     if (!valor) window.actividad?.descartarPendientes?.(); // lo que no se alcanzó a publicar ya no sale
     limpiarMensajes(vistas.perfil);
     if (!(await subirPreferencia())) {
+      mensaje('perfil', 'Se guardó en este celular. Se guardará en tu cuenta cuando vuelva la conexión.', 'cuenta-aviso');
+    }
+  }
+
+  /** Interruptor "Jardín visible para otros" (Mi cuenta) → jardines/{uid}.publico (jardin-publico.js) */
+  async function cambiarJardinVisible(valor) {
+    if (!perfil || !window.jardinPublico) return;
+    limpiarMensajes(vistas.perfil);
+    if (!(await window.jardinPublico.cambiarVisible(valor))) {
       mensaje('perfil', 'Se guardó en este celular. Se guardará en tu cuenta cuando vuelva la conexión.', 'cuenta-aviso');
     }
   }
@@ -384,6 +398,8 @@
     $('cuentaVerificar').hidden = !(usuario && proveedorDe(usuario) === 'password' && !usuario.emailVerified);
     const interruptor = $('cuentaActividadPublica');
     if (interruptor) interruptor.checked = perfil.actividadPublica !== false;
+    const jardinVisible = $('cuentaJardinVisible');
+    if (jardinVisible) jardinVisible.checked = window.jardinPublico?.visible?.() !== false;
     pintarDesde();
     pintarEstadisticas();
     pintarLogros();
@@ -614,8 +630,9 @@
       // 3. Nombre visible en Auth (si falla no importa: el perfil de Firestore manda)
       try { await conTiempo(Auth.updateProfile({ displayName: nombre })); } catch (e) { console.warn('Cuenta: updateProfile', e); }
       // 4. Reservar username y crear el perfil; si falla, se pide el username de nuevo
+      let creado = null;
       try {
-        await guardarPerfilNube({ uid: usuario.uid, nombreCompleto: nombre, username, email: correo, proveedor: 'password' });
+        creado = await guardarPerfilNube({ uid: usuario.uid, nombreCompleto: nombre, username, email: correo, proveedor: 'password' });
       } catch (e) {
         abrirCompletar();
         forms.completar.elements.nombre.value = nombre;
@@ -624,7 +641,7 @@
         else mensaje('completar', 'Tu cuenta se creó, pero no pudimos guardar tu perfil. ' + traducirError(e));
         return;
       }
-      marcarPerfilListo({ uid: usuario.uid, nombreCompleto: nombre, username, email: correo });
+      marcarPerfilListo({ uid: usuario.uid, nombreCompleto: nombre, username, email: correo, creado });
       window.actividad?.publicarUnion?.(); // "se unió a AVIAMAZ" (sin esperar a la red)
       // 5. Correo de verificación: se avisa, pero no se bloquea el uso de la app
       await terminarRegistro(correo);
@@ -710,7 +727,7 @@
         uid: usuario.uid, nombreCompleto: nombre, username, email: usuario.email || '',
         proveedor, fotoURL: proveedor === 'google' ? usuario.photoUrl : null,
       };
-      await guardarPerfilNube(datos);
+      datos.creado = await guardarPerfilNube(datos);
       marcarPerfilListo(datos);
       window.actividad?.publicarUnion?.(); // perfil creado por primera vez: "se unió a AVIAMAZ"
       if (enviarVerificacion) await terminarRegistro(datos.email);
@@ -786,6 +803,7 @@
     // El progreso local queda en blanco (está a salvo en la nube); las fotos no se tocan
     sync?.desactivar?.({ limpiar: true });
     window.actividad?.alCerrarSesion?.(); // descarta la actividad que no alcanzó a publicarse
+    window.jardinPublico?.alCerrarSesion?.(); // contador de likes y estado de la copia pública
     actualizarMenu();
     cerrar();
     saludar('Sesión cerrada');
@@ -860,7 +878,7 @@
     }
     const conf = await alerta({
       title: '¿Eliminar tu cuenta?',
-      html: 'Se borrarán tu cuenta, tu perfil (nombre, @usuario y correo) y tu progreso guardado en la nube. <b>No se puede deshacer.</b><br><br>Tus árboles y tu jardín se quedan en este celular.',
+      html: 'Se borrarán tu cuenta, tu perfil (nombre, @usuario y correo) tu progreso guardado en la nube y tu jardín público (con sus me gusta). <b>No se puede deshacer.</b><br><br>Tus árboles y tu jardín se quedan en este celular.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
@@ -892,6 +910,9 @@
         // Sus actividades y sus reacciones (si el borrado de la cuenta falla después, no se restauran)
         if (intento === 0) {
           try { await window.actividad?.borrarDeUsuario?.(uid); } catch (e) { console.warn('Cuenta: borrar actividad', e); }
+          // Su jardín público y sus likes en jardines de otros (si falla después, se vuelve a publicar
+          // con la próxima sincronización, pero sin los likes que tenía)
+          try { await window.jardinPublico?.borrarDeUsuario?.(uid); } catch (e) { console.warn('Cuenta: borrar jardín público', e); }
         }
         await conTiempo(Store.deleteDocument({ reference: `users/${uid}` }));
         if (username) await conTiempo(Store.deleteDocument({ reference: `usernames/${username}` }));
@@ -909,6 +930,7 @@
         cerrarCarga();
         if (intento === 1 || !(await reautenticar())) {
           sync?.reanudar?.();
+          window.jardinPublico?.reanudar?.();
           await alerta({ icon: 'error', title: 'No se pudo eliminar', text: 'Vuelve a iniciar sesión e inténtalo de nuevo.' });
           return;
         }
@@ -921,12 +943,14 @@
       // El progreso del celular se conserva y pasa a ser de modo sin cuenta (se combina con la próxima cuenta)
       sync?.desactivar?.({ limpiar: false });
       window.actividad?.alCerrarSesion?.();
+      window.jardinPublico?.alCerrarSesion?.();
       actualizarMenu();
       cerrar();
       await alerta({ icon: 'success', title: 'Cuenta eliminada', text: 'Tu cuenta y tu perfil se borraron. Puedes seguir usando la app sin cuenta.' });
     } catch (e) {
       cerrarCarga();
       window.sincronizacion?.reanudar?.();
+      window.jardinPublico?.reanudar?.();
       await alerta({ icon: 'error', title: 'No se pudo eliminar', text: traducirError(e) });
     }
   }
@@ -1007,6 +1031,7 @@
   forms.completar.addEventListener('submit', completarPerfil);
   $('menuCuentaBtn')?.addEventListener('click', alTocarMenu);
   $('cuentaActividadPublica')?.addEventListener('change', (e) => cambiarActividadPublica(e.target.checked));
+  $('cuentaJardinVisible')?.addEventListener('change', (e) => cambiarJardinVisible(e.target.checked));
 
   // ---------- Arranque (sin bloquear la app) ----------
   async function iniciar() {
