@@ -168,6 +168,7 @@
     };
     guardar(CLAVE_PERFIL, JSON.stringify(perfil));
     actualizarMenu();
+    window.sincronizacion?.activar?.(perfil.uid); // respaldo del progreso en la nube (sincronizacion.js)
   }
 
   /** Tras iniciar sesión: si ya hay perfil en Firestore se marca listo; si no, se pide completarlo */
@@ -342,7 +343,44 @@
     pintarDesde();
     pintarEstadisticas();
     pintarLogros();
+    pintarSync();
   }
+
+  /** "hace 2 min", "hace 3 h", "hace 2 días" o la fecha */
+  function haceCuanto(ms) {
+    const seg = Math.max(0, (Date.now() - ms) / 1000);
+    if (seg < 60) return 'hace un momento';
+    if (seg < 3600) return `hace ${Math.floor(seg / 60)} min`;
+    if (seg < 86400) return `hace ${Math.floor(seg / 3600)} h`;
+    if (seg < 7 * 86400) { const d = Math.floor(seg / 86400); return `hace ${d} ${d === 1 ? 'día' : 'días'}`; }
+    return 'el ' + new Date(ms).toLocaleDateString('es-CO', { day: 'numeric', month: 'short' });
+  }
+
+  /** Estado del respaldo en la nube (sincronizacion.js) */
+  function pintarSync() {
+    const caja = $('cuentaSync');
+    const sync = window.sincronizacion;
+    if (!caja || !sync?.activa?.()) { if (caja) caja.hidden = true; return; }
+    const e = sync.estado();
+    const textos = {
+      sincronizando: ['🔄', 'Sincronizando…'],
+      guardado: ['☁️', e.subido ? `Guardado en la nube · ${haceCuanto(e.subido)}` : 'Guardado en la nube'],
+      pendiente: ['⏳', 'Cambios pendientes de subir'],
+      'sin-red': ['📡', e.pendiente ? 'Sin conexión · cambios pendientes de subir' : 'Sin conexión'],
+      error: ['⚠️', 'No se pudo sincronizar. Inténtalo de nuevo.'],
+    };
+    const [icono, texto] = textos[e.tipo] || textos.pendiente;
+    $('cuentaSyncIcono').textContent = icono;
+    $('cuentaSyncTexto').textContent = texto;
+    caja.dataset.estado = e.tipo;
+    caja.hidden = false;
+    caja.querySelector('[data-accion="sincronizar"]').disabled = e.tipo === 'sincronizando' || !hayInternet();
+  }
+  document.addEventListener('sincronizacionEstado', () => { if (vistaActual === 'perfil') pintarSync(); });
+  // Si bajó progreso de la nube, se actualizan las cantidades del perfil
+  document.addEventListener('progresoSincronizado', () => {
+    if (vistaActual === 'perfil') { pintarEstadisticas(); pintarLogros(); }
+  });
 
   /** "Miembro desde el 22 de noviembre de 2026": fecha de creación de la cuenta que guarda Firebase Auth */
   function pintarDesde() {
@@ -438,8 +476,16 @@
       customClass: { container: 'cuenta-swal' } });
   }
 
+  /** Cierra una ventana de "cargando" sin dejar el estado de carga en la siguiente */
+  function cerrarCarga() {
+    if (Swal.isLoading?.()) Swal.hideLoading();
+    Swal.close();
+  }
+
   /** SweetAlert por encima de la pantalla de cuenta */
   function alerta(opciones) {
+    // SweetAlert reutiliza la ventana: si la anterior estaba "cargando", la nueva saldría sin botones
+    if (Swal.isLoading?.()) Swal.hideLoading();
     return Swal.fire({
       confirmButtonColor: '#025928',
       cancelButtonColor: '#5f6368',
@@ -657,17 +703,42 @@
   async function cerrarSesion() {
     const r = await alerta({
       title: '¿Cerrar sesión?',
-      text: 'Tus árboles y tu jardín se quedan en este celular.',
+      html: 'Tu progreso queda guardado en tu cuenta y vuelve cuando inicies sesión. Este celular quedará como nuevo, en modo sin cuenta.'
+        + '<br><br>📷 Tus fotos de árboles no se guardan en la cuenta: se quedan en este celular.',
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Cerrar sesión',
       cancelButtonText: 'Cancelar',
     });
     if (!r.isConfirmed) return;
+    // Antes de salir se suben los avances pendientes; si no se puede (sin internet), se avisa
+    const sync = window.sincronizacion;
+    if (sync?.activa?.()) {
+      const conRed = hayInternet(); // sin red no hay nada que esperar: se avisa directo
+      if (conRed) alerta({ title: 'Guardando tu progreso…', allowOutsideClick: false, showConfirmButton: false, didOpen: () => Swal.showLoading() });
+      let subido = false;
+      try { subido = await sync.antesDeCerrarSesion(); } catch (e) { console.warn('Cuenta: subir antes de salir', e); }
+      if (conRed) cerrarCarga();
+      if (!subido) {
+        const r2 = await alerta({
+          icon: 'warning',
+          title: 'Avances sin guardar',
+          text: 'Tienes avances sin guardar en tu cuenta. Conéctate a internet antes de cerrar sesión.',
+          showCancelButton: true,
+          confirmButtonText: 'Cerrar sesión igual',
+          cancelButtonText: 'Cancelar',
+          confirmButtonColor: '#c62828',
+          focusCancel: true,
+        });
+        if (!r2.isConfirmed) return;
+      }
+    }
     try { await Auth.signOut(); } catch (e) { console.warn('Cuenta: signOut', e); }
     usuario = null;
     perfil = null;
-    borrar(CLAVE_PERFIL); // solo el perfil: el progreso local (árboles, jardín) no se toca
+    borrar(CLAVE_PERFIL);
+    // El progreso local queda en blanco (está a salvo en la nube); las fotos no se tocan
+    sync?.desactivar?.({ limpiar: true });
     actualizarMenu();
     cerrar();
     saludar('Sesión cerrada');
@@ -742,7 +813,7 @@
     }
     const conf = await alerta({
       title: '¿Eliminar tu cuenta?',
-      html: 'Se borrarán tu cuenta y tu perfil (nombre, @usuario y correo). <b>No se puede deshacer.</b><br><br>Tus árboles y tu jardín se quedan en este celular.',
+      html: 'Se borrarán tu cuenta, tu perfil (nombre, @usuario y correo) y tu progreso guardado en la nube. <b>No se puede deshacer.</b><br><br>Tus árboles y tu jardín se quedan en este celular.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Sí, eliminar',
@@ -760,12 +831,17 @@
       const ultimo = Number(actual.metadata?.lastSignInTime) || 0;
       if (Date.now() - ultimo > REAUTENTICAR_TRAS_MS && !(await reautenticar())) return;
 
+      // Mientras se borra, ninguna subida programada debe volver a crear progreso/{uid}
+      const sync = window.sincronizacion;
+      await sync?.pausar?.();
       for (let intento = 0; intento < 2; intento++) {
         const uid = usuario.uid;
         const username = perfil?.username || (await leerDoc(`users/${uid}`).catch(() => null))?.username;
         const copia = await leerDoc(`users/${uid}`).catch(() => null);
+        const copiaProgreso = sync ? await sync.leerNube(uid).catch(() => null) : null;
 
         alerta({ title: 'Eliminando cuenta…', allowOutsideClick: false, showConfirmButton: false, didOpen: () => Swal.showLoading() });
+        if (sync) await sync.borrarNube(uid);
         await conTiempo(Store.deleteDocument({ reference: `users/${uid}` }));
         if (username) await conTiempo(Store.deleteDocument({ reference: `usernames/${username}` }));
         // En la 5.4.1, deleteUser() responde "bien" aunque falle: se comprueba si la sesión sigue
@@ -778,8 +854,10 @@
           if (username) await Store.setDocument({ reference: `usernames/${username}`, data: { uid } }).catch(() => {});
           await Store.setDocument({ reference: `users/${uid}`, data: copia }).catch(() => {});
         }
-        Swal.close();
+        await sync?.restaurarNube(uid, copiaProgreso).catch(() => {});
+        cerrarCarga();
         if (intento === 1 || !(await reautenticar())) {
+          sync?.reanudar?.();
           await alerta({ icon: 'error', title: 'No se pudo eliminar', text: 'Vuelve a iniciar sesión e inténtalo de nuevo.' });
           return;
         }
@@ -789,11 +867,14 @@
       usuario = null;
       perfil = null;
       borrar(CLAVE_PERFIL);
+      // El progreso del celular se conserva y pasa a ser de modo sin cuenta (se combina con la próxima cuenta)
+      sync?.desactivar?.({ limpiar: false });
       actualizarMenu();
       cerrar();
       await alerta({ icon: 'success', title: 'Cuenta eliminada', text: 'Tu cuenta y tu perfil se borraron. Puedes seguir usando la app sin cuenta.' });
     } catch (e) {
-      Swal.close();
+      cerrarCarga();
+      window.sincronizacion?.reanudar?.();
       await alerta({ icon: 'error', title: 'No se pudo eliminar', text: traducirError(e) });
     }
   }
@@ -850,6 +931,7 @@
       case 'reenviar-verificacion': reenviarVerificacion(); break;
       case 'cerrar-sesion': cerrarSesion(); break;
       case 'eliminar-cuenta': eliminarCuenta(); break;
+      case 'sincronizar': window.sincronizacion?.sincronizar?.().then(pintarSync); pintarSync(); break;
       case 'ver-clave': {
         const form = b.closest('form');
         const mostrar = b.getAttribute('aria-pressed') !== 'true';
@@ -883,6 +965,7 @@
     if (usuario) {
       if (perfil && perfil.uid !== usuario.uid) { perfil = null; borrar(CLAVE_PERFIL); }
       actualizarMenu();
+      if (perfil) window.sincronizacion?.activar?.(usuario.uid); // sin red solo queda lista para cuando vuelva
       if (!hayInternet()) return; // sin red: se usa la copia local tal como está
       try {
         const datos = await leerDoc(`users/${usuario.uid}`);

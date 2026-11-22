@@ -5723,3 +5723,39 @@
 @media (prefers-reduced-motion: reduce) {
   .logro-capa, .logro-rayos, .logro-tarjeta, .logro-insignia img { animation: none !important; }
 }
+
+/* Estado del respaldo en la nube (Mi cuenta) */
+.cuenta-sync {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    margin: 6px 0 14px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    background: #eef6fb;
+    color: #24506b;
+    font-size: 13px;
+    line-height: 1.35;
+}
+
+.cuenta-sync[data-estado="pendiente"],
+.cuenta-sync[data-estado="sin-red"] { background: #fff4e5; color: #7a4a00; }
+.cuenta-sync[data-estado="error"] { background: #fdecea; color: #b71c1c; }
+
+.cuenta-sync-icono { font-size: 18px; }
+.cuenta-sync-texto { flex: 1; min-width: 150px; font-weight: 600; }
+
+.cuenta-sync-boton {
+    padding: 6px 12px;
+    border: 1.5px solid currentColor;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--verde-institucional);
+    font: inherit;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.cuenta-sync-boton:disabled { opacity: 0.45; cursor: not-allowed; }

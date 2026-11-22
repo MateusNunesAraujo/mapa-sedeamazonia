@@ -14,14 +14,14 @@
  * animados; con "reducir movimiento" activado en el sistema, los árboles quedan quietos.
  * three.js se carga únicamente al abrir el jardín.
  */
-import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=24';
+import { montarInterfazJuego, arbolesDelUsuario, cargarCatalogo, cargarCaja } from './jardin-ui.js?v=25';
 import { pedirPermisoAvisos, cancelarAvisoSed, programarAvisoSed, alTocarAviso } from './jardin-notificaciones.js?v=1';
 import { transicionJardin } from './transicion-jardin.js?v=2';
 import {
   cargarEstado, arbolEn, plantar, parcelaDe, parcelasLibres, quitarDesconocidos,
   moverArbol, regar, estadoRegadera, estaMojado, tieneSed, asegurarSed, accesoriosDe, tocaLlover, llover, tocaPregunta, PREGUNTA,
   celdasParaAmpliar, comprarParcela, CUADRICULA_INICIAL, guardarEstado, tocaCaja, codigoBase, darMonedasIniciales,
-} from './jardin-estado.js?v=16';
+} from './jardin-estado.js?v=17';
 
 // Distribución del jardín
 const { filas: FILAS, columnas: COLUMNAS } = CUADRICULA_INICIAL; // cuadrícula inicial, centrada en el origen

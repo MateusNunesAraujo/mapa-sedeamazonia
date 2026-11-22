@@ -43,6 +43,7 @@
   function guardarProgreso(progreso) {
     try {
       localStorage.setItem(CLAVE, JSON.stringify(progreso));
+      window.sincronizacion?.marcarCambio?.(); // respaldo en la nube (sincronizacion.js)
       return true;
     } catch (err) {
       console.warn('Logros: no se pudo guardar', err);

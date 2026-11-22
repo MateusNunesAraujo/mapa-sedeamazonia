@@ -26,6 +26,7 @@ class FavoritesStore {
   save() {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify([...this.favoritos]));
+      window.sincronizacion?.marcarCambio?.(); // respaldo en la nube (sincronizacion.js)
     } catch (error) {
       console.warn('⚠️ No se pudieron guardar los favoritos:', error);
     }

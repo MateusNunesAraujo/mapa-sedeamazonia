@@ -7,7 +7,7 @@ import {
   parcelaDe, parcelasLibres, celdasParaAmpliar, abrirSobre, comprarEspacioRegadera, puedeAmpliarRegadera,
   desbloquearAccesorioQR, accesorioCanjeadoQR, cargarEstado, accesorioEn, ponerAccesorio, quitarAccesorio,
   elegirPregunta, responderPregunta, PREGUNTA, abrirCaja, idCopia,
-} from './jardin-estado.js?v=16';
+} from './jardin-estado.js?v=17';
 
 // Preguntas del botón "?": data/preguntas-jardin.json
 const RUTA_PREGUNTAS = '/data/preguntas-jardin.json';

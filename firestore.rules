@@ -5,6 +5,7 @@
 // users/{uid}         perfil público mínimo: nombreCompleto, username, email, proveedor, fotoURL, creado
 // usernames/{name}    { uid } — reserva el nombre de usuario; como no se permite "update",
 //                     escribir sobre uno que ya existe falla y así el username queda único.
+// progreso/{uid}      respaldo privado del progreso del juego (un solo documento por usuario).
 rules_version = '2';
 service cloud.firestore {
   match /databases/{db}/documents {
@@ -20,6 +21,18 @@ service cloud.firestore {
         && name.matches('^[a-z0-9_.]{3,20}$');
       allow update: if false;
       allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+    }
+    // Progreso del juego (sincronizacion.js): privado, solo lo lee y escribe su dueño
+    match /progreso/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.esquema is int
+        && request.resource.data.monedas.plata is int
+        && request.resource.data.monedas.plata >= 0
+        && request.resource.data.monedas.oro is int
+        && request.resource.data.monedas.oro >= 0
+        && request.resource.data.arboles is list
+        && request.resource.data.arboles.size() <= 500;
     }
   }
 }

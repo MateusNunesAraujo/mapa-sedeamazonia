@@ -208,7 +208,14 @@ export function cargarEstado() {
 
 export function guardarEstado(estado) {
   try {
+    // Una compra (bajan las monedas) se sube de inmediato a la nube; el resto, con retraso (sincronizacion.js)
+    let compra = false;
+    try {
+      const antes = JSON.parse(localStorage.getItem(CLAVE) || 'null')?.monedas;
+      compra = !!antes && (estado.monedas.plata < antes.plata || estado.monedas.oro < antes.oro);
+    } catch { /* guardado anterior dañado: no importa */ }
     localStorage.setItem(CLAVE, JSON.stringify(estado));
+    window.sincronizacion?.marcarCambio?.({ inmediato: compra });
     return true;
   } catch (err) {
     console.warn('No se pudo guardar el jardín:', err);

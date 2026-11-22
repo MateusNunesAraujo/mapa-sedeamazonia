@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=58" />
+  <link rel="stylesheet" href="/static/css/index.css?v=59" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -774,7 +774,12 @@
         </p>
         <p class="cuenta-aviso" role="status" hidden></p>
         <p class="cuenta-error" role="alert" hidden></p>
-        <p class="cuenta-texto cuenta-texto--suave">Tus árboles y tu jardín se guardan en este celular.</p>
+        <!-- Respaldo del progreso en la nube (sincronizacion.js); lo pinta cuenta.js -->
+        <div class="cuenta-sync" id="cuentaSync" hidden>
+          <span class="cuenta-sync-icono" id="cuentaSyncIcono" aria-hidden="true">☁️</span>
+          <span class="cuenta-sync-texto" id="cuentaSyncTexto" role="status"></span>
+          <button type="button" class="cuenta-sync-boton" data-accion="sincronizar" data-necesita-red>Sincronizar ahora</button>
+        </div>
         <button type="button" class="cuenta-btn cuenta-btn--borde" data-accion="cerrar-sesion">Cerrar sesión</button>
         <button type="button" class="cuenta-enlace cuenta-enlace--peligro" data-accion="eliminar-cuenta">Eliminar cuenta</button>
       </section>
@@ -831,15 +836,15 @@
   <!-- Offline: Geoman local -->
   <script src="/static/geoman/leaflet-geoman.min.js"></script>
   <!-- Sistema de desbloqueo -->
-  <script src="/static/js/unlock-system.js?v=6"></script>
+  <script src="/static/js/unlock-system.js?v=7"></script>
   <!-- SweetAlert2 (offline) -->
   <script src="/static/js/sweetalert2.min.js"></script>
   <!-- Logros (data/logros.json): ventana de logro ganado y window.logros para el perfil y el jardín -->
-  <script src="/static/js/logros.js?v=1"></script>
+  <script src="/static/js/logros.js?v=2"></script>
   <!-- Almacenamiento y captura de fotos de árboles -->
   <script src="/static/js/photo-storage.js?v=3"></script>
   <!-- Árboles favoritos -->
-  <script src="/static/js/favorites.js?v=1"></script>
+  <script src="/static/js/favorites.js?v=2"></script>
   <!-- Manejador de plantas -->
   <script src="/static/js/plants-handler.js?v=11"></script>
   <!-- Manejador de QR (importa QrScanner) -->
@@ -853,9 +858,11 @@
   <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
   <script src="/static/js/recorrido.js?v=20" type="module"></script>
   <!-- Mi jardín (three.js se carga solo al abrirlo) -->
-  <script src="/static/js/jardin.js?v=45" type="module"></script>
+  <script src="/static/js/jardin.js?v=46" type="module"></script>
   <!-- Cuentas de usuario con Firebase Authentication y Firestore (plugins nativos; opcional y sin bloquear) -->
-  <script src="/static/js/cuenta.js?v=4"></script>
+  <!-- Respaldo del progreso en Firestore (progreso/{uid}); solo con sesión, sin bloquear -->
+  <script src="/static/js/sincronizacion.js?v=1"></script>
+  <script src="/static/js/cuenta.js?v=5"></script>
   <!-- Notificaciones push de Firebase (solo en la app Android; arranca en 'load' sin bloquear) -->
   <!-- Panel "Novedades del Campus" (avisos push guardados en el celular) -->
   <script src="/static/js/novedades.js?v=4"></script>

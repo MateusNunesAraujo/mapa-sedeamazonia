@@ -41,6 +41,8 @@ class UnlockSystem {
   saveUnlocked() {
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(this.unlockedPlants));
+      // Respaldo en la nube (sincronizacion.js): un árbol nuevo se sube de inmediato
+      window.sincronizacion?.marcarCambio?.({ inmediato: true });
       console.log('💾 Datos guardados en localStorage');
     } catch (error) {
       console.error('❌ Error guardando datos:', error);
