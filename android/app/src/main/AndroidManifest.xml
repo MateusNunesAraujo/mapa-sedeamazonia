@@ -31,7 +31,7 @@
         <!-- Notificaciones push (FCM): ícono blanco monocromo y canal por defecto -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notificacion_jardin" />
+            android:resource="@drawable/ic_stat_aviamaz_general" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="aviamaz_general" />

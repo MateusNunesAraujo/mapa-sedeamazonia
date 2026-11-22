@@ -4,6 +4,8 @@
 const map = L.map("map", {
   crs: L.CRS.Simple,
   zoomControl: false,
+  // Sin crédito "Leaflet": la esquina inferior derecha es de la campanita de novedades
+  attributionControl: false,
   minZoom: -2, // Permite alejar más la vista (zoom out)
   maxZoom: 3,  // Permite acercar más la vista (zoom in)
 });
@@ -37,7 +39,8 @@ map.on("click", function (e) {
   console.log(`[${lat}, ${lng}]`);
 });
 
-L.control.zoom({ position: "bottomright" }).addTo(map);
+// Sin botones de zoom (+/−): se acerca con los dedos o la rueda del ratón, y la esquina
+// inferior derecha queda para la campanita de novedades
 
 const bounds = [
   [0, 0],
@@ -299,7 +302,12 @@ function mostrarDetalle(lugar) {
 // Eventos de apertura y cierre para las notificaciones
 notificationBtn.addEventListener("click", () => {
   notificationSidebar.classList.add("active");
-  // Ocultamos el puntito rojo una vez que el usuario abre las notificaciones
+  // Marca las novedades como leídas y borra el contador (novedades.js)
+  try {
+    window.novedades?.alAbrirPanel();
+  } catch (err) {
+    console.warn("Novedades:", err);
+  }
   if (notificationBadge) {
     notificationBadge.style.display = "none";
   }
@@ -311,7 +319,7 @@ closeSidebarBtn.addEventListener("click", () => {
   notificationSidebar.classList.remove("active");
 });
 
-// Menú lateral: agrupa álbum, mapa 3D y notificaciones, y se despliega desde el borde derecho.
+// Menú lateral: agrupa álbum, mapa 3D y otras opciones, y se despliega desde el borde derecho.
 // Cada opción conserva su id original, así que su lógica sigue en album-handler.js, recorrido.js y aquí.
 const menuBtn = document.getElementById("menuBtn");
 const menuLateral = document.getElementById("menuLateral");
@@ -319,9 +327,10 @@ const menuLateralFondo = document.getElementById("menuLateralFondo");
 const menuLateralCerrar = document.getElementById("menuLateralCerrar");
 const menuBadge = document.getElementById("menuBadge");
 
-// El punto rojo del botón del menú avisa que hay novedades dentro (álbum o notificaciones)
+// El punto rojo del botón del menú avisa que hay novedades dentro (álbum). Las notificaciones
+// ya no están en el menú: tienen su propia campanita en la esquina inferior derecha.
 function actualizarPuntoMenu() {
-  const hayAviso = ["albumBadge", "notificationBadge"].some((id) => {
+  const hayAviso = ["albumBadge"].some((id) => {
     const punto = document.getElementById(id);
     return punto && punto.style.display !== "none";
   });

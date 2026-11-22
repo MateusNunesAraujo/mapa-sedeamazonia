@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=50" />
+  <link rel="stylesheet" href="/static/css/index.css?v=55" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -160,18 +160,6 @@
         style="margin-right: 8px; font-size: 20px;" title="Prueba 3D / AR">
         🧊
       </button> -->
-
-      <!-- Notificaciones: abre el panel de novedades (index.js) -->
-      <button type="button" class="menu-item" id="notificationBtn">
-        <span class="menu-item-icono" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 6.5 2.5 8.5 2.5 8.5h-17S6 15.5 6 9" /><path d="M10.2 20.5a2 2 0 0 0 3.6 0" /></svg>
-          <span class="notification-badge" id="notificationBadge" style="display: none"></span>
-        </span>
-        <span class="menu-item-texto">
-          <strong>Notificaciones</strong>
-          <small>Novedades del campus</small>
-        </span>
-      </button>
 
       <div class="menu-separador" role="separator"></div>
 
@@ -553,6 +541,13 @@
     </div>
   </div>
 
+  <!-- Campanita de novedades: esquina inferior derecha, abre el panel "Novedades del Campus" (index.js / novedades.js) -->
+  <button type="button" class="notif-flotante" id="notificationBtn" aria-label="Novedades del campus"
+    title="Novedades del campus">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9a6 6 0 0 1 12 0c0 6.5 2.5 8.5 2.5 8.5h-17S6 15.5 6 9" /><path d="M10.2 20.5a2 2 0 0 0 3.6 0" /></svg>
+    <span class="notification-badge" id="notificationBadge" style="display: none"></span>
+  </button>
+
   <!-- Sidebar de Novedades y Mensajes Simples (Panel Lateral Derecho) -->
   <div class="notification-sidebar" id="notificationSidebar">
     <!-- Botón para escanear -->
@@ -563,37 +558,19 @@
         &times;
       </button>
     </div>
+    <!-- Filtro por grupo de novedad (novedades.js): "Social" = social, juego, arbol, logro; "General" = el resto -->
+    <div class="notif-filtros" role="tablist" aria-label="Tipo de novedades">
+      <button type="button" class="notif-filtro activo" data-filtro="general" role="tab" aria-selected="true">
+        <img src="/static/iconos/iconos_notificaciones/fuente/general_color.svg" alt="">
+        <span>General</span>
+      </button>
+      <button type="button" class="notif-filtro" data-filtro="social" role="tab" aria-selected="false">
+        <img src="/static/iconos/iconos_notificaciones/fuente/social_color.svg" alt="">
+        <span>Social</span>
+      </button>
+    </div>
     <div class="sidebar-content">
-      <!-- Mensajes simples y novedades estáticas de ejemplo -->
-      <div class="notif-item important">
-        <p class="notif-text">
-          <strong>🚧 Aviso Vial:</strong> Trabajos de mantenimiento en el
-          sendero peatonal junto al río Amazonas. Transite con precaución.
-        </p>
-        <span class="notif-time">Hace 10 min</span>
-      </div>
-      <div class="notif-item">
-        <p class="notif-text">
-          <strong>📢 Conferencia:</strong> Este viernes se llevará a cabo el
-          simposio sobre Biodiversidad Amazónica en el auditorio principal.
-        </p>
-        <span class="notif-time">Hoy, 8:30 AM</span>
-      </div>
-      <div class="notif-item">
-        <p class="notif-text">
-          <strong>📚 Biblioteca:</strong> Recuerda que los horarios de
-          atención se extendieron hasta las 8:00 PM durante semanas de
-          exámenes.
-        </p>
-        <span class="notif-time">Ayer</span>
-      </div>
-      <div class="notif-item">
-        <p class="notif-text">
-          <strong>🌿 Mensaje Sede:</strong> Bienvenidos a todos los
-          estudiantes de intercambio al ecosistema de la Sede Amazonia.
-        </p>
-        <span class="notif-time">12 Jun 2026</span>
-      </div>
+      <!-- Lo llena novedades.js con los avisos push guardados (aviamaz_novedades) -->
     </div>
   </div>
 
@@ -637,13 +614,17 @@
   <!-- Álbum de Árboles Recolectados -->
   <script src="/static/js/album-handler.js?v=7"></script>
   <!-- Script principal -->
-  <script src="/static/js/index.js?v=22"></script>
+  <script src="/static/js/index.js?v=24"></script>
   <!-- PRUEBA glosario AR (paso 1) -->
   <script src="/static/js/ar-prueba.js?v=6"></script>
   <!-- Recorrido a pie en primera persona (three.js se carga solo al abrirlo) -->
   <script src="/static/js/recorrido.js?v=19" type="module"></script>
   <!-- Mi jardín (three.js se carga solo al abrirlo) -->
   <script src="/static/js/jardin.js?v=44" type="module"></script>
+  <!-- Notificaciones push de Firebase (solo en la app Android; arranca en 'load' sin bloquear) -->
+  <!-- Panel "Novedades del Campus" (avisos push guardados en el celular) -->
+  <script src="/static/js/novedades.js?v=4"></script>
+  <script src="/static/js/notificaciones.js?v=3"></script>
 
   <!-- Input invisible para captura con cámara o archivo -->
   <input type="file" id="treeCameraInput" accept="image/*" capture="environment" style="display:none;">

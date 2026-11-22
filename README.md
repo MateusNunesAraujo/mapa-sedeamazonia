@@ -2,6 +2,8 @@
 
 Aplicación web interactiva para visualizar el mapa de la Universidad Nacional de Colombia - Sede Amazonia, optimizada para funcionar completamente offline.
 
+> 🔔 **Notificaciones push:** cómo enviar avisos desde Firebase y qué tipos existen, en [NOTIFICACIONES.md](NOTIFICACIONES.md).
+
 ## Características
 
 ✅ **Completamente Offline** - No requiere conexión a internet una vez instalada
