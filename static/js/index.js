@@ -499,8 +499,8 @@ function etiquetaLugar(lugar) {
 // - Al escribir en el buscador "piensa" y dice cuántos lugares encontró, con una palabra del
 //   primero; al abrir un lugar enseña sus palabras.
 // - Tocar al mono: pone el cursor en el buscador. Tocar el globo: otra palabra.
-// - La X lo oculta hasta la próxima vez que se abra la app; sin uso, el globo se esconde a
-//   los MASCOTA_GLOBO_HASTA ms y el mono se queda colgado.
+// - La X cierra el globo y el mono se queda colgado (tocarlo lo vuelve a abrir); sin uso, el
+//   globo también se esconde solo a los MASCOTA_GLOBO_HASTA ms.
 // Solo muestra palabras de data/lenguas.json tal cual: no compone frases en las lenguas.
 const MASCOTA_CADA = 7000;
 const MASCOTA_GLOBO_HASTA = 45000;
@@ -602,11 +602,12 @@ function iniciarMascota(datos) {
     siguiente();
     abrirGlobo();
   });
+  // La X solo cierra el globo: el mono se queda colgado y al tocarlo vuelve a hablar
   cerrar.addEventListener("click", () => {
     clearInterval(reloj);
     clearTimeout(esconder);
     clearTimeout(pausa);
-    raiz.hidden = true;
+    globo.classList.add("oculto");
   });
 
   // Ganchos para el buscador y las tarjetas de lugar
