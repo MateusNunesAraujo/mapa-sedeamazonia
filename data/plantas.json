@@ -29,7 +29,7 @@
         "La especie fue introducida en Colombia principalmente como planta ornamental. Se utiliza para formar cercos vivos defensivos, barreras contra el viento y para delimitar linderos en residencias, fincas, fábricas y centros educativos. Es altamente valorada para la conformación de setos, ya que desarrolla numerosas ramas desde la base del tallo, generando estructuras densas y difíciles de atravesar, además de poseer espinas en su tallo que refuerzan su función protectora (Pérez Arbeláez, 1990; Rodríguez-Mora et al., 2019)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "swinglea-glutinosa.glb",
     "codigoQR": "PLANTA_045_SWINGLEA",
     "bloqueado": false,
     "info_juego": {
@@ -109,7 +109,7 @@
         "En la región amazónica, la carambola se comercializa principalmente como fruta fresca, consumida al natural por su sabor acidulado o preparada en jugos, almíbar para la elaboración de encurtidos. Sin embargo, el fruto también posee un alto potencial para la producción de pulpas, mermeladas, néctares y productos osmodeshidratados. Además, se utiliza con fines ornamentales en espacios públicos como parques, antejardines y avenidas. En la medicina tradicional, se le atribuyen propiedades febrífugas (Cárdenas López et al., 2004; Hernández et al., 2004; Pérez Arbeláez, 1990)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "averrhoa-carambola.glb",
     "codigoQR": "PLANTA_076_CARAMBOLO",
     "bloqueado": false,
     "info_juego": {
@@ -188,7 +188,7 @@
         "Esta especie se cultiva para la extracción del látex, una sustancia natural, repelente al agua y de alta resistencia eléctrica, que sirve como materia prima para la producción de neumáticos, correas, mangueras, calzado, piezas moldeadas, montajes, casquillos, sellos y tapetes. El látex en mayor concentración se emplea en la fabricación de espuma, condones, guantes, hilos de látex y adhesivos. Las semillas, por su parte, se utilizan en artesanías como collares y aretes (Montero González et al., 2016; Nair, 2010)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "hevea-brasiliensis.glb",
     "codigoQR": "PLANTA_092_CAUCHO",
     "bloqueado": false,
     "info_juego": {
@@ -270,7 +270,7 @@
         "El tejido que recubre la semilla es apto para el consumo humano, y sus frutos son fuente de alimento para diversas aves. La madera, de tonalidad pardo-rojiza, es dura, pesada, quebradiza y de difícil manejo, por lo que se utiliza principalmente en postes para cercas, carpintería rústica y como leña. Tras la poda, sus ramas son comestibles y poseen un buen valor nutritivo para el ganado bovino. También se planta como cerca viva y con fines ornamentales, brindando sombra en parques, avenidas, calles y antejardines. Gracias a su alta tolerancia a la sequía, es adecuada para el control de la erosión. Además, sus hojas tienen propiedades medicinales. Es una especie melífera y fijadora de nitrógeno (Cárdenas López et al., 2004; Molina Franco y SAO, 2021; Varón y Morales, 2013)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "pithecellobium-dulce.glb",
     "codigoQR": "PLANTA_151_CHIMUCO",
     "bloqueado": false,
     "info_juego": {
@@ -308,7 +308,7 @@
         "Coussapoa orthoneura es un árbol hospedador habitual de escarabajos del género Hyboptera, invertebrados del dosel amazónico. Al ofrecer hojas persistentes, enredos de lianas y abundante materia orgánica suspendida, Coussapoa orthoneura crea microhábitats donde los insectos hallan alimento, refugio y sustratos para el desarrollo larval, contribuyendo así a la alta diversidad y al flujo de energía en los bosques de tierra firme y várzea. Esta relación planta–insecto subraya la importancia de conservar las especies arbóreas estructuralmente complejas, salvaguardando simultáneamente una red de organismos asociados se mantiene la funcionalidad ecológica del dosel amazónico (Erwin y Henry, 2017)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "coussapoa-orthoneura.glb",
     "codigoQR": "PLANTA_168_COUSSAPOA",
     "bloqueado": false,
     "info_juego": {
@@ -570,7 +570,7 @@
         "La madera es considerada relativamente blanda, aunque durable, y se emplea en construcción, carpintería y fabricación de muebles. Los frutos son alimento para la avifauna como tucanes, loros y tiránidos (Rohwer, 1993)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "nectandra-membranacea.glb",
     "codigoQR": "PLANTA_240_LAUREL",
     "bloqueado": false,
     "info_juego": {
@@ -652,7 +652,7 @@
         "La madera, aunque no muy resistente, se emplea en la construcción de cabañas. Las aves se alimentan de sus frutos (información tomada del documento compartido por la UNAL-Amazonia)."
       ]
     },
-    "modelo3d": null,
+    "modelo3d": "henriettea-fascicularis.glb",
     "codigoQR": "PLANTA_256_CAMASEY",
     "bloqueado": false,
     "info_juego": {

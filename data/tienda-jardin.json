@@ -268,6 +268,107 @@
       "zona": "cabeza",
       "modelo": "capibara-sentada.glb",
       "desbloqueo_qr": true
+    },
+    {
+      "id": "guacamaya",
+      "nombre": "Guacamaya",
+      "rareza": "legendaria",
+      "imagen": "guacamaya-icono.png",
+      "zona": "cabeza",
+      "modelo": "guacamaya.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "anaconda-cuello",
+      "nombre": "Anaconda al cuello",
+      "rareza": "rara",
+      "imagen": "anaconda-cuello-icono.png",
+      "zona": "cuello",
+      "modelo": "anaconda-cuello.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "bandana-ninja",
+      "nombre": "Bandana ninja",
+      "rareza": "epica",
+      "imagen": "bandana-ninja-icono.png",
+      "zona": "rostro",
+      "modelo": "bandana-ninja.glb",
+      "anillo": "frente",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "buzo-forgames",
+      "nombre": "Buzo For Games",
+      "rareza": "exclusiva",
+      "imagen": "buzo-forgames-icono.png",
+      "zona": "cuello",
+      "modelo": "buzo-forgames.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "collar-anaconda",
+      "nombre": "Collar de anaconda",
+      "rareza": "epica",
+      "imagen": "collar-anaconda-icono.png",
+      "zona": "cuello",
+      "modelo": "collar-anaconda.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "collar-js",
+      "nombre": "Collar JS",
+      "rareza": "comun",
+      "imagen": "collar-js-icono.png",
+      "zona": "cuello",
+      "modelo": "collar-js.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "collar-mtn",
+      "nombre": "Collar MTN",
+      "rareza": "comun",
+      "imagen": "collar-mtn-icono.png",
+      "zona": "cuello",
+      "modelo": "collar-mtn.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "mostacho",
+      "nombre": "Mostacho",
+      "rareza": "comun",
+      "imagen": "mostacho-icono.png",
+      "zona": "rostro",
+      "modelo": "mostacho.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "traje-smoking",
+      "nombre": "Traje de smoking",
+      "rareza": "epica",
+      "imagen": "traje-smoking-icono.png",
+      "zona": "cuello",
+      "modelo": "traje-smoking.glb",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "venda-tejida",
+      "nombre": "Venda tejida",
+      "rareza": "rara",
+      "imagen": "venda-tejida-icono.png",
+      "zona": "rostro",
+      "modelo": "venda-tejida.glb",
+      "anillo": "ojos",
+      "desbloqueo_qr": true
+    },
+    {
+      "id": "gato-juzgando",
+      "nombre": "Gato juzgando",
+      "rareza": "comun",
+      "imagen": "gato-juzgando-icono.png",
+      "zona": "cabeza",
+      "modelo": "gato-juzgando.glb",
+      "desbloqueo_qr": true
     }
   ]
 }

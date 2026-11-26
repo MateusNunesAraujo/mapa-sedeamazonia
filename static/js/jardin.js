@@ -857,7 +857,7 @@ async function abrirJardin(progreso = () => {}, visita = null) {
         : window.plantsHandler?.getModelUrl(codigoBase(codigo)) || plantasPorCodigo.get(codigo)?.rutaModelo || null;
       const gltf = ruta ? await cargarModelo(ruta) : null;
       const original = gltf?.scene || null;
-      const modelo = original ? original.clone(true) : crearBrote();
+      const modelo = original ? clonarModelo(original) : crearBrote();
       const caja = new THREE.Box3().setFromObject(modelo);
       const tam = caja.getSize(new THREE.Vector3());
       const escala = original ? Math.min(ALTO_ARBOL / tam.y, ANCHO_ARBOL / Math.max(tam.x, tam.z)) : 1;
@@ -888,6 +888,26 @@ async function abrirJardin(progreso = () => {}, visita = null) {
       return arbol;
     }
 
+    /**
+     * Copia un modelo cargado. Las mallas con huesos (skin) se vuelven a enlazar a los huesos de la
+     * copia: clone(true) las deja apuntando a los huesos del original, que no está en la escena.
+     */
+    function clonarModelo(fuente) {
+      const copia = fuente.clone(true);
+      const original = [];
+      const copiado = [];
+      fuente.traverse((o) => original.push(o));
+      copia.traverse((o) => copiado.push(o)); // mismo orden de recorrido que el original
+      const par = new Map(original.map((o, i) => [o, copiado[i]]));
+      copiado.forEach((o, i) => {
+        if (!o.isSkinnedMesh) return;
+        const f = original[i];
+        const huesos = f.skeleton.bones.map((b) => par.get(b));
+        o.bind(new THREE.Skeleton(huesos, f.skeleton.boneInverses), f.bindMatrix);
+      });
+      return copia;
+    }
+
     /** Vértices de un nodo (y sus hijos) en el espacio del modelo, como [x, y, z, x, y, z, ...] */
     function verticesDe(nodo) {
       const puntos = [];
@@ -901,6 +921,67 @@ async function abrirJardin(progreso = () => {}, visita = null) {
         }
       });
       return puntos;
+    }
+
+    /**
+     * Perfil del tronco entre yMin y yMax: el radio (distancia al eje) en franjas de altura y sectores
+     * alrededor del eje. Las franjas o sectores sin vértices se rellenan con sus vecinos (los troncos
+     * low-poly solo tienen vértices en algunos anillos). Devuelve null si no hay vértices.
+     *   radio(y, angulo): radio interpolado en ese punto (angulo = atan2(z, x) respecto al eje)
+     *   radioMax(y): el mayor radio a esa altura, en cualquier dirección
+     */
+    function perfilTronco(puntos, eje, yMin, yMax) {
+      const FRANJAS = 40, SECTORES = 16;
+      const alto = (yMax - yMin) / FRANJAS;
+      if (!(alto > 0)) return null;
+      const celdas = new Float32Array(FRANJAS * SECTORES).fill(-1);
+      const sectorDe = (angulo) => ((angulo / (2 * Math.PI)) % 1 + 1) % 1 * SECTORES;
+      for (let i = 0; i < puntos.length; i += 3) {
+        const f = Math.floor((puntos[i + 1] - yMin) / alto);
+        if (f < 0 || f >= FRANJAS) continue;
+        const dx = puntos[i] - eje.x, dz = puntos[i + 2] - eje.z;
+        const k = f * SECTORES + (Math.floor(sectorDe(Math.atan2(dz, dx))) % SECTORES);
+        celdas[k] = Math.max(celdas[k], Math.hypot(dx, dz));
+      }
+      // Sectores vacíos de una franja con datos: el mayor radio de esa franja
+      const conDatos = [];
+      for (let f = 0; f < FRANJAS; f++) {
+        let max = -1;
+        for (let s = 0; s < SECTORES; s++) max = Math.max(max, celdas[f * SECTORES + s]);
+        if (max < 0) continue;
+        for (let s = 0; s < SECTORES; s++) if (celdas[f * SECTORES + s] < 0) celdas[f * SECTORES + s] = max;
+        conDatos.push(f);
+      }
+      if (!conDatos.length) return null;
+      // Franjas vacías: interpolación entre las franjas con datos más cercanas (o la única que haya)
+      for (let f = 0; f < FRANJAS; f++) {
+        if (celdas[f * SECTORES] >= 0) continue;
+        const abajo = conDatos.filter((g) => g < f).pop();
+        const arriba = conDatos.find((g) => g > f);
+        for (let s = 0; s < SECTORES; s++) {
+          const ra = abajo === undefined ? null : celdas[abajo * SECTORES + s];
+          const rb = arriba === undefined ? null : celdas[arriba * SECTORES + s];
+          celdas[f * SECTORES + s] = ra === null ? rb : rb === null ? ra : ra + (rb - ra) * (f - abajo) / (arriba - abajo);
+        }
+      }
+      const celda = (f, s) => celdas[f * SECTORES + ((s % SECTORES) + SECTORES) % SECTORES];
+      return {
+        radio(y, angulo) {
+          const fy = THREE.MathUtils.clamp((y - yMin) / alto - 0.5, 0, FRANJAS - 1);
+          const f0 = Math.floor(fy), f1 = Math.min(f0 + 1, FRANJAS - 1), tf = fy - f0;
+          const fs = sectorDe(angulo) - 0.5;
+          const s0 = Math.floor(fs), ts = fs - s0;
+          const r0 = celda(f0, s0) + (celda(f0, s0 + 1) - celda(f0, s0)) * ts;
+          const r1 = celda(f1, s0) + (celda(f1, s0 + 1) - celda(f1, s0)) * ts;
+          return r0 + (r1 - r0) * tf;
+        },
+        radioMax(y) {
+          const f = THREE.MathUtils.clamp(Math.floor((y - yMin) / alto), 0, FRANJAS - 1);
+          let max = 0;
+          for (let s = 0; s < SECTORES; s++) max = Math.max(max, celda(f, s));
+          return max;
+        },
+      };
     }
 
     /**
@@ -969,25 +1050,58 @@ async function abrirJardin(progreso = () => {}, visita = null) {
         bajoOjos: entreOjos.y - cara.min.y, // hasta dónde llega la cara por debajo del punto
       };
 
-      // Cuello: bajo la boca. El eje y el radio del tronco a esa altura se miden con los vértices
-      // del tronco en una franja (que se ensancha si quedan muy pocos)
-      const boca = cajaDe(nodo('mouth')) || cara;
+      // El eje y el radio del tronco a una altura se miden con los vértices del tronco en una franja
+      // (que se ensancha si quedan muy pocos)
       const troncoNodo = nodo('trunk_feet') || nodo('body');
-      const yCuello = boca.min.y - (cara.max.y - cara.min.y) * 0.2;
       const puntosTronco = verticesDe(troncoNodo);
-      let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity, enFranja = 0;
-      for (let banda = tam.y * 0.02; enFranja < 6 && banda < tam.y; banda *= 2) {
-        minX = Infinity; maxX = -Infinity; minZ = Infinity; maxZ = -Infinity; enFranja = 0;
-        for (let i = 0; i < puntosTronco.length; i += 3) {
-          if (Math.abs(puntosTronco[i + 1] - yCuello) > banda) continue;
-          enFranja++;
-          minX = Math.min(minX, puntosTronco[i]); maxX = Math.max(maxX, puntosTronco[i]);
-          minZ = Math.min(minZ, puntosTronco[i + 2]); maxZ = Math.max(maxZ, puntosTronco[i + 2]);
+      const puntosCara = verticesDe(caraNodo);
+      /** Centro y radio del tronco a la altura y. Con conCara, incluye la cara para que el anillo la rodee */
+      function troncoEn(y, conCara = false) {
+        const puntos = conCara ? puntosTronco.concat(puntosCara) : puntosTronco;
+        let minX = Infinity, maxX = -Infinity, minZ = Infinity, maxZ = -Infinity, enFranja = 0;
+        for (let banda = tam.y * 0.02; enFranja < 6 && banda < tam.y; banda *= 2) {
+          minX = Infinity; maxX = -Infinity; minZ = Infinity; maxZ = -Infinity; enFranja = 0;
+          for (let i = 0; i < puntos.length; i += 3) {
+            if (Math.abs(puntos[i + 1] - y) > banda) continue;
+            enFranja++;
+            minX = Math.min(minX, puntos[i]); maxX = Math.max(maxX, puntos[i]);
+            minZ = Math.min(minZ, puntos[i + 2]); maxZ = Math.max(maxZ, puntos[i + 2]);
+          }
         }
+        return enFranja
+          ? { centro: new THREE.Vector3((minX + maxX) / 2, y, (minZ + maxZ) / 2), radio: Math.max(maxX - minX, maxZ - minZ) / 2 }
+          : null;
       }
-      const cTronco = enFranja ? new THREE.Vector3((minX + maxX) / 2, yCuello, (minZ + maxZ) / 2) : centro(cajaDe(troncoNodo) || cara);
-      const radioTronco = enFranja ? Math.max(maxX - minX, maxZ - minZ) / 2 : frente - cTronco.z;
-      const cuello = { ...engancheEn(troncoNodo), punto: new THREE.Vector3(cTronco.x, yCuello, cTronco.z), radioTronco };
+
+      // Anillos del rostro (bandana, venda): rodean el tronco y la cara, centrados en el eje del
+      // tronco, a la altura de los ojos o de la frente
+      const altoOjos = ojos.length ? Math.max(...ojos.map((b) => b.max.y - b.min.y)) : (cara.max.y - cara.min.y) * 0.2;
+      const topeOjos = ojos.length ? Math.max(...ojos.map((b) => b.max.y)) : entreOjos.y;
+      // La frente: un poco por encima de los ojos, sin meterse en la copa
+      const yFrente = Math.min(topeOjos + altoOjos * 0.45, copa.min.y - tam.y * 0.01);
+      rostro.anillo = {
+        ...engancheEn(troncoNodo), // los anillos cuelgan del tronco, no de la cara
+        ojos: troncoEn(entreOjos.y, true), // a la altura de los ojos (venda que los tapa)
+        frente: troncoEn(yFrente, true), // sobre los ojos (bandana)
+      };
+
+      // Cuello: bajo la boca
+      const boca = cajaDe(nodo('mouth')) || cara;
+      const yCuello = boca.min.y - (cara.max.y - cara.min.y) * 0.2;
+      const medidaCuello = troncoEn(yCuello);
+      const cTronco = medidaCuello ? medidaCuello.centro : centro(cajaDe(troncoNodo) || cara);
+      const radioTronco = medidaCuello ? medidaCuello.radio : frente - cTronco.z;
+      // Para que las prendas largas (smoking, buzo...) se adapten a todo el tronco y no solo al cuello:
+      // vértices del tronco y de los anillos de las palmas (sobresalen y atravesarían la tela).
+      // No se cuenta un segundo tronco (trunk_2): está a un lado e inflaría la prenda hacia él
+      let superficie = puntosTronco;
+      modelo.traverse((o) => { if (o !== troncoNodo && o.name === 'trunk_rings') superficie = superficie.concat(verticesDe(o)); });
+      const cuello = {
+        ...engancheEn(troncoNodo),
+        punto: new THREE.Vector3(cTronco.x, yCuello, cTronco.z),
+        radioTronco,
+        perfil: perfilTronco(superficie, cTronco, caja.min.y, yCuello + tam.y * 0.05),
+      };
 
       return { cabeza, rostro, cuello };
     }
@@ -1022,6 +1136,94 @@ async function abrirJardin(progreso = () => {}, visita = null) {
       return radio;
     }
 
+    // Prendas del cuello: hasta dónde puede ensancharse el tronco bajo la prenda antes de acortarla
+    // (raíces, base de las palmas) y cuánto como mucho se acorta
+    const ENSANCHE_MAX = 1.3;
+    const ACORTE_MIN = 0.45;
+
+    /**
+     * Adapta una pieza del cuello (collar, smoking, buzo...) al tronco que la lleva, para que no quede
+     * enterrada en troncos gruesos o que se ensanchan hacia abajo:
+     *  1. Si debajo del cuello el tronco se ensancha mucho (raíces), la prenda se acorta desde abajo
+     *     para terminar antes, sin mover el cuello.
+     *  2. Cada franja de la prenda se separa del eje lo justo para quedar por fuera del tronco a esa
+     *     altura y en esa dirección. Solo se ensancha (nunca se encoge), así una falda con vuelo o un
+     *     tronco más delgado abajo la dejan como está, y se conserva el grosor y los detalles.
+     * Trabaja en una copia de la geometría (la original es compartida con la caché de modelos).
+     */
+    function ajustarAlTronco(pieza, ancla, escala) {
+      const perfil = ancla.perfil;
+      if (!perfil || !(escala > 0)) return;
+      pieza.updateMatrixWorld(true);
+      const mallas = [];
+      pieza.traverse((o) => { if (o.isMesh && !o.isSkinnedMesh && o.geometry?.attributes.position) mallas.push(o); });
+      if (!mallas.length) return;
+
+      // Vértices de la pieza en su propio espacio (eje vertical en x = z = 0)
+      const v = new THREE.Vector3();
+      let yMinP = Infinity, yMaxP = -Infinity;
+      for (const m of mallas) {
+        const pos = m.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          v.fromBufferAttribute(pos, i).applyMatrix4(m.matrixWorld);
+          yMinP = Math.min(yMinP, v.y); yMaxP = Math.max(yMaxP, v.y);
+        }
+      }
+      const altoP = yMaxP - yMinP;
+      if (!(altoP > 0)) return;
+      // Radio interior de la prenda en cada franja de altura (su pared, sin contar adornos hacia fuera)
+      const FRANJAS_P = 24;
+      const franjaP = (y) => THREE.MathUtils.clamp(Math.floor(((y - yMinP) / altoP) * FRANJAS_P), 0, FRANJAS_P - 1);
+      const interior = new Array(FRANJAS_P).fill(Infinity);
+      for (const m of mallas) {
+        const pos = m.geometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          v.fromBufferAttribute(pos, i).applyMatrix4(m.matrixWorld);
+          const f = franjaP(v.y);
+          interior[f] = Math.min(interior[f], Math.hypot(v.x, v.z));
+        }
+      }
+
+      // 1. Acorte: altura (del modelo) bajo el cuello donde el tronco pasa de ENSANCHE_MAX veces su radio
+      const base = ancla.punto.y;
+      const yArriba = base + yMaxP * escala;
+      const yAbajo = base + yMinP * escala;
+      const limite = ancla.radioTronco * ENSANCHE_MAX;
+      const paso = (yArriba - yAbajo) / 40;
+      let yLimite = yAbajo;
+      for (let y = base; y > yAbajo; y -= paso) {
+        if (perfil.radioMax(y) > limite) { yLimite = y + paso; break; }
+      }
+      const acorte = yLimite > yAbajo
+        ? THREE.MathUtils.clamp((yArriba - yLimite) / (yArriba - yAbajo), ACORTE_MIN, 1)
+        : 1;
+
+      // 2. Deformación de cada vértice (en el espacio de la pieza y de vuelta al de su malla)
+      const inversa = new THREE.Matrix4();
+      for (const m of mallas) {
+        m.geometry = m.geometry.clone();
+        const pos = m.geometry.attributes.position;
+        inversa.copy(m.matrixWorld).invert();
+        for (let i = 0; i < pos.count; i++) {
+          v.fromBufferAttribute(pos, i).applyMatrix4(m.matrixWorld);
+          const pared = interior[franjaP(v.y)];
+          v.y = yMaxP - (yMaxP - v.y) * acorte;
+          const r = Math.hypot(v.x, v.z);
+          if (r > 1e-6 && Number.isFinite(pared)) {
+            // 2 % por fuera del tronco para que sus caras no atraviesen la tela
+            const necesario = perfil.radio(base + v.y * escala, Math.atan2(v.z, v.x)) * 1.02;
+            const empuje = Math.max(0, necesario - pared * escala) / escala;
+            if (empuje > 0) { v.x *= (r + empuje) / r; v.z *= (r + empuje) / r; }
+          }
+          v.applyMatrix4(inversa);
+          pos.setXYZ(i, v.x, v.y, v.z);
+        }
+        pos.needsUpdate = true;
+        m.geometry.computeBoundingBox();
+        m.geometry.computeBoundingSphere();
+      }
+    }
+
     /**
      * Carga los accesorios puestos en este árbol (ver jardin-estado.js) y los cuelga del nodo del
      * modelo que les corresponde. Todo se calcula en unidades del modelo sin escalar: al escalar el
@@ -1035,11 +1237,12 @@ async function abrirJardin(progreso = () => {}, visita = null) {
         const ancla = anclas[zona] || anclas.cabeza;
         const punto = ancla.punto.clone();
         let pieza = null;
+        let enganche = ancla; // nodo del que cuelga (los anillos del rostro cuelgan del tronco)
         let escalaPieza = alturaModelo; // los modelos están pensados para un árbol de 1 de alto
         if (def.modelo) {
           const gltf = await cargarModelo(`/static/modelos/accesorios/${def.modelo}`);
           if (!gltf) continue;
-          pieza = gltf.scene.clone(true);
+          pieza = clonarModelo(gltf.scene); // no clone(true): rompería las piezas con huesos
           // Si el GLB trae animaciones, se reproducen todas en bucle sobre esta copia (empezando en
           // un punto al azar para que dos accesorios iguales no se muevan a la vez)
           if (gltf.animations?.length && !reducirMovimiento) {
@@ -1052,11 +1255,22 @@ async function abrirJardin(progreso = () => {}, visita = null) {
             mezcladoresPieza.push(mezclador);
           }
           const tamPieza = new THREE.Box3().setFromObject(pieza).getSize(new THREE.Vector3());
-          if (zona === 'cuello') {
+          const medida = zona === 'rostro' && def.anillo && ancla.anillo ? (ancla.anillo[def.anillo] || ancla.anillo.ojos) : null;
+          if (medida) {
+            // Anillo alrededor del tronco a la altura de la frente o de los ojos: se centra en el eje del
+            // tronco y su interior queda apenas por fuera, rodeando también la cara
+            let interior = radioInterior(pieza);
+            if (!(interior > tamPieza.x * 0.1)) interior = tamPieza.x * 0.42;
+            escalaPieza = (medida.radio * 1.02) / interior;
+            punto.copy(medida.centro);
+            enganche = ancla.anillo;
+          } else if (zona === 'cuello') {
             // El anillo se escala para que su interior quede justo pegado al tronco
             let interior = radioInterior(pieza);
             if (!(interior > tamPieza.x * 0.1)) interior = tamPieza.x * 0.42; // sin hueco claro: se estima
             escalaPieza = (ancla.radioTronco * 0.97) / interior;
+            // Y luego se adapta al resto del tronco (prendas largas en troncos gruesos o con raíces)
+            ajustarAlTronco(pieza, ancla, escalaPieza);
           } else if (zona === 'cabeza') {
             // Proporcional al ancho de la copa (no a la altura del árbol)
             escalaPieza = escalaPorAncho(ancla.anchoCopa, ANCHO_COPA_REF, alturaModelo);
@@ -1089,10 +1303,10 @@ async function abrirJardin(progreso = () => {}, visita = null) {
           punto.z += alturaModelo * 0.01; // un pelo por delante de la cara para que no parpadee contra ella
         }
         if (!pieza) continue;
-        pieza.position.copy(punto).applyMatrix4(ancla.inversa);
-        pieza.quaternion.copy(ancla.giro);
-        pieza.scale.setScalar(escalaPieza / ancla.escalaNodo);
-        ancla.padre.add(pieza);
+        pieza.position.copy(punto).applyMatrix4(enganche.inversa);
+        pieza.quaternion.copy(enganche.giro);
+        pieza.scale.setScalar(escalaPieza / enganche.escalaNodo);
+        enganche.padre.add(pieza);
       }
       return mezcladoresPieza;
     }

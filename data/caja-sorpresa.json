@@ -1,7 +1,7 @@
 {
   "nota": "Caja sorpresa del jardín. Aparece la primera vez que se entra y luego cada `intervalo_horas`. Cada caja entrega UN premio al azar según su `peso` (más peso = más probable). tipo: 'monedas' (objeto: 'plata' u 'oro'), 'accesorio' (objeto: id de tienda-jardin.json) o 'arbol' (objeto: codigoQR de arboles_exclusivos). Un árbol exclusivo que el usuario ya tiene no vuelve a salir. `primera_caja`: id del premio garantizado en la primera caja (null para sortearla también). `activo`: false para sacar un premio sin borrarlo.",
   "intervalo_horas": 24,
-  "primera_caja": "arbol-guardian-victoria-regia",
+  "primera_caja": "accesorio-buzo-forgames",
   "arboles_exclusivos": [
     {
       "codigoQR": "EXCLUSIVO_GUARDIAN_VICTORIA_REGIA",
@@ -25,6 +25,7 @@
     { "id": "accesorio-sombrero-palma",     "tipo": "accesorio", "objeto": "sombrero-tejido-palma", "cantidad": 1, "peso": 6, "rareza": "rara",  "activo": true },
     { "id": "accesorio-ramillete-heliconia","tipo": "accesorio", "objeto": "ramillete-heliconia", "cantidad": 1, "peso": 5, "rareza": "rara",  "activo": true },
     { "id": "accesorio-corona-plumas",      "tipo": "accesorio", "objeto": "corona-plumas",      "cantidad": 1, "peso": 3, "rareza": "epica", "activo": true },
+    { "id": "accesorio-buzo-forgames",      "tipo": "accesorio", "objeto": "buzo-forgames",      "cantidad": 1, "peso": 1, "rareza": "exclusiva", "activo": true },
     { "id": "arbol-guardian-victoria-regia","tipo": "arbol", "objeto": "EXCLUSIVO_GUARDIAN_VICTORIA_REGIA","cantidad": 1, "peso": 3, "rareza": "legendaria", "activo": true },
     { "id": "arbol-explorador-del-rio","tipo": "arbol", "objeto": "EXCLUSIVO_EXPLORADOR_DEL_RIO","cantidad": 1, "peso": 3, "rareza": "legendaria", "activo": true }
   ]
