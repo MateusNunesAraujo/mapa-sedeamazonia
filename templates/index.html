@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/static/leaflet/leaflet.css" />
   <!-- Offline: Geoman local -->
   <link rel="stylesheet" href="/static/geoman/leaflet-geoman.css" />
-  <link rel="stylesheet" href="/static/css/index.css?v=63" />
+  <link rel="stylesheet" href="/static/css/index.css?v=70" />
   <!-- Icono de la pestaña -->
   <link rel="icon" type="image/png" href="/static/iconos/imagen_escudo_decorado.png" />
 </head>
@@ -829,6 +829,19 @@
       <!-- Cargando (mientras se habla con Firebase) -->
       <div class="cuenta-cargando" id="cuentaCargando" hidden><span class="cuenta-spinner"></span><span>Un momento…</span></div>
     </div>
+
+    <!-- Ilustración bajo el login: escena del campus con el holograma del mapa animado (solo CSS).
+         Se oculta en las vistas con sesión (perfil, completar); ver .cuenta-pantalla[data-vista] en index.css -->
+    <div class="cuenta-escena" aria-hidden="true">
+      <div class="cuenta-escena-marco">
+        <!-- Relleno verde detrás de la imagen: tapa los huecos transparentes entre edificios y árboles -->
+        <div class="cuenta-escena-relleno"></div>
+        <img src="/static/img/holograma_aviamaz/escena_sin_holograma.png" alt="" class="cuenta-escena-fondo">
+        <div class="cuenta-holograma">
+          <img src="/static/img/holograma_aviamaz/holograma.png" alt="">
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- PRUEBA glosario AR (paso 1) -->
@@ -885,7 +898,7 @@
   <script src="/static/js/sincronizacion.js?v=2"></script>
   <!-- Copia pública del jardín (jardines/{uid}): visitas desde la pestaña Social y "me gusta" -->
   <script src="/static/js/jardin-publico.js?v=4"></script>
-  <script src="/static/js/cuenta.js?v=7"></script>
+  <script src="/static/js/cuenta.js?v=8"></script>
   <!-- Actividad de la comunidad (actividad/{id} en Firestore) y reacciones: pestaña Social; solo con cuenta -->
   <script src="/static/js/actividad.js?v=4"></script>
   <!-- Notificaciones push de Firebase (solo en la app Android; arranca en 'load' sin bloquear) -->

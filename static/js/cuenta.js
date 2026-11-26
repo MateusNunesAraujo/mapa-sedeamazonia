@@ -273,6 +273,7 @@
   function mostrarVista(nombre, { guardarHistorial = true } = {}) {
     if (vistaActual && guardarHistorial && vistaActual !== nombre) historial.push(vistaActual);
     vistaActual = nombre;
+    pantalla.dataset.vista = nombre; // el CSS decide con esto si se ve la escena del holograma
     for (const [n, v] of Object.entries(vistas)) v.hidden = n !== nombre;
     titulo.textContent = vistas[nombre]?.dataset.titulo || 'Mi cuenta';
     // En "Completa tu perfil" no hay X: se guarda o se cancela (cierra sesión)

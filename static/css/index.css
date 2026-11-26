@@ -5027,7 +5027,14 @@
     align-items: center;
     padding: calc(24px + env(safe-area-inset-top, 0px)) 16px calc(24px + env(safe-area-inset-bottom, 0px));
     overflow-y: auto;
-    background: linear-gradient(160deg, var(--verde-hover) 0%, var(--verde-institucional) 55%, var(--verde-selva) 100%);
+    /* Cielo: azul intenso arriba (para que se lea el logo blanco) que se aclara hasta casi blanco abajo,
+       con nubes suaves hechas con degradados radiales */
+    background:
+        radial-gradient(ellipse 45% 7% at 18% 30%, rgba(255, 255, 255, 0.75), transparent 70%),
+        radial-gradient(ellipse 35% 6% at 85% 22%, rgba(255, 255, 255, 0.6), transparent 70%),
+        radial-gradient(ellipse 50% 8% at 75% 58%, rgba(255, 255, 255, 0.7), transparent 70%),
+        radial-gradient(ellipse 40% 6% at 12% 66%, rgba(255, 255, 255, 0.65), transparent 70%),
+        linear-gradient(180deg, #2f7fc8 0%, #5aa7e3 22%, #9bcdf1 50%, #d6ecfb 75%, #f5fbff 100%);
 }
 
 .cuenta-pantalla[hidden],
@@ -5051,6 +5058,122 @@
     background: var(--blanco);
     border-radius: 24px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* Escena bajo el login: campus + holograma del mapa flotando sobre la tableta.
+   La posición del holograma está en % de la escena (1536×1024) para que escale con ella. */
+.cuenta-escena {
+    /* Fija al pie de la pantalla, detrás de la tarjeta: mide y se ubica igual en todas las vistas donde
+       aparece, sin importar el alto de la tarjeta, y no genera scroll. Más ancha que la pantalla (los
+       bordes de la imagen son casi transparentes) y bajada un 8 % para recortar el borde vacío de abajo. */
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    z-index: 0;
+    width: 122vw;
+    max-width: 640px;
+    transform: translate(-50%, 8%);
+    pointer-events: none;
+    user-select: none;
+    display: none;
+}
+
+/* Solo en la bienvenida y en "Ya tengo cuenta" (ingreso) */
+.cuenta-pantalla[data-vista="bienvenida"] .cuenta-escena,
+.cuenta-pantalla[data-vista="ingreso"] .cuenta-escena {
+    display: block;
+}
+
+/* El logo y la tarjeta van por encima de la escena */
+.cuenta-pantalla .cuenta-logo,
+.cuenta-pantalla .cuenta-tarjeta {
+    position: relative;
+    z-index: 1;
+}
+
+/* Marco con la proporción de la imagen para que el holograma, en %, siga sobre la tableta */
+.cuenta-escena-marco {
+    position: relative;
+}
+
+/* Mancha verde detrás de la escena para tapar los huecos por donde se veía el cielo.
+   Queda dentro de la silueta de la isla (márgenes en %) y con el borde difuminado por si asoma. */
+.cuenta-escena-relleno {
+    position: absolute;
+    inset: 16% 6% 10% 6%;
+    border-radius: 45% / 40%;
+    background: #4f9f35;
+    box-shadow: 0 0 18px 6px rgba(79, 159, 53, 0.6);
+}
+
+.cuenta-escena-fondo {
+    position: relative; /* encima del relleno */
+}
+
+.cuenta-escena-fondo {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 10px 18px rgba(0, 0, 0, 0.25));
+}
+
+.cuenta-holograma {
+    position: absolute;
+    left: 50.5%;
+    top: 36%;
+    width: 28.5%;
+    animation: holograma-flotar 3.6s ease-in-out infinite;
+}
+
+.cuenta-holograma img {
+    display: block;
+    width: 100%;
+    height: auto;
+    opacity: 0.92;
+    mix-blend-mode: screen;
+    animation: holograma-brillo 2.4s ease-in-out infinite, holograma-parpadeo 7s steps(1) infinite;
+}
+
+/* Barrido de luz que recorre el holograma de arriba abajo */
+.cuenta-holograma::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 14%;
+    background: linear-gradient(180deg, transparent 0%, rgba(160, 255, 230, 0.45) 50%, transparent 100%);
+    background-size: 100% 30%;
+    background-repeat: no-repeat;
+    mix-blend-mode: screen;
+    animation: holograma-barrido 3s linear infinite;
+}
+
+@keyframes holograma-flotar {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-5%); }
+}
+
+@keyframes holograma-brillo {
+    0%, 100% { filter: drop-shadow(0 0 4px rgba(80, 255, 200, 0.5)); }
+    50%      { filter: drop-shadow(0 0 12px rgba(80, 255, 200, 0.95)); }
+}
+
+/* Parpadeo breve, como interferencia */
+@keyframes holograma-parpadeo {
+    0%, 91%, 93%, 95%, 100% { opacity: 0.92; }
+    92%, 94%                { opacity: 0.55; }
+}
+
+@keyframes holograma-barrido {
+    0%   { background-position: 0 -40%; }
+    100% { background-position: 0 140%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .cuenta-holograma,
+    .cuenta-holograma img,
+    .cuenta-holograma::after {
+        animation: none;
+    }
 }
 
 .cuenta-cerrar {
